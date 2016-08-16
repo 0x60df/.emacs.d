@@ -1,0 +1,6 @@
+#name : block
+#group : general
+# --
+do |${p}|
+  $0
+end

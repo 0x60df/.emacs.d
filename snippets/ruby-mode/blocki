@@ -1,0 +1,4 @@
+#name : blocki
+#group : general
+# --
+{|${p}| $0 }

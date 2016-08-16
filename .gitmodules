@@ -1,0 +1,6 @@
+[submodule "lisp/ox-gfm"]
+	path = lisp/ox-gfm
+	url = https://github.com/larstvei/ox-gfm.git
+[submodule "lisp/ox-qmd"]
+	path = lisp/ox-qmd
+	url = https://github.com/0x60df/ox-qmd.git

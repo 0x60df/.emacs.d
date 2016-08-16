@@ -1,0 +1,4 @@
+#name : uptoi
+#group : control structure
+# --
+upto(${n}) {|${i}| $0}

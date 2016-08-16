@@ -1,0 +1,10 @@
+include
+define
+vec.h
+mymath.h
+_vec<>
+stdio.h
+stdlib.h
+math.h
+function
+prototype

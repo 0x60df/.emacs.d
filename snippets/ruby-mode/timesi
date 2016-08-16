@@ -1,0 +1,4 @@
+#name : timesi
+#group : control structure
+# --
+times {|${i}| $0 }

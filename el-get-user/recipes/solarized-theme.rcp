@@ -1,0 +1,4 @@
+(:name solarized-theme
+       :type github
+       :pkgname "sellout/emacs-color-theme-solarized"
+       :prepare (add-to-list 'custom-theme-load-path default-directory))

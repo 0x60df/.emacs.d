@@ -1,0 +1,144 @@
+
+;;;; init.el
+
+
+(setq custom-file "~/.emacs.d/custom.el")
+(setq message-truncate-lines t)
+(add-hook 'after-init-hook (lambda () (setq message-truncate-lines nil)))
+
+;;; init
+
+(defvar init-path
+  (letrec ((filter (lambda (p l)
+                     (cond ((null l) l)
+                           ((funcall p (car l)) (funcall filter p (cdr l)))
+                           (t (cons (car l) (funcall filter p (cdr l))))))))
+    (apply
+     'append
+     (mapcar
+      (lambda (d)
+        (funcall filter (lambda (f) (not (file-directory-p f)))
+                 (mapcar (lambda (f) (expand-file-name (concat d "/" f)))
+                         (remove ".."
+                                 (directory-files d)))))
+      '("~/.emacs.d/init.d/site-lisp" "~/.emacs.d/init.d/lisp")))))
+
+(defmacro init (unit &optional noerror nomessage nosuffix must-suffix)
+  `(let* ((name (symbol-name ',unit))
+          (el (locate-file name init-path '(".el")))
+          (elc (locate-file name init-path '(".elc"))))
+     (when el
+       (unless (and elc (file-newer-than-file-p elc el))
+         (if elc (delete-file elc))
+         (byte-compile-file el)
+         (setq elc (byte-compile-dest-file el)))
+       (load elc ,noerror ,nomessage ,nosuffix ,must-suffix))))
+
+(init bars)
+(init suppression)
+(init greeting)
+(init cursor)
+(init paren)
+(init indent)
+(init whitespace)
+(init insurance)
+(init tooltip)
+(init mode-line)
+(init bindings)
+(init functions)
+(init theme)
+(init japanese)
+
+
+;;; features
+
+(defmacro init-feature (feature)
+  (let ((unit (make-symbol (concat "init-" (symbol-name feature)))))
+     `(init ,unit)))
+
+(init-feature abbrev)
+(init-feature doc-view)
+(init-feature eshell)
+(init-feature eww)
+(init-feature icomplete)
+(init-feature org)
+(init-feature cc-mode)
+(init-feature python)
+(init-feature ruby-mode)
+(init-feature scheme)
+(init-feature wdired)
+
+
+;;; el-get
+
+(add-to-list 'load-path "~/.emacs.d/el-get/el-get")
+
+(unless (require 'el-get nil 'noerror)
+  (with-current-buffer
+      (url-retrieve-synchronously
+       (concat
+	"https://raw.githubusercontent.com/"
+	"dimitri/el-get/master/el-get-install.el"))
+    (goto-char (point-max))
+    (eval-print-last-sexp)))
+
+(add-to-list 'el-get-recipe-path "~/.emacs.d/el-get-user/recipes")
+(setq el-get-user-package-directory "~/.emacs.d/init.d/lisp/el-get")
+
+(el-get-bundle auto-complete)
+(el-get-bundle yasnippet)
+(el-get-bundle multiple-cursors)
+(el-get-bundle expand-region)
+(el-get-bundle magit)
+(el-get-bundle wgrep)
+(el-get-bundle smart-compile)
+(el-get-bundle web-mode)
+(el-get-bundle markdown-mode)
+(el-get-bundle ruby-end)
+(el-get-bundle inf-ruby)
+(el-get-bundle robe-mode)
+(el-get-bundle yaml-mode)
+(el-get-bundle yatex)
+(el-get-bundle tomorrow-theme)
+(el-get-bundle color-theme-zenburn)
+(el-get-bundle solarized-theme)
+(el-get-bundle base16)
+(el-get-bundle emacs-jp/replace-colorthemes)
+
+
+;;; user-features
+
+(mapc (lambda (e) (add-to-list 'load-path e))
+      (reverse
+       (letrec ((filter
+                 (lambda (p l)
+                   (cond ((null l) l)
+                         ((funcall p (car l)) (funcall filter p (cdr l)))
+                         (t (cons (car l) (funcall filter p (cdr l))))))))
+         (apply 'append
+                (mapcar
+                 (lambda (d)
+                   (funcall
+                    filter
+                    (lambda (f) (not (file-directory-p f)))
+                    (mapcar (lambda (f) (expand-file-name (concat d "/" f)))
+                            (remove ".." (directory-files d)))))
+                 '("~/.emacs.d/site-lisp" "~/.emacs.d/lisp"))))))
+
+(init-feature ox-gfm)
+(init-feature ox-qmd)
+
+
+;;; site-init
+
+
+(defun init-by (file)
+  (let ((unit (make-symbol (replace-regexp-in-string "\\.el$" "" file))))
+    (eval `(init ,unit))))
+
+(init-by "~/.emacs.d/site-init.el")
+
+
+;;; custom
+
+(init-by custom-file)

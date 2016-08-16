@@ -1,0 +1,11 @@
+collect
+detect
+reject
+inject
+initialize
+all
+downto
+each
+each_with_index
+ifelse
+delete

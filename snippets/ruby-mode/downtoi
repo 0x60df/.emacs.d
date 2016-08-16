@@ -1,0 +1,4 @@
+#name : downtoi
+#group : control structure
+# --
+downto(${0}) {|${i}| $0 }
