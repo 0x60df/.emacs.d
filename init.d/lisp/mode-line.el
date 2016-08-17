@@ -45,27 +45,28 @@
 ;;; faces
 
 (defface mode-line-buffer-identification-face
-  '((t (:weight bold)))
+  '((t :inherit mode-line-buffer-id
+       :weight bold))
   "Face used for buffer identification parts of the mode line."
   :group 'mode-line-faces)
 (defface mode-line-position-face
-  '((t ()))
+  '((t))
   "Face used for position in the buffer parts of the mode line."
   :group 'mode-line-faces)
 (defface mode-line-vc-mode-face
-  '((t (:slant italic)))
+  '((t :slant italic))
   "Face used for vc-mode parts of the mode line."
   :group 'mode-line-faces)
 (defface mode-line-mode-name-face
-  '((t (:weight bold)))
+  '((t :weight bold))
   "Face used for mode-name parts of the mode line."
   :group 'mode-line-faces)
 (defface mode-line-minor-mode-alist-face
-  '((t ()))
+  '((t))
   "Face used for minor-mode-alist parts of the mode line."
   :group 'mode-line-faces)
 (defface mode-line-which-func-mode-face
-  '((t (:slant italic)))
+  '((t :slant italic))
   "Face used for which-func-mode parts of the mode line."
   :group 'mode-line-faces)
 
