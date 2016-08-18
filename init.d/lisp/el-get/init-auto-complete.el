@@ -16,9 +16,11 @@
 ;;; bindings
 
 (define-key ac-completing-map (kbd "<backtab>") 'ac-previous)
+(define-key ac-completing-map (kbd "C-<tab>") 'ac-isearch)
 (setq ac-use-menu-map t)
-(define-key ac-menu-map (kbd "<backtab>") 'ac-previous)
 (define-key ac-menu-map (kbd "<tab>") 'ac-next)
+(define-key ac-menu-map (kbd "<backtab>") 'ac-previous)
+(define-key ac-menu-map (kbd "C-<tab>") 'ac-isearch)
 
 
 ;;; source
