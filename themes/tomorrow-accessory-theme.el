@@ -19,9 +19,9 @@
    ((t :foreground ,(face-foreground 'font-lock-function-name-face)))))
 
 
-;;; auto-complete
+;;; popup
 
-(when (featurep 'auto-complete)
+(when (featurep 'popup)
   (custom-theme-set-faces
    'tomorrow-accessory
    '(popup-face ((t :inherit default)))
@@ -32,7 +32,14 @@
    '(popup-scroll-bar-foreground-face ((t :inherit mode-line-inactive
                                           :inverse-video t)))
    '(popup-summary-face ((t :inherit shadow)))
-   '(popup-tip-face ((t :inherit mode-line)))
+   '(popup-tip-face ((t :inherit mode-line)))))
+
+
+;;; auto-complete
+
+(when (featurep 'auto-complete)
+  (custom-theme-set-faces
+   'tomorrow-accessory
    '(ac-gtags-candidate-face
      ((t :inherit (font-lock-function-name-face ac-candidate-face))))
    '(ac-gtags-selection-face
