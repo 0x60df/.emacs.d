@@ -9,14 +9,11 @@
 (custom-theme-set-faces
  'tomorrow-accessory
  `(mode-line-buffer-identification-face
-   ((t :foreground ,(face-foreground 'font-lock-keyword-face)
+   ((t :inherit (font-lock-keyword-face mode-line-buffer-id)
        :weight bold)))
- `(mode-line-vc-mode-face
-   ((t :foreground ,(face-foreground 'font-lock-variable-name-face))))
- `(mode-line-mode-name-face
-   ((t :foreground ,(face-foreground 'font-lock-type-face))))
- `(mode-line-which-func-mode-face
-   ((t :foreground ,(face-foreground 'font-lock-function-name-face)))))
+ `(mode-line-vc-mode-face ((t :inherit font-lock-variable-name-face)))
+ `(mode-line-mode-name-face ((t :inherit font-lock-type-face)))
+ `(mode-line-which-func-mode-face ((t :inherit font-lock-function-name-face))))
 
 
 ;;; popup
