@@ -7,6 +7,10 @@
 ;;;popup
 
 (when (featurep 'popup)
+  (custom-theme-set-variables
+   'solarized-accessory
+   `(popup-isearch-cursor-color ,(face-foreground 'isearch)))
+
   (custom-theme-set-faces
    'solarized-accessory
    '(popup-face ((t :inherit default)))
