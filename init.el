@@ -90,6 +90,7 @@
 (el-get-bundle multiple-cursors)
 (el-get-bundle expand-region)
 (el-get-bundle magit)
+(el-get-bundle git-gutter-fringe)
 (el-get-bundle wgrep)
 (el-get-bundle smart-compile)
 (el-get-bundle web-mode)

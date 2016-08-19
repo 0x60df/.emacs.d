@@ -66,4 +66,19 @@
    '(ac-functions-selection-face
      ((t :inherit (font-lock-function-name-face ac-selection-face))))))
 
+
+;;; git-getter-fringe
+
+(when (featurep 'git-gutter-fringe)
+  (require 'ediff)
+  (custom-theme-set-faces
+   'tomorrow-accessory
+   `(git-gutter-fr:modified
+     ((t :foreground ,(face-background 'ediff-fine-diff-C))))
+   `(git-gutter-fr:added
+     ((t :foreground ,(face-background 'ediff-fine-diff-B))))
+   `(git-gutter-fr:deleted
+     ((t :foreground ,(face-background 'ediff-fine-diff-A))))))
+
+
 (provide-theme 'tomorrow-accessory)
