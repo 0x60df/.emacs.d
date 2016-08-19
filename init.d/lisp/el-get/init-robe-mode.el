@@ -23,13 +23,13 @@
 
 ;;; bindings
 
-(add-hook 'ruby-mode-hook
-          (lambda ()
-            (define-key ruby-mode-map "\C-cca" 'robe-boot)))
+(eval-after-load 'ruby-mode
+  '(progn
+     (define-key ruby-mode-map "\C-cca" 'robe-boot)))
 
-(add-hook 'robe-mode-hook
-          (lambda ()
-            (define-key robe-mode-map "\M-." 'find-tag)))
+(eval-after-load 'robe
+  '(progn
+     (define-key robe-mode-map "\M-." 'find-tag)))
 
 
 ;;; faces
