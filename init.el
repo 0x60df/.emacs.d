@@ -100,6 +100,7 @@
 (el-get-bundle robe-mode)
 (el-get-bundle yaml-mode)
 (el-get-bundle yatex)
+(el-get-bundle smartrep)
 (el-get-bundle tomorrow-theme)
 (el-get-bundle color-theme-zenburn)
 (el-get-bundle solarized-theme)
