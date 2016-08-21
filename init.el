@@ -92,6 +92,8 @@
 (el-get-bundle magit)
 (el-get-bundle git-gutter-fringe)
 (el-get-bundle wgrep)
+(el-get-bundle color-moccur)
+(el-get-bundle moccur-edit)
 (el-get-bundle smart-compile)
 (el-get-bundle web-mode)
 (el-get-bundle markdown-mode)
