@@ -91,6 +91,7 @@
 (el-get-bundle expand-region)
 (el-get-bundle magit)
 (el-get-bundle git-gutter-fringe)
+(el-get-bundle flycheck)
 (el-get-bundle wgrep)
 (el-get-bundle ag)
 (el-get-bundle color-moccur)
