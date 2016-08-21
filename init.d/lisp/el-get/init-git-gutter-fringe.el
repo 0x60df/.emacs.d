@@ -7,6 +7,7 @@
 
 (require 'git-gutter-fringe)
 (global-git-gutter-mode t)
+(setcar (cdr (assq 'git-gutter-mode minor-mode-alist)) " GG")
 
 
 ;;; bindings
