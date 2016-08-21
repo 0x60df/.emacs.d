@@ -97,6 +97,7 @@
 (el-get-bundle color-moccur)
 (el-get-bundle moccur-edit)
 (el-get-bundle smart-compile)
+(el-get-bundle smartparens)
 (el-get-bundle web-mode)
 (el-get-bundle markdown-mode)
 (el-get-bundle ruby-end)
