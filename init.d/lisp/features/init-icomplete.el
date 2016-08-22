@@ -16,5 +16,7 @@
   '(progn
      (define-key icomplete-minibuffer-map " "
        'icomplete-forward-completions)
+     (define-key icomplete-minibuffer-map (kbd "S-SPC")
+       'icomplete-backward-completions)
      (define-key icomplete-minibuffer-map [return]
        'minibuffer-force-complete-and-exit)))
