@@ -61,6 +61,7 @@
 (init-feature eshell)
 (init-feature eww)
 (init-feature icomplete)
+(init-feature ido)
 (init-feature org)
 (init-feature cc-mode)
 (init-feature python)
