@@ -2,7 +2,7 @@
 ;;;; init-ido.el
 
 
-(ido-mode 'buffer)
+(ido-mode t)
 (require 'ido)
 (setq ido-enable-flex-matching t)
 
