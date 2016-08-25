@@ -46,6 +46,8 @@
       global-map "C-c v"
     '(("<" . git-gutter:previous-hunk)
       (">" . git-gutter:next-hunk)
-      ("p" . git-gutter:popup-hunk)
+      ("p" . git-gutter:previous-hunk)
+      ("n" . git-gutter:next-hunk)
+      ("d" . git-gutter:popup-hunk)
       ("r" . git-gutter:revert-hunk)
       ("s" . git-gutter:stage-hunk))))
