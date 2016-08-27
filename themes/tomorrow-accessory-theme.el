@@ -111,4 +111,16 @@
   '(helm-moccur-buffer ((t :inherit font-lock-builtin-face)))))
 
 
+;;; helm swoop
+
+(when (fboundp 'helm-swoop)
+  (custom-theme-set-faces
+  'tomorrow-accessory
+  '(helm-swoop-line-number-face ((t :inherit shadow)))
+  '(helm-swoop-target-line-block-face ((t :inherit secondary-selection)))
+  '(helm-swoop-target-line-face ((t :inherit region)))
+  '(helm-swoop-target-word-face ((t :inherit helm-match)))
+  ))
+
+
 (provide-theme 'tomorrow-accessory)
