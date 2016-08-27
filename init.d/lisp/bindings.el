@@ -4,7 +4,7 @@
 
 (keyboard-translate ?\C-h ?\C-?)
 (global-set-key "\C-ch" 'help-command)
-(global-set-key "\C-cp" 'pwd)
+(global-set-key "\C-cd" 'pwd)
 (global-set-key "\C-csg" 'grep)
 (global-set-key "\C-csl" 'lgrep)
 (global-set-key "\C-csr" 'rgrep)
