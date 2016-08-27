@@ -97,6 +97,7 @@
 (el-get-bundle helm-ls-git)
 (el-get-bundle helm-ag)
 (el-get-bundle flycheck)
+(el-get-bundle ace-jump-mode)
 (el-get-bundle wgrep)
 (el-get-bundle ag)
 (el-get-bundle color-moccur)
