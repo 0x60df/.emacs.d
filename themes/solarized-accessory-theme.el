@@ -23,6 +23,7 @@
    '(popup-summary-face ((t :inherit shadow)))
    '(popup-tip-face ((t :inherit mode-line)))))
 
+
 ;;; auto-complete
 
 (when (featurep 'auto-complete)
@@ -52,6 +53,15 @@
      ((t :inherit (font-lock-function-name-face ac-candidate-face))))
    '(ac-functions-selection-face
      ((t :inherit (font-lock-function-name-face ac-selection-face))))))
+
+
+;;; helm
+
+(when (featurep 'helm)
+  (custom-theme-set-faces
+   'solarized-accessory
+   '(helm-ff-dotted-directory ((t :inherit (dired-ignored italic))))
+   '(helm-ff-dotted-symlink-directory ((t :inherit (dired-symlink italic))))))
 
 
 (provide-theme 'solarized-accessory)
