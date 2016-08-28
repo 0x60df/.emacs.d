@@ -47,6 +47,7 @@
 (init bindings)
 (init functions)
 (init theme)
+(init mouse)
 (init japanese)
 
 
