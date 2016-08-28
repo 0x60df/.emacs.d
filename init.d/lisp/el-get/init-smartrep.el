@@ -7,6 +7,9 @@
 
 (require 'smartrep)
 
+(custom-set-variables '(smartrep-mode-line-string-activated ""))
+
+
 ;; window
 (smartrep-define-key
  global-map "C-x"
