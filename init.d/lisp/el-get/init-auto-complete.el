@@ -64,6 +64,21 @@
     (if (eq this-command 'ac-previous)
         (setq ac-dwim-enable t))))
 
+(defun ac-isearch ()
+  (interactive)
+  (when (ac-menu-live-p)
+    (ac-cancel-show-menu-timer)
+    (ac-show-menu-without-update)
+    (if ac-use-quick-help
+        (let ((popup-menu-show-quick-help-function
+               (if (ac-quick-help-use-pos-tip-p)
+                   'ac-pos-tip-show-quick-help
+                 'popup-menu-show-quick-help)))
+          (popup-isearch ac-menu
+                         :callback 'ac-isearch-callback
+                         :help-delay ac-quick-help-delay))
+      (popup-isearch ac-menu :callback 'ac-isearch-callback))))
+
 (defun ac-show-menu-without-update ()
   (when (not (eq ac-show-menu t))
     (setq ac-show-menu t)
