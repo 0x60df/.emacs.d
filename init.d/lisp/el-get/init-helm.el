@@ -6,6 +6,7 @@
 ;;; base
 
 (add-hook 'helm-mode-hook (lambda () (icomplete-mode -1)))
+(setq helm-completion-mode-string " H")
 
 
 ;;; bindings
