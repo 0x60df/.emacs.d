@@ -21,7 +21,7 @@
 (when (featurep 'popup)
   (custom-theme-set-variables
    'tomorrow-accessory
-   `(popup-isearch-cursor-color ,(face-foreground 'isearch)))
+   '(popup-isearch-cursor-color (face-foreground 'isearch))) ;defvar
 
   (custom-theme-set-faces
    'tomorrow-accessory
