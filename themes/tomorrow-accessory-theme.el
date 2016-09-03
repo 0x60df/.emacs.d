@@ -92,6 +92,7 @@
   '(helm-header-line-left-margin ((t :inherit dired-header :inverse-video t)))
   '(helm-selection ((t :inherit region)))
   '(helm-separator ((t :inherit error)))
+  '(helm-visible-mark ((t :inherit highlight)))
   '(helm-buffer-directory ((t :inherit dired-directory)))
   '(helm-buffer-file ((t :inherit default)))
   '(helm-buffer-not-saved ((t :inherit warning)))
