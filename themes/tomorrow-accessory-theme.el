@@ -21,7 +21,7 @@
 (when (featurep 'popup)
   (custom-theme-set-variables
    'tomorrow-accessory
-   '(popup-isearch-cursor-color (face-foreground 'isearch))) ;defvar
+   '(popup-isearch-cursor-color (face-foreground 'isearch)))
 
   (custom-theme-set-faces
    'tomorrow-accessory
@@ -42,6 +42,7 @@
   (custom-theme-set-variables
    'tomorrow-accessory
    '(ac-fuzzy-cursor-color (face-foreground 'warning)))
+
   (custom-theme-set-faces
    'tomorrow-accessory
    '(ac-gtags-candidate-face
@@ -125,6 +126,32 @@
   '(helm-swoop-target-line-face ((t :inherit region)))
   '(helm-swoop-target-word-face ((t :inherit helm-match)))
   ))
+
+
+;;; evil
+
+(when (featurep 'evil)
+
+  (custom-theme-set-variables
+   'tomorrow-accessory
+
+   '(evil-emacs-state-cursor (face-background 'cursor))
+   '(evil-normal-state-cursor (face-foreground 'font-lock-string-face))
+   '(evil-insert-state-cursor `(,(face-foreground 'font-lock-variable-name-face)
+                                bar))
+   '(evil-visual-state-cursor (face-foreground 'font-lock-function-name-face))
+   '(evil-replace-state-cursor `(,(face-foreground
+                                   'font-lock-variable-name-face)
+                                 hbar))
+   '(evil-operator-state-cursor (face-foreground 'font-lock-type-face))
+   '(evil-motion-state-cursor (face-foreground 'font-lock-builtin-face))
+
+   ;; prohibit changing cursor while ac-menu is live
+   '(evil-reasons-for-interruption-of-reflesh-cursor
+     '((and (or (eq evil-state 'emacs)
+                (eq evil-state 'insert)
+                (eq evil-state 'replace))
+            (ac-menu-live-p))))))
 
 
 (provide-theme 'tomorrow-accessory)

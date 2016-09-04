@@ -100,7 +100,7 @@
 (el-get-bundle helm-swoop)
 (el-get-bundle projectile)
 (el-get-bundle helm-projectile)
-(el-get-bundle undo-tree)
+(el-get-bundle evil)
 (el-get-bundle flycheck)
 (el-get-bundle ace-jump-mode)
 (el-get-bundle wgrep)
