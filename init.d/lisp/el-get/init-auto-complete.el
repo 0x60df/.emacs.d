@@ -5,12 +5,12 @@
 
 ;;; base
 
-(global-auto-complete-mode t)
-
 (add-to-list 'ac-dictionary-directories "~/.emacs.d/ac-dict")
 
-(setq ac-auto-show-menu nil)
-(setq ac-ignore-case nil)
+(custom-set-variables '(ac-auto-show-menu nil)
+                      '(ac-ignore-case nil)
+                      '(ac-quick-help-delay 10)
+                      '(ac-use-menu-map t))
 
 
 ;;; bindings
@@ -18,25 +18,11 @@
 (define-key ac-completing-map (kbd "<backtab>") 'ac-previous)
 (define-key ac-completing-map (kbd "C-<tab>") 'ac-isearch)
 (define-key ac-completing-map (kbd "C-S-<iso-lefttab>") 'ac-quick-help)
-(setq ac-use-menu-map t)
 (define-key ac-menu-map (kbd "<tab>") 'ac-next)
 (define-key ac-menu-map (kbd "<backtab>") 'ac-previous)
 
 
 ;;; source
-
-(setq-default ac-sources '(ac-source-abbrev
-                           ac-source-dictionary
-                           ac-source-words-in-same-mode-buffers))
-
-(add-hook 'emacs-lisp-mode-hook
-          (lambda () (setq ac-sources (append '(ac-source-features
-                                                ac-source-functions
-                                                ac-source-yasnippet
-                                                ac-source-variables
-                                                ac-source-symbols
-                                                )
-                                              ac-sources))))
 
 (add-hook 'ruby-mode-hook
           (lambda () (setq ac-sources (append '(ac-source-yasnippet)
@@ -44,52 +30,29 @@
 
 ;;; patch
 
-(defun ac-next ()
-  "Select next candidate."
-  (interactive)
-  (when (ac-menu-live-p)
-    (when (popup-hidden-p ac-menu)
-      (ac-show-menu-without-update))
-    (popup-next ac-menu)
-    (if (eq this-command 'ac-next)
-        (setq ac-dwim-enable t))))
+(defvar ac-last-prefix nil)
 
-(defun ac-previous ()
-  "Select previous candidate."
-  (interactive)
-  (when (ac-menu-live-p)
-    (when (popup-hidden-p ac-menu)
-      (ac-show-menu-without-update))
-    (popup-previous ac-menu)
-    (if (eq this-command 'ac-previous)
-        (setq ac-dwim-enable t))))
-
-(defun ac-isearch ()
-  (interactive)
-  (when (ac-menu-live-p)
-    (ac-cancel-show-menu-timer)
-    (ac-show-menu-without-update)
-    (if ac-use-quick-help
-        (let ((popup-menu-show-quick-help-function
-               (if (ac-quick-help-use-pos-tip-p)
-                   'ac-pos-tip-show-quick-help
-                 'popup-menu-show-quick-help)))
-          (popup-isearch ac-menu
-                         :callback 'ac-isearch-callback
-                         :help-delay ac-quick-help-delay))
-      (popup-isearch ac-menu :callback 'ac-isearch-callback))))
-
-(defun ac-show-menu-without-update ()
-  (when (not (eq ac-show-menu t))
-    (setq ac-show-menu t)
-    (ac-inline-hide)
-    (ac-remove-quick-help)
-    (if ac-candidates
-        (progn
-          (setq ac-completing t)
-          (ac-activate-completing-map))
-      (setq ac-completing nil)
-      (ac-deactivate-completing-map))))
+(defadvice ac-expand (around ac-pullback-on-second-expand)
+  (if ac-last-prefix
+      (progn
+        (ac-expand-string ac-last-prefix)
+        (ac-update-candidates 0 0)
+        ad-do-it
+        (ac-update-candidates 0 0)
+        (if (and ac-candidates (< 1 (length ac-candidates))) (ac-next))
+        (setq ac-last-prefix nil))      ;only second expand
+    (when (not (eq last-command 'ac-expand))
+      (setq ac-last-prefix ac-prefix)) ; only first expand
+    ad-do-it))                           ; first and third expand
+(ad-activate 'ac-expand)
+;; (defadvice ac-complete (around ac-complete-by-RET)
+;;   (if (equal (ac-selected-candidate) ac-prefix)
+;;       (ac-stop)
+;;     ad-do-it))
+;; (ad-activate 'ac-complete)
+(defadvice ac-cleanup (after ac-cleanup-last-prefix)
+  (setq ac-last-prefix nil))
+(ad-activate 'ac-cleanup)
 
 
 ;;; faces
