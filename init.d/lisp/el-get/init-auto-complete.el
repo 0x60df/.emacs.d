@@ -33,23 +33,19 @@
 (defvar ac-last-prefix nil)
 
 (defadvice ac-expand (around ac-pullback-on-second-expand)
-  (if ac-last-prefix
-      (progn
-        (ac-expand-string ac-last-prefix)
-        (ac-update-candidates 0 0)
-        ad-do-it
-        (ac-update-candidates 0 0)
-        (if (and ac-candidates (< 1 (length ac-candidates))) (ac-next))
-        (setq ac-last-prefix nil))      ;only second expand
-    (when (not (eq last-command 'ac-expand))
-      (setq ac-last-prefix ac-prefix)) ; only first expand
-    ad-do-it))                           ; first and third expand
+  (cond ((not (eq last-command 'ac-expand))
+         (setq ac-last-prefix ac-prefix)
+         ad-do-it)                      ;fist expand
+        (ac-last-prefix
+         (ac-expand-string ac-last-prefix)
+         (ac-update-candidates 0 0)
+         ad-do-it
+         (ac-update-candidates 0 0)
+         (if (and ac-candidates (< 1 (length ac-candidates))) (ac-next))
+         (setq ac-last-prefix nil))     ;second expand
+        (t ad-do-it)))                  ;from third expand
 (ad-activate 'ac-expand)
-;; (defadvice ac-complete (around ac-complete-by-RET)
-;;   (if (equal (ac-selected-candidate) ac-prefix)
-;;       (ac-stop)
-;;     ad-do-it))
-;; (ad-activate 'ac-complete)
+
 (defadvice ac-cleanup (after ac-cleanup-last-prefix)
   (setq ac-last-prefix nil))
 (ad-activate 'ac-cleanup)
