@@ -39,6 +39,9 @@
 ;;; auto-complete
 
 (when (featurep 'auto-complete)
+  (custom-theme-set-variables
+   'tomorrow-accessory
+   '(ac-fuzzy-cursor-color (face-foreground 'warning)))
   (custom-theme-set-faces
    'tomorrow-accessory
    '(ac-gtags-candidate-face
