@@ -41,5 +41,3 @@
                  (not (custom-variable-p symbol))
                  (not val))
             (set symbol (get symbol 'saved-symbol-value)))))))
-
-;; (defalias 'take-off 'disable-theme)
