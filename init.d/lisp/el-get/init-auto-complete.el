@@ -9,7 +9,7 @@
 
 (custom-set-variables '(ac-auto-show-menu nil)
                       '(ac-ignore-case nil)
-                      '(ac-quick-help-delay 10)
+                      '(ac-quick-help-delay 1.8)
                       '(ac-use-menu-map t))
 
 
