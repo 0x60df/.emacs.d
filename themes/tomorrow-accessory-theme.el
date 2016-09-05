@@ -89,43 +89,50 @@
 
 (when (featurep 'helm)
   (custom-theme-set-faces
-  'tomorrow-accessory
-  '(helm-source-header ((t :inherit (info-title-1 hl-line))))
-  '(helm-action ((t :inherit default)))
-  '(helm-candidate-number ((t :inherit isearch)))
-  '(helm-header-line-left-margin ((t :inherit dired-header :inverse-video t)))
-  '(helm-selection ((t :inherit region)))
-  '(helm-separator ((t :inherit error)))
-  '(helm-visible-mark ((t :inherit highlight)))
-  '(helm-buffer-directory ((t :inherit dired-directory)))
-  '(helm-buffer-file ((t :inherit default)))
-  '(helm-buffer-not-saved ((t :inherit warning)))
-  '(helm-buffer-saved-out ((t :inherit error)))
-  '(helm-ff-directory ((t :inherit dired-directory)))
-  '(helm-ff-dirs ((t :inherit dired-directory :inverse-video t)))
-  '(helm-ff-dotted-directory ((t :inherit (dired-ignored italic))))
-  '(helm-ff-dotted-symlink-directory ((t :inherit (dired-symlink italic))))
-  '(helm-ff-executable ((t :inherit success)))
-  '(helm-ff-file ((t :inherit default)))
-  '(helm-ff-invalid-symlink ((t :inherit dired-warning)))
-  '(helm-ff-prefix ((t :inherit isearch)))
-  '(helm-ff-symlink ((t :inherit dired-symlink)))
-  '(helm-grep-file ((t :inherit font-lock-keyword-face)))
-  '(helm-grep-finish ((t :inherit compilation-mode-line-exit)))
-  '(helm-grep-lineno ((t :inherit font-lock-variable-name-face)))
-  '(helm-moccur-buffer ((t :inherit font-lock-builtin-face)))))
+   'tomorrow-accessory
+   '(helm-source-header ((t :inherit (info-title-1 hl-line))))
+   '(helm-action ((t :inherit default)))
+   '(helm-candidate-number ((t :inherit isearch)))
+   '(helm-header-line-left-margin ((t :inherit dired-header :inverse-video t)))
+   '(helm-selection ((t :inherit region)))
+   '(helm-separator ((t :inherit error)))
+   '(helm-visible-mark ((t :inherit highlight)))
+   '(helm-buffer-directory ((t :inherit dired-directory)))
+   '(helm-buffer-file ((t :inherit default)))
+   '(helm-buffer-not-saved ((t :inherit warning)))
+   '(helm-buffer-saved-out ((t :inherit error)))
+   '(helm-ff-directory ((t :inherit dired-directory)))
+   '(helm-ff-dirs ((t :inherit dired-directory :inverse-video t)))
+   '(helm-ff-dotted-directory ((t :inherit (dired-ignored italic))))
+   '(helm-ff-dotted-symlink-directory ((t :inherit (dired-symlink italic))))
+   '(helm-ff-executable ((t :inherit success)))
+   '(helm-ff-file ((t :inherit default)))
+   '(helm-ff-invalid-symlink ((t :inherit dired-warning)))
+   '(helm-ff-prefix ((t :inherit isearch)))
+   '(helm-ff-symlink ((t :inherit dired-symlink)))
+   '(helm-grep-file ((t :inherit font-lock-keyword-face)))
+   '(helm-grep-finish ((t :inherit compilation-mode-line-exit)))
+   '(helm-grep-lineno ((t :inherit font-lock-variable-name-face)))
+   '(helm-moccur-buffer ((t :inherit font-lock-builtin-face)))))
+
+
+;;; ace-jump-mode
+
+(when (fboundp 'ace-jump-mode)
+  (custom-theme-set-faces
+   'tomorrow-accessory
+   '(ace-jump-face-foreground ((t :foreground "gold")))))
 
 
 ;;; helm swoop
 
 (when (fboundp 'helm-swoop)
   (custom-theme-set-faces
-  'tomorrow-accessory
-  '(helm-swoop-line-number-face ((t :inherit shadow)))
-  '(helm-swoop-target-line-block-face ((t :inherit secondary-selection)))
-  '(helm-swoop-target-line-face ((t :inherit region)))
-  '(helm-swoop-target-word-face ((t :inherit helm-match)))
-  ))
+   'tomorrow-accessory
+   '(helm-swoop-line-number-face ((t :inherit shadow)))
+   '(helm-swoop-target-line-block-face ((t :inherit secondary-selection)))
+   '(helm-swoop-target-line-face ((t :inherit region)))
+   '(helm-swoop-target-word-face ((t :inherit helm-match)))))
 
 
 ;;; evil
