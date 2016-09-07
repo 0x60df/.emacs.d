@@ -18,19 +18,11 @@
 
 ;;; bindings
 
-(define-key ido-common-completion-map " " #'ido-next-match)
-(define-key ido-common-completion-map (kbd "S-SPC") #'ido-prev-match)
-(define-key ido-file-completion-map " " #'ido-next-match)
-(define-key ido-file-completion-map (kbd "S-SPC") #'ido-prev-match)
-(define-key ido-file-dir-completion-map " " #'ido-next-match)
-(define-key ido-file-dir-completion-map (kbd "S-SPC") #'ido-prev-match)
-(define-key ido-buffer-completion-map " " #'ido-next-match)
-(define-key ido-buffer-completion-map (kbd "S-SPC") #'ido-prev-match)
-(define-key ido-file-completion-map (kbd "C-<tab>")
-  (lambda()
-    (interactive)
-    (ido-initiate-auto-merge (current-buffer))))
-(define-key ido-file-dir-completion-map (kbd "C-<tab>")
-  (lambda()
-    (interactive)
-    (ido-initiate-auto-merge (current-buffer))))
+(add-hook 'ido-setup-hook
+          (lambda ()
+            (define-key ido-completion-map " " #'ido-next-match)
+            (define-key ido-completion-map (kbd "S-SPC") #'ido-prev-match)
+            (define-key ido-completion-map (kbd "C-<tab>")
+              (lambda()
+                (interactive)
+                (ido-initiate-auto-merge (current-buffer))))))
