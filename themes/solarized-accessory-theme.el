@@ -64,4 +64,15 @@
    '(helm-ff-dotted-symlink-directory ((t :inherit (dired-symlink italic))))))
 
 
+;;; helm-swoop
+
+(when (featurep 'helm-swoop)
+  (custom-theme-set-faces
+   'solarized-accessory
+   '(helm-swoop-line-number-face ((t :inherit shadow)))
+   '(helm-swoop-target-line-block-face ((t :inherit secondary-selection)))
+   '(helm-swoop-target-line-face ((t :inherit region)))
+   '(helm-swoop-target-word-face ((t :inherit helm-match)))))
+
+
 (provide-theme 'solarized-accessory)
