@@ -2,11 +2,9 @@
 ;;;; init.el
 
 
-(setq custom-file "~/.emacs.d/custom.el")
 (setq message-truncate-lines t)
 (add-hook 'after-init-hook (lambda () (setq message-truncate-lines nil)))
-
-;;; init
+(custom-set-variables '(custom-file "~/.emacs.d/custom.el"))
 
 (defvar init-path
   (letrec ((filter (lambda (p l)
@@ -34,6 +32,17 @@
          (setq elc (byte-compile-dest-file el)))
        (load elc ,noerror ,nomessage ,nosuffix ,must-suffix))))
 
+(defun init-by (file)
+  (let ((unit (make-symbol (replace-regexp-in-string "\\.el$" "" file))))
+    (eval `(init ,unit))))
+
+(defmacro init-feature (feature)
+  (let ((unit (make-symbol (concat "init-" (symbol-name feature)))))
+     `(init ,unit)))
+
+
+;;; init
+
 (init bars)
 (init suppression)
 (init greeting)
@@ -51,11 +60,12 @@
 (init japanese)
 
 
-;;; features
+;;; site-init
 
-(defmacro init-feature (feature)
-  (let ((unit (make-symbol (concat "init-" (symbol-name feature)))))
-     `(init ,unit)))
+(init-by "~/.emacs.d/site-init.el")
+
+
+;;; features
 
 (init-feature abbrev)
 (init-feature doc-view)
@@ -85,7 +95,8 @@
     (eval-print-last-sexp)))
 
 (add-to-list 'el-get-recipe-path "~/.emacs.d/el-get-user/recipes")
-(setq el-get-user-package-directory "~/.emacs.d/init.d/lisp/el-get")
+(custom-set-variables
+ '(el-get-user-package-directory "~/.emacs.d/init.d/lisp/el-get"))
 
 (el-get-bundle auto-complete)
 (el-get-bundle yasnippet)
@@ -149,16 +160,11 @@
 (init-feature ox-qmd)
 
 
-;;; site-init
-
-
-(defun init-by (file)
-  (let ((unit (make-symbol (replace-regexp-in-string "\\.el$" "" file))))
-    (eval `(init ,unit))))
-
-(init-by "~/.emacs.d/site-init.el")
-
-
 ;;; custom
 
 (init-by custom-file)
+
+
+;;; site-start
+
+(init-by "~/.emacs.d/site-start.el")
