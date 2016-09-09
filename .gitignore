@@ -29,3 +29,4 @@
 !/snippets/**/*
 !/themes/
 !/themes/*.el
+!/.client
