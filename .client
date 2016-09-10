@@ -1,0 +1,7 @@
+;;; Local Variables:
+;;; mode: lisp-interaction
+;;; eval: (auto-save-mode -1)
+;;; eval: (set-visited-file-name nil)
+;;; eval: (narrow-to-region (point-min) (progn (goto-char (point-max)) (line-beginning-position -6)))
+;;; eval: (cd "~")
+;;; End:

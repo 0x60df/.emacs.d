@@ -79,7 +79,7 @@
 (init-feature ruby-mode)
 (init-feature scheme)
 (init-feature wdired)
-
+(init-feature server)
 
 ;;; el-get
 

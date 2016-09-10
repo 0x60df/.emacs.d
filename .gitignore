@@ -11,8 +11,6 @@
 !/el-get-user/recipes/*
 !/eshell/
 !/eshell/alias
-!/etc/
-!/etc/*
 !/init.d/
 !/init.d/lisp/
 !/init.d/lisp/*.el
@@ -31,3 +29,4 @@
 !/snippets/**/*
 !/themes/
 !/themes/*.el
+!/.client
