@@ -114,7 +114,6 @@
 (el-get-bundle evil)
 (el-get-bundle flycheck)
 (el-get-bundle ace-jump-mode)
-(el-get-bundle ace-isearch)
 (el-get-bundle wgrep)
 (el-get-bundle ag)
 (el-get-bundle color-moccur)
