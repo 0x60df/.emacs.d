@@ -55,6 +55,7 @@
 (init mode-line)
 (init bindings)
 (init functions)
+(init client)
 (init theme)
 (init mouse)
 (init japanese)
@@ -79,7 +80,7 @@
 (init-feature ruby-mode)
 (init-feature scheme)
 (init-feature wdired)
-(init-feature server)
+
 
 ;;; el-get
 
