@@ -6,14 +6,43 @@
 ;;; format
 
 (setq-default mode-line-mule-info '("%Z"))
-(setq mode-line-client '(:eval (if (frame-parameter nil 'client) "@" " ")))
+(setq mode-line-client '(:eval (if (frame-parameter nil 'client)
+                                   (let ((l (length server-clients)))
+                                     (if (< l 10)
+                                         (number-to-string l)
+                                       "#"))
+                                 "")))
 (setq-default mode-line-modified '("%1*%1+"))
 (setq-default mode-line-remote '("%1@"))
 (setq mode-line-frame-identification
-              '((window-system
-                 (-2 (:eval (number-to-string (length (frame-list)))))
-                 "%F")
-                " "))
+      '((:eval
+         (let ((l (length
+                   (let* ((proc (frame-parameter nil 'client))
+                          (sift
+                           (if proc
+                               (lambda (fl)
+                                 (letrec ((filter (lambda (p l)
+                                                    (cond ((null l) l)
+                                                          ((funcall p (car l))
+                                                           (funcall
+                                                            filter p (cdr l)))
+                                                          (t (cons
+                                                              (car l)
+                                                              (funcall
+                                                               filter
+                                                               p (cdr l))))))))
+                                   (funcall filter
+                                            (lambda (f)
+                                              (not (eq proc
+                                                       (frame-parameter
+                                                        f 'client))))
+                                            fl)))
+                             (symbol-function 'identity))))
+                     (funcall sift (frame-list))))))
+           (if (< l 10)
+               (number-to-string l)
+             "#")))
+        " "))
 (setq-default mode-line-buffer-identification
       '(:propertize "%12b" face mode-line-buffer-identification-face))
 (setq mode-line-position
@@ -107,6 +136,7 @@
 
 ;;; eol
 
-(setq eol-mnemonic-dos "+")
-(setq eol-mnemonic-mac "c")
-(setq eol-mnemonic-unix "l")
+(custom-set-variables
+ '(eol-mnemonic-dos "+")
+ '(eol-mnemonic-mac "!")
+ '(eol-mnemonic-unix ":"))
