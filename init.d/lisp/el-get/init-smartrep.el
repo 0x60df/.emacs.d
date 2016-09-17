@@ -40,6 +40,15 @@
        ("C-^" . org-up-element)
        ("C-_" . org-down-element))))
 
+;; flyspell
+(eval-after-load 'flyspell
+  '(smartrep-define-key
+       flyspell-mode-map "C-c $"
+     '((">" . flyspell-goto-next-error)
+       ("." . flyspell-auto-correct-word)
+       ("," . flyspell-goto-next-error)
+       (";" . flyspell-auto-correct-previous-word))))
+
 ;; git-gutter
 (eval-after-load 'git-gutter
   '(smartrep-define-key

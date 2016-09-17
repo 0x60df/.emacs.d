@@ -80,6 +80,7 @@
 (init-feature ruby-mode)
 (init-feature scheme)
 (init-feature wdired)
+(init-feature flyspell)
 
 
 ;;; el-get
