@@ -60,3 +60,10 @@
        ("d" . git-gutter:popup-hunk)
        ("r" . git-gutter:revert-hunk)
        ("s" . git-gutter:stage-hunk))))
+
+;; multiple-cursors
+(eval-after-load 'multiple-cursors
+  '(smartrep-define-key
+       global-map "C-c @"
+     '(("p" . mc/mark-previous-like-this)
+       ("n" . mc/mark-next-like-this))))

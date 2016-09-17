@@ -11,8 +11,7 @@
 ;;; bindings
 
 (global-set-key (kbd "M-x") 'smex)
-(global-set-key (kbd "M-X") 'smex-major-mode-commands)
-(global-set-key (kbd "M-s-x") 'execute-extended-command)
+(global-set-key (kbd "M-X") 'execute-extended-command)
 
 (defadvice smex-prepare-ido-bindings (after
                                       smex-prepare-additional-ido-bindings)

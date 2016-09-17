@@ -12,4 +12,10 @@
      (define-key flyspell-mode-map (kbd "C-c $ $") 'flyspell-mode)
      (define-key flyspell-mode-map (kbd "C-,") nil)
      (define-key flyspell-mode-map (kbd "C-.") nil)
-     (define-key flyspell-mode-map (kbd "C-;") nil)))
+     (define-key flyspell-mode-map (kbd "C-;") nil)
+
+     (define-key flyspell-mode-map (kbd "C-c $ >") 'flyspell-goto-next-error)
+     (define-key flyspell-mode-map (kbd "C-c $ .") 'flyspell-auto-correct-word)
+     (define-key flyspell-mode-map (kbd "C-c $ ,") 'flyspell-goto-next-error)
+     (define-key flyspell-mode-map (kbd "C-c $ ;")
+       'flyspell-auto-correct-previous-word)))
