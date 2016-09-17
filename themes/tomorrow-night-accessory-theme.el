@@ -2,12 +2,12 @@
 ;;;; tomorrow-accessory-theme.el
 
 
-(deftheme tomorrow-accessory)
+(deftheme tomorrow-night-accessory)
 
 ;;; mode-line
 
 (custom-theme-set-faces
- 'tomorrow-accessory
+ 'tomorrow-night-accessory
  '(mode-line-buffer-identification-face
    ((t :inherit (font-lock-keyword-face mode-line-buffer-id)
        :weight bold)))
@@ -20,11 +20,11 @@
 
 (when (featurep 'popup)
   (custom-theme-set-variables
-   'tomorrow-accessory
+   'tomorrow-night-accessory
    '(popup-isearch-cursor-color (face-foreground 'isearch)))
 
   (custom-theme-set-faces
-   'tomorrow-accessory
+   'tomorrow-night-accessory
    '(popup-face ((t :inherit default)))
    '(popup-isearch-match ((t :inherit lazy-highlight)))
    '(popup-menu-mouse-face ((t :inherit popup-menu-selection-face)))
@@ -40,11 +40,11 @@
 
 (when (featurep 'auto-complete)
   (custom-theme-set-variables
-   'tomorrow-accessory
+   'tomorrow-night-accessory
    '(ac-fuzzy-cursor-color (face-foreground 'warning)))
 
   (custom-theme-set-faces
-   'tomorrow-accessory
+   'tomorrow-night-accessory
    '(ac-gtags-candidate-face
      ((t :inherit (font-lock-function-name-face ac-candidate-face))))
    '(ac-gtags-selection-face
@@ -75,21 +75,32 @@
 
 (when (featurep 'git-gutter-fringe)
   (require 'ediff)
-  (custom-theme-set-faces
-   'tomorrow-accessory
-   `(git-gutter-fr:modified
-     ((t :foreground ,(face-background 'ediff-fine-diff-C))))
-   `(git-gutter-fr:added
-     ((t :foreground ,(face-background 'ediff-fine-diff-B))))
-   `(git-gutter-fr:deleted
-     ((t :foreground ,(face-background 'ediff-fine-diff-A))))))
+  (color-theme-tomorrow--with-colors
+   'night
+   (custom-theme-set-faces
+    'tomorrow-night-accessory
+    `(git-gutter-fr:modified
+      ((((type graphic))
+        :inherit ediff-fine-diff-C
+        :foreground ,background
+        :inverse-video t)))
+    `(git-gutter-fr:added
+      ((((type graphic))
+        :inherit ediff-fine-diff-B
+        :foreground ,background
+        :inverse-video t)))
+    `(git-gutter-fr:deleted
+      ((((type graphic))
+        :inherit ediff-fine-diff-A
+        :foreground ,background
+        :inverse-video t))))))
 
 
 ;;; helm
 
 (when (featurep 'helm)
   (custom-theme-set-faces
-   'tomorrow-accessory
+   'tomorrow-night-accessory
    '(helm-source-header ((t :inherit (info-title-1 hl-line))))
    '(helm-action ((t :inherit default)))
    '(helm-candidate-number ((t :inherit isearch)))
@@ -120,7 +131,7 @@
 
 (when (fboundp 'ace-jump-mode)
   (custom-theme-set-faces
-   'tomorrow-accessory
+   'tomorrow-night-accessory
    '(ace-jump-face-foreground ((t :foreground "gold")))))
 
 
@@ -128,7 +139,7 @@
 
 (when (fboundp 'helm-swoop)
   (custom-theme-set-faces
-   'tomorrow-accessory
+   'tomorrow-night-accessory
    '(helm-swoop-line-number-face ((t :inherit shadow)))
    '(helm-swoop-target-line-block-face ((t :inherit secondary-selection)))
    '(helm-swoop-target-line-face ((t :inherit region)))
@@ -140,7 +151,7 @@
 (when (featurep 'evil)
 
   (custom-theme-set-variables
-   'tomorrow-accessory
+   'tomorrow-night-accessory
 
    '(evil-emacs-state-cursor (face-background 'cursor))
    '(evil-normal-state-cursor (face-foreground 'font-lock-string-face))
@@ -161,4 +172,4 @@
             (ac-menu-live-p))))))
 
 
-(provide-theme 'tomorrow-accessory)
+(provide-theme 'tomorrow-night-accessory)
