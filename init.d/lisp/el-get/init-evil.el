@@ -79,7 +79,7 @@
 
 (eval-after-load 'evil
   '(progn
-     (define-key evil-normal-state-map (kbd "C-.") 'other-frame)))
+     (define-key evil-normal-state-map (kbd "C-.") 'nil)))
 
 
 ;;; start
