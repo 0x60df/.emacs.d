@@ -5,6 +5,8 @@
 
 ;;; base
 
+(eval-when-compile (require 'org))
+
 (require 'multiple-cursors)
 (global-set-key (kbd "C-@") 'mc/mark-all-dwim)
 (global-set-key (kbd "C-c @ e") 'mc/edit-lines)
