@@ -6,6 +6,6 @@
 
 (custom-theme-set-faces
  'tomorrow-patch
- `(highlight ((t :foreground ,(face-background 'default)))))
+ `(highlight ((((type graphic)) :foreground ,(face-background 'default)))))
 
 (provide-theme 'tomorrow-patch)
