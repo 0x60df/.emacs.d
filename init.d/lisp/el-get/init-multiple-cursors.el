@@ -15,4 +15,4 @@
 (global-set-key (kbd "C-c @ a") 'mc/mark-all-like-this)
 
 (eval-after-load 'org
-  (define-key org-mode-map (kbd "C-c @") nil))
+  '(define-key org-mode-map (kbd "C-c @") nil))
