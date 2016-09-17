@@ -2,7 +2,13 @@
 ;;;; bindings.el
 
 
-(keyboard-translate ?\C-h ?\C-?)
+(define-key key-translation-map [?\C-h] [?\C-?])
+(define-key key-translation-map (kbd "ESC M-S") 'event-apply-shift-modifier)
+(define-key key-translation-map (kbd "ESC M-a") 'event-apply-alt-modifier)
+(define-key key-translation-map (kbd "ESC M-c") 'event-apply-control-modifier)
+(define-key key-translation-map (kbd "ESC M-h") 'event-apply-hyper-modifier)
+(define-key key-translation-map (kbd "ESC M-m") 'event-apply-meta-modifier)
+(define-key key-translation-map (kbd "ESC M-s") 'event-apply-super-modifier)
 (global-set-key "\C-ch" 'help-command)
 (global-set-key "\C-cd" 'pwd)
 (global-set-key "\C-csg" 'grep)
