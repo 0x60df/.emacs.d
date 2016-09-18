@@ -46,6 +46,7 @@
 (init bars)
 (init suppression)
 (init greeting)
+(init subr)
 (init cursor)
 (init paren)
 (init indent)

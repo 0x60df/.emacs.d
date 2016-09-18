@@ -21,7 +21,7 @@
 (when (featurep 'popup)
   (custom-theme-set-variables
    'tomorrow-night-accessory
-   '(popup-isearch-cursor-color-generator
+   '(popup-isearch-cursor-color-adjuster
      (lambda () (face-foreground 'isearch))))
 
   (custom-theme-set-faces
@@ -42,7 +42,7 @@
 (when (featurep 'auto-complete)
   (custom-theme-set-variables
    'tomorrow-night-accessory
-   '(ac-fuzzy-cursor-color-generator
+   '(ac-fuzzy-cursor-color-adjuster
      (lambda () (face-foreground 'warning))))
 
   (custom-theme-set-faces
@@ -155,15 +155,15 @@
   (custom-theme-set-variables
    'tomorrow-night-accessory
 
-   '(evil-emacs-state-cursor-generator
+   '(evil-emacs-state-cursor-adjuster
      (lambda () (if window-system
                     (color-theme-tomorrow--with-colors 'night red)
                   nil)))
-   '(evil-normal-state-cursor-generator
+   '(evil-normal-state-cursor-adjuster
      (lambda () (if window-system
                     (color-theme-tomorrow--with-colors 'night green)
                   nil)))
-   '(evil-insert-state-cursor-generator
+   '(evil-insert-state-cursor-adjuster
      (lambda ()
        (let ((painter
               (if window-system
@@ -172,11 +172,11 @@
                           cursor))
                 (symbol-function 'identity))))
          (funcall painter 'bar))))
-   '(evil-visual-state-cursor-generator
+   '(evil-visual-state-cursor-adjuster
      (lambda () (if window-system
                     (color-theme-tomorrow--with-colors 'night blue)
                   nil)))
-   '(evil-replace-state-cursor-generator
+   '(evil-replace-state-cursor-adjuster
      (lambda ()
        (let ((painter
               (if window-system
@@ -185,11 +185,11 @@
                           cursor))
                 (symbol-function 'identity))))
          (funcall painter 'hbar))))
-   '(evil-operator-state-cursor-generator
+   '(evil-operator-state-cursor-adjuster
      (lambda () (if window-system
                     (color-theme-tomorrow--with-colors 'night yellow)
                   nil)))
-   '(evil-motion-state-cursor-generator
+   '(evil-motion-state-cursor-adjuster
      (lambda () (if window-system
                     (color-theme-tomorrow--with-colors 'night aqua)
                   nil)))

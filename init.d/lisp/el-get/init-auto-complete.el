@@ -115,37 +115,16 @@
 
 ;;; cursor
 
-(defcustom popup-isearch-cursor-color-generator nil "")
+(call-with-runtime-bindings
+ ((popup-isearch-cursor-color popup-isearch-cursor-color-adjuster))
+ popup-isearch bind-cursor-variable)
+(call-with-runtime-bindings
+ ((popup-isearch-cursor-color popup-isearch-cursor-color-adjuster))
+ popup-menu* bind-cursor-variable)
 
-(defadvice popup-isearch (around bind-popup-isearch-cursor-color)
-  (let ((popup-isearch-cursor-color
-         (if popup-isearch-cursor-color-generator
-             (funcall popup-isearch-cursor-color-generator)
-           popup-isearch-cursor-color)))
-    ad-do-it))
-(defadvice popup-menu* (around bind-popup-isearch-cursor-color)
-  (let ((popup-isearch-cursor-color
-         (if popup-isearch-cursor-color-generator
-             (funcall popup-isearch-cursor-color-generator)
-           popup-isearch-cursor-color)))
-    ad-do-it))
-
-(ad-activate 'popup-isearch)
-(ad-activate 'popup-menu*)
-
-(defcustom ac-fuzzy-cursor-color-generator nil "")
-(defadvice ac-fuzzy-complete (around bind-ac-fuzzy-cursor-color)
-  (let ((ac-fuzzy-cursor-color
-         (if ac-fuzzy-cursor-color-generator
-             (funcall ac-fuzzy-cursor-color-generator)
-           ac-fuzzy-cursor-color)))
-    ad-do-it))
-(defadvice ac-start (around bind-ac-fuzzy-cursor-color)
-  (let ((ac-fuzzy-cursor-color
-         (if ac-fuzzy-cursor-color-generator
-             (funcall ac-fuzzy-cursor-color-generator)
-           ac-fuzzy-cursor-color)))
-    ad-do-it))
-
-(ad-activate 'ac-fuzzy-complete)
-(ad-activate 'ac-start)
+(call-with-runtime-bindings
+ ((ac-fuzzy-cursor-color ac-fuzzy-cursor-color-adjuster))
+ ac-fuzzy-complete bind-cursor-variable)
+(call-with-runtime-bindings
+ ((ac-fuzzy-cursor-color ac-fuzzy-cursor-color-adjuster))
+ ac-start bind-cursor-variable)

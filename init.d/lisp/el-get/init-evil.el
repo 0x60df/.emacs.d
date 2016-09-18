@@ -75,48 +75,18 @@
     (unless (funcall any evil-reasons-for-interruption-of-reflesh-cursor)
       ad-do-it)))
 
-;; generate cursor before refresh-cursor
-(defcustom evil-emacs-state-cursor-generator nil "")
-(defcustom evil-normal-state-cursor-generator nil "")
-(defcustom evil-insert-state-cursor-generator nil "")
-(defcustom evil-visual-state-cursor-generator nil "")
-(defcustom evil-replace-state-cursor-generator nil "")
-(defcustom evil-operator-state-cursor-generator nil "")
-(defcustom evil-motion-state-cursor-generator nil "")
-
-(defadvice evil-refresh-cursor (around bind-cursor-variables)
-  (let ((evil-emacs-state-cursor
-         (if evil-emacs-state-cursor-generator
-             (funcall evil-emacs-state-cursor-generator)
-           evil-emacs-state-cursor))
-        (evil-normal-state-cursor
-         (if evil-normal-state-cursor-generator
-             (funcall evil-normal-state-cursor-generator)
-           evil-normal-state-cursor))
-        (evil-insert-state-cursor
-         (if evil-insert-state-cursor-generator
-             (funcall evil-insert-state-cursor-generator)
-           evil-insert-state-cursor))
-        (evil-visual-state-cursor
-         (if evil-visual-state-cursor-generator
-             (funcall evil-visual-state-cursor-generator)
-           evil-visual-state-cursor))
-        (evil-replace-state-cursor
-         (if evil-replace-state-cursor-generator
-             (funcall evil-replace-state-cursor-generator)
-           evil-replace-state-cursor))
-        (evil-operator-state-cursor
-         (if evil-operator-state-cursor-generator
-             (funcall evil-operator-state-cursor-generator)
-           evil-operator-state-cursor))
-        (evil-motion-state-cursor
-         (if evil-motion-state-cursor-generator
-             (funcall evil-motion-state-cursor-generator)
-           evil-motion-state-cursor)))
-    ad-do-it))
-
-;; activate advice
 (ad-activate 'evil-refresh-cursor)
+
+;; generate cursor before refresh-cursor
+(call-with-runtime-bindings
+ ((evil-emacs-state-cursor evil-emacs-state-cursor-adjuster)
+  (evil-normal-state-cursor evil-normal-state-cursor-adjuster)
+  (evil-insert-state-cursor evil-insert-state-cursor-adjuster)
+  (evil-visual-state-cursor evil-visual-state-cursor-adjuster)
+  (evil-replace-state-cursor evil-replace-state-cursor-adjuster)
+  (evil-operator-state-cursor evil-operator-state-cursor-adjuster)
+  (evil-motion-state-cursor evil-motion-state-cursor-adjuster))
+ evil-refresh-cursor bind-cursor-variables)
 
 
 ;;; retrieve key
