@@ -15,9 +15,11 @@
 
 ;;; bindings
 
+(global-set-key (kbd "H-<tab>") 'ac-fuzzy-complete)
 (define-key ac-completing-map (kbd "<backtab>") 'ac-previous)
 (define-key ac-completing-map (kbd "C-<tab>") 'ac-isearch)
 (define-key ac-completing-map (kbd "C-S-<iso-lefttab>") 'ac-quick-help)
+(define-key ac-completing-map (kbd "H-<tab>") 'ac-fuzzy-complete)
 (define-key ac-menu-map (kbd "<tab>") 'ac-next)
 (define-key ac-menu-map (kbd "<backtab>") 'ac-previous)
 
@@ -109,3 +111,41 @@
              '(candidate-face . ac-functions-candidate-face))
 (add-to-list 'ac-source-functions
              '(selection-face . ac-functions-selection-face))
+
+
+;;; cursor
+
+(defcustom popup-isearch-cursor-color-generator nil "")
+
+(defadvice popup-isearch (around bind-popup-isearch-cursor-color)
+  (let ((popup-isearch-cursor-color
+         (if popup-isearch-cursor-color-generator
+             (funcall popup-isearch-cursor-color-generator)
+           popup-isearch-cursor-color)))
+    ad-do-it))
+(defadvice popup-menu* (around bind-popup-isearch-cursor-color)
+  (let ((popup-isearch-cursor-color
+         (if popup-isearch-cursor-color-generator
+             (funcall popup-isearch-cursor-color-generator)
+           popup-isearch-cursor-color)))
+    ad-do-it))
+
+(ad-activate 'popup-isearch)
+(ad-activate 'popup-menu*)
+
+(defcustom ac-fuzzy-cursor-color-generator nil "")
+(defadvice ac-fuzzy-complete (around bind-ac-fuzzy-cursor-color)
+  (let ((ac-fuzzy-cursor-color
+         (if ac-fuzzy-cursor-color-generator
+             (funcall ac-fuzzy-cursor-color-generator)
+           ac-fuzzy-cursor-color)))
+    ad-do-it))
+(defadvice ac-start (around bind-ac-fuzzy-cursor-color)
+  (let ((ac-fuzzy-cursor-color
+         (if ac-fuzzy-cursor-color-generator
+             (funcall ac-fuzzy-cursor-color-generator)
+           ac-fuzzy-cursor-color)))
+    ad-do-it))
+
+(ad-activate 'ac-fuzzy-complete)
+(ad-activate 'ac-start)

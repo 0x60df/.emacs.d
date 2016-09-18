@@ -21,7 +21,8 @@
 (when (featurep 'popup)
   (custom-theme-set-variables
    'tomorrow-night-accessory
-   '(popup-isearch-cursor-color (face-foreground 'isearch)))
+   '(popup-isearch-cursor-color-generator
+     (lambda () (face-foreground 'isearch))))
 
   (custom-theme-set-faces
    'tomorrow-night-accessory
@@ -41,7 +42,8 @@
 (when (featurep 'auto-complete)
   (custom-theme-set-variables
    'tomorrow-night-accessory
-   '(ac-fuzzy-cursor-color (face-foreground 'warning)))
+   '(ac-fuzzy-cursor-color-generator
+     (lambda () (face-foreground 'warning))))
 
   (custom-theme-set-faces
    'tomorrow-night-accessory
@@ -153,16 +155,44 @@
   (custom-theme-set-variables
    'tomorrow-night-accessory
 
-   '(evil-emacs-state-cursor (face-background 'cursor))
-   '(evil-normal-state-cursor (face-foreground 'font-lock-string-face))
-   '(evil-insert-state-cursor `(,(face-foreground 'font-lock-variable-name-face)
-                                bar))
-   '(evil-visual-state-cursor (face-foreground 'font-lock-function-name-face))
-   '(evil-replace-state-cursor `(,(face-foreground
-                                   'font-lock-variable-name-face)
-                                 hbar))
-   '(evil-operator-state-cursor (face-foreground 'font-lock-type-face))
-   '(evil-motion-state-cursor (face-foreground 'font-lock-builtin-face))
+   '(evil-emacs-state-cursor-generator
+     (lambda () (if window-system
+                    (color-theme-tomorrow--with-colors 'night red)
+                  nil)))
+   '(evil-normal-state-cursor-generator
+     (lambda () (if window-system
+                    (color-theme-tomorrow--with-colors 'night green)
+                  nil)))
+   '(evil-insert-state-cursor-generator
+     (lambda ()
+       (let ((painter
+              (if window-system
+                  (lambda (cursor)
+                    (list (color-theme-tomorrow--with-colors 'night orange)
+                          cursor))
+                (symbol-function 'identity))))
+         (funcall painter 'bar))))
+   '(evil-visual-state-cursor-generator
+     (lambda () (if window-system
+                    (color-theme-tomorrow--with-colors 'night blue)
+                  nil)))
+   '(evil-replace-state-cursor-generator
+     (lambda ()
+       (let ((painter
+              (if window-system
+                  (lambda (cursor)
+                    (list (color-theme-tomorrow--with-colors 'night orange)
+                          cursor))
+                (symbol-function 'identity))))
+         (funcall painter 'hbar))))
+   '(evil-operator-state-cursor-generator
+     (lambda () (if window-system
+                    (color-theme-tomorrow--with-colors 'night yellow)
+                  nil)))
+   '(evil-motion-state-cursor-generator
+     (lambda () (if window-system
+                    (color-theme-tomorrow--with-colors 'night aqua)
+                  nil)))
 
    ;; prohibit changing cursor while ac-menu is live
    '(evil-reasons-for-interruption-of-reflesh-cursor
