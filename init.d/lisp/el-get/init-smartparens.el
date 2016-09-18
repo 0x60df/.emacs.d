@@ -13,15 +13,17 @@
 
 ;;; bindings
 
-(global-set-key (kbd "C-(") (lambda (arg)
+(global-set-key (kbd "C-(") 'sp-forward-barf-sexp)
+(global-set-key (kbd "C-)") 'sp-forward-slurp-sexp)
+(global-set-key (kbd "M-(") (lambda (arg)
                               (interactive "P")
                               (if arg
-                                  (sp-backward-slurp-sexp)
-                                (sp-forward-barf-sexp))))
-(global-set-key (kbd "C-)") (lambda (arg)
+                                  (insert-parentheses)
+                                (sp-backward-slurp-sexp))))
+(global-set-key (kbd "M-)") (lambda (arg)
                               (interactive "P")
                               (if arg
-                                  (sp-backward-barf-sexp)
-                                (sp-forward-slurp-sexp))))
+                                  (move-past-close-and-reindent)
+                                (sp-backward-barf-sexp))))
 (global-set-key (kbd "s-(") 'sp-splice-sexp)
 (global-set-key (kbd "s-)") 'sp-rewrap-sexp)
