@@ -2,7 +2,7 @@
 ;;;; mouse.el
 
 
-(defadvice mouse-set-point (around set-mark-before-mouse-set-point)
-  (push-mark) ad-do-it (pop-mark))
+(defadvice mouse-drag-region (before set-mark-before-mouse-drag-region)
+  (push-mark))
 
-(ad-activate 'mouse-set-point)
+(ad-activate 'mouse-drag-region)
