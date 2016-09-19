@@ -12,6 +12,7 @@
 
 ;;; bindings
 
+
 ;; window
 (smartrep-define-key
  global-map "C-x"
@@ -22,6 +23,15 @@
    ("o" . other-window)
    ("{" . shrink-window-horizontally)
    ("}" . enlarge-window-horizontally)))
+
+;; other window
+(smartrep-define-key
+    global-map "C-c ," '(("n" . (scroll-other-window 1))
+                         ("p" . (scroll-other-window -1))
+                         ("v" . 'scroll-other-window)
+                         ("M-v" . (scroll-other-window '-))
+                         ("M-<" . (beginning-of-buffer-other-window 0))
+                         ("M->" . (end-of-buffer-other-window 0))))
 
 ;; frame
 (smartrep-define-key
