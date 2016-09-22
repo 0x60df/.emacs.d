@@ -4,10 +4,10 @@
 
 (eval-when-compile (require 'org))
 
-(define-key global-map "\C-col" 'org-store-link)
-(define-key global-map "\C-coa" 'org-agenda)
-(define-key global-map "\C-coc" 'org-capture)
-(define-key global-map "\C-cob" 'org-iswitchb)
+(global-set-key "\C-col" 'org-store-link)
+(global-set-key "\C-coa" 'org-agenda)
+(global-set-key "\C-coc" 'org-capture)
+(global-set-key "\C-cob" 'org-iswitchb)
 (eval-after-load 'org
   '(progn
      (define-key org-mode-map (kbd "C-,") nil)
