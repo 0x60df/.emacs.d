@@ -15,14 +15,14 @@
 
 ;; window
 (smartrep-define-key
- global-map "C-x"
- '(("0" . delete-window)
-   ("2" . split-window-below)
-   ("3" . split-window-right)
-   ("^" . enlarge-window)
-   ("o" . other-window)
-   ("{" . shrink-window-horizontally)
-   ("}" . enlarge-window-horizontally)))
+    global-map "C-x"
+  '(("0" . delete-window)
+    ("2" . split-window-below)
+    ("3" . split-window-right)
+    ("^" . enlarge-window)
+    ("o" . other-window)
+    ("{" . shrink-window-horizontally)
+    ("}" . enlarge-window-horizontally)))
 
 ;; other window
 (smartrep-define-key
@@ -35,9 +35,33 @@
 
 ;; frame
 (smartrep-define-key
- global-map "C-x 5"
- '(("0" . delete-frame)
-   ("o" . other-frame)))
+    global-map "C-x 5"
+  '(("0" . delete-frame)
+    ("o" . other-frame)))
+
+;; frame alpha
+(smartrep-define-key
+    global-map "H-;"
+  '(("s" . set-frame-alpha)
+    ("p" . increase-frame-alpha)
+    ("n" . decrease-frame-alpha)
+    ("i" . increase-frame-alpha)
+    ("d" . decrease-frame-alpha)))
+(smartrep-define-key
+    global-map "H-+"
+  '(("s" . set-all-frames-alpha)
+    ("p" . increase-all-frames-alpha)
+    ("n" . decrease-all-frames-alpha)
+    ("i" . increase-all-frames-alpha)
+    ("d" . decrease-all-frames-alpha)))
+(eval-after-load 'server
+  '(smartrep-define-key
+       global-map "C-H-+"
+     '(("s" . server-set-all-client-frames-alpha)
+       ("p" . server-increase-all-client-frames-alpha)
+       ("n" . server-decrease-all-client-frames-alpha)
+       ("i" . server-increase-all-client-frames-alpha)
+       ("d" . server-decrease-all-client-frames-alpha))))
 
 ;; org
 (eval-after-load 'org

@@ -38,3 +38,7 @@
 (global-set-key (kbd "C-M-.")
                 (lambda (arg) (interactive "p") (other-frame (* arg -1))))
 (global-set-key (kbd "C-c ;") 'manipulate-frame)
+(global-set-key (kbd "s-;") 'toggle-frame-opacity)
+(global-set-key (kbd "s-+") 'toggle-all-frames-opacity)
+(global-set-key (kbd "H-; s") 'set-frame-alpha)
+(global-set-key (kbd "H-+ s") 'set-all-frames-alpha)
