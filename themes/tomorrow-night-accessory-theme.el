@@ -16,6 +16,22 @@
  '(mode-line-which-func-mode-face ((t :inherit font-lock-function-name-face))))
 
 
+;;; term-mode
+
+(color-theme-tomorrow--with-colors
+ 'night
+ (custom-theme-set-faces
+  'tomorrow-night-accessory
+  `(term-color-black ((t :foreground ,background :background ,background)))
+  `(term-color-blue ((t :foreground ,blue :background ,blue)))
+  `(term-color-cyan ((t :foreground ,aqua :background ,aqua)))
+  `(term-color-green ((t :foreground ,green :background ,green)))
+  `(term-color-magenta ((t :foreground ,purple :background ,purple)))
+  `(term-color-red ((t :foreground ,red :background ,red)))
+  `(term-color-white ((t :foreground ,foreground :background ,foreground)))
+  `(term-color-yellow ((t :foreground ,yellow :background ,yellow)))))
+
+
 ;;; popup
 
 (when (featurep 'popup)
