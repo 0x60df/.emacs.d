@@ -7,4 +7,5 @@
         (add-hook hook (lambda ()
                          (setq show-trailing-whitespace nil))))
       '(term-mode-hook
-        eshell-mode-hook))
+        eshell-mode-hook
+        eww-mode-hook))
