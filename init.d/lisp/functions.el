@@ -244,4 +244,7 @@
 
 (defun toggle-all-frames-opacity ()
   (interactive)
-  (mapc 'toggle-frame-opacity (frame-list)))
+  (if (or (null (frame-parameter nil 'alpha))
+          (= (frame-parameter nil 'alpha) 100))
+      (modify-all-frames-parameters '((alpha . 0)))
+    (modify-all-frames-parameters '((alpha . 100)))))
