@@ -23,6 +23,9 @@
 (define-key evil-motion-state-map (kbd "C-]") #'evil-emacs-state)
 (define-key evil-insert-state-map (kbd "C-]") #'evil-emacs-state)
 (define-key evil-emacs-state-map (kbd "C-]") #'evil-exit-emacs-state)
+(define-key evil-motion-state-map (kbd "H-e") #'evil-emacs-state)
+(define-key evil-insert-state-map (kbd "H-e") #'evil-emacs-state)
+(define-key evil-emacs-state-map (kbd "H-e") #'evil-exit-emacs-state)
 (define-key evil-motion-state-map (kbd "C-\\") #'ignore)
 
 
