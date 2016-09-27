@@ -28,5 +28,9 @@
 !/snippets/
 !/snippets/**/*
 !/themes/
-!/themes/*.el
+!/themes/*
+!/themes/lisp/
+!/themes/lisp/*.el
+!/themes/site-lisp/
+!/themes/site-lisp/.el
 !/.client

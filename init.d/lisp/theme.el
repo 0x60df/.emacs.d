@@ -2,7 +2,9 @@
 ;;;; theme.el
 
 
-(setq custom-theme-directory "~/.emacs.d/themes/")
+(custom-set-variables '(custom-theme-directory "~/.emacs.d/themes/"))
+(add-to-list 'custom-theme-load-path "~/.emacs.d/themes/lisp")
+(add-to-list 'custom-theme-load-path "~/.emacs.d/themes/site-lisp")
 
 (defun put-on (theme)
   (interactive
