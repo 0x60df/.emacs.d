@@ -17,11 +17,11 @@
    '(popup-isearch-match ((t :inherit lazy-highlight)))
    '(popup-menu-mouse-face ((t :inherit popup-menu-selection-face)))
    '(popup-menu-selection-face ((t :inherit region)))
-   '(popup-scroll-bar-background-face ((t :inherit mode-line-inactive)))
-   '(popup-scroll-bar-foreground-face ((t :inherit mode-line-inactive
-                                          :inverse-video t)))
+   '(popup-scroll-bar-background-face ((t :inherit mode-line)))
+   '(popup-scroll-bar-foreground-face ((t :inherit mode-line
+                                          :inverse-video nil)))
    '(popup-summary-face ((t :inherit shadow)))
-   '(popup-tip-face ((t :inherit mode-line)))))
+   '(popup-tip-face ((t :inherit mode-line-inactive)))))
 
 
 ;;; auto-complete
@@ -60,6 +60,7 @@
 (when (featurep 'helm)
   (custom-theme-set-faces
    'solarized-accessory
+   '(helm-buffer-directory ((t :inherit (dired-directory))))
    '(helm-ff-dotted-directory ((t :inherit (dired-ignored italic))))
    '(helm-ff-dotted-symlink-directory ((t :inherit (dired-symlink italic))))))
 

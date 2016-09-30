@@ -136,7 +136,7 @@
 (el-get-bundle yatex)
 (el-get-bundle tomorrow-theme)
 (el-get-bundle color-theme-zenburn)
-(el-get-bundle solarized-theme)
+(el-get-bundle color-theme-solarized)
 (el-get-bundle base16)
 (el-get-bundle emacs-jp/replace-colorthemes)
 
