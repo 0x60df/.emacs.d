@@ -6,23 +6,33 @@
 ;;; base
 
 
-;; eval after first make frame
-(defun server-after-first-make-frame-function (frame)
-    (select-frame frame)
-    (remove-hook 'after-make-frame-functions
-                 'server-after-first-make-frame-function))
-
-(defmacro server-eval-after-first-make-frame (name &rest body)
-  `(cond ((daemonp)
-          (defadvice server-after-first-make-frame-function (after ,name)
-            ,@body))
-         (t ,@body)))
-
-(when (daemonp)
-  (add-hook 'after-init-hook
-            (lambda () (ad-activate 'server-after-first-make-frame-function)))
-  (add-hook 'after-make-frame-functions
-            'server-after-first-make-frame-function))
+;; define hook for terminal specific settings
+(defvar server-made-terminals nil)
+(defvar server-after-make-terminal-functions nil)
+(add-hook 'after-init-hook
+          (lambda ()
+            (run-hook-with-args 'server-after-make-terminal-functions
+                                (frame-terminal))
+            (add-to-list 'server-made-terminals (frame-terminal))))
+(eval-after-load 'server
+  '(add-hook 'after-make-frame-functions
+             (lambda (frame)
+               (let ((made-frame-terminal (frame-terminal frame)))
+                 (unless (memq made-frame-terminal server-made-terminals)
+                   (run-hook-with-args 'server-after-make-terminal-functions
+                                       made-frame-terminal)
+                   (add-to-list 'server-made-terminals
+                                made-frame-terminal))))))
+(add-hook 'after-init-hook
+          (lambda ()
+            (add-hook 'server-after-make-terminal-functions
+                      (lambda (terminal)
+                        (let ((enabled-themes custom-enabled-themes))
+                          (mapc (lambda (theme) (disable-theme theme))
+                                enabled-themes)
+                          (mapc (lambda (theme) (enable-theme theme))
+                                (reverse enabled-themes))))))
+          t)
 
 ;; functions
 (defun server-client-frame-list ()
