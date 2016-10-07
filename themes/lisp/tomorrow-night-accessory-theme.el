@@ -63,6 +63,8 @@
 
   (custom-theme-set-faces
    'tomorrow-night-accessory
+   '(ac-completion-face
+     ((t :inherit shadow :underline t)))
    '(ac-gtags-candidate-face
      ((t :inherit (font-lock-function-name-face ac-candidate-face))))
    '(ac-gtags-selection-face
