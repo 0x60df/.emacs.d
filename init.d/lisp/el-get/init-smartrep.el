@@ -8,6 +8,10 @@
 (require 'smartrep)
 
 (custom-set-variables '(smartrep-mode-line-string-activated ""))
+(defcustom smartrep-mode-line-active-bg-adjuster nil "")
+(call-with-runtime-bindings
+ ((smartrep-mode-line-active-bg smartrep-mode-line-active-bg-adjuster))
+ smartrep-map-internal bind-mode-line-active-bg)
 
 
 ;;; bindings

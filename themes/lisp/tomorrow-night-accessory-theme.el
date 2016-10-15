@@ -220,4 +220,13 @@
             (ac-menu-live-p))))))
 
 
+;;; smartrep
+
+(when (featurep 'smartrep)
+  (custom-theme-set-variables
+   'tomorrow-night-accessory
+   '(smartrep-mode-line-active-bg-adjuster
+     (lambda () (face-background 'default)))))
+
+
 (provide-theme 'tomorrow-night-accessory)
