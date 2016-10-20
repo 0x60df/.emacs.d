@@ -22,23 +22,23 @@
       '("~/.emacs.d/init.d/site-lisp" "~/.emacs.d/init.d/lisp")))))
 
 (defmacro init (unit &optional noerror nomessage nosuffix must-suffix)
-  `(let* ((name (symbol-name ',unit))
-          (el (locate-file name init-path '(".el")))
-          (elc (locate-file name init-path '(".elc"))))
-     (when el
-       (unless (and elc (file-newer-than-file-p elc el))
-         (if elc (delete-file elc))
-         (byte-compile-file el)
-         (setq elc (byte-compile-dest-file el)))
-       (load elc ,noerror ,nomessage ,nosuffix ,must-suffix))))
+  (let ((name (symbol-name unit)))
+    `(let ((el (locate-file ,name init-path '(".el")))
+           (elc (locate-file ,name init-path '(".elc"))))
+       (when el
+         (unless (and elc (file-newer-than-file-p elc el))
+           (if elc (delete-file elc))
+           (byte-compile-file el)
+           (setq elc (byte-compile-dest-file el)))
+         (load elc ,noerror ,nomessage ,nosuffix ,must-suffix)))))
 
-(defun init-by (file)
-  (let ((unit (make-symbol (replace-regexp-in-string "\\.el$" "" file))))
-    (eval `(init ,unit))))
+(defmacro init-by (file)
+  `(let ((unit (make-symbol (replace-regexp-in-string "\\.el$" "" ,file))))
+     (eval `(init ,unit))))
 
 (defmacro init-feature (feature)
   (let ((unit (make-symbol (concat "init-" (symbol-name feature)))))
-     `(init ,unit)))
+    `(init ,unit)))
 
 
 ;;; init
