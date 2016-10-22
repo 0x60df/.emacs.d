@@ -13,7 +13,8 @@
                 ("\\.cls$" . yatex-mode)
                 ("\\.sty$" . yatex-mode)
                 ("\\.clo$" . yatex-mode)
-                ("\\.bbl$" . yatex-mode)) auto-mode-alist))
+                ("\\.bbl$" . yatex-mode))
+              auto-mode-alist))
 
 (setq YaTeX-close-paren-always 'never)
 (setq YaTeX-inhibit-prefix-letter t)

@@ -5,9 +5,9 @@
 
 ;;; base
 
-(setq wgrep-auto-save-buffer t)
+(custom-set-variables '(wgrep-auto-save-buffer t))
 
 
 ;; bindings
 
-(setf wgrep-enable-key "e")
+(custom-set-variables '(wgrep-enable-key "e"))

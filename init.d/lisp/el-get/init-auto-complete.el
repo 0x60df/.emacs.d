@@ -5,6 +5,8 @@
 
 ;;; base
 
+(premise subr)
+
 (add-to-list 'ac-dictionary-directories "~/.emacs.d/ac-dict")
 
 (custom-set-variables '(ac-auto-show-menu nil)

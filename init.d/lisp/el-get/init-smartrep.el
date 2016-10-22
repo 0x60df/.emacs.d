@@ -6,6 +6,7 @@
 ;;; base
 
 (require 'smartrep)
+(premise subr)
 
 (custom-set-variables '(smartrep-mode-line-string-activated ""))
 (defcustom smartrep-mode-line-active-bg-adjuster nil "")

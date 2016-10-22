@@ -5,6 +5,8 @@
 
 ;;; base
 
+(premise subr)
+
 ;; setting
 (custom-set-variables '(evil-default-state 'emacs)
                       '(evil-insert-state-modes nil)
@@ -56,6 +58,8 @@
 ;; patch for mouse
 (defadvice evil-generate-mode-line-tag (after evil-generate-dry-mode-line-tag)
   (setq ad-return-value (evil-state-property state :tag t)))
+
+(ad-activate 'evil-generate-mode-line-tag)
 
 
 ;;; cursor

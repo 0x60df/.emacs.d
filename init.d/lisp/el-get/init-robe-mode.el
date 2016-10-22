@@ -34,21 +34,22 @@
 
 ;;; faces
 
-(when (featurep 'auto-complete)
-  (defface ac-robe-candidate-face
-    '((t :inherit ac-candidate-face
-         :foreground "#CC342D"))
-    "Face for robe candidate."
-    :group 'auto-complete)
-  (defface ac-robe-selection-face
-    '((t :inherit ac-selection-face
-         :foreground "#CC342D"))
-    "Face for robe selection."
-    :group 'auto-complete)
+(eval-after-load 'auto-complete
+  '(progn
+     (defface ac-robe-candidate-face
+       '((t :inherit ac-candidate-face
+            :foreground "#CC342D"))
+       "Face for robe candidate."
+       :group 'auto-complete)
+     (defface ac-robe-selection-face
+       '((t :inherit ac-selection-face
+            :foreground "#CC342D"))
+       "Face for robe selection."
+       :group 'auto-complete)
 
-  (add-hook 'robe-mode-hook
-            (lambda ()
-              (add-to-list 'ac-source-robe
-                           '(candidate-face . ac-robe-candidate-face))
-              (add-to-list 'ac-source-robe
-                           '(selection-face . ac-robe-selection-face)))))
+     (add-hook 'robe-mode-hook
+               (lambda ()
+                 (add-to-list 'ac-source-robe
+                              '(candidate-face . ac-robe-candidate-face))
+                 (add-to-list 'ac-source-robe
+                              '(selection-face . ac-robe-selection-face))))))

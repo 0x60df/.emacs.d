@@ -2,5 +2,6 @@
 ;;;; greeting.el
 
 
-(setq inhibit-startup-message t)
-(setq initial-scratch-message nil)
+(custom-set-variables
+ '(inhibit-startup-screen t)
+ '(initial-scratch-message nil))

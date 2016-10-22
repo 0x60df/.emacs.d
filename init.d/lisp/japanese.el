@@ -2,6 +2,6 @@
 ;;;; japanese.el
 
 
-(font-lock-add-keywords nil '(("　" . 'trailing-whitespace)))
-(font-lock-add-keywords 'c-mode '(("　" . 'trailing-whitespace)))
-(font-lock-add-keywords 'emacs-lisp-mode '(("　" . 'trailing-whitespace)))
+(mapc (lambda (mode)
+        (font-lock-add-keywords mode '(("　" . 'trailing-whitespace))))
+      '(nil c-mode emacs-lisp-mode))

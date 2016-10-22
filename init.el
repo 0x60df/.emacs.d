@@ -2,9 +2,41 @@
 ;;;; init.el
 
 
-(setq message-truncate-lines t)
-(add-hook 'after-init-hook (lambda () (setq message-truncate-lines nil)))
-(custom-set-variables '(custom-file "~/.emacs.d/custom.el"))
+
+;;; init
+
+(defmacro init (unit &optional noerror nomessage nosuffix must-suffix)
+  (let ((name (symbol-name unit)))
+    `(let ((el (locate-file ,name init-path '(".el")))
+           (elc (locate-file ,name init-path '(".elc"))))
+       (when el
+         (unless (and elc (file-newer-than-file-p elc el))
+           (if elc (delete-file elc))
+           (byte-compile-file el)
+           (setq elc (byte-compile-dest-file el)))
+         (let ((r (load elc ,noerror ,nomessage ,nosuffix ,must-suffix)))
+           (if r (add-to-list 'init-units ',unit))
+           r)))))
+
+(defmacro init-by (file)
+  `(let ((unit (intern (replace-regexp-in-string
+                        "\\.el$" ""
+                        (expand-file-name ,file)))))
+     (eval `(init ,unit))))
+
+(defmacro init-feature (feature)
+  (let ((unit (intern (concat "init-" (symbol-name feature)))))
+    `(init ,unit)))
+
+(defmacro premise (unit &optional filename noerror)
+  `(if (not (memq ',unit init-units))
+       (if (and ,filename
+                (or (memq
+                     (intern (replace-regexp-in-string "\\.el$" "" ,filename))
+                     init-units)
+                    (eval '(init-by ,filename))))
+           (add-to-list 'init-units ',unit)
+         (eval '(init ,unit ,noerror)))))
 
 (defvar init-path
   (letrec ((filter (lambda (p l)
@@ -21,24 +53,11 @@
                                  (directory-files d)))))
       '("~/.emacs.d/init.d/site-lisp" "~/.emacs.d/init.d/lisp")))))
 
-(defmacro init (unit &optional noerror nomessage nosuffix must-suffix)
-  (let ((name (symbol-name unit)))
-    `(let ((el (locate-file ,name init-path '(".el")))
-           (elc (locate-file ,name init-path '(".elc"))))
-       (when el
-         (unless (and elc (file-newer-than-file-p elc el))
-           (if elc (delete-file elc))
-           (byte-compile-file el)
-           (setq elc (byte-compile-dest-file el)))
-         (load elc ,noerror ,nomessage ,nosuffix ,must-suffix)))))
+(defvar init-units nil)
 
-(defmacro init-by (file)
-  `(let ((unit (make-symbol (replace-regexp-in-string "\\.el$" "" ,file))))
-     (eval `(init ,unit))))
-
-(defmacro init-feature (feature)
-  (let ((unit (make-symbol (concat "init-" (symbol-name feature)))))
-    `(init ,unit)))
+(setq message-truncate-lines t)
+(add-hook 'after-init-hook (lambda () (setq message-truncate-lines nil)))
+(custom-set-variables '(custom-file "~/.emacs.d/custom.el"))
 
 
 ;;; init
@@ -47,6 +66,7 @@
 (init suppression)
 (init greeting)
 (init subr)
+(init frame)
 (init cursor)
 (init paren)
 (init indent)
@@ -54,8 +74,8 @@
 (init insurance)
 (init tooltip)
 (init mode-line)
-(init bindings)
 (init functions)
+(init bindings)
 (init client)
 (init theme)
 (init mouse)
@@ -86,16 +106,17 @@
 
 ;;; el-get
 
-(add-to-list 'load-path "~/.emacs.d/el-get/el-get")
+(eval-and-compile
+  (add-to-list 'load-path "~/.emacs.d/el-get/el-get")
 
-(unless (require 'el-get nil 'noerror)
-  (with-current-buffer
-      (url-retrieve-synchronously
-       (concat
-	"https://raw.githubusercontent.com/"
-	"dimitri/el-get/master/el-get-install.el"))
-    (goto-char (point-max))
-    (eval-print-last-sexp)))
+  (unless (require 'el-get nil 'noerror)
+    (with-current-buffer
+        (url-retrieve-synchronously
+         (concat
+          "https://raw.githubusercontent.com/"
+          "dimitri/el-get/master/el-get-install.el"))
+      (goto-char (point-max))
+      (eval-print-last-sexp))))
 
 (add-to-list 'el-get-recipe-path "~/.emacs.d/el-get-user/recipes")
 (custom-set-variables

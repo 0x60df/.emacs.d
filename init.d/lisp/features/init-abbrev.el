@@ -2,5 +2,5 @@
 ;;;; init-abbrev.el
 
 
-(setq abbrev-file-name "~/.emacs.d/abbrev_defs")
+(custom-set-variables '(abbrev-file-name "~/.emacs.d/abbrev_defs"))
 (quietly-read-abbrev-file)

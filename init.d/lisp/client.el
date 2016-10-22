@@ -5,34 +5,16 @@
 
 ;;; base
 
+(premise frame)
 
-;; define hook for terminal specific settings
-(defvar server-made-terminals nil)
-(defvar server-after-make-terminal-functions nil)
-(add-hook 'after-init-hook
-          (lambda ()
-            (run-hook-with-args 'server-after-make-terminal-functions
-                                (frame-terminal))
-            (add-to-list 'server-made-terminals (frame-terminal))))
-(eval-after-load 'server
-  '(add-hook 'after-make-frame-functions
-             (lambda (frame)
-               (let ((made-frame-terminal (frame-terminal frame)))
-                 (unless (memq made-frame-terminal server-made-terminals)
-                   (run-hook-with-args 'server-after-make-terminal-functions
-                                       made-frame-terminal)
-                   (add-to-list 'server-made-terminals
-                                made-frame-terminal))))))
-(add-hook 'after-init-hook
-          (lambda ()
-            (add-hook 'server-after-make-terminal-functions
-                      (lambda (terminal)
-                        (let ((enabled-themes custom-enabled-themes))
-                          (mapc (lambda (theme) (disable-theme theme))
-                                enabled-themes)
-                          (mapc (lambda (theme) (enable-theme theme))
-                                (reverse enabled-themes))))))
-          t)
+(add-hook 'after-make-terminal-functions
+          (lambda (dummy)
+            (let ((enabled-themes custom-enabled-themes))
+              (mapc (lambda (theme) (disable-theme theme))
+                    enabled-themes)
+              (mapc (lambda (theme) (enable-theme theme))
+                    (reverse enabled-themes)))))
+
 
 ;; functions
 (defun server-client-frame-list ()

@@ -2,5 +2,6 @@
 ;;;; quiet.el
 
 
-(setq ring-bell-function 'ignore)
-(setq ad-redefinition-action 'accept)
+(custom-set-variables
+  '(ring-bell-function 'ignore)
+  '(ad-redefinition-action 'accept))

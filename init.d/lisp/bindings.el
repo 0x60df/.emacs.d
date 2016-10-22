@@ -1,6 +1,8 @@
 
 ;;;; bindings.el
 
+(premise function)
+(premise frame)
 
 (define-key key-translation-map [?\C-h] [?\C-?])
 (define-key key-translation-map (kbd "ESC M-S") 'event-apply-shift-modifier)

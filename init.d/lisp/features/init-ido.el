@@ -5,11 +5,14 @@
 
 ;;; base
 
+(eval-and-compile (require 'ido))
+
 (ido-mode t)
-(require 'ido)
-(setq ido-everywhere t)
-(setq ido-enable-flex-matching t)
-(setq ido-auto-merge-work-directories-length -1)
+(ido-everywhere t)
+
+(custom-set-variables
+ '(ido-enable-flex-matching t)
+ '(ido-auto-merge-work-directories-length -1))
 
 (add-hook 'ido-minibuffer-setup-hook
           (lambda ()
