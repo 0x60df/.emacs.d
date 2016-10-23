@@ -12,6 +12,17 @@
          'after-make-terminal-functions made-frame-terminal)))))
 (ad-activate 'make-frame)
 
+;; (defvar terminal-list-before-make-frame (terminal-list))
+;; (add-hook 'after-make-frame-functions
+;;           (lambda (frame)
+;;             (unless (memq (frame-terminal frame)
+;;                           terminal-list-before-make-frame)
+;;               (run-hook-with-args
+;;                'after-make-terminal-functions
+;;                (frame-terminal frame)
+;;                frame)
+;;               (setq terminal-list-before-make-frame (terminal-list)))))
+
 (defun increase-frame-alpha (&optional arg frame)
   (interactive "p")
   (set-frame-parameter

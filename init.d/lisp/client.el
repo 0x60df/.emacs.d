@@ -8,7 +8,7 @@
 (premise frame)
 
 (add-hook 'after-make-terminal-functions
-          (lambda (dummy)
+          (lambda (terminal)
             (let ((enabled-themes custom-enabled-themes))
               (mapc (lambda (theme) (disable-theme theme))
                     enabled-themes)
@@ -17,8 +17,8 @@
 
 
 ;; functions
-(defun server-client-frame-list ()
-  (let* ((proc (frame-parameter nil 'client))
+(defun server-client-frame-list (&optional client)
+  (let* ((proc (or client (frame-parameter nil 'client)))
          (sift
           (if proc
               (lambda (fl)
