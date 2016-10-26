@@ -5,6 +5,7 @@
 
 ;;; base
 
+(premise init "~/.emacs.d/init.el")
 (premise frame)
 
 (add-hook 'after-make-terminal-functions

@@ -1,7 +1,8 @@
 
 ;;;; bindings.el
 
-(premise function)
+(premise init "~/.emacs.d/init.el")
+(premise functions)
 (premise frame)
 
 (define-key key-translation-map [?\C-h] [?\C-?])

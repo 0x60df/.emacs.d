@@ -14,7 +14,15 @@
            (if elc (delete-file elc))
            (byte-compile-file el)
            (setq elc (byte-compile-dest-file el)))
-         (let ((r (load elc ,noerror ,nomessage ,nosuffix ,must-suffix)))
+         (let ((r (condition-case e
+                      (load elc ,noerror ,nomessage ,nosuffix ,must-suffix)
+                    (init-exit
+                     (cond ((eq (cdr e) 'need-to-recompile)
+                            (if elc (delete-file elc))
+                            (byte-compile-file el)
+                            (setq elc (byte-compile-dest-file el))
+                            (load elc ,noerror ,nomessage
+                                  ,nosuffix ,must-suffix)))))))
            (if r (add-to-list 'init-units ',unit))
            r)))))
 
@@ -29,14 +37,22 @@
     `(init ,unit)))
 
 (defmacro premise (unit &optional filename noerror)
-  `(if (not (memq ',unit init-units))
-       (if (and ,filename
-                (or (memq
-                     (intern (replace-regexp-in-string "\\.el$" "" ,filename))
-                     init-units)
-                    (eval '(init-by ,filename))))
-           (add-to-list 'init-units ',unit)
-         (eval '(init ,unit ,noerror)))))
+  (let ((name (symbol-name unit)))
+    `(progn
+       (if (not (memq ',unit init-units))
+           (if (and ,filename
+                    (or (memq
+                         (intern
+                          (replace-regexp-in-string "\\.el$" "" ,filename))
+                         init-units)
+                        (eval '(init-by ,filename))))
+               (add-to-list 'init-units ',unit)
+             (eval '(init ,unit ,noerror))))
+       (let ((elc (if ,filename
+                      (replace-regexp-in-string "\\.el$" ".elc" ,filename)
+                    (locate-file ,name init-path '(".elc")))))
+         (if (and elc (file-newer-than-file-p elc load-file-name))
+           (signal 'init-exit 'need-to-recompile))))))
 
 (defvar init-path
   (letrec ((filter (lambda (p l)
@@ -53,7 +69,9 @@
                                  (directory-files d)))))
       '("~/.emacs.d/init.d/site-lisp" "~/.emacs.d/init.d/lisp")))))
 
-(defvar init-units nil)
+(defvar init-units '(init))
+
+(define-error 'init-exit "")
 
 (setq message-truncate-lines t)
 (add-hook 'after-init-hook (lambda () (setq message-truncate-lines nil)))
@@ -121,6 +139,24 @@
 (add-to-list 'el-get-recipe-path "~/.emacs.d/el-get-user/recipes")
 (custom-set-variables
  '(el-get-user-package-directory "~/.emacs.d/init.d/lisp/el-get"))
+
+(defadvice el-get-load-package-user-init-file (around catch-init-exit)
+  (condition-case e
+      ad-do-it
+    (init-exit
+     (cond ((eq (cdr e) 'need-to-recompile)
+            (let* ((init-file-name (format "init-%s.el" package))
+                   (package-init-file
+                    (expand-file-name init-file-name
+                                      el-get-user-package-directory))
+                   (file-name-no-extension
+                    (file-name-sans-extension package-init-file))
+                   (compiled-init-file (concat file-name-no-extension ".elc"))
+                   (default-directory (el-get-package-directory package)))
+              (if compiled-init-file (delete-file compiled-init-file))
+              (byte-compile-file package-init-file)
+              (load file-name-no-extension 'noerror)))))))
+(ad-activate 'el-get-load-package-user-init-file)
 
 (el-get-bundle auto-complete)
 (el-get-bundle yasnippet)

@@ -5,6 +5,7 @@
 
 ;;; base
 
+(premise init "~/.emacs.d/init.el")
 (premise subr)
 
 ;; setting
@@ -85,13 +86,13 @@
 (ad-activate 'evil-refresh-cursor)
 
 ;; generate cursor before refresh-cursor
-(defcustom evil-emacs-state-cursor-adjuster nil "")
-(defcustom evil-normal-state-cursor-adjuster nil "")
-(defcustom evil-insert-state-cursor-adjuster nil "")
-(defcustom evil-visual-state-cursor-adjuster nil "")
-(defcustom evil-replace-state-cursor-adjuster nil "")
-(defcustom evil-operator-state-cursor-adjuster nil "")
-(defcustom evil-motion-state-cursor-adjuster nil "")
+(defcustom evil-emacs-state-cursor-adjuster nil "" :group 'evil)
+(defcustom evil-normal-state-cursor-adjuster nil "" :group 'evil)
+(defcustom evil-insert-state-cursor-adjuster nil "" :group 'evil)
+(defcustom evil-visual-state-cursor-adjuster nil "" :group 'evil)
+(defcustom evil-replace-state-cursor-adjuster nil "" :group 'evil)
+(defcustom evil-operator-state-cursor-adjuster nil "" :group 'evil)
+(defcustom evil-motion-state-cursor-adjuster nil "" :group 'evil)
 (call-with-runtime-bindings
  ((evil-emacs-state-cursor evil-emacs-state-cursor-adjuster)
   (evil-normal-state-cursor evil-normal-state-cursor-adjuster)

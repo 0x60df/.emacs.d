@@ -5,6 +5,7 @@
 
 ;;; base
 
+(premise init "~/.emacs.d/init.el")
 (premise subr)
 
 (add-to-list 'ac-dictionary-directories "~/.emacs.d/ac-dict")
@@ -117,7 +118,7 @@
 
 ;;; cursor
 
-(defcustom popup-isearch-cursor-color-adjuster nil "")
+(defcustom popup-isearch-cursor-color-adjuster nil "" :group 'auto-complete)
 (call-with-runtime-bindings
  ((popup-isearch-cursor-color popup-isearch-cursor-color-adjuster))
  popup-isearch bind-cursor-variable)
@@ -125,7 +126,7 @@
  ((popup-isearch-cursor-color popup-isearch-cursor-color-adjuster))
  popup-menu* bind-cursor-variable)
 
-(defcustom ac-fuzzy-cursor-color-adjuster nil "")
+(defcustom ac-fuzzy-cursor-color-adjuster nil "" :group 'auto-complete)
 (call-with-runtime-bindings
  ((ac-fuzzy-cursor-color ac-fuzzy-cursor-color-adjuster))
  ac-fuzzy-complete bind-cursor-variable)
