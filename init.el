@@ -5,49 +5,57 @@
 
 ;;; init
 
-(defmacro init (unit &optional noerror nomessage nosuffix must-suffix)
+(defmacro init (unit &optional noerror nomessage)
   (let ((name (symbol-name unit)))
     `(let ((el (locate-file ,name init-path '(".el")))
            (elc (locate-file ,name init-path '(".elc"))))
-       (when el
-         (unless (and elc (file-newer-than-file-p elc el))
-           (if elc (delete-file elc))
-           (byte-compile-file el)
-           (setq elc (byte-compile-dest-file el)))
-         (let ((r (condition-case e
-                      (load elc ,noerror ,nomessage ,nosuffix ,must-suffix)
-                    (init-exit
-                     (cond ((eq (cdr e) 'need-to-recompile)
-                            (if elc (delete-file elc))
-                            (byte-compile-file el)
-                            (setq elc (byte-compile-dest-file el))
-                            (load elc ,noerror ,nomessage
-                                  ,nosuffix ,must-suffix)))))))
-           (if r (add-to-list 'init-units ',unit))
-           r)))))
+       (if el
+           (progn
+             (unless (and elc (file-newer-than-file-p elc el))
+               (if elc (and (delete-file elc) (setq elc nil)))
+               (and (byte-compile-file el)
+                    (setq elc (byte-compile-dest-file el)))
+               )
+             (if elc
+                 (let ((r (condition-case e
+                              (load elc ,noerror ,nomessage t t)
+                            (init-exit
+                             (cond ((eq (cdr e) 'need-to-recompile)
+                                    (and (delete-file elc) (setq elc nil))
+                                    (and (byte-compile-file el)
+                                         (setq elc (byte-compile-dest-file el)))
+                                    (load elc ,noerror ,nomessage t t)))))))
+                   (if r (add-to-list 'init-units ',unit))
+                   r)
+               (unless ,noerror
+                 (signal 'init-error
+                         '("Cannot init unit" ".elc file is missing" ,unit)))))
+         (unless ,noerror
+           (signal 'init-error
+                   '("Cannot init unit" ".el file is missing" ,unit)))))))
 
-(defmacro init-by (file)
+(defmacro init-by (file &optional noerror nomessage)
   `(let ((unit (intern (replace-regexp-in-string
-                        "\\.el$" ""
+                        "\\.elc?$" ""
                         (expand-file-name ,file)))))
-     (eval `(init ,unit))))
+     (eval `(init ,unit ,,noerror ,,nomessage))))
 
-(defmacro init-feature (feature)
+(defmacro init-feature (feature &optional noerror nomessage)
   (let ((unit (intern (concat "init-" (symbol-name feature)))))
-    `(init ,unit)))
+    `(init ,unit ,noerror ,nomessage)))
 
-(defmacro premise (unit &optional filename noerror)
+(defmacro premise (unit &optional filename noerror nomessage)
   (let ((name (symbol-name unit)))
     `(progn
        (if (not (memq ',unit init-units))
            (if (and ,filename
                     (or (memq
                          (intern
-                          (replace-regexp-in-string "\\.el$" "" ,filename))
+                          (replace-regexp-in-string "\\.elc?$" "" ,filename))
                          init-units)
-                        (eval '(init-by ,filename))))
+                        (eval '(init-by ,filename ,noerror ,nomessage))))
                (add-to-list 'init-units ',unit)
-             (eval '(init ,unit ,noerror))))
+             (eval '(init ,unit ,noerror ,nomessage))))
        (let ((elc (if ,filename
                       (replace-regexp-in-string "\\.el$" ".elc" ,filename)
                     (locate-file ,name init-path '(".elc")))))
@@ -72,6 +80,7 @@
 (defvar init-units '(init))
 
 (define-error 'init-exit "")
+(define-error 'init-error "Init error")
 
 (setq message-truncate-lines t)
 (add-hook 'after-init-hook (lambda () (setq message-truncate-lines nil)))
@@ -102,7 +111,7 @@
 
 ;;; site-init
 
-(init-by "~/.emacs.d/site-init.el")
+(init-by "~/.emacs.d/site-init.el" 'noerror)
 
 
 ;;; features
@@ -221,11 +230,11 @@
 (init-feature ox-qmd)
 
 
+;;; site-start
+
+(init-by "~/.emacs.d/site-start.el" 'noerror)
+
+
 ;;; custom
 
 (init-by custom-file)
-
-
-;;; site-start
-
-(init-by "~/.emacs.d/site-start.el")
