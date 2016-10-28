@@ -112,51 +112,6 @@
         default-foreground-color
         default-background-color))
 
-;; (defvar skk-ccc-advices
-;;   (append (apply 'append
-;;                  (mapcar (lambda (f)
-;;                            (mapcar (lambda (n)
-;;                                      (list f 'after n))
-;;                                    '(set-terminal-cursor-color
-;;                                      set-terminal-foreground-color
-;;                                      set-terminal-background-color)))
-;;                          '(ccc-setup
-;;                            ccc-setup-current-colors
-;;                            custom-theme-checkbox-toggle)))
-;;           (apply 'append
-;;                  (mapcar (lambda (f)
-;;                            (mapcar (lambda (n)
-;;                                      (list f 'around n))
-;;                                    '(get-terminal-cursor-color
-;;                                      get-terminal-foreground-color
-;;                                      get-terminal-background-color)))
-;;                          '(ccc-setup-new-frame
-;;                            ccc-setup)))
-;;           (mapcar (lambda (f)
-;;                     (list f 'around 'get-terminal-cursor-color))
-;;                   '(skk-cursor-set-1
-;;                     skk-cursor-off-1
-;;                     default-cursor-color
-;;                     ))
-;;           '((default-foreground-color around get-terminal-foreground-color)
-;;             (default-background-color around get-terminal-background-color))))
-
-;; (mapc (lambda (advice) (apply 'ad-disable-advice advice))
-;;       skk-ccc-advices)
-
-;; (add-hook 'server-mode-hook
-;;           (lambda ()
-;;             (cond (server-mode
-;;                    (mapc (lambda (advice) (apply 'ad-enable-advice advice))
-;;                          skk-ccc-advices)
-;;                    (message "ena")
-;;                    (ccc-setup-current-colors))
-;;                   (t
-;;                    (mapc (lambda (advice) (apply 'ad-disable-advice advice))
-;;                          skk-ccc-advices)
-;;                    (message "dis")
-;;                    (ccc-setup-current-colors)))))
-
 (autoload 'ccc-setup-current-colors "ccc")
 (autoload 'ccc-setup-new-frame "ccc")
 
