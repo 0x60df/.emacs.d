@@ -9,30 +9,27 @@
   (let ((name (symbol-name unit)))
     `(let ((el (locate-file ,name init-path '(".el")))
            (elc (locate-file ,name init-path '(".elc"))))
-       (if el
-           (progn
-             (unless (and elc (file-newer-than-file-p elc el))
-               (if elc (and (delete-file elc) (setq elc nil)))
-               (and (byte-compile-file el)
-                    (setq elc (byte-compile-dest-file el)))
-               )
-             (if elc
-                 (let ((r (condition-case e
-                              (load elc ,noerror ,nomessage t t)
-                            (init-exit
-                             (cond ((eq (cdr e) 'need-to-recompile)
-                                    (and (delete-file elc) (setq elc nil))
-                                    (and (byte-compile-file el)
-                                         (setq elc (byte-compile-dest-file el)))
-                                    (load elc ,noerror ,nomessage t t)))))))
-                   (if r (add-to-list 'init-units ',unit))
-                   r)
-               (unless ,noerror
-                 (signal 'init-error
-                         '("Cannot init unit" ".elc file is missing" ,unit)))))
-         (unless ,noerror
-           (signal 'init-error
-                   '("Cannot init unit" ".el file is missing" ,unit)))))))
+       (if (null el)
+           (unless ,noerror
+             (signal 'init-error
+                     '("Cannot init unit" ".el file is missing" ,unit)))
+         (unless (and elc (file-newer-than-file-p elc el))
+           (if elc (and (delete-file elc) (setq elc nil)))
+           (and (byte-compile-file el) (setq elc (byte-compile-dest-file el))))
+         (if (null elc)
+             (unless ,noerror
+               (signal 'init-error
+                       '("Cannot init unit" ".elc file is missing" ,unit)))
+           (let ((r (condition-case e
+                        (load elc ,noerror ,nomessage t t)
+                      (init-exit
+                       (cond ((eq (cdr e) 'need-to-recompile)
+                              (and (delete-file elc) (setq elc nil))
+                              (and (byte-compile-file el)
+                                   (setq elc (byte-compile-dest-file el)))
+                              (load elc ,noerror ,nomessage t t)))))))
+             (if r (add-to-list 'init-units ',unit))
+             r))))))
 
 (defmacro init-by (file &optional noerror nomessage)
   `(let ((unit (intern (replace-regexp-in-string
@@ -49,15 +46,15 @@
     `(progn
        (if (not (memq ',unit init-units))
            (if (and ,filename
-                    (or (memq
-                         (intern
-                          (replace-regexp-in-string "\\.elc?$" "" ,filename))
-                         init-units)
+                    (or (memq (intern (replace-regexp-in-string
+                                       "\\.elc?$" ""
+                                       ,filename))
+                              init-units)
                         (eval '(init-by ,filename ,noerror ,nomessage))))
                (add-to-list 'init-units ',unit)
              (eval '(init ,unit ,noerror ,nomessage))))
        (let ((elc (if ,filename
-                      (replace-regexp-in-string "\\.el$" ".elc" ,filename)
+                      (replace-regexp-in-string "\\.elc?$\\|$" ".elc" ,filename)
                     (locate-file ,name init-path '(".elc")))))
          (if (and elc (file-newer-than-file-p elc load-file-name))
            (signal 'init-exit 'need-to-recompile))))))
