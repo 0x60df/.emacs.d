@@ -202,6 +202,7 @@
 (el-get-bundle color-theme-solarized)
 (el-get-bundle base16)
 (el-get-bundle emacs-jp/replace-colorthemes)
+(el-get-bundle ddskk)
 
 
 ;;; user-features

@@ -1,0 +1,26 @@
+
+;;;; ddskk/init
+
+(require 'skk-hint)
+
+(custom-set-variables
+ '(skk-previous-completion-use-backtab t)
+ '(skk-egg-like-newline t)
+ '(skk-sticky-key [henkan])
+ '(skk-status-indicator 'minor-mode)
+ '(skk-compare-jisyo-size-when-saving nil))
+
+(define-key skk-j-mode-map (kbd "C-<henkan>")
+  'skk-backward-and-set-henkan-point)
+
+(let ((site-init (locate-file "site-init" `(,skk-user-directory)))
+      (elc (locate-file "site-init.elc" `(,skk-user-directory))))
+  (when site-init
+    (unless (and elc (file-newer-than-file-p elc site-init))
+      (if elc (delete-file elc))
+      (byte-compile-file site-init))
+    (load site-init 'noerror)))
+
+;;; Local Variables:
+;;; mode: emacs-lisp
+;;; End:

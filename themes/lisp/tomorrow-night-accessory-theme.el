@@ -229,4 +229,34 @@
      (lambda () (face-background 'default)))))
 
 
+;;; skk
+(when (fboundp 'skk-mode)
+ (custom-theme-set-variables
+  'tomorrow-night-accessory
+  '(skk-use-color-cursor t)
+  '(skk-cursor-abbrev-color (color-theme-tomorrow--with-colors 'night blue))
+  '(skk-cursor-jisx0208-latin-color
+    (color-theme-tomorrow--with-colors 'night yellow))
+  '(skk-cursor-katakana-color (color-theme-tomorrow--with-colors 'night green))
+  '(skk-cursor-hiragana-color (color-theme-tomorrow--with-colors 'night aqua))
+  '(skk-cursor-jisx0201-color (color-theme-tomorrow--with-colors 'night purple))
+  '(skk-cursor-latin-color (color-theme-tomorrow--with-colors 'night comment)))
+
+ (custom-theme-set-faces
+  'tomorrow-night-accessory
+  `(skk-henkan-face-default
+    ((((type graphic))
+      :foreground ,(color-theme-tomorrow--with-colors 'night background)
+      :background ,(color-theme-tomorrow--with-colors 'night blue))))
+  `(skk-prefix-hiragana-face
+    ((((type graphic))
+      :foreground ,(color-theme-tomorrow--with-colors 'night aqua))))
+  `(skk-prefix-jisx0201-face
+    ((((type graphic))
+      :foreground ,(color-theme-tomorrow--with-colors 'night purple))))
+  `(skk-prefix-katakana-face
+    ((((type graphic))
+      :foreground ,(color-theme-tomorrow--with-colors 'night green))))))
+
+
 (provide-theme 'tomorrow-night-accessory)
