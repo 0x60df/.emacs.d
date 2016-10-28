@@ -126,6 +126,7 @@
 (init-feature scheme)
 (init-feature wdired)
 (init-feature flyspell)
+(init-feature recentf)
 
 
 ;;; el-get
