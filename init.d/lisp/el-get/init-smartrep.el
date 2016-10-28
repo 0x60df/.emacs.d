@@ -10,6 +10,10 @@
 
 (require 'smartrep)
 
+(eval-when-compile
+  (require 'org)
+  (require 'flyspell))
+
 (custom-set-variables '(smartrep-mode-line-string-activated ""))
 (defcustom smartrep-mode-line-active-bg-adjuster nil "" :group 'smartrep)
 (call-with-runtime-bindings
