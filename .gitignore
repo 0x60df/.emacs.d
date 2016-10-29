@@ -24,6 +24,8 @@
 !/init.d/lisp/user-features/*.el
 !/init.d/site-lisp/
 !/init.el
+!/moz-functions/
+!/moz-functions/*.js
 !/lisp/
 !/lisp/*/
 !/site-lisp/
