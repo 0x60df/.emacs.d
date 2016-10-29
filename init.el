@@ -236,4 +236,4 @@
 
 ;;; custom
 
-(init-by custom-file)
+(init-by custom-file 'noerror)
