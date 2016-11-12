@@ -190,6 +190,7 @@
 (el-get-bundle moccur-edit)
 (el-get-bundle smart-compile)
 (el-get-bundle smartparens)
+(el-get-bundle which-key)
 (el-get-bundle web-mode)
 (el-get-bundle markdown-mode)
 (el-get-bundle ruby-end)
