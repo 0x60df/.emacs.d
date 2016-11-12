@@ -93,6 +93,7 @@
 (init frame)
 (init cursor)
 (init paren)
+(init correction)
 (init indent)
 (init whitespace)
 (init insurance)
