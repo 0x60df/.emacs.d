@@ -178,6 +178,7 @@
 (el-get-bundle helm-ls-git)
 (el-get-bundle helm-ag)
 (el-get-bundle helm-swoop)
+(el-get-bundle helm-descbinds)
 (el-get-bundle projectile)
 (el-get-bundle helm-projectile)
 (el-get-bundle evil)
