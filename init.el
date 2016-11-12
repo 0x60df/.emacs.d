@@ -118,6 +118,7 @@
 (init-feature doc-view)
 (init-feature eshell)
 (init-feature eww)
+(init-feature ediff)
 (init-feature icomplete)
 (init-feature ido)
 (init-feature org)
