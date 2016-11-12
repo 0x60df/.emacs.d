@@ -36,7 +36,7 @@ See also `inferior-moz-start-process'." t)
            (replace-regexp-in-string
             "\n" ""
             (replace-regexp-in-string
-             "^\\s-+\\|))\\s-+$" ""
+             "^\\s-+\\|\\s-+$" ""
              (buffer-substring-no-properties
               (point-min) (point-max))))))))
 
