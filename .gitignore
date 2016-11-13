@@ -2,7 +2,6 @@
 !.gitignore
 !.gitkeep
 !.gitmodules
-!/abbrev_defs
 !/ac-dict/
 !/ac-dict/*
 !/backup/
