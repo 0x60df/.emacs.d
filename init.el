@@ -143,7 +143,9 @@
           "https://raw.githubusercontent.com/"
           "dimitri/el-get/master/el-get-install.el"))
       (goto-char (point-max))
-      (eval-print-last-sexp))))
+      (eval-print-last-sexp)))
+
+  (add-to-list 'el-get-recipe-path "~/.emacs.d/el-get-user/recipes"))
 
 (add-to-list 'el-get-recipe-path "~/.emacs.d/el-get-user/recipes")
 (custom-set-variables
