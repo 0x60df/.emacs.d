@@ -100,7 +100,6 @@
 (init tooltip)
 (init mode-line)
 (init functions)
-(init killing)
 (init bindings)
 (init client)
 (init theme)
