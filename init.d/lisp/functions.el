@@ -192,3 +192,21 @@
   (if arg
       (select-window (split-window-right))
     (select-window (split-window-below))))
+
+(defun search-forward-char (&optional char)
+  (interactive)
+  (let ((c (cond ((characterp char) char)
+                 ((stringp char) (string-to-char char))
+                 ((eq this-command last-command) (following-char))
+                 (t (read-char)))))
+    (and (search-forward (char-to-string c) (point-at-eol) t
+                         (if (eq this-command last-command) 2 1))
+         (backward-char))))
+
+(defun search-backward-char (&optional char)
+  (interactive)
+  (let ((c (cond ((characterp char) char)
+                 ((stringp char) (string-to-char char))
+                 ((eq this-command last-command) (following-char))
+                 (t (read-char)))))
+    (search-backward (char-to-string c) (point-at-bol) t)))
