@@ -47,6 +47,16 @@
   `(hi-yellow ((t :foreground ,yellow :inverse-video t)))))
 
 
+;;; wgrep
+
+(color-theme-tomorrow--with-colors
+ 'night
+ (custom-theme-set-faces
+  'tomorrow-night-accessory
+  `(wgrep-face ((t :foreground ,aqua :inverse-video t)))
+  `(wgrep-done-face ((t :foreground ,blue)))))
+
+
 ;;; popup
 
 (when (featurep 'popup)
