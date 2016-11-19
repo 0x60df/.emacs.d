@@ -10,14 +10,22 @@
   (require 'robe))
 
 
+;;; patch
+
+(defadvice ac-robe-candidates (after delete-duplicated-candidates)
+  (message "%d" (length ad-return-value))
+  (setq ad-return-value (ac-delete-duplicated-candidates ad-return-value)))
+
+(ad-activate 'ac-robe-candidates)
+
+
 ;;; functions
 
 (defun robe-boot ()
   (interactive)
   (ac-robe-setup)
-  (robe-mode)
-  (run-ruby)
-  (delete-window)
+  (robe-mode 1)
+  (save-window-excursion (run-ruby))
   (robe-start))
 
 
