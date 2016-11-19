@@ -121,6 +121,7 @@
 (init-feature ediff)
 (init-feature icomplete)
 (init-feature ido)
+(init-feature hippie-exp)
 (init-feature org)
 (init-feature cc-mode)
 (init-feature python)
