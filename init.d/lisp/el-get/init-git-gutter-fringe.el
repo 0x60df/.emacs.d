@@ -7,7 +7,8 @@
 
 (require 'git-gutter-fringe)
 (global-git-gutter-mode t)
-(custom-set-variables '(git-gutter:lighter " GG"))
+(eval-after-load 'git-gutter
+  '(custom-set-variables '(git-gutter:lighter " GG")))
 
 
 ;;; bindings

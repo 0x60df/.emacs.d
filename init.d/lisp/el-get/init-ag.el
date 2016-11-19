@@ -6,9 +6,10 @@
 ;;; base
 
 (eval-after-load 'ag
-  (custom-set-variables '(ag-group-matches nil)))
+  '(custom-set-variables '(ag-group-matches nil)))
 
 
 ;;; bindings
 
 (global-set-key "\C-csa" 'ag)
+(global-set-key "\M-sa" 'ag)

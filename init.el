@@ -148,9 +148,9 @@
 
   (add-to-list 'el-get-recipe-path "~/.emacs.d/el-get-user/recipes"))
 
-(add-to-list 'el-get-recipe-path "~/.emacs.d/el-get-user/recipes")
-(custom-set-variables
- '(el-get-user-package-directory "~/.emacs.d/init.d/lisp/el-get"))
+(eval-after-load 'el-get-recipes
+  '(custom-set-variables
+    '(el-get-user-package-directory "~/.emacs.d/init.d/lisp/el-get")))
 
 (defadvice el-get-load-package-user-init-file (around catch-init-exit)
   (condition-case e

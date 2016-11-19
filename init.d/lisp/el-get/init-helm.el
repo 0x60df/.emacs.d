@@ -11,7 +11,8 @@
 
 ;;; bindings
 
-(custom-set-variables '(helm-command-prefix-key "C-q"))
+(eval-after-load 'helm-config
+  '(custom-set-variables '(helm-command-prefix-key "C-q")))
 (define-key helm-command-map (kbd "C-q") #'quoted-insert)
 (define-key helm-command-map (kbd "C-m") #'helm-mini)
 (define-key helm-command-map (kbd "C-f") #'helm-find-files)

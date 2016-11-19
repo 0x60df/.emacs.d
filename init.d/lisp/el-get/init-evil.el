@@ -9,10 +9,11 @@
 (premise subr)
 
 ;; setting
-(custom-set-variables '(evil-default-state 'emacs)
-                      '(evil-insert-state-modes nil)
-                      '(evil-motion-state-modes nil)
-                      '(evil-mode-line-format 'after))
+(eval-after-load 'evil-vars
+  '(custom-set-variables '(evil-default-state 'emacs)
+                         '(evil-insert-state-modes nil)
+                         '(evil-motion-state-modes nil)
+                         '(evil-mode-line-format 'after)))
 
 ;; toggle
 (defun vi ()
@@ -116,5 +117,6 @@
 (evil-mode 1)
 
 ;; undo-tree
-(custom-set-variables '(undo-tree-mode-lighter " UT"))
+(eval-after-load 'undo-tree
+  '(custom-set-variables '(undo-tree-mode-lighter " UT")))
 (global-undo-tree-mode -1)

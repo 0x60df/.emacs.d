@@ -10,10 +10,11 @@
 
 (add-to-list 'ac-dictionary-directories "~/.emacs.d/ac-dict")
 
-(custom-set-variables '(ac-auto-show-menu nil)
-                      '(ac-ignore-case nil)
-                      '(ac-quick-help-delay 1.8)
-                      '(ac-use-menu-map t))
+(eval-after-load 'auto-complete
+  '(custom-set-variables '(ac-auto-show-menu nil)
+                         '(ac-ignore-case nil)
+                         '(ac-quick-help-delay 1.8)
+                         '(ac-use-menu-map t)))
 
 
 ;;; bindings
@@ -24,7 +25,8 @@
 (define-key ac-completing-map (kbd "C-S-<iso-lefttab>") 'ac-quick-help)
 (define-key ac-completing-map (kbd "H-<tab>") 'ac-fuzzy-complete)
 (define-key ac-menu-map (kbd "<tab>") 'ac-next)
-(define-key ac-menu-map (kbd "<backtab>") 'ac-previous)
+(define-key ac-menu-map (kbd "<backtab>") 'ac-previous
+  )
 
 
 ;;; source

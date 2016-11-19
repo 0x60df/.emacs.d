@@ -2,12 +2,6 @@
 ;;;; init-wgrep.el
 
 
-
-;;; base
-
-(custom-set-variables '(wgrep-auto-save-buffer t))
-
-
-;; bindings
-
-(custom-set-variables '(wgrep-enable-key "e"))
+(eval-after-load 'wgrep
+  '(custom-set-variables '(wgrep-auto-save-buffer t)
+                         '(wgrep-enable-key "e")))

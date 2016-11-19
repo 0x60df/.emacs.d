@@ -14,7 +14,8 @@
   (require 'org)
   (require 'flyspell))
 
-(custom-set-variables '(smartrep-mode-line-string-activated ""))
+(eval-after-load 'smartrep
+  '(custom-set-variables '(smartrep-mode-line-string-activated "")))
 (defcustom smartrep-mode-line-active-bg-adjuster nil "" :group 'smartrep)
 (call-with-runtime-bindings
  ((smartrep-mode-line-active-bg smartrep-mode-line-active-bg-adjuster))

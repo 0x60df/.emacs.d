@@ -10,9 +10,9 @@
 (ido-mode t)
 (ido-everywhere t)
 
-(custom-set-variables
- '(ido-enable-flex-matching t)
- '(ido-auto-merge-work-directories-length -1))
+(eval-after-load 'ido
+  '(custom-set-variables '(ido-enable-flex-matching t)
+                         '(ido-auto-merge-work-directories-length -1)))
 
 (add-hook 'ido-minibuffer-setup-hook
           (lambda ()
