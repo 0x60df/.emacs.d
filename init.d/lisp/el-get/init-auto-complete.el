@@ -38,16 +38,15 @@
 (defvar ac-last-prefix nil)
 
 (defadvice ac-expand (around ac-pullback-on-second-expand)
-  (cond ((not (eq last-command 'ac-expand))
+  (cond ((not (eq last-command 'ac-expand)) ;fist expand
          (setq ac-last-prefix ac-prefix)
-         ad-do-it)                      ;fist expand
-        (ac-last-prefix
-         (ac-expand-string ac-last-prefix)
-         (ac-update-candidates 0 0)
          ad-do-it
-         (ac-update-candidates 0 0)
+         (unless (ac-inline-live-p)
+           (ac-expand-string ac-last-prefix (eq last-command 'ac-expand))))
+        (ac-last-prefix                 ;second expand
+         (ac-expand-string ac-last-prefix (eq last-command 'ac-expand))
          (if (and ac-candidates (< 1 (length ac-candidates))) (ac-next))
-         (setq ac-last-prefix nil))     ;second expand
+         (setq ac-last-prefix nil))
         (t ad-do-it)))                  ;from third expand
 (ad-activate 'ac-expand)
 
