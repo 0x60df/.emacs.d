@@ -87,10 +87,12 @@
 ;;; init
 
 (init bars)
+(init custom)
 (init suppression)
 (init greeting)
 (init subr)
 (init frame)
+(init window)
 (init cursor)
 (init paren)
 (init correction)
