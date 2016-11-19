@@ -186,6 +186,7 @@
 (el-get-bundle helm-descbinds)
 (el-get-bundle helm-projectile)
 (el-get-bundle evil)
+(el-get-bundle visual-regexp)
 (el-get-bundle multi-term)
 (el-get-bundle flycheck)
 (el-get-bundle ace-jump-mode)

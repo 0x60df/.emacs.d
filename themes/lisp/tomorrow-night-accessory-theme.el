@@ -229,6 +229,19 @@
      (lambda () (face-background 'default)))))
 
 
+;;; visual-regexp
+
+(when (fboundp 'vr/replace)
+  (custom-theme-set-faces
+   'tomorrow-night-accessory
+   '(vr/group-0 ((t :inherit isearch)))
+   '(vr/group-1 ((t :inherit isearch)))
+   '(vr/group-2 ((t :inherit isearch)))
+   '(vr/match-0 ((t :inherit lazy-highlight)))
+   '(vr/match-1 ((t :inherit lazy-highlight)))
+   '(vr/match-separator-face ((t :inherit error :weight bold)))))
+
+
 ;;; skk
 (when (fboundp 'skk-mode)
  (custom-theme-set-variables
