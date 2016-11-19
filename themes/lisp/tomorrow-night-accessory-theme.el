@@ -32,6 +32,21 @@
   `(term-color-yellow ((t :foreground ,yellow :background ,yellow)))))
 
 
+;;; hi-lock
+
+(color-theme-tomorrow--with-colors
+ 'night
+ (custom-theme-set-faces
+  'tomorrow-night-accessory
+  `(hi-blue ((t :foreground ,blue :inverse-video t)))
+  `(hi-blue-b ((t :foreground ,blue :weight bold)))
+  `(hi-green ((t :foreground ,green :inverse-video t)))
+  `(hi-green-b ((t :foreground ,green :weight bold)))
+  `(hi-pink ((t :foreground ,red :inverse-video t)))
+  `(hi-red-b ((t :foreground ,red :weight bold)))
+  `(hi-yellow ((t :foreground ,yellow :inverse-video t)))))
+
+
 ;;; popup
 
 (when (featurep 'popup)
