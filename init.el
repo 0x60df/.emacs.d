@@ -178,6 +178,7 @@
 (el-get-bundle expand-region)
 (el-get-bundle magit)
 (el-get-bundle git-gutter-fringe)
+(el-get-bundle git-modes)
 (el-get-bundle projectile)
 (el-get-bundle smex)
 (el-get-bundle ido-ubiquitous)
