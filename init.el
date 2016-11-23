@@ -35,7 +35,7 @@
   `(let ((unit (intern (replace-regexp-in-string
                         "\\.elc?$" ""
                         (expand-file-name ,file)))))
-     (eval `(init ,unit ,,noerror ,,nomessage))))
+     (eval `(init ,unit ,',noerror ,',nomessage))))
 
 (defmacro init-feature (feature &optional noerror nomessage)
   (let ((unit (intern (concat "init-" (symbol-name feature)))))
