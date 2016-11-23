@@ -2,4 +2,4 @@
 ;;;; custom.el
 
 
-(defgroup user nil "")
+(defgroup user nil "" :group 'emacs)
