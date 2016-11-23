@@ -267,6 +267,22 @@
    '(vr/match-separator-face ((t :inherit error :weight bold)))))
 
 
+;;; anzu
+
+(when (featurep 'anzu)
+  (color-theme-tomorrow--with-colors
+   'night
+   (custom-theme-set-faces
+    'tomorrow-night-accessory
+    '(anzu-match-1 ((t :inherit query-replace)))
+    '(anzu-match-2 ((t :inherit query-replace)))
+    '(anzu-match-3 ((t :inherit query-replace)))
+    `(anzu-mode-line ((t :foreground ,aqua)))
+    `(anzu-mode-line-no-match ((t :foreground ,aqua)))
+    '(anzu-replace-highlight ((t :inherit lazy-highlight)))
+    '(anzu-replace-to ((t :foreground "gold"))))))
+
+
 ;;; skk
 (when (fboundp 'skk-mode)
  (custom-theme-set-variables
