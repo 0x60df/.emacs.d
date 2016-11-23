@@ -86,7 +86,7 @@
              (lambda (e) (if (stringp e)
                              (replace-regexp-in-string "^\\s-+$" " " e)
                            e))
-             mode-line-format))))
+             (default-value 'mode-line-format)))))
 
 
 ;;; faces
