@@ -208,6 +208,7 @@
 (el-get-bundle yaml-mode)
 (el-get-bundle smartrep)
 (el-get-bundle rainbow-delimiters)
+(el-get-bundle rainbow-mode)
 (el-get-bundle moz-repl)
 (el-get-bundle yatex)
 (el-get-bundle tomorrow-theme)
