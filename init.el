@@ -130,6 +130,7 @@
 (init-feature ruby-mode)
 (init-feature scheme)
 (init-feature wdired)
+(init-feature dired-x)
 (init-feature flyspell)
 (init-feature recentf)
 
