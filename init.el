@@ -190,6 +190,7 @@
 (el-get-bundle helm-swoop)
 (el-get-bundle helm-descbinds)
 (el-get-bundle helm-projectile)
+(el-get-bundle dired-hacks)
 (el-get-bundle evil)
 (el-get-bundle anzu)
 (el-get-bundle multi-term)

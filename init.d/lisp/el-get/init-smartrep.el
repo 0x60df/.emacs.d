@@ -114,6 +114,21 @@
      '(("p" . mc/mark-previous-like-this)
        ("n" . mc/mark-next-like-this))))
 
+;; dired-backs
+(eval-after-load 'dired-subtree
+  '(smartrep-define-key
+       dired-mode-map ";"
+     '(("b" . dired-subtree-up)
+       ("f" . dired-subtree-down)
+       ("n" . dired-subtree-next-sibling)
+       ("p" . dired-subtree-previous-sibling)
+       ("M-<" . dired-subtree-beginning)
+       ("M->" . dired-subtree-end)
+       ("m" . dired-subtree-mark-subtree)
+       ("u" . dired-subtree-unmark-subtree)
+       ("o f" . dired-subtree-only-this-file)
+       ("o d" . dired-subtree-only-this-directory))))
+
 ;; moz-repl
 (smartrep-define-key
     global-map "H-w" '(("r" . moz-reload)
