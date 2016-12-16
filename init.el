@@ -116,23 +116,24 @@
 
 ;;; features
 
-(init-feature abbrev)
-(init-feature doc-view)
 (init-feature eshell)
 (init-feature eww)
 (init-feature ediff)
 (init-feature icomplete)
 (init-feature ido)
+(init-feature recentf)
 (init-feature hippie-exp)
+(init-feature dired)
+(init-feature wdired)
+(init-feature dired-x)
 (init-feature org)
+(init-feature flyspell)
+(init-feature doc-view)
+(init-feature abbrev)
 (init-feature cc-mode)
 (init-feature python)
 (init-feature ruby-mode)
 (init-feature scheme)
-(init-feature wdired)
-(init-feature dired-x)
-(init-feature flyspell)
-(init-feature recentf)
 
 
 ;;; el-get
