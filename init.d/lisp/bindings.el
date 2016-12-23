@@ -52,3 +52,6 @@
 (global-set-key (kbd "s-+") 'toggle-all-frames-opacity)
 (global-set-key (kbd "H-; s") 'set-frame-alpha)
 (global-set-key (kbd "H-+ s") 'set-all-frames-alpha)
+(global-unset-key "\C-l")
+(global-set-key "\C-l\C-l" 'recenter-top-bottom)
+(global-set-key "\C-l\C-f" 'find-file-at-point)
