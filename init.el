@@ -95,6 +95,7 @@
 (init window)
 (init cursor)
 (init paren)
+(init mark)
 (init correction)
 (init indent)
 (init whitespace)
