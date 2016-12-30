@@ -201,6 +201,7 @@
 (el-get-bundle ag)
 (el-get-bundle color-moccur)
 (el-get-bundle moccur-edit)
+(el-get-bundle visible-mark)
 (el-get-bundle smart-compile)
 (el-get-bundle smartparens)
 (el-get-bundle which-key)

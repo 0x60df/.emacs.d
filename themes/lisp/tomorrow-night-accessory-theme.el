@@ -191,6 +191,20 @@
    '(helm-swoop-target-word-face ((t :inherit helm-match)))))
 
 
+;;; visible-mark
+
+(when (featurep 'visible-mark)
+  (color-theme-tomorrow--with-colors
+   'night
+   (custom-theme-set-faces
+    'tomorrow-night-accessory
+    `(visible-mark-face ((t :foreground ,background :background ,yellow)))))
+  (add-hook 'after-init-hook
+            (lambda ()
+              (setq visible-mark-non-trailing-faces nil)
+              (visible-mark-initialize-faces))))
+
+
 ;;; evil
 
 (when (featurep 'evil)
