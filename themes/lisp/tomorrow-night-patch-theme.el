@@ -8,6 +8,6 @@
  'night
  (custom-theme-set-faces
   'tomorrow-night-patch
-  `(highlight ((((type graphic)) :foreground ,background)))))
+  `(highlight ((((type graphic)) :distant-foreground ,background)))))
 
 (provide-theme 'tomorrow-night-patch)
