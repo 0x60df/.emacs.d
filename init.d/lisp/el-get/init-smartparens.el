@@ -6,6 +6,9 @@
 ;;; base
 
 (smartparens-global-mode)
+(custom-set-variables '(sp-highlight-pair-overlay nil)
+                      '(sp-highlight-wrap-overlay nil)
+                      '(sp-highlight-wrap-tag-overlay nil))
 (sp-local-pair 'emacs-lisp-mode "'" nil :actions nil)
 (sp-local-pair 'lisp-interaction-mode "'" nil :actions nil)
 (sp-local-pair 'emacs-lisp-mode "`" nil :actions nil)
