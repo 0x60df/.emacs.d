@@ -198,7 +198,7 @@
    'night
    (custom-theme-set-faces
     'tomorrow-night-accessory
-    `(visible-mark-face ((t :foreground ,background :background ,yellow)))))
+    `(visible-mark-face ((t :inverse-video t)))))
   (add-hook 'after-init-hook
             (lambda ()
               (setq visible-mark-non-trailing-faces nil)
