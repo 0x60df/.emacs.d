@@ -77,14 +77,16 @@
 
 ;; org
 (eval-after-load 'org
-  '(smartrep-define-key
-       org-mode-map "C-c"
-     '(("C-n" . (lambda () (outline-next-visible-heading 1)))
-       ("C-p" . (lambda () (outline-previous-visible-heading 1)))
-       ("C-f" . (lambda () (org-forward-heading-same-level 1)))
-       ("C-b" . (lambda () (org-backward-heading-same-level 1)))
-       ("C-^" . org-up-element)
-       ("C-_" . org-down-element))))
+  '(progn
+     (define-key org-mode-map "\C-c\C-u" (lookup-key org-mode-map "\C-c\C-v"))
+     (smartrep-define-key
+         org-mode-map "C-c"
+       '(("C-n" . (lambda () (outline-next-visible-heading 1)))
+         ("C-p" . (lambda () (outline-previous-visible-heading 1)))
+         ("C-f" . org-down-element)
+         ("C-b" . org-up-element)
+         ("C-v" . (lambda () (org-forward-heading-same-level 1)))
+         ("M-v" . (lambda () (org-backward-heading-same-level 1)))))))
 
 ;; flyspell
 (eval-after-load 'flyspell
