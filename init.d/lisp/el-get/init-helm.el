@@ -9,6 +9,41 @@
 (setq helm-completion-mode-string " H")
 
 
+;;; ido
+
+(ido-mode -1)
+
+(defadvice ido-completing-read (before override-prompt)
+  (cond ((eq this-command 'switch-to-buffer)
+         (setq prompt "Buffer: "))
+        ((eq this-command 'kill-buffer)
+         (setq prompt "Kill buffer: "))))
+
+(defadvice ido-read-file-name (before override-prompt)
+  (cond ((eq this-command 'dired)
+         (setq prompt "Dired: "))
+        ((eq this-command 'ruby-load-file)
+         (setq prompt "Load Ruby file: "))))
+
+(ad-activate 'ido-completing-read)
+(ad-activate 'ido-read-file-name)
+
+(eval-after-load 'helm-config
+  '(progn
+     (add-to-list 'helm-completing-read-handlers-alist
+                  '(find-file . ido-read-file-name))
+     (add-to-list 'helm-completing-read-handlers-alist
+                  '(switch-to-buffer . ido-completing-read))
+     (add-to-list 'helm-completing-read-handlers-alist
+                  '(kill-buffer . ido-completing-read))
+     (add-to-list 'helm-completing-read-handlers-alist
+                  '(dired . ido-read-file-name))
+     (add-to-list 'helm-completing-read-handlers-alist
+                  '(find-alternate-file . ido-read-file-name))
+     (add-to-list 'helm-completing-read-handlers-alist
+                  '(ruby-load-file . ido-read-file-name))))
+
+
 ;;; bindings
 
 (eval-after-load 'helm-config

@@ -7,9 +7,6 @@
 
 (eval-and-compile (require 'ido))
 
-(ido-mode t)
-(ido-everywhere t)
-
 (eval-after-load 'ido
   '(custom-set-variables '(ido-enable-flex-matching t)
                          '(ido-auto-merge-work-directories-length -1)))
