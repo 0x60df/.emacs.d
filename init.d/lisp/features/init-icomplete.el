@@ -6,7 +6,7 @@
 ;;; base
 
 (eval-when-compile (require 'icomplete))
-(icomplete-mode 1)
+(icomplete-mode -1)
 (eval-after-load 'icomplete
   '(custom-set-variables '(icomplete-prospects-height 1)))
 
