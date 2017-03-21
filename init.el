@@ -184,7 +184,6 @@
 (el-get-bundle git-modes)
 (el-get-bundle projectile)
 (el-get-bundle smex)
-(el-get-bundle ido-ubiquitous)
 (el-get-bundle helm)
 (el-get-bundle helm-ls-git)
 (el-get-bundle helm-ag)
