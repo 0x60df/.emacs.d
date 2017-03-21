@@ -41,9 +41,7 @@
 (defadvice ac-expand (around ac-pullback-on-second-expand)
   (cond ((not (eq last-command 'ac-expand)) ;fist expand
          (setq ac-last-prefix ac-prefix)
-         ad-do-it
-         (unless (ac-inline-live-p)
-           (ac-expand-string ac-last-prefix (eq last-command 'ac-expand))))
+         ad-do-it)
         (ac-last-prefix                 ;second expand
          (ac-expand-string ac-last-prefix (eq last-command 'ac-expand))
          (if (and ac-candidates (< 1 (length ac-candidates))) (ac-next))
