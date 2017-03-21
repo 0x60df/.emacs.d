@@ -7,7 +7,6 @@
 
 (premise init "~/.emacs.d/init.el")
 (premise frame)
-(premise client)
 
 (require 'skk-autoloads)
 

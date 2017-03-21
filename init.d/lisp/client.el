@@ -5,17 +5,6 @@
 
 ;;; base
 
-(premise init "~/.emacs.d/init.el")
-(premise frame)
-
-(add-hook 'after-make-terminal-functions
-          (lambda (terminal)
-            (let ((enabled-themes custom-enabled-themes))
-              (mapc (lambda (theme) (disable-theme theme))
-                    enabled-themes)
-              (mapc (lambda (theme) (enable-theme theme))
-                    (reverse enabled-themes)))))
-
 
 ;; functions
 (defun server-client-frame-list (&optional client)
