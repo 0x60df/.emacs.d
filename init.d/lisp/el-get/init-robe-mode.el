@@ -25,7 +25,7 @@
   (interactive)
   (ac-robe-setup)
   (robe-mode 1)
-  (save-window-excursion (run-ruby))
+  (save-window-excursion (inf-ruby))
   (robe-start))
 
 
