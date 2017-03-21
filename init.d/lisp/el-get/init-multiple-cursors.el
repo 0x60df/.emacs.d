@@ -15,5 +15,7 @@
 (global-set-key (kbd "C-c @ a") 'mc/mark-all-like-this)
 (global-set-key (kbd "C-c @ SPC") 'set-mark-command)
 
+(custom-set-variables '(mc/always-run-for-all t))
+
 (eval-after-load 'org
   '(define-key org-mode-map (kbd "C-c @") nil))
