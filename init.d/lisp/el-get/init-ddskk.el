@@ -18,9 +18,9 @@
 (global-set-key (kbd "s-\\") 'skk-mode)
 (global-set-key (kbd "C-<zenkaku-hankaku>") 'skk-mode)
 (global-set-key (kbd "C-<hiragana-katakana>") 'skk-mode)
+(setq skk-user-directory "~/.emacs.d/ddskk")
 (eval-after-load 'skk-vars
-  '(custom-set-variables '(skk-user-directory "~/.emacs.d/ddskk")
-                         '(skk-isearch-mode-enable nil)
+  '(custom-set-variables '(skk-isearch-mode-enable nil)
                          '(skk-byte-compile-init-file t)))
 
 (defadvice skk-mode (before bind-modifier)
