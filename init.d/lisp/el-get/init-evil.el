@@ -19,18 +19,22 @@
 (defun vi ()
   (interactive)
   (evil-exit-emacs-state))
-(defun evil-leader (command)
-  (interactive "S\\")
-  (cond ((eq command 'q) (evil-emacs-state))
-        (t nil)))
-(define-key evil-normal-state-map (kbd "\\") #'evil-leader)
-(define-key evil-motion-state-map (kbd "C-]") #'evil-emacs-state)
-(define-key evil-insert-state-map (kbd "C-]") #'evil-emacs-state)
-(define-key evil-emacs-state-map (kbd "C-]") #'evil-exit-emacs-state)
+(evil-ex-define-cmd "q[uit]" 'evil-emacs-state)
+
 (define-key evil-motion-state-map (kbd "H-e") #'evil-emacs-state)
 (define-key evil-insert-state-map (kbd "H-e") #'evil-emacs-state)
 (define-key evil-emacs-state-map (kbd "H-e") #'evil-exit-emacs-state)
-(define-key evil-motion-state-map (kbd "C-\\") #'ignore)
+
+;; leader
+(defun evil-leader (command)
+  (interactive (list (read-from-minibuffer
+                      "\\"
+                      nil
+                      evil-ex-completion-map)))
+  (cond ((equal command "q") (evil-quit))
+        (t nil)))
+
+(define-key evil-motion-state-map (kbd "\\") #'evil-leader)
 
 
 ;;; tag
