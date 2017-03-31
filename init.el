@@ -81,7 +81,6 @@
 
 (setq message-truncate-lines t)
 (add-hook 'after-init-hook (lambda () (setq message-truncate-lines nil)))
-(custom-set-variables '(custom-file "~/.emacs.d/custom.el"))
 
 
 ;;; init
@@ -249,8 +248,3 @@
 ;;; site-start
 
 (init-by "~/.emacs.d/site-start.el" 'noerror)
-
-
-;;; custom
-
-(init-by custom-file 'noerror)
