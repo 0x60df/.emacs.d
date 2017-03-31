@@ -1,5 +1,5 @@
 
-;;;; quiet.el
+;;;; suppresion.el
 
 
 (custom-set-variables '(ring-bell-function 'ignore))
