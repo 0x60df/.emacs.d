@@ -38,3 +38,6 @@
          (let ,varlist
            ad-do-it))
        (ad-activate ',function))))
+
+
+(resolve subr)

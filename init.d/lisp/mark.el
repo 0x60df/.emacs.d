@@ -3,3 +3,6 @@
 
 
 (custom-set-variables '(set-mark-command-repeat-pop nil))
+
+
+(resolve mark)

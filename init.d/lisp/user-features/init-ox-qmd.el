@@ -14,3 +14,6 @@
            (append ox-qmd-language-keyword-alist
                    '(("shell-script" . "bash")
                      ("yatex" . "latex"))))))
+
+
+(resolve init-ox-qmd)

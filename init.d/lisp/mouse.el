@@ -6,3 +6,6 @@
   (push-mark))
 
 (ad-activate 'mouse-drag-region)
+
+
+(resolve mouse)

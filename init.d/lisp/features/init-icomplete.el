@@ -19,3 +19,6 @@
        'icomplete-forward-completions)
      (define-key icomplete-minibuffer-map (kbd "S-SPC")
        'icomplete-backward-completions)))
+
+
+(resolve init-icomplete)

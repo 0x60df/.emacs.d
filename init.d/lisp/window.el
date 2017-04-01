@@ -72,3 +72,6 @@
                 ((= c ?q)
                  (message "quit")
                  (throw 'quit t))))))))
+
+
+(resolve window)

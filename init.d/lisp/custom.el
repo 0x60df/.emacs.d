@@ -11,3 +11,6 @@
   (interactive)
   (if (and custom-file (file-exists-p custom-file))
       (delete-file custom-file)))
+
+
+(resolve custom)

@@ -140,3 +140,6 @@
  '(eol-mnemonic-dos "+")
  '(eol-mnemonic-mac "!")
  '(eol-mnemonic-unix ":"))
+
+
+(resolve mode-line)

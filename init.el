@@ -20,16 +20,14 @@
              (unless ,noerror
                (signal 'init-error
                        '("Cannot init unit" ".elc file is missing" ,unit)))
-           (let ((r (condition-case e
-                        (load elc ,noerror ,nomessage t t)
-                      (init-exit
-                       (cond ((eq (cdr e) 'need-to-recompile)
-                              (and (delete-file elc) (setq elc nil))
-                              (and (byte-compile-file el)
-                                   (setq elc (byte-compile-dest-file el)))
-                              (load elc ,noerror ,nomessage t t)))))))
-             (if r (add-to-list 'init-units ',unit))
-             r))))))
+           (condition-case e
+               (load elc ,noerror ,nomessage t t)
+             (init-exit
+              (cond ((eq (cadr e) 'to-recompile)
+                     (and (delete-file elc) (setq elc nil))
+                     (and (byte-compile-file el)
+                          (setq elc (byte-compile-dest-file el)))
+                     (load elc ,noerror ,nomessage t t))))))))))
 
 (defmacro init-by (file &optional noerror nomessage)
   `(let ((unit (intern (replace-regexp-in-string
@@ -42,22 +40,27 @@
     `(init ,unit ,noerror ,nomessage)))
 
 (defmacro premise (unit &optional filename noerror nomessage)
-  (let ((name (symbol-name unit)))
-    `(progn
-       (if (not (memq ',unit init-units))
-           (if (and ,filename
-                    (or (memq (intern (replace-regexp-in-string
-                                       "\\.elc?$" ""
-                                       ,filename))
-                              init-units)
-                        (eval '(init-by ,filename ,noerror ,nomessage))))
-               (add-to-list 'init-units ',unit)
-             (eval '(init ,unit ,noerror ,nomessage))))
-       (let ((elc (if ,filename
-                      (replace-regexp-in-string "\\.elc?$\\|$" ".elc" ,filename)
-                    (locate-file ,name init-path '(".elc")))))
-         (if (and elc (file-newer-than-file-p elc load-file-name))
-           (signal 'init-exit 'need-to-recompile))))))
+  `(progn
+     (if (not (assq ',unit init-units))
+         (if ,filename
+             (progn
+               (eval '(init-by ,filename ,noerror ,nomessage))
+               (if (not (assq ',unit init-units))
+                   (signal 'init-error
+                           (list (format "Premised unit '%s' was not resolved"
+                                         ',unit)))))
+           (eval '(init ,unit ,noerror ,nomessage))))
+     (if (and load-file-name (string-match ".elc$" load-file-name))
+         (let ((unit-file-name (cdr (assq ',unit init-units))))
+           (if (and unit-file-name
+                    (file-newer-than-file-p unit-file-name load-file-name))
+               (signal 'init-exit
+                       (list 'to-recompile
+                             (format "Premised unit '%s' was updated"
+                                     ',unit))))))))
+
+(defmacro resolve (unit)
+  `(add-to-list 'init-units (cons ',unit load-file-name)))
 
 (defvar init-path
   (letrec ((filter (lambda (p l)
@@ -74,13 +77,16 @@
                                  (directory-files d)))))
       '("~/.emacs.d/init.d/site-lisp" "~/.emacs.d/init.d/lisp")))))
 
-(defvar init-units '(init))
+(defvar init-units nil)
 
 (define-error 'init-exit "")
 (define-error 'init-error "Init error")
 
 (setq message-truncate-lines t)
 (add-hook 'after-init-hook (lambda () (setq message-truncate-lines nil)))
+
+
+(resolve init)
 
 
 ;;; init
@@ -160,7 +166,7 @@
   (condition-case e
       ad-do-it
     (init-exit
-     (cond ((eq (cdr e) 'need-to-recompile)
+     (cond ((eq (cadr e) 'to-recompile)
             (let* ((init-file-name (format "init-%s.el" package))
                    (package-init-file
                     (expand-file-name init-file-name

@@ -26,3 +26,6 @@
               (lambda()
                 (interactive)
                 (ido-initiate-auto-merge (current-buffer))))))
+
+
+(resolve init-ido)

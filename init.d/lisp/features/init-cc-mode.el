@@ -23,3 +23,6 @@
      (define-key c++-mode-map "\C-ccc" 'compile)
      (define-key c++-mode-map "\C-ccb" 'gdb)
      (define-key c++-mode-map (kbd "C-c :") nil)))
+
+
+(resolve init-cc-mode)

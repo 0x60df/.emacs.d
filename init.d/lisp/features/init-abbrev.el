@@ -7,3 +7,6 @@
                          '(save-abbrevs 'silently)))
 
 (if (file-readable-p abbrev-file-name) (quietly-read-abbrev-file))
+
+
+(resolve init-abbrev)

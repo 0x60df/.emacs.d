@@ -1,7 +1,7 @@
 
 ;;;; bindings.el
 
-(premise init "~/.emacs.d/init.el")
+(premise init)
 (premise functions)
 (premise frame)
 
@@ -55,3 +55,6 @@
 (global-unset-key "\C-l")
 (global-set-key "\C-l\C-l" 'recenter-top-bottom)
 (global-set-key "\C-l\C-f" 'find-file-at-point)
+
+
+(resolve bindings)

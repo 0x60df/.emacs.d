@@ -19,3 +19,6 @@
      (define-key flyspell-mode-map (kbd "C-c $ ,") 'flyspell-goto-next-error)
      (define-key flyspell-mode-map (kbd "C-c $ ;")
        'flyspell-auto-correct-previous-word)))
+
+
+(resolve init-flyspell)

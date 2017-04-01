@@ -110,3 +110,6 @@
                        (server-other-client-frame (* arg -1))))
      (global-set-key (kbd "C-s-+") 'server-toggle-all-client-frames-opacity)
      (global-set-key (kbd "C-H-+ s") 'server-set-all-client-frames-alpha)))
+
+
+(resolve client)

@@ -5,7 +5,7 @@
 
 ;;; base
 
-(premise init "~/.emacs.d/init.el")
+(premise init)
 (premise subr)
 
 (require 'smartrep)

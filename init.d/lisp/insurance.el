@@ -10,3 +10,6 @@
  '(kept-old-versions 1)
  '(delete-old-versions t)
  '(delete-auto-save-files t))
+
+
+(resolve insurance)

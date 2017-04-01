@@ -13,3 +13,6 @@
      (define-key org-mode-map (kbd "C-,") nil)
      (define-key org-mode-map (kbd "C-c ;") nil)
      (define-key org-mode-map (kbd "C-c :") nil)))
+
+
+(resolve init-org)

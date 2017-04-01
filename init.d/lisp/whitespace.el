@@ -9,3 +9,6 @@
         eshell-mode-hook
         eww-mode-hook
         calendar-mode-hook))
+
+
+(resolve whitespace)

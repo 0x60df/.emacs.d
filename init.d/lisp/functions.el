@@ -55,3 +55,6 @@
 (defun print-which-function ()
   (interactive)
   (message "%s" (which-function)))
+
+
+(resolve functions)
