@@ -107,7 +107,8 @@
        ("n" . git-gutter:next-hunk)
        ("d" . git-gutter:popup-hunk)
        ("r" . git-gutter:revert-hunk)
-       ("s" . git-gutter:stage-hunk))))
+       ("s" . git-gutter:stage-hunk)
+       ("q" . git-gutter:close-popup))))
 
 ;; multiple-cursors
 (eval-after-load 'multiple-cursors
