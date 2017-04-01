@@ -113,6 +113,7 @@
 (init theme)
 (init mouse)
 (init japanese)
+(init package)
 
 
 ;;; site-init
