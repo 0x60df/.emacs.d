@@ -79,8 +79,8 @@
 
 (defvar init-units nil)
 
-(define-error 'init-exit "")
-(define-error 'init-error "Init error")
+(define-error 'init-exit "Init exit" 'error)
+(define-error 'init-error "Init error" 'error)
 
 (setq message-truncate-lines t)
 (add-hook 'after-init-hook (lambda () (setq message-truncate-lines nil)))
