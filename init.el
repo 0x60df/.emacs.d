@@ -89,7 +89,7 @@
 (resolve init)
 
 
-;;; init
+;;; units
 
 (init bars)
 (init custom)
