@@ -21,6 +21,8 @@
 !/init.d/lisp/el-get/*.el
 !/init.d/lisp/features/
 !/init.d/lisp/features/*.el
+!/init.d/lisp/packages/
+!/init.d/lisp/packages/*.el
 !/init.d/lisp/user-features/
 !/init.d/lisp/user-features/*.el
 !/init.d/site-lisp/
