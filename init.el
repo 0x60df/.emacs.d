@@ -204,13 +204,13 @@
 (init-package replace-colorthemes)
 (init-package ddskk)
 
+(init-package ox-gfm)
+(init-package ox-qmd)
+
 
 ;;; user-features
 
 (init user-feature)
-
-(init-feature ox-gfm)
-(init-feature ox-qmd)
 
 
 ;;; site-start

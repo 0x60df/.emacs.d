@@ -1,0 +1,4 @@
+(:name ox-gfm
+       :description "Github Flavored Markdown exporter for Org Mode."
+       :type github
+       :pkgname "larstvei/ox-gfm")
