@@ -10,6 +10,8 @@
 !/el-get-user/
 !/el-get-user/recipes/
 !/el-get-user/recipes/*
+!/el-get-user/init-files/
+!/el-get-user/init-files/*
 !/eshell/
 !/eshell/alias
 !/init.d/
