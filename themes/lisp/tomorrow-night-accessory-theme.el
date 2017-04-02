@@ -199,7 +199,15 @@
    'night
    (custom-theme-set-faces
     'tomorrow-night-accessory
-    `(visible-mark-face ((t :inverse-video t)))))
+    '(visible-mark-face ((t :inverse-video t))))
+   (custom-theme-set-faces
+    'tomorrow-night-accessory
+    `(show-paren-match ((t :background ,current-line
+                           :foreground ,blue
+                           :inverse-video t)))
+    `(show-paren-mismatch ((t :background ,current-line
+                              :foreground ,orange
+                              :inverse-video t)))))
   (add-hook 'after-init-hook
             (lambda ()
               (setq visible-mark-non-trailing-faces nil)
