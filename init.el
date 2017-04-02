@@ -39,6 +39,16 @@
   (let ((unit (intern (concat "init-" (symbol-name feature)))))
     `(init ,unit ,noerror ,nomessage)))
 
+(defmacro init-package (package &optional noerror nomessage)
+  (let* ((name-inst (concat "inst-" (symbol-name package)))
+         (name-init (concat "init-" (symbol-name package)))
+         (unit-inst (intern name-inst))
+         (unit-init (intern name-init)))
+    `(progn
+       (init ,unit-inst ,noerror ,nomessage)
+       (if (locate-file ,name-init init-path '(".el"))
+           (init ,unit-init ,noerror ,nomessage)))))
+
 (defmacro premise (unit &optional filename noerror nomessage)
   `(progn
      (if (not (assq ',unit init-units))
@@ -143,90 +153,55 @@
 (init-feature scheme)
 
 
-;;; el-get
+;;; packages
 
-(eval-and-compile
-  (add-to-list 'load-path "~/.emacs.d/el-get/el-get")
-
-  (unless (require 'el-get nil 'noerror)
-    (with-current-buffer
-        (url-retrieve-synchronously
-         (concat
-          "https://raw.githubusercontent.com/"
-          "dimitri/el-get/master/el-get-install.el"))
-      (goto-char (point-max))
-      (eval-print-last-sexp)))
-
-  (add-to-list 'el-get-recipe-path "~/.emacs.d/el-get-user/recipes"))
-
-(eval-after-load 'el-get-recipes
-  '(custom-set-variables
-    '(el-get-user-package-directory "~/.emacs.d/init.d/lisp/el-get")))
-
-(defadvice el-get-load-package-user-init-file (around catch-init-exit)
-  (condition-case e
-      ad-do-it
-    (init-exit
-     (cond ((eq (cadr e) 'to-recompile)
-            (let* ((init-file-name (format "init-%s.el" package))
-                   (package-init-file
-                    (expand-file-name init-file-name
-                                      el-get-user-package-directory))
-                   (file-name-no-extension
-                    (file-name-sans-extension package-init-file))
-                   (compiled-init-file (concat file-name-no-extension ".elc"))
-                   (default-directory (el-get-package-directory package)))
-              (if compiled-init-file (delete-file compiled-init-file))
-              (byte-compile-file package-init-file)
-              (load file-name-no-extension 'noerror)))))))
-(ad-activate 'el-get-load-package-user-init-file)
-
-(el-get-bundle auto-complete)
-(el-get-bundle yasnippet)
-(el-get-bundle multiple-cursors)
-(el-get-bundle expand-region)
-(el-get-bundle magit)
-(el-get-bundle git-gutter-fringe)
-(el-get-bundle git-modes)
-(el-get-bundle projectile)
-(el-get-bundle smex)
-(el-get-bundle helm)
-(el-get-bundle helm-ls-git)
-(el-get-bundle helm-ag)
-(el-get-bundle helm-swoop)
-(el-get-bundle helm-descbinds)
-(el-get-bundle helm-projectile)
-(el-get-bundle dired-hacks)
-(el-get-bundle evil)
-(el-get-bundle anzu)
-(el-get-bundle multi-term)
-(el-get-bundle flycheck)
-(el-get-bundle ace-jump-mode)
-(el-get-bundle wgrep)
-(el-get-bundle ag)
-(el-get-bundle color-moccur)
-(el-get-bundle moccur-edit)
-(el-get-bundle visible-mark)
-(el-get-bundle smart-compile)
-(el-get-bundle smartparens)
-(el-get-bundle which-key)
-(el-get-bundle web-mode)
-(el-get-bundle markdown-mode)
-(el-get-bundle ruby-end)
-(el-get-bundle inf-ruby)
-(el-get-bundle robe-mode)
-(el-get-bundle yaml-mode)
-(el-get-bundle smartrep)
-(el-get-bundle rainbow-delimiters)
-(el-get-bundle rainbow-mode)
-(el-get-bundle moz-repl)
-(el-get-bundle yatex)
-(el-get-bundle tomorrow-theme)
-(el-get-bundle color-theme-zenburn)
-(el-get-bundle color-theme-solarized)
-(el-get-bundle base16)
-(el-get-bundle emacs-jp/replace-colorthemes)
-(el-get-bundle ddskk)
+(init-package el-get)
+(init-package auto-complete)
+(init-package yasnippet)
+(init-package multiple-cursors)
+(init-package expand-region)
+(init-package magit)
+(init-package git-gutter-fringe)
+(init-package git-modes)
+(init-package projectile)
+(init-package smex)
+(init-package helm)
+(init-package helm-ls-git)
+(init-package helm-ag)
+(init-package helm-swoop)
+(init-package helm-descbinds)
+(init-package helm-projectile)
+(init-package dired-hacks)
+(init-package evil)
+(init-package anzu)
+(init-package multi-term)
+(init-package flycheck)
+(init-package ace-jump-mode)
+(init-package wgrep)
+(init-package ag)
+(init-package color-moccur)
+(init-package moccur-edit)
+(init-package visible-mark)
+(init-package smart-compile)
+(init-package smartparens)
+(init-package which-key)
+(init-package web-mode)
+(init-package markdown-mode)
+(init-package ruby-end)
+(init-package inf-ruby)
+(init-package robe-mode)
+(init-package yaml-mode)
+(init-package smartrep)
+(init-package rainbow-delimiters)
+(init-package rainbow-mode)
+(init-package moz-repl)
+(init-package yatex)
+(init-package tomorrow-theme)
+(init-package color-theme-zenburn)
+(init-package color-theme-solarized)
+(init-package base16)
+(init-package replace-colorthemes)
+(init-package ddskk)
 
 
 ;;; user-features

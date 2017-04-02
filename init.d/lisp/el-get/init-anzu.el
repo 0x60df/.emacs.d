@@ -2,6 +2,9 @@
 ;;;; init-anzu.el
 
 
+(premise init)
+(premise inst-anzu)
+
 (global-anzu-mode +1)
 (global-set-key [remap query-replace] 'anzu-query-replace)
 (global-set-key [remap query-replace-regexp] 'anzu-query-replace-regexp)
@@ -21,3 +24,6 @@
      (setq mode-line-position (list mode-line-position
                                     " "
                                     '(:eval (anzu--update-mode-line))))))
+
+
+(resolve init-anzu)

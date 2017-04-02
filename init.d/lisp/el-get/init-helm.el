@@ -5,6 +5,9 @@
 
 ;;; base
 
+(premise init)
+(premise inst-helm)
+
 (add-hook 'helm-mode-hook (lambda () (icomplete-mode -1)))
 (setq helm-completion-mode-string " H")
 
@@ -60,3 +63,6 @@
 
 (define-key helm-map (kbd "TAB") #'helm-execute-persistent-action)
 (define-key helm-map (kbd "C-j") #'helm-select-action)
+
+
+(resolve init-helm)

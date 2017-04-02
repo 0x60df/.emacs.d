@@ -7,6 +7,7 @@
 
 (premise init)
 (premise subr)
+(premise inst-smartrep)
 
 (require 'smartrep)
 
@@ -179,3 +180,6 @@
                        ("h" . moz-next-tab)
                        ("l" . moz-previous-tab)
                        ("/" . moz-focus-matched-link)))
+
+
+(resolve init-smartrep)

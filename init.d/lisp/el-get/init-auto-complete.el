@@ -7,6 +7,7 @@
 
 (premise init)
 (premise subr)
+(premise inst-auto-complete)
 
 (add-to-list 'ac-dictionary-directories "~/.emacs.d/ac-dict")
 
@@ -131,3 +132,6 @@
 (call-with-runtime-bindings
  ((ac-fuzzy-cursor-color ac-fuzzy-cursor-color-adjuster))
  ac-start bind-cursor-variable)
+
+
+(resolve init-auto-complete)

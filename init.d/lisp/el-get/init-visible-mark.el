@@ -2,6 +2,9 @@
 ;;;; init-visible-mark.el
 
 
+(premise init)
+(premise inst-visible-mark)
+
 (require 'visible-mark)
 (custom-set-variables '(visible-mark-max 1)
                       '(visible-mark-inhibit-trailing-overlay t))
@@ -20,3 +23,6 @@
 (ad-activate 'visible-mark-move-overlays)
 
 (global-visible-mark-mode 1)
+
+
+(resolve init-visible-mark)

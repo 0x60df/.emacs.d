@@ -2,6 +2,9 @@
 ;;;; init-dired-hacks.el
 
 
+(premise init)
+(premise inst-dired-hacks)
+
 (define-key dired-mode-map (kbd "/") dired-filter-map)
 
 (define-key dired-mode-map (kbd "@@") #'dired-narrow)
@@ -21,3 +24,6 @@
 (define-key dired-mode-map (kbd "; u") #'dired-subtree-unmark-subtree)
 (define-key dired-mode-map (kbd "; o f") #'dired-subtree-only-this-file)
 (define-key dired-mode-map (kbd "; o d") #'dired-subtree-only-this-directory)
+
+
+(resolve init-dired-hacks)

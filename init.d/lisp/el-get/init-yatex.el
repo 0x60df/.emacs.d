@@ -5,6 +5,9 @@
 
 ;;; base
 
+(premise init)
+(premise inst-yatex)
+
 (autoload 'yatex-mode "yatex" "Yet Another LaTeX mode" t)
 
 (setq auto-mode-alist
@@ -26,3 +29,6 @@
           '(lambda ()
              (auto-fill-mode -1)
              (reftex-mode 1)))
+
+
+(resolve init-yatex)

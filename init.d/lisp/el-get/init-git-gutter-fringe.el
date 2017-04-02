@@ -5,6 +5,9 @@
 
 ;;; base
 
+(premise init)
+(premise inst-git-gutter-fringe)
+
 (require 'git-gutter-fringe)
 (global-git-gutter-mode t)
 (eval-after-load 'git-gutter
@@ -28,3 +31,6 @@
 (defun git-gutter:close-popup ()
   (interactive)
   (delete-window (git-gutter:popup-buffer-window)))
+
+
+(resolve init-git-gutter-fringe)

@@ -5,6 +5,9 @@
 
 ;;; base
 
+(premise init)
+(premise inst-multiple-cursors)
+
 (eval-when-compile (require 'org))
 
 (require 'multiple-cursors)
@@ -23,3 +26,6 @@
 
 (eval-after-load 'org
   '(define-key org-mode-map (kbd "C-c @") nil))
+
+
+(resolve init-multiple-cursors)

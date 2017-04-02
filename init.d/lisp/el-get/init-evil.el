@@ -7,6 +7,8 @@
 
 (premise init)
 (premise subr)
+(premise inst-evil)
+
 
 ;; setting
 (eval-after-load 'evil-vars
@@ -124,3 +126,6 @@
 (eval-after-load 'undo-tree
   '(custom-set-variables '(undo-tree-mode-lighter " UT")))
 (global-undo-tree-mode -1)
+
+
+(resolve init-evil)

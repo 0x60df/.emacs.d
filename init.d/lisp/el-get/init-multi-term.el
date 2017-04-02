@@ -2,6 +2,9 @@
 ;;;; init-multi-term.el
 
 
+(premise init)
+(premise inst-multi-term)
+
 (global-set-key (kbd "H-t") 'multi-term)
 (eval-after-load 'multi-term
   '(custom-set-variables
@@ -14,3 +17,6 @@
                                      ("C-r" . term-send-reverse-search-history)
                                      ("M-s" . isearch-forward)
                                      ("M-r" . isearch-backward))))))
+
+
+(resolve init-multi-term)

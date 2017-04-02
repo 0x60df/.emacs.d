@@ -5,6 +5,9 @@
 
 ;;; base
 
+(premise init)
+(premise inst-expand-region)
+
 (transient-mark-mode t)
 
 
@@ -12,3 +15,6 @@
 
 (global-set-key (kbd "C-`") 'er/expand-region)
 (global-set-key (kbd "C-M-`") 'er/contract-region)
+
+
+(resolve init-expand-region)

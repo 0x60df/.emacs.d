@@ -5,6 +5,9 @@
 
 ;;; base
 
+(premise init)
+(premise inst-inf-ruby)
+
 (eval-when-compile (require 'ruby-mode))
 
 (add-hook 'ruby-mode-hook 'inf-ruby-minor-mode)
@@ -21,3 +24,6 @@
 (eval-after-load 'ruby-mode
   '(progn
      (define-key ruby-mode-map "\C-ccr" 'inf-ruby-other-window)))
+
+
+(resolve init-inf-ruby)

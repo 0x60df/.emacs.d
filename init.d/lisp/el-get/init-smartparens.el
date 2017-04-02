@@ -5,6 +5,9 @@
 
 ;;; base
 
+(premise init)
+(premise inst-smartparens)
+
 (smartparens-global-mode)
 (custom-set-variables '(sp-highlight-pair-overlay nil)
                       '(sp-highlight-wrap-overlay nil)
@@ -30,3 +33,6 @@
                                 (sp-backward-barf-sexp))))
 (global-set-key (kbd "s-(") 'sp-splice-sexp)
 (global-set-key (kbd "s-)") 'sp-rewrap-sexp)
+
+
+(resolve init-smartparens)

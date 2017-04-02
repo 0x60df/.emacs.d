@@ -1,6 +1,10 @@
 
 ;;;; init-moz-repl.el
 
+
+(premise init)
+(premise inst-moz-repl)
+
 (autoload 'inferior-moz-process "moz"
   "Return inferior MozRepl process.  Start it if necessary.
 See also `inferior-moz-start-process'." t)
@@ -198,3 +202,6 @@ See also `inferior-moz-start-process'." t)
 (defun moz-history-back ()
   (interactive)
   (moz-send-message "content.history.back();"))
+
+
+(resolve init-moz-repl)

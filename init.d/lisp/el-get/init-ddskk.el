@@ -1,5 +1,5 @@
 
-;;;; init-skk.el
+;;;; init-ddskk.el
 
 
 
@@ -7,6 +7,7 @@
 
 (premise init)
 (premise frame)
+(premise inst-ddskk)
 
 (require 'skk-autoloads)
 
@@ -161,3 +162,6 @@
               ad-do-it))
         (ad-activate 'update-buffer-local-cursor-color)
         (ad-activate 'evil-refresh-cursor))))
+
+
+(resolve init-ddskk)

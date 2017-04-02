@@ -5,6 +5,9 @@
 
 ;;; base
 
+(premise init)
+(premise inst-robe-mode)
+
 (eval-when-compile
   (require 'ruby-mode)
   (require 'robe))
@@ -61,3 +64,6 @@
                               '(candidate-face . ac-robe-candidate-face))
                  (add-to-list 'ac-source-robe
                               '(selection-face . ac-robe-selection-face))))))
+
+
+(resolve init-robe-mode)

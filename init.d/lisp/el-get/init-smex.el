@@ -5,6 +5,9 @@
 
 ;;; base
 
+(premise init)
+(premise inst-smex)
+
 (smex-initialize)
 
 
@@ -18,3 +21,6 @@
   (define-key ido-completion-map " " 'ido-next-match)
   (define-key ido-completion-map (kbd "S-SPC") 'ido-prev-match))
 (ad-activate 'smex-prepare-ido-bindings)
+
+
+(resolve init-smex)

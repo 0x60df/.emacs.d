@@ -2,6 +2,9 @@
 ;;;; init-projectile.el
 
 
+(premise init)
+(premise inst-projectile)
+
 (eval-after-load 'projectile
   '(progn
      (custom-set-variables
@@ -15,3 +18,6 @@
        'projectile-switch-project)))
 
 (global-set-key (kbd "C-c p") 'projectile-mode)
+
+
+(resolve init-projectile)

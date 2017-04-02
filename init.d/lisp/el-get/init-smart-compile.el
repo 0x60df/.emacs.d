@@ -5,6 +5,9 @@
 
 ;;; base
 
+(premise init)
+(premise inst-smart-compile)
+
 (eval-when-compile
   (require 'cc-mode)
   (require 'ruby-mode))
@@ -21,3 +24,6 @@
 (eval-after-load 'ruby-mode
   '(progn
      (define-key ruby-mode-map "\C-ccs" 'smart-compile)))
+
+
+(resolve init-smart-compile)
