@@ -8,6 +8,8 @@
 (premise init)
 (premise inst-yasnippet)
 
+(eval-when-compile (require 'yasnippet))
+
 (yas-global-mode 1)
 
 (eval-after-load 'yasnippet

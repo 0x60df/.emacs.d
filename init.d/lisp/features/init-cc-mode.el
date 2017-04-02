@@ -5,6 +5,8 @@
 
 ;;; base
 
+(premise init)
+
 (eval-when-compile (require 'cc-mode))
 
 (add-hook 'c-mode-common-hook

@@ -2,6 +2,8 @@
 ;;;; init-org.el
 
 
+(premise init)
+
 (eval-when-compile (require 'org))
 
 (global-set-key "\C-col" 'org-store-link)

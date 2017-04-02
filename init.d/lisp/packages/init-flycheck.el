@@ -5,6 +5,8 @@
 (premise init)
 (premise inst-flycheck)
 
+(eval-when-compile (require 'flycheck))
+
 (global-set-key (kbd "C-c !") 'flycheck-mode)
 (eval-after-load 'flycheck
   '(progn

@@ -12,6 +12,13 @@
   (require 'ruby-mode)
   (require 'robe))
 
+(autoload 'robe-start "robe"
+  "Start Robe server if it isn't already running.
+When called with a prefix argument, kills the current Ruby
+process, if any, and starts a new console for the current
+project."
+  t)
+
 
 ;;; patch
 

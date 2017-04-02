@@ -2,6 +2,8 @@
 ;;;; insurance.el
 
 
+(premise init)
+
 (custom-set-variables
  '(backup-directory-alist '((".*" . "~/.emacs.d/backup")))
  '(backup-by-copying t)

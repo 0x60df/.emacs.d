@@ -2,6 +2,8 @@
 ;;;; init-ox-qmd.el
 
 
+(premise init)
+
 (eval-when-compile
   (require 'org-install)
   (require 'ox-qmd))

@@ -5,6 +5,8 @@
 
 ;;; base
 
+(premise init)
+
 (eval-when-compile (require 'icomplete))
 (icomplete-mode -1)
 (eval-after-load 'icomplete

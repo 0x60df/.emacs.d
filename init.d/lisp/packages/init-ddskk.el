@@ -10,6 +10,7 @@
 (premise inst-ddskk)
 
 (require 'skk-autoloads)
+(require 'skk-vars)
 
 
 ;;; bindings
@@ -18,10 +19,28 @@
 (global-set-key (kbd "s-\\") 'skk-mode)
 (global-set-key (kbd "C-<zenkaku-hankaku>") 'skk-mode)
 (global-set-key (kbd "C-<hiragana-katakana>") 'skk-mode)
-(setq skk-user-directory "~/.emacs.d/ddskk")
 (eval-after-load 'skk-vars
   '(custom-set-variables '(skk-isearch-mode-enable nil)
-                         '(skk-byte-compile-init-file t)))
+                         '(skk-byte-compile-init-file t)
+                         '(skk-user-directory "~/.emacs.d/ddskk")
+                         '(skk-bayesian-history-file
+                           (expand-file-name "bayesian" skk-user-directory))
+                         '(skk-bayesian-corpus-file
+                           (expand-file-name "corpus" skk-user-directory))
+                         '(skk-init-file
+                           (expand-file-name "init" skk-user-directory))
+                         '(skk-jisyo
+                           (expand-file-name "jisyo" skk-user-directory))
+                         '(skk-backup-jisyo
+                           (expand-file-name "jisyo.bak" skk-user-directory))
+                         '(skk-emacs-id-file
+                           (expand-file-name "emacs-id" skk-user-directory))
+                         '(skk-record-file
+                           (expand-file-name "record" skk-user-directory))
+                         '(skk-study-file
+                           (expand-file-name "study" skk-user-directory))
+                         '(skk-study-backup-file
+                           (expand-file-name "study.bak" skk-user-directory))))
 
 (defadvice skk-mode (before bind-modifier)
   (define-key key-translation-map (kbd "<muhenkan>")

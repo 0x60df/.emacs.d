@@ -2,6 +2,8 @@
 ;;;; window.el
 
 
+(premise init)
+
 (defun split-window-below-or-right (arg)
   (interactive "P")
   (if arg

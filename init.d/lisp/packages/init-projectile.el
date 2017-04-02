@@ -5,6 +5,8 @@
 (premise init)
 (premise inst-projectile)
 
+(eval-when-compile (require 'projectile))
+
 (eval-after-load 'projectile
   '(progn
      (custom-set-variables

@@ -2,7 +2,10 @@
 ;;;; inst-el-get.el
 
 
-(add-to-list 'load-path "~/.emacs.d/el-get/el-get")
+(premise init)
+
+(eval-and-compile
+  (add-to-list 'load-path "~/.emacs.d/el-get/el-get")
 
   (unless (require 'el-get nil 'noerror)
     (with-current-buffer
@@ -13,7 +16,7 @@
       (goto-char (point-max))
       (eval-print-last-sexp)))
 
-(add-to-list 'el-get-recipe-path "~/.emacs.d/el-get-user/recipes")
+  (add-to-list 'el-get-recipe-path "~/.emacs.d/el-get-user/recipes"))
 
 
 (resolve inst-el-get)

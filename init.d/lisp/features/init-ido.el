@@ -5,6 +5,8 @@
 
 ;;; base
 
+(premise init)
+
 (eval-and-compile (require 'ido))
 
 (eval-after-load 'ido

@@ -5,6 +5,8 @@
 (premise init)
 (premise inst-moz-repl)
 
+(eval-when-compile (require 'moz))
+
 (autoload 'inferior-moz-process "moz"
   "Return inferior MozRepl process.  Start it if necessary.
 See also `inferior-moz-start-process'." t)
@@ -20,7 +22,7 @@ See also `inferior-moz-start-process'." t)
    (concat moz-command
            moz-repl-name ".popenv('inputMode', 'printPrompt'); undefined;\n")))
 
-(defcustom moz-functions-directory "~/.emacs.d/moz-functions" "")
+(defcustom moz-functions-directory "~/.emacs.d/moz-functions" "" :group 'user)
 
 (defun moz-turn-out-call-form (name &rest arguments)
   (let* ((carrier (intern (concat "moz-function-" name)))
@@ -92,7 +94,8 @@ See also `inferior-moz-start-process'." t)
   (interactive)
   (moz-send-message "undoCloseTab();"))
 
-(defcustom moz-search-engine-format "https://www.google.com/search?q=%s" "")
+(defcustom moz-search-engine-format "https://www.google.com/search?q=%s" ""
+  :group 'user)
 
 (defun moz-search (exp)
   (interactive "sSearch: ")
@@ -100,8 +103,8 @@ See also `inferior-moz-start-process'." t)
                             (format
                              moz-search-engine-format (url-encode-url exp)))))
 
-(defcustom moz-highlight-background-color "#117722" "")
-(defcustom moz-highlight-foreground-color "#ffffff" "")
+(defcustom moz-highlight-background-color "#117722" "" :group 'user)
+(defcustom moz-highlight-foreground-color "#ffffff" "" :group 'user)
 
 (defun moz-focus-link-on-top ()
   (interactive)

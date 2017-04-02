@@ -13,7 +13,9 @@
 The lines are shown in a buffer named *Moccur*.
 It serves as a menu to find any of the occurrences in this buffer.
 \\[describe-mode] in that buffer will explain how." t)
-(setq moccur-split-word t)
+
+(eval-after-load 'color-moccur
+  (custom-set-variables '(moccur-split-word t)))
 
 
 ;;; bindings

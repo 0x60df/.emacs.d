@@ -5,6 +5,8 @@
 
 ;;; base
 
+(premise init)
+
 
 ;; functions
 (defun server-client-frame-list (&optional client)

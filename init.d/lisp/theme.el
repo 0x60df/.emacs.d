@@ -2,6 +2,8 @@
 ;;;; theme.el
 
 
+(premise init)
+
 (custom-set-variables '(custom-theme-directory "~/.emacs.d/themes/"))
 (add-to-list 'custom-theme-load-path "~/.emacs.d/themes/lisp")
 (add-to-list 'custom-theme-load-path "~/.emacs.d/themes/site-lisp")

@@ -2,6 +2,8 @@
 ;;;; custom.el
 
 
+(premise init)
+
 (defgroup user nil "" :group 'emacs)
 
 (custom-set-variables '(custom-file "~/.emacs.d/custom.el"))

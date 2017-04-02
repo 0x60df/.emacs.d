@@ -2,6 +2,8 @@
 ;;;; init-abbrev.el
 
 
+(premise init)
+
 (eval-after-load 'abbrev
   '(custom-set-variables '(abbrev-file-name "~/.emacs.d/abbrev_defs")
                          '(save-abbrevs 'silently)))

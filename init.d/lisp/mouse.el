@@ -2,6 +2,8 @@
 ;;;; mouse.el
 
 
+(premise init)
+
 (defadvice mouse-drag-region (before set-mark-before-mouse-drag-region)
   (push-mark))
 

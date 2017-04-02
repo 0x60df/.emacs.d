@@ -2,6 +2,8 @@
 ;;;; subr.el
 
 
+(premise init)
+
 (defmacro call-with-runtime-bindings (binders function name)
   (let ((varlist
           (mapcar

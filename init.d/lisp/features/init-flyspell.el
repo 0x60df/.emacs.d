@@ -2,6 +2,8 @@
 ;;;; init-flyspell.el
 
 
+(premise init)
+
 (eval-when-compile
   (require 'flyspell))
 

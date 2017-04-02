@@ -3,6 +3,11 @@
 
 
 
+;;; base
+
+(premise init)
+
+
 ;;; format
 
 (setq-default mode-line-mule-info '("%Z"))

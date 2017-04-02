@@ -2,6 +2,8 @@
 ;;;; functions.el
 
 
+(premise init)
+
 (defun duplicate-and-comment-out ()
   (interactive)
   (if (region-active-p)

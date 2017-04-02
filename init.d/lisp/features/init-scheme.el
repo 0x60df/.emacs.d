@@ -2,6 +2,8 @@
 ;;;; init-scheme.el
 
 
+(premise init)
+
 (eval-when-compile (require 'scheme))
 (eval-after-load 'scheme
   `(progn

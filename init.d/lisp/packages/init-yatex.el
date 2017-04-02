@@ -19,11 +19,12 @@
                 ("\\.bbl$" . yatex-mode))
               auto-mode-alist))
 
-(setq YaTeX-close-paren-always 'never)
-(setq YaTeX-inhibit-prefix-letter t)
-(setq YaTeX-kanji-code nil)
-(setq YaTeX-use-LaTeX2e t)
-(setq YaTeX-use-AMS-LaTeX t)
+(eval-after-load 'yatex
+  '(custom-set-variables '(YaTeX-close-paren-always 'never)
+                         '(YaTeX-inhibit-prefix-letter t)
+                         '(YaTeX-kanji-code nil)
+                         '(YaTeX-use-LaTeX2e t)
+                         '(YaTeX-use-AMS-LaTeX t)))
 
 (add-hook 'yatex-mode-hook
           '(lambda ()

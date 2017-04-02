@@ -2,6 +2,8 @@
 ;;;; init-python.el
 
 
+(premise init)
+
 (eval-when-compile (require 'python))
 (eval-after-load 'python
   '(progn

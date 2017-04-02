@@ -2,6 +2,8 @@
 ;;;; suppresion.el
 
 
+(premise init)
+
 (custom-set-variables '(ring-bell-function 'ignore))
 
 (eval-after-load 'advice

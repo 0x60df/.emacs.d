@@ -8,6 +8,8 @@
 (premise init)
 (premise inst-smartparens)
 
+(require 'smartparens)
+
 (smartparens-global-mode)
 (custom-set-variables '(sp-highlight-pair-overlay nil)
                       '(sp-highlight-wrap-overlay nil)

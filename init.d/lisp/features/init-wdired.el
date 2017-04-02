@@ -2,6 +2,8 @@
 ;;;; init-wdired.el
 
 
+(premise init)
+
 (eval-when-compile (require 'dired))
 (eval-after-load 'dired
   '(progn
