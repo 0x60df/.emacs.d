@@ -2,6 +2,7 @@
 ;;;; frame.el
 
 
+(premise init)
 (premise custom)
 
 (defvar after-make-terminal-functions nil)
