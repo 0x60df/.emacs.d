@@ -1,5 +1,4 @@
 (:name ox-qmd
-       :description
-       "Markdown (qiita flavor) export back-end for GNU Emacs Org-mode."
+       :description " Qiita Markdown Back-End for Org Export Engine "
        :type github
        :pkgname "0x60df/ox-qmd")
