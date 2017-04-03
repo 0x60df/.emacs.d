@@ -5,7 +5,7 @@
 (premise init)
 (premise init-el-get)
 
-(el-get-bundle emacs-jp/replace-colorthemes)
+(el-get-bundle replace-colorthemes)
 
 
 (resolve inst-replace-colorthemes)

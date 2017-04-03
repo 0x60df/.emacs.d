@@ -1,0 +1,4 @@
+(:name ox-gfm
+       :description "Replace color-theme with Emacs theme framework"
+       :type github
+       :pkgname "emacs-jp/replace-colorthemes")
