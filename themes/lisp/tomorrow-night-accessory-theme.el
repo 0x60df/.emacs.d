@@ -153,7 +153,8 @@
    '(helm-selection ((t :inherit region)))
    '(helm-selection-line ((t :inherit highlight :distant-foreground nil)))
    '(helm-separator ((t :inherit error)))
-   '(helm-visible-mark ((t :inherit highlight)))
+   `(helm-visible-mark ((t :underline
+                           ,(color-theme-tomorrow--with-colors 'night yellow))))
    '(helm-buffer-directory ((t :inherit dired-directory)))
    '(helm-buffer-file ((t :inherit default)))
    '(helm-buffer-not-saved ((t :inherit warning)))
