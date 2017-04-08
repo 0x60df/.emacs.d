@@ -27,6 +27,9 @@
 (define-key evil-insert-state-map (kbd "H-e") #'evil-emacs-state)
 (define-key evil-emacs-state-map (kbd "H-e") #'evil-exit-emacs-state)
 
+(evil-set-toggle-key "C-]")
+(global-set-key (kbd "C-z") #'abort-recursive-edit)
+
 ;; leader
 (defun evil-leader (command)
   (interactive (list (read-from-minibuffer
