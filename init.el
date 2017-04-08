@@ -120,6 +120,7 @@
 (init functions)
 (init bindings)
 (init client)
+(init vc)
 (init theme)
 (init mouse)
 (init japanese)
