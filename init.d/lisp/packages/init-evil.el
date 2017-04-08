@@ -22,6 +22,14 @@
   (interactive)
   (evil-exit-emacs-state))
 (evil-ex-define-cmd "q[uit]" 'evil-emacs-state)
+(evil-define-command evil-save-and-emacs-state (file &optional bang)
+  "Saves the current buffer and toggle to emacs state."
+  :repeat nil
+  (interactive "<f><!>")
+  (evil-write nil nil nil file bang)
+  (evil-emacs-state))
+(evil-ex-define-cmd "wq" 'evil-save-and-emacs-state)
+
 
 (define-key evil-motion-state-map (kbd "H-e") #'evil-emacs-state)
 (define-key evil-insert-state-map (kbd "H-e") #'evil-emacs-state)
