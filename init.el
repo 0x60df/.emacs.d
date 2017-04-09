@@ -123,8 +123,8 @@
 (init vc)
 (init theme)
 (init mouse)
-(init japanese)
 (init package)
+(init japanese)
 
 
 ;;; site-init
@@ -193,20 +193,19 @@
 (init-package inf-ruby)
 (init-package robe-mode)
 (init-package yaml-mode)
+(init-package yatex)
+(init-package moz-repl)
+(init-package ox-gfm)
+(init-package ox-qmd)
 (init-package smartrep)
 (init-package rainbow-delimiters)
 (init-package rainbow-mode)
-(init-package moz-repl)
-(init-package yatex)
 (init-package tomorrow-theme)
 (init-package color-theme-zenburn)
 (init-package color-theme-solarized)
 (init-package base16)
 (init-package replace-colorthemes)
 (init-package ddskk)
-
-(init-package ox-gfm)
-(init-package ox-qmd)
 
 
 ;;; user-features
