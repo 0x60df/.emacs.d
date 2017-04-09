@@ -44,6 +44,8 @@
      (add-to-list 'helm-completing-read-handlers-alist
                   '(find-alternate-file . ido-read-file-name))
      (add-to-list 'helm-completing-read-handlers-alist
+                  '(load-file . ido-read-file-name))
+     (add-to-list 'helm-completing-read-handlers-alist
                   '(ruby-load-file . ido-read-file-name))))
 
 
