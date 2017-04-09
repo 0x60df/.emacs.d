@@ -135,8 +135,9 @@
 
 ;; undo-tree
 (eval-after-load 'undo-tree
-  '(custom-set-variables '(undo-tree-mode-lighter " UT")))
-(global-undo-tree-mode -1)
+  '(progn
+     (custom-set-variables '(undo-tree-mode-lighter " UT"))
+     (global-undo-tree-mode -1)))
 
 
 (resolve init-evil)
