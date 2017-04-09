@@ -2,12 +2,17 @@
 ;;;; init-visible-mark.el
 
 
+
+;;; base
+
 (premise init)
 (premise inst-visible-mark)
 
 (require 'visible-mark)
+
 (custom-set-variables '(visible-mark-max 1)
                       '(visible-mark-inhibit-trailing-overlay t))
+
 (defadvice visible-mark-initialize-overlays (after set-priority)
   (mapc (lambda (overlay)
           (overlay-put overlay 'priority 200))
@@ -23,6 +28,13 @@
 (ad-activate 'visible-mark-move-overlays)
 
 (global-visible-mark-mode 1)
+
+;;; pacakges
+
+
+;; multiple-cursors
+(eval-after-load 'multiple-cursors
+  '(add-to-list 'mc/unsupported-minor-modes 'visible-mark-mode))
 
 
 (resolve init-visible-mark)

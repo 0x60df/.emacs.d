@@ -19,7 +19,6 @@
 (global-set-key (kbd "C-c @ a") 'mc/mark-all-like-this)
 (global-set-key (kbd "C-c @ SPC") 'set-mark-command)
 
-(add-to-list 'mc/unsupported-minor-modes 'visible-mark-mode)
 (add-to-list 'mc/unsupported-minor-modes 'show-paren-mode)
 
 (custom-set-variables '(mc/always-run-for-all t))
