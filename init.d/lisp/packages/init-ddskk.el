@@ -173,13 +173,14 @@
 (eval-after-load 'skk
   '(eval-after-load 'evil
      '(progn
-        (defadvice update-buffer-local-cursor-color (around suppress-on-evil)
+        (defadvice ccc-update-buffer-local-cursor-color (around
+                                                         suppress-on-evil)
           (if (and (eq evil-state 'emacs) skk-mode)
               ad-do-it))
         (defadvice evil-refresh-cursor (around suppress-on-skk)
           (if (not (and (eq evil-state 'emacs) skk-mode))
               ad-do-it))
-        (ad-activate 'update-buffer-local-cursor-color)
+        (ad-activate 'ccc-update-buffer-local-cursor-color)
         (ad-activate 'evil-refresh-cursor))))
 
 
