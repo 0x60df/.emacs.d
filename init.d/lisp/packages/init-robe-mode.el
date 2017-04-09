@@ -23,7 +23,6 @@ project."
 ;;; patch
 
 (defadvice ac-robe-candidates (after delete-duplicated-candidates)
-  (message "%d" (length ad-return-value))
   (setq ad-return-value (ac-delete-duplicated-candidates ad-return-value)))
 
 (ad-activate 'ac-robe-candidates)
