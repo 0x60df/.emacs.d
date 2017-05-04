@@ -1,0 +1,5 @@
+(:name flex-isearch-
+       :website "https://www.emacswiki.org/emacs/FlexIsearch"
+       :description "Flex matching (like ido) in isearch."
+       :type hg
+       :url "https://bitbucket.org/jpkotta/flex-isearch")

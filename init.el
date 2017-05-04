@@ -183,6 +183,7 @@
 (init-package ag)
 (init-package color-moccur)
 (init-package moccur-edit)
+(init-package flex-isearch)
 (init-package visible-mark)
 (init-package smart-compile)
 (init-package smartparens)
