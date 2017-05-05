@@ -1,7 +1,6 @@
 *
 !.gitignore
 !.gitkeep
-!.gitmodules
 !/ac-dict/
 !/ac-dict/*
 !/backup/
