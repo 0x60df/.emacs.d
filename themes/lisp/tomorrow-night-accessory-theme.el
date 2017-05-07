@@ -119,26 +119,11 @@
 ;;; git-getter-fringe
 
 (when (featurep 'git-gutter-fringe)
-  (require 'ediff)
-  (color-theme-tomorrow--with-colors
-   'night
-   (custom-theme-set-faces
-    'tomorrow-night-accessory
-    `(git-gutter-fr:modified
-      ((((type graphic))
-        :inherit ediff-fine-diff-C
-        :foreground ,background
-        :inverse-video t)))
-    `(git-gutter-fr:added
-      ((((type graphic))
-        :inherit ediff-fine-diff-B
-        :foreground ,background
-        :inverse-video t)))
-    `(git-gutter-fr:deleted
-      ((((type graphic))
-        :inherit ediff-fine-diff-A
-        :foreground ,background
-        :inverse-video t))))))
+  (custom-theme-set-faces
+   'tomorrow-night-accessory
+   '(git-gutter-fr:modified ((t :foreground "#aaaa22")))
+   '(git-gutter-fr:added ((t :foreground "#22aa22")))
+   '(git-gutter-fr:deleted ((t :foreground "#aa2222")))))
 
 
 ;;; helm
