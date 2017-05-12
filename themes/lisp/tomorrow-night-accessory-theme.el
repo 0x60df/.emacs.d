@@ -70,7 +70,7 @@
    '(popup-face ((t :inherit default)))
    '(popup-isearch-match ((t :inherit lazy-highlight)))
    '(popup-menu-mouse-face ((t :inherit popup-menu-selection-face)))
-   '(popup-menu-selection-face ((t :inherit region)))
+   '(popup-menu-selection-face ((t :inherit (region default))))
    '(popup-scroll-bar-background-face ((t :inherit mode-line-inactive)))
    '(popup-scroll-bar-foreground-face ((t :inherit mode-line-inactive
                                           :inverse-video t)))
