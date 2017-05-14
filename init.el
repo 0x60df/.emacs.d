@@ -155,6 +155,13 @@
 (init-feature scheme)
 
 
+;;; user-features
+
+(init user-feature)
+
+(init-feature scratchb)
+
+
 ;;; packages
 
 (init-package el-get)
@@ -208,11 +215,6 @@
 (init-package base16)
 (init-package replace-colorthemes)
 (init-package ddskk)
-
-
-;;; user-features
-
-(init user-feature)
 
 
 ;;; site-start

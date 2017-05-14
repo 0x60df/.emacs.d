@@ -19,5 +19,7 @@
                             (remove ".." (directory-files d)))))
                  '("~/.emacs.d/site-lisp" "~/.emacs.d/lisp"))))))
 
+(load "~/.emacs.d/lisp/_loaddefs.el" 'noerror 'nomessage)
+
 
 (resolve user-feature)

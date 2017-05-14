@@ -29,7 +29,8 @@
 !/moz-functions/
 !/moz-functions/*.js
 !/lisp/
-!/lisp/*/
+!/lisp/**/*
+!/scratchb/
 !/site-lisp/
 !/snippets/
 !/snippets/**/*
