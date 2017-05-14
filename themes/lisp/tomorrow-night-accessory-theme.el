@@ -68,14 +68,16 @@
   (custom-theme-set-faces
    'tomorrow-night-accessory
    '(popup-face ((t :inherit default)))
-   '(popup-isearch-match ((t :inherit lazy-highlight)))
+   '(popup-isearch-match ((t :inherit (lazy-highlight default))))
    '(popup-menu-mouse-face ((t :inherit popup-menu-selection-face)))
    '(popup-menu-selection-face ((t :inherit (region default))))
-   '(popup-scroll-bar-background-face ((t :inherit mode-line-inactive)))
-   '(popup-scroll-bar-foreground-face ((t :inherit mode-line-inactive
+   '(popup-scroll-bar-background-face ((t :inherit
+                                          (mode-line-inactive default))))
+   '(popup-scroll-bar-foreground-face ((t :inherit
+                                          (mode-line-inactive default)
                                           :inverse-video t)))
-   '(popup-summary-face ((t :inherit shadow)))
-   '(popup-tip-face ((t :inherit mode-line)))))
+   '(popup-summary-face ((t :inherit (shadow default))))
+   '(popup-tip-face ((t :inherit (mode-line default))))))
 
 
 ;;; auto-complete
