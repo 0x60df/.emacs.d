@@ -47,14 +47,15 @@
 (defun scratchb-snapshot ()
   "Write *scratch* buffer content to `scratchb-snapshot-directory'"
   (interactive)
-  (with-current-buffer "*scratch*"
-    (save-restriction
-      (widen)
-      (write-region (point-min) (point-max)
-                    (concat scratchb-snapshot-directory
-                            "/"
-                            (format-time-string "%Y%m%d%H%M%S.el"
-                                                (current-time)))))))
+  (if (file-writable-p scratchb-snapshot-directory)
+      (with-current-buffer "*scratch*"
+        (save-restriction
+          (widen)
+          (write-region (point-min) (point-max)
+                        (concat scratchb-snapshot-directory
+                                "/"
+                                (format-time-string "%Y%m%d%H%M%S.el"
+                                                    (current-time))))))))
 
 (provide 'scratchb)
 

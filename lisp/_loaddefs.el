@@ -3,8 +3,8 @@
 ;;; Code:
 
 
-;;;### (autoloads nil "scratchb" "scratchb.el" (22808 36172 954011
-;;;;;;  109000))
+;;;### (autoloads nil "scratchb" "scratchb.el" (22809 44098 620419
+;;;;;;  69000))
 ;;; Generated autoloads from scratchb.el
 
 (defvar scratchb-snapshot-directory (concat user-emacs-directory "scratchb") "\
