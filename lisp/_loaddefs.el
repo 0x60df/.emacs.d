@@ -3,8 +3,8 @@
 ;;; Code:
 
 
-;;;### (autoloads nil "scratchb" "scratchb.el" (22809 44098 620419
-;;;;;;  69000))
+;;;### (autoloads nil "scratchb" "scratchb.el" (22809 45591 923747
+;;;;;;  140000))
 ;;; Generated autoloads from scratchb.el
 
 (defvar scratchb-snapshot-directory (concat user-emacs-directory "scratchb") "\
@@ -38,6 +38,25 @@ Generate *scratch* buffer if it does not exist.
 Write *scratch* buffer content to `scratchb-snapshot-directory'
 
 \(fn)" t nil)
+
+(defvar scratchb-mode nil "\
+Non-nil if Scratchb mode is enabled.
+See the `scratchb-mode' command
+for a description of this minor mode.
+Setting this variable directly does not take effect;
+either customize it (see the info node `Easy Customization')
+or call the function `scratchb-mode'.")
+
+(custom-autoload 'scratchb-mode "scratchb" nil)
+
+(autoload 'scratchb-mode "scratchb" "\
+Toggle `scratchb-mode'.
+
+In `scratchb-mode' *scratch*
+  - buffer is reverted automatically
+  - snapshot of content is taken when quit emacs or flush *scratch* buffer
+
+\(fn &optional ARG)" t nil)
 
 ;;;***
 

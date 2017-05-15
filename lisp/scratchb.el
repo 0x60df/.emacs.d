@@ -57,6 +57,31 @@
                                 (format-time-string "%Y%m%d%H%M%S.el"
                                                     (current-time))))))))
 
+(defun scratchb--snapshot-when-scratchb ()
+  "Snapshot scratchb when current-frame is *scratch* buffer."
+  (if (equal "*scratch*" (buffer-name)) (scratchb-snapshot)))
+
+;;;###autoload
+(define-minor-mode scratchb-mode
+  "Toggle `scratchb-mode'.
+
+In `scratchb-mode' *scratch*
+  - buffer is reverted automatically
+  - snapshot of content is taken when quit emacs or flush *scratch* buffer"
+  :group 'scratchb
+  :global t
+  (if scratchb-mode
+      (progn
+        (scratchb-revert)
+        (add-hook 'scratchb-before-flush-hook #'scratchb-snapshot)
+        (add-hook 'kill-emacs-hook #'scratchb-snapshot)
+        (add-hook 'kill-buffer-hook #'scratchb--snapshot-when-scratchb)
+        (add-hook 'buffer-list-update-hook #'scratchb-revert))
+    (remove-hook 'scratchb-before-flush-hook #'scratchb-snapshot)
+    (remove-hook 'kill-emacs-hook #'scratchb-snapshot)
+    (remove-hook 'kill-buffer-hook #'scratchb--snapshot-when-scratchb)
+    (remove-hook 'buffer-list-update-hook #'scratchb-revert)))
+
 (provide 'scratchb)
 
 ;;; scratchb.el ends here
