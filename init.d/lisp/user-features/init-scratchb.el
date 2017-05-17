@@ -1,5 +1,5 @@
 
-;;;; scratchb.el
+;;;; init-scratchb.el
 
 (premise init)
 
