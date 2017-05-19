@@ -160,6 +160,7 @@
 (init user-feature)
 
 (init-feature scratchb)
+(init-feature scratch)
 
 
 ;;; packages

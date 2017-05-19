@@ -3,14 +3,34 @@
 ;;; Code:
 
 
-;;;### (autoloads nil "scratchb" "scratchb.el" (22809 45591 923747
-;;;;;;  140000))
+;;;### (autoloads nil "scratch" "scratch.el" (22815 8741 265825 457000))
+;;; Generated autoloads from scratch.el
+
+(autoload 'scratch-declare-major-mode "scratch" "\
+Declare major mode for scratch.
+
+\(fn &rest ARGS)" nil nil)
+
+(autoload 'scratch "scratch" "\
+Generate new buffer instantly.
+
+\(fn ARG)" t nil)
+
+;;;***
+
+;;;### (autoloads nil "scratchb" "scratchb.el" (22812 21661 933139
+;;;;;;  21000))
 ;;; Generated autoloads from scratchb.el
 
 (defvar scratchb-snapshot-directory (concat user-emacs-directory "scratchb") "\
 Directory in which snapshots of scratch buffer is saved.")
 
 (custom-autoload 'scratchb-snapshot-directory "scratchb" t)
+
+(defvar scratchb-default-directory "~" "\
+Directory which is selected when scratch buffer is reverted.")
+
+(custom-autoload 'scratchb-default-directory "scratchb" t)
 
 (defvar scratchb-before-flush-hook nil "\
 Hook run before `scratchb-flush'.")
