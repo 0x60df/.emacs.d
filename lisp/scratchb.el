@@ -12,6 +12,11 @@
   :group 'scratchb)
 
 ;;;###autoload
+(defcustom scratchb-default-directory "~"
+  "Directory which is selected when scratch buffer is reverted."
+  :group'scratchb)
+
+;;;###autoload
 (defvar scratchb-before-flush-hook nil "Hook run before `scratchb-flush'.")
 
 ;;;###autoload
@@ -40,6 +45,7 @@
   (run-hook-with-args 'scratchb-before-revert-hook)
   (if (not (member (get-buffer "*scratch*") (buffer-list)))
       (with-current-buffer (get-buffer-create "*scratch*")
+        (cd scratchb-default-directory)
         (lisp-interaction-mode)
         (run-hook-with-args 'scratchb-after-revert-hook))))
 
