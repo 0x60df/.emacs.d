@@ -29,7 +29,7 @@
 !/moz-functions/
 !/moz-functions/*.js
 !/lisp/
-!/lisp/**/*
+!/lisp/**/*.el
 !/scratchb/
 !/site-lisp/
 !/snippets/

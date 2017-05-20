@@ -21,5 +21,12 @@
 
 (require 'user-feature-loaddefs nil 'noerror)
 
+(mapc
+ (lambda (el)
+   (let ((elc (concat el "c")))
+     (unless (and (file-exists-p elc) (not (file-writable-p elc)))
+       (byte-compile-file el))))
+ (directory-files-recursively "~/.emacs.d/lisp/" "\\.el$"))
+
 
 (resolve user-feature)
