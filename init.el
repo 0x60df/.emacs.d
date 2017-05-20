@@ -195,6 +195,7 @@
 (init-package flex-isearch)
 (init-package visible-mark)
 (init-package smart-compile)
+(init-package quickrun)
 (init-package smartparens)
 (init-package which-key)
 (init-package web-mode)
