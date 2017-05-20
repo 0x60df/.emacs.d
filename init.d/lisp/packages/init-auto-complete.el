@@ -43,7 +43,7 @@
   (cond ((not (eq last-command 'ac-expand)) ;fist expand
          (setq ac-last-prefix ac-prefix)
          ad-do-it
-         (unless (ac-inline-live-p)
+         (unless (or (ac-inline-live-p) (null ac-last-prefix))
            (ac-expand-string ac-last-prefix (eq last-command 'ac-expand))))
         (ac-last-prefix                 ;second expand
          (ac-expand-string ac-last-prefix (eq last-command 'ac-expand))
