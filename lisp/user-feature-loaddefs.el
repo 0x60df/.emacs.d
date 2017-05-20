@@ -1,4 +1,4 @@
-;;; _loaddefs.el --- automatically extracted autoloads
+;;; user-feature-loaddefs.el --- automatically extracted autoloads
 ;;
 ;;; Code:
 
@@ -80,11 +80,15 @@ In `scratchb-mode' *scratch*
 
 ;;;***
 
-(provide '_loaddefs)
+;;;### (autoloads nil nil ("_loaddefs.el") (22815 8748 309158 766000))
+
+;;;***
+
+(provide 'user-feature-loaddefs)
 ;; Local Variables:
 ;; version-control: never
 ;; no-byte-compile: t
 ;; no-update-autoloads: t
 ;; coding: utf-8
 ;; End:
-;;; _loaddefs.el ends here
+;;; user-feature-loaddefs.el ends here
