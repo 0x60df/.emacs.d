@@ -22,7 +22,8 @@
 (eval-after-load 'skk-vars
   '(custom-set-variables '(skk-isearch-mode-enable nil)
                          '(skk-byte-compile-init-file t)
-                         '(skk-user-directory "~/.emacs.d/ddskk")
+                         '(skk-user-directory
+                           (concat user-emacs-directory "ddskk"))
                          '(skk-bayesian-history-file
                            (expand-file-name "bayesian" skk-user-directory))
                          '(skk-bayesian-corpus-file

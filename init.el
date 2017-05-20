@@ -81,11 +81,12 @@
      'append
      (mapcar
       (lambda (d)
+        (setq d (concat user-emacs-directory d))
         (funcall filter (lambda (f) (not (file-directory-p f)))
                  (mapcar (lambda (f) (expand-file-name (concat d "/" f)))
                          (remove ".."
                                  (directory-files d)))))
-      '("~/.emacs.d/init.d/site-lisp" "~/.emacs.d/init.d/lisp")))))
+      '("init.d/site-lisp" "init.d/lisp")))))
 
 (defvar init-units nil)
 
@@ -129,7 +130,7 @@
 
 ;;; site-init
 
-(init-by "~/.emacs.d/site-init.el" 'noerror)
+(init-by (concat user-emacs-directory "site-init.el") 'noerror)
 
 
 ;;; features
@@ -221,4 +222,4 @@
 
 ;;; site-start
 
-(init-by "~/.emacs.d/site-start.el" 'noerror)
+(init-by (concat user-emacs-directory "site-start.el") 'noerror)

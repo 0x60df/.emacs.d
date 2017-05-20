@@ -9,7 +9,7 @@
 (premise subr)
 (premise inst-auto-complete)
 
-(add-to-list 'ac-dictionary-directories "~/.emacs.d/ac-dict")
+(add-to-list 'ac-dictionary-directories (concat user-emacs-directory "ac-dict"))
 
 (eval-after-load 'auto-complete
   '(custom-set-variables '(ac-auto-show-menu nil)

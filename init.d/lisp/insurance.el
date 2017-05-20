@@ -5,7 +5,7 @@
 (premise init)
 
 (custom-set-variables
- '(backup-directory-alist '((".*" . "~/.emacs.d/backup")))
+ '(backup-directory-alist `((".*" . ,(concat user-emacs-directory "backup"))))
  '(backup-by-copying t)
  '(version-control t)
  '(kept-new-versions 5)

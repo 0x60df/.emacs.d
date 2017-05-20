@@ -6,7 +6,7 @@
 
 (defgroup user nil "" :group 'emacs)
 
-(custom-set-variables '(custom-file "~/.emacs.d/custom.el"))
+(custom-set-variables '(custom-file (concat user-emacs-directory "custom.el")))
 (add-hook 'after-init-hook (lambda () (load custom-file 'noerror)))
 
 (defun custom-clean-settings ()

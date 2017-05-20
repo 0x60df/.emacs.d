@@ -22,7 +22,8 @@ See also `inferior-moz-start-process'." t)
    (concat moz-command
            moz-repl-name ".popenv('inputMode', 'printPrompt'); undefined;\n")))
 
-(defcustom moz-functions-directory "~/.emacs.d/moz-functions" "" :group 'user)
+(defcustom moz-functions-directory (concat user-emacs-directory "moz-functions")
+  "" :group 'user)
 
 (defun moz-turn-out-call-form (name &rest arguments)
   (let* ((carrier (intern (concat "moz-function-" name)))

@@ -12,12 +12,13 @@
          (apply 'append
                 (mapcar
                  (lambda (d)
+                   (setq d (concat user-emacs-directory d))
                    (funcall
                     filter
                     (lambda (f) (not (file-directory-p f)))
                     (mapcar (lambda (f) (expand-file-name (concat d "/" f)))
                             (remove ".." (directory-files d)))))
-                 '("~/.emacs.d/site-lisp" "~/.emacs.d/lisp"))))))
+                 '("site-lisp" "lisp"))))))
 
 (require 'user-feature-loaddefs nil 'noerror)
 
@@ -26,7 +27,7 @@
    (let ((elc (concat el "c")))
      (unless (and (file-exists-p elc) (not (file-writable-p elc)))
        (byte-compile-file el))))
- (directory-files-recursively "~/.emacs.d/lisp/" "\\.el$"))
+ (directory-files-recursively (concat user-emacs-directory "lisp/") "\\.el$"))
 
 
 (resolve user-feature)

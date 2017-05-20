@@ -7,7 +7,8 @@
 
 (eval-after-load 'el-get-recipes
   '(custom-set-variables
-    '(el-get-user-package-directory "~/.emacs.d/el-get-user/init-files")))
+    '(el-get-user-package-directory
+      (concat user-emacs-directory "el-get-user/init-files"))))
 
 
 (resolve init-el-get)
