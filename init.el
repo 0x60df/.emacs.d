@@ -199,6 +199,7 @@
 (init-package quickrun)
 (init-package smartparens)
 (init-package which-key)
+(init-package frame-dealer)
 (init-package web-mode)
 (init-package markdown-mode)
 (init-package ruby-end)
