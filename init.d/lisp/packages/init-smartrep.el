@@ -13,7 +13,8 @@
 
 (eval-when-compile
   (require 'org)
-  (require 'flyspell))
+  (require 'flyspell)
+  (require 'smerge-mode))
 
 (eval-after-load 'smartrep
   '(custom-set-variables '(smartrep-mode-line-string-activated "")))
