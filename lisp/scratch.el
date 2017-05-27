@@ -9,6 +9,13 @@
 (defvar scratch-declared-major-mode nil
   "List of major mode which is declared for `scratch'")
 
+;;;###autoload
+(defvar scratch-mode-map
+  (let ((map (make-sparse-keymap)))
+    (define-key map (kbd "C-c C-q") #'scratch-kill-current-buffer)
+    map)
+  "Keymap for scratch-mode.")
+
 (defun scratch-major-mode-p (symbol)
   "Non-nil if SYMBOL is not major mode."
     (if (and
@@ -39,12 +46,24 @@
     l))
 
 ;;;###autoload
+(defun scratch-kill-current-buffer ()
+  "Kill current buffer"
+  (interactive)
+  (kill-buffer (current-buffer)))
+
+;;;###autoload
 (defun scratch-declare-major-mode (&rest args)
   "Declare major mode for scratch."
   (mapc
    (lambda (arg)
      (if (symbolp arg) (add-to-list 'scratch-declared-major-mode arg)))
    args))
+
+;;;###autoload
+(define-minor-mode scratch-mode
+  "Toggle `scratch-mode'."
+  :group 'scratch
+  :keymap 'scratch-mode-map)
 
 ;;;###autoload
 (defun scratch (arg)
@@ -65,7 +84,8 @@
     (switch-to-buffer (generate-new-buffer
                        (concat "*" (substring (format "%07x" (random)) -7)
                                "*")))
-    (funcall s)))
+    (funcall s)
+    (scratch-mode 1)))
 
 (provide 'scratch)
 

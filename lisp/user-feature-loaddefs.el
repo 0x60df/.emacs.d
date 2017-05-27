@@ -3,13 +3,27 @@
 ;;; Code:
 
 
-;;;### (autoloads nil "scratch" "scratch.el" (22815 8741 265825 457000))
+;;;### (autoloads nil "scratch" "scratch.el" (22825 46294 788290
+;;;;;;  917000))
 ;;; Generated autoloads from scratch.el
+
+(defvar scratch-mode-map (let ((map (make-sparse-keymap))) (define-key map (kbd "C-c C-q") #'scratch-kill-current-buffer) map) "\
+Keymap for scratch-mode.")
+
+(autoload 'scratch-kill-current-buffer "scratch" "\
+Kill current buffer
+
+\(fn)" t nil)
 
 (autoload 'scratch-declare-major-mode "scratch" "\
 Declare major mode for scratch.
 
 \(fn &rest ARGS)" nil nil)
+
+(autoload 'scratch-mode "scratch" "\
+Toggle `scratch-mode'.
+
+\(fn &optional ARG)" t nil)
 
 (autoload 'scratch "scratch" "\
 Generate new buffer instantly.
