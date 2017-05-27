@@ -145,6 +145,7 @@
 (init-feature dired)
 (init-feature wdired)
 (init-feature dired-x)
+(init-feature autorevert)
 (init-feature org)
 (init-feature flyspell)
 (init-feature term)
