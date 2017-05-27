@@ -98,6 +98,27 @@
        ("," . flyspell-goto-next-error)
        (";" . flyspell-auto-correct-previous-word))))
 
+;; smerge-mode
+
+(eval-after-load 'smerge-mode
+  '(smartrep-define-key
+       smerge-mode-map "C-c ^"
+     '(("RET" . smerge-keep-current)
+       ("<return>" . smerge-keep-current)
+       ("= <" . smerge-diff-base-mine)
+       ("= =" . smerge-diff-mine-other)
+       ("= >" . smerge-diff-base-other)
+       ("C" . smerge-combine-with-next)
+       ("E" . smerge-ediff)
+       ("R" . smerge-refine)
+       ("a" . smerge-keep-all)
+       ("b" . smerge-keep-base)
+       ("m" . smerge-keep-mine)
+       ("n" . smerge-next)
+       ("o" . smerge-keep-other)
+       ("p" . smerge-prev)
+       ("r" . smerge-resolve))))
+
 ;; git-gutter
 (eval-after-load 'git-gutter
   '(smartrep-define-key
