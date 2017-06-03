@@ -17,6 +17,11 @@
   :group'scratchb)
 
 ;;;###autoload
+(defcustom scratchb-snapshot-limit 256
+  "Number of limit for scratchb snapshot files."
+  :group 'scratchb)
+
+;;;###autoload
 (defvar scratchb-before-flush-hook nil "Hook run before `scratchb-flush'.")
 
 ;;;###autoload
@@ -53,15 +58,19 @@
 (defun scratchb-snapshot ()
   "Write *scratch* buffer content to `scratchb-snapshot-directory'"
   (interactive)
-  (if (file-writable-p scratchb-snapshot-directory)
-      (with-current-buffer "*scratch*"
-        (save-restriction
-          (widen)
-          (write-region (point-min) (point-max)
-                        (concat scratchb-snapshot-directory
-                                "/"
-                                (format-time-string "%Y%m%d%H%M%S.el"
-                                                    (current-time))))))))
+  (when (file-writable-p scratchb-snapshot-directory)
+    (with-current-buffer "*scratch*"
+      (save-restriction
+        (widen)
+        (write-region (point-min) (point-max)
+                      (concat scratchb-snapshot-directory
+                              "/"
+                              (format-time-string "%Y%m%d%H%M%S.el"
+                                                  (current-time))))))
+    (mapc #'delete-file (nthcdr scratchb-snapshot-limit
+                                (sort (file-expand-wildcards
+                                       "~/.emacs.d/scratchb/*.el")
+                                      'string>)))))
 
 (defun scratchb--snapshot-when-scratchb ()
   "Snapshot scratchb when current-frame is *scratch* buffer."
