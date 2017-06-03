@@ -3,8 +3,23 @@
 ;;; Code:
 
 
-;;;### (autoloads nil "scratch" "scratch.el" (22825 46294 788290
-;;;;;;  917000))
+;;;### (autoloads nil "fmmm" "fmmm.el" (22834 53377 290242 899000))
+;;; Generated autoloads from fmmm.el
+
+(autoload 'fmmm-declare-major-mode "fmmm" "\
+Declare major mode for fmmm.
+
+\(fn &rest ARGS)" nil nil)
+
+(autoload 'fmmm-declare-minor-mode "fmmm" "\
+Declare minor mode for fmmm.
+
+\(fn &rest ARGS)" nil nil)
+
+;;;***
+
+;;;### (autoloads nil "scratch" "scratch.el" (22834 53700 613575
+;;;;;;  90000))
 ;;; Generated autoloads from scratch.el
 
 (defvar scratch-mode-map (let ((map (make-sparse-keymap))) (define-key map (kbd "C-c C-q") #'scratch-kill-current-buffer) map) "\
@@ -15,11 +30,6 @@ Kill current buffer
 
 \(fn)" t nil)
 
-(autoload 'scratch-declare-major-mode "scratch" "\
-Declare major mode for scratch.
-
-\(fn &rest ARGS)" nil nil)
-
 (autoload 'scratch-mode "scratch" "\
 Toggle `scratch-mode'.
 
@@ -28,7 +38,7 @@ Toggle `scratch-mode'.
 (autoload 'scratch "scratch" "\
 Generate new buffer instantly.
 
-\(fn ARG)" t nil)
+\(fn)" t nil)
 
 ;;;***
 
@@ -94,7 +104,24 @@ In `scratchb-mode' *scratch*
 
 ;;;***
 
-;;;### (autoloads nil nil ("_loaddefs.el") (22815 8748 309158 766000))
+;;;### (autoloads nil "shifter" "shifter.el" (22834 51998 596914
+;;;;;;  417000))
+;;; Generated autoloads from shifter.el
+
+(autoload 'shifter-shift-major-mode "shifter" "\
+shift major mode
+
+\(fn)" t nil)
+
+(autoload 'shifter-turn-on-minor-mode "shifter" "\
+turn on minor mode
+
+\(fn FORCE)" t nil)
+
+(autoload 'shifter-turn-off-minor-mode "shifter" "\
+turn off minor mode
+
+\(fn FORCE)" t nil)
 
 ;;;***
 

@@ -162,6 +162,8 @@
 (init user-feature)
 
 (init-feature scratchb)
+(init-feature fmmm)
+(init-feature shifter)
 (init-feature scratch)
 
 
