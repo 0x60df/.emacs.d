@@ -3,7 +3,7 @@
 ;;; Code:
 
 
-;;;### (autoloads nil "fmmm" "fmmm.el" (22834 53377 290242 899000))
+;;;### (autoloads nil "fmmm" "fmmm.el" (22837 26032 794216 415000))
 ;;; Generated autoloads from fmmm.el
 
 (autoload 'fmmm-declare-major-mode "fmmm" "\
@@ -18,8 +18,8 @@ Declare minor mode for fmmm.
 
 ;;;***
 
-;;;### (autoloads nil "scratch" "scratch.el" (22834 53700 613575
-;;;;;;  90000))
+;;;### (autoloads nil "scratch" "scratch.el" (22837 26032 794216
+;;;;;;  415000))
 ;;; Generated autoloads from scratch.el
 
 (defvar scratch-mode-map (let ((map (make-sparse-keymap))) (define-key map (kbd "C-c C-q") #'scratch-kill-current-buffer) map) "\
@@ -42,8 +42,8 @@ Generate new buffer instantly.
 
 ;;;***
 
-;;;### (autoloads nil "scratchb" "scratchb.el" (22812 21661 933139
-;;;;;;  21000))
+;;;### (autoloads nil "scratchb" "scratchb.el" (22837 26032 794216
+;;;;;;  415000))
 ;;; Generated autoloads from scratchb.el
 
 (defvar scratchb-snapshot-directory (concat user-emacs-directory "scratchb") "\
@@ -55,6 +55,11 @@ Directory in which snapshots of scratch buffer is saved.")
 Directory which is selected when scratch buffer is reverted.")
 
 (custom-autoload 'scratchb-default-directory "scratchb" t)
+
+(defvar scratchb-snapshot-limit 256 "\
+Number of limit for scratchb snapshot files.")
+
+(custom-autoload 'scratchb-snapshot-limit "scratchb" t)
 
 (defvar scratchb-before-flush-hook nil "\
 Hook run before `scratchb-flush'.")
@@ -104,8 +109,8 @@ In `scratchb-mode' *scratch*
 
 ;;;***
 
-;;;### (autoloads nil "shifter" "shifter.el" (22834 51998 596914
-;;;;;;  417000))
+;;;### (autoloads nil "shifter" "shifter.el" (22837 26032 794216
+;;;;;;  415000))
 ;;; Generated autoloads from shifter.el
 
 (autoload 'shifter-shift-major-mode "shifter" "\
