@@ -20,10 +20,10 @@
              (unless ,noerror
                (signal 'init-error
                        '("Cannot init unit" ".elc file is missing" ,unit)))
-           (condition-case e
+           (condition-case status
                (load elc ,noerror ,nomessage t t)
              (init-exit
-              (cond ((eq (cadr e) 'to-recompile)
+              (cond ((eq (cadr status) 'recompile)
                      (and (delete-file elc) (setq elc nil))
                      (and (byte-compile-file el)
                           (setq elc (byte-compile-dest-file el)))
@@ -65,7 +65,7 @@
            (if (and unit-file-name
                     (file-newer-than-file-p unit-file-name load-file-name))
                (signal 'init-exit
-                       (list 'to-recompile
+                       (list 'recompile
                              (format "Premised unit '%s' was updated"
                                      ',unit))))))))
 
