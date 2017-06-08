@@ -120,6 +120,13 @@
        ("p" . smerge-prev)
        ("r" . smerge-resolve))))
 
+;; page
+(eval-after-load 'page
+  '(smartrep-define-key
+       global-map "C-x"
+     '(("[" . backward-page)
+       ("]" . forward-page))))
+
 ;; git-gutter
 (eval-after-load 'git-gutter
   '(smartrep-define-key
