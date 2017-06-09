@@ -4,6 +4,14 @@
 
 (deftheme tomorrow-night-accessory)
 
+;;; basic face
+
+(color-theme-tomorrow--with-colors
+ 'night
+ (custom-theme-set-faces
+  'tomorrow-night-accessory
+  `(escape-glyph ((t :foreground ,red)))))
+
 ;;; mode-line
 
 (custom-theme-set-faces
