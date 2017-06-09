@@ -12,6 +12,7 @@
 (define-key key-translation-map (kbd "ESC M-h") 'event-apply-hyper-modifier)
 (define-key key-translation-map (kbd "ESC M-m") 'event-apply-meta-modifier)
 (define-key key-translation-map (kbd "ESC M-s") 'event-apply-super-modifier)
+(define-key key-translation-map (kbd "<pause>") 'event-apply-alt-modifier)
 (global-set-key "\C-ch" 'help-command)
 (global-set-key "\C-cd" 'pwd)
 (global-set-key "\C-csg" 'grep)
