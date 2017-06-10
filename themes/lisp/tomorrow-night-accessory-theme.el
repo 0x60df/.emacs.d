@@ -1,5 +1,5 @@
 
-;;;; tomorrow-accessory-theme.el
+;;;; tomorrow-night-accessory-theme.el
 
 
 (deftheme tomorrow-night-accessory)

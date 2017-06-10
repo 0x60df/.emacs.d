@@ -1,5 +1,5 @@
 
-;;;; tomorrow-patch-theme.el
+;;;; tomorrow-night-patch-theme.el
 
 
 (deftheme tomorrow-night-patch)
