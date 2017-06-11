@@ -13,7 +13,8 @@
          `(lambda ()
             (interactive)
             (funcall 'ace-jump-char-mode ,c))))
-      (vconcat "1234567890abcdefghijklmnopqrstuvwxyz"))
+      (vconcat "!\"#$%&'()*+,-./0123456789:;<=>?@"
+               "[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~"))
 (global-set-key (read-kbd-macro "A-<return>") #'ace-jump-line-mode)
 
 
