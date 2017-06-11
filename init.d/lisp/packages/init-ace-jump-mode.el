@@ -7,6 +7,14 @@
 
 (global-set-key (kbd "M-g M-j") 'ace-jump-mode)
 (global-set-key (kbd "H-g") 'ace-jump-mode)
+(mapc (lambda (c)
+        (global-set-key
+         (kbd (concat "A-" (char-to-string c)))
+         `(lambda ()
+            (interactive)
+            (funcall 'ace-jump-char-mode ,c))))
+      (vconcat "1234567890abcdefghijklmnopqrstuvwxyz"))
+(global-set-key (read-kbd-macro "A-<return>") #'ace-jump-line-mode)
 
 
 (resolve init-ace-jump-mode)
