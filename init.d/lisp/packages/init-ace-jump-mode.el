@@ -12,7 +12,12 @@
          (kbd (concat "A-" (char-to-string c)))
          `(lambda ()
             (interactive)
-            (funcall 'ace-jump-char-mode ,c))))
+            (funcall 'ace-jump-char-mode ,c)))
+        (global-set-key
+         (kbd (concat "A-M-" (char-to-string c)))
+         `(lambda ()
+            (interactive)
+            (funcall 'ace-jump-word-mode ,c))))
       (vconcat "!\"#$%&'()*+,-./0123456789:;<=>?@"
                "[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~"))
 (global-set-key (read-kbd-macro "A-<return>") #'ace-jump-line-mode)
