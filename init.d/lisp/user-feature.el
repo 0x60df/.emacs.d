@@ -25,7 +25,7 @@
 (mapc
  (lambda (el)
    (let ((elc (concat el "c")))
-     (unless (and (file-exists-p elc) (not (file-writable-p elc)))
+     (unless (and (file-exists-p elc) (file-newer-than-file-p elc el))
        (byte-compile-file el))))
  (directory-files-recursively (concat user-emacs-directory "lisp/") "\\.el$"))
 
