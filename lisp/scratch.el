@@ -31,10 +31,13 @@
 (defun scratch ()
   "Generate new buffer instantly."
   (interactive)
-  (switch-to-buffer (generate-new-buffer
-                     (concat "*" (substring (format "%07x" (random)) -7) "*")))
-  (shifter-shift-major-mode)
-  (scratch-mode 1))
+  (let ((inhibit-quit t)
+        (buffer (generate-new-buffer
+                 (concat "*" (substring (format "%07x" (random)) -7) "*"))))
+    (switch-to-buffer buffer)
+    (unless (with-local-quit (shifter-shift-major-mode) t)
+      (kill-buffer buffer))
+    (scratch-mode 1)))
 
 (provide 'scratch)
 
