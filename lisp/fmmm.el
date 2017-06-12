@@ -55,6 +55,7 @@
   (let (l)
     (mapatoms
      (lambda (a) (if (fmmm-major-mode-p a) (setq l (cons a l)))))
+    (mapc (lambda (s) (setq l (delq s l))) fmmm-declared-major-mode)
     (append fmmm-declared-major-mode l)))
 
 ;;;###autoload
@@ -81,6 +82,7 @@
   (let (l)
     (mapatoms
      (lambda (a) (if (fmmm-minor-mode-p a) (setq l (cons a l)))))
+    (mapc (lambda (s) (setq l (delq s l))) fmmm-declared-minor-mode)
     (append fmmm-declared-minor-mode l)))
 
 (defun fmmm-enabled-minor-mode-list ()
