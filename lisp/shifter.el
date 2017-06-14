@@ -60,6 +60,30 @@
       (funcall s))))
 
 ;;;###autoload
+(defun shifter-shift-minor-mode ()
+  "shift minor mode"
+  (interactive)
+  (if (and (not shifter-keep-hist-volatile)
+           (not (bound-and-true-p shifter-non-volatile-hist-mode)))
+      (shifter-non-volatile-hist-mode 1))
+  (let ((l (fmmm-minor-mode-list))
+        (h shifter-minor-mode-hist))
+    (mapc (lambda (s) (setq l (delq s l))) h)
+    (let ((s (intern (completing-read "Minor mode: "
+                                      (mapcar 'symbol-name (append h l))))))
+      (let ((f (symbol-function s)))
+        (if (autoloadp f) (autoload-do-load f)))
+      (if (not (fmmm-minor-mode-p s))
+          (setq s 'ignore))
+      (when (fmmm-minor-mode-p s)
+        (delq s shifter-minor-mode-hist)
+        (add-to-list 'shifter-minor-mode-hist s))
+      (let ((a (if (and (boundp s) (symbol-value s))
+                   -1
+                 1)))
+        (funcall s a)))))
+
+;;;###autoload
 (defun shifter-turn-on-minor-mode (force)
   "turn on minor mode"
   (interactive "P")
