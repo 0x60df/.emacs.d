@@ -3,7 +3,7 @@
 ;;; Code:
 
 
-;;;### (autoloads nil "fmmm" "fmmm.el" (22837 26032 794216 415000))
+;;;### (autoloads nil "fmmm" "fmmm.el" (22846 42667 110899 454000))
 ;;; Generated autoloads from fmmm.el
 
 (autoload 'fmmm-declare-major-mode "fmmm" "\
@@ -18,8 +18,8 @@ Declare minor mode for fmmm.
 
 ;;;***
 
-;;;### (autoloads nil "scratch" "scratch.el" (22837 26032 794216
-;;;;;;  415000))
+;;;### (autoloads nil "scratch" "scratch.el" (22846 39519 316546
+;;;;;;  353000))
 ;;; Generated autoloads from scratch.el
 
 (defvar scratch-mode-map (let ((map (make-sparse-keymap))) (define-key map (kbd "C-c C-q") #'scratch-kill-current-buffer) map) "\
@@ -42,8 +42,8 @@ Generate new buffer instantly.
 
 ;;;***
 
-;;;### (autoloads nil "scratchb" "scratchb.el" (22837 26032 794216
-;;;;;;  415000))
+;;;### (autoloads nil "scratchb" "scratchb.el" (22845 15811 250042
+;;;;;;  77000))
 ;;; Generated autoloads from scratchb.el
 
 (defvar scratchb-snapshot-directory (concat user-emacs-directory "scratchb") "\
@@ -109,12 +109,17 @@ In `scratchb-mode' *scratch*
 
 ;;;***
 
-;;;### (autoloads nil "shifter" "shifter.el" (22837 26032 794216
-;;;;;;  415000))
+;;;### (autoloads nil "shifter" "shifter.el" (22849 23431 669205
+;;;;;;  421000))
 ;;; Generated autoloads from shifter.el
 
 (autoload 'shifter-shift-major-mode "shifter" "\
 shift major mode
+
+\(fn)" t nil)
+
+(autoload 'shifter-shift-minor-mode "shifter" "\
+shift minor mode
 
 \(fn)" t nil)
 
@@ -127,6 +132,23 @@ turn on minor mode
 turn off minor mode
 
 \(fn FORCE)" t nil)
+
+(defvar shifter-non-volatile-hist-mode nil "\
+Non-nil if Shifter-Non-Volatile-Hist mode is enabled.
+See the `shifter-non-volatile-hist-mode' command
+for a description of this minor mode.
+Setting this variable directly does not take effect;
+either customize it (see the info node `Easy Customization')
+or call the function `shifter-non-volatile-hist-mode'.")
+
+(custom-autoload 'shifter-non-volatile-hist-mode "shifter" nil)
+
+(autoload 'shifter-non-volatile-hist-mode "shifter" "\
+Minor mode for supporting shifter history system.
+When enabled, load `shifter-hist-file' if shifter-major/minor-mode-hist are nil.
+When kill emacs, save shifter-major/minor-mode-hist if this mode is enabled.
+
+\(fn &optional ARG)" t nil)
 
 ;;;***
 
