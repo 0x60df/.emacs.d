@@ -77,25 +77,29 @@
   (if (equal "*scratch*" (buffer-name)) (scratchb-snapshot)))
 
 ;;;###autoload
-(define-minor-mode scratchb-mode
-  "Toggle `scratchb-mode'.
-
-In `scratchb-mode' *scratch*
-  - buffer is reverted automatically
-  - snapshot of content is taken when quit emacs or flush *scratch* buffer"
+(define-minor-mode scratchb-auto-revert-mode
+  "Toggle `scratchb-auto-revert-mode'."
   :group 'scratchb
   :global t
-  (if scratchb-mode
+  (if scratchb-auto-revert-mode
       (progn
         (scratchb-revert)
+        (add-hook 'buffer-list-update-hook #'scratchb-revert))
+    (remove-hook 'buffer-list-update-hook #'scratchb-revert)))
+
+;;;###autoload
+(define-minor-mode scratchb-auto-snapshot-mode
+  "Toggle `scratchb-auto-snapshot-mode'."
+  :group 'scratchb
+  :global t
+  (if scratchb-auto-snapshot-mode
+      (progn
         (add-hook 'scratchb-before-flush-hook #'scratchb-snapshot)
         (add-hook 'kill-emacs-hook #'scratchb-snapshot)
-        (add-hook 'kill-buffer-hook #'scratchb--snapshot-when-scratchb)
-        (add-hook 'buffer-list-update-hook #'scratchb-revert))
+        (add-hook 'kill-buffer-hook #'scratchb--snapshot-when-scratchb))
     (remove-hook 'scratchb-before-flush-hook #'scratchb-snapshot)
     (remove-hook 'kill-emacs-hook #'scratchb-snapshot)
-    (remove-hook 'kill-buffer-hook #'scratchb--snapshot-when-scratchb)
-    (remove-hook 'buffer-list-update-hook #'scratchb-revert)))
+    (remove-hook 'kill-buffer-hook #'scratchb--snapshot-when-scratchb)))
 
 (provide 'scratchb)
 

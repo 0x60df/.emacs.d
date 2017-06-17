@@ -18,11 +18,11 @@ Declare minor mode for fmmm.
 
 ;;;***
 
-;;;### (autoloads nil "scratch" "scratch.el" (22846 39519 316546
-;;;;;;  353000))
+;;;### (autoloads nil "scratch" "scratch.el" (22853 25226 713370
+;;;;;;  479000))
 ;;; Generated autoloads from scratch.el
 
-(defvar scratch-mode-map (let ((map (make-sparse-keymap))) (define-key map (kbd "C-c C-q") #'scratch-kill-current-buffer) map) "\
+(defvar scratch-mode-map (make-sparse-keymap) "\
 Keymap for scratch-mode.")
 
 (autoload 'scratch-kill-current-buffer "scratch" "\
@@ -42,8 +42,8 @@ Generate new buffer instantly.
 
 ;;;***
 
-;;;### (autoloads nil "scratchb" "scratchb.el" (22845 15811 250042
-;;;;;;  77000))
+;;;### (autoloads nil "scratchb" "scratchb.el" (22853 26232 347538
+;;;;;;  984000))
 ;;; Generated autoloads from scratchb.el
 
 (defvar scratchb-snapshot-directory (concat user-emacs-directory "scratchb") "\
@@ -88,22 +88,33 @@ Write *scratch* buffer content to `scratchb-snapshot-directory'
 
 \(fn)" t nil)
 
-(defvar scratchb-mode nil "\
-Non-nil if Scratchb mode is enabled.
-See the `scratchb-mode' command
+(defvar scratchb-auto-revert-mode nil "\
+Non-nil if Scratchb-Auto-Revert mode is enabled.
+See the `scratchb-auto-revert-mode' command
 for a description of this minor mode.
 Setting this variable directly does not take effect;
 either customize it (see the info node `Easy Customization')
-or call the function `scratchb-mode'.")
+or call the function `scratchb-auto-revert-mode'.")
 
-(custom-autoload 'scratchb-mode "scratchb" nil)
+(custom-autoload 'scratchb-auto-revert-mode "scratchb" nil)
 
-(autoload 'scratchb-mode "scratchb" "\
-Toggle `scratchb-mode'.
+(autoload 'scratchb-auto-revert-mode "scratchb" "\
+Toggle `scratchb-auto-revert-mode'.
 
-In `scratchb-mode' *scratch*
-  - buffer is reverted automatically
-  - snapshot of content is taken when quit emacs or flush *scratch* buffer
+\(fn &optional ARG)" t nil)
+
+(defvar scratchb-auto-snapshot-mode nil "\
+Non-nil if Scratchb-Auto-Snapshot mode is enabled.
+See the `scratchb-auto-snapshot-mode' command
+for a description of this minor mode.
+Setting this variable directly does not take effect;
+either customize it (see the info node `Easy Customization')
+or call the function `scratchb-auto-snapshot-mode'.")
+
+(custom-autoload 'scratchb-auto-snapshot-mode "scratchb" nil)
+
+(autoload 'scratchb-auto-snapshot-mode "scratchb" "\
+Toggle `scratchb-auto-snapshot-mode'.
 
 \(fn &optional ARG)" t nil)
 
