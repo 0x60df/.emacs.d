@@ -26,7 +26,7 @@
 (defun scratch-mode-buffer-sticky ()
   "Enable `scratch-mode', and reserve enabling on change of major mode.
 Reservation is restricted on current buffer."
-  (scratch-mode)
+  (scratch-mode 1)
   (add-hook 'change-major-mode-hook
             (lambda ()
               (add-hook
