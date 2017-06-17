@@ -27,6 +27,17 @@
   :group 'scratch
   :keymap 'scratch-mode-map)
 
+(defun scratch-mode-buffer-sticky ()
+  "Enable `scratch-mode', and reserve enabling on change of major mode.
+Reservation is restricted on current buffer."
+  (scratch-mode)
+  (add-hook 'change-major-mode-hook
+            (lambda ()
+              (add-hook
+               'after-change-major-mode-hook #'scratch-mode-buffer-sticky))
+            nil t)
+  (remove-hook 'after-change-major-mode-hook #'scratch-mode-buffer-sticky))
+
 ;;;###autoload
 (defun scratch ()
   "Generate new buffer instantly."
@@ -37,7 +48,7 @@
     (switch-to-buffer buffer)
     (unless (with-local-quit (shifter-shift-major-mode) t)
       (kill-buffer buffer))
-    (scratch-mode 1)))
+    (scratch-mode-buffer-sticky)))
 
 (provide 'scratch)
 
