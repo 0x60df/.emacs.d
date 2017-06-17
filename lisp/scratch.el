@@ -9,11 +9,7 @@
   :group 'emacs)
 
 ;;;###autoload
-(defvar scratch-mode-map
-  (let ((map (make-sparse-keymap)))
-    (define-key map (kbd "C-c C-q") #'scratch-kill-current-buffer)
-    map)
-  "Keymap for scratch-mode.")
+(defvar scratch-mode-map (make-sparse-keymap) "Keymap for scratch-mode.")
 
 ;;;###autoload
 (defun scratch-kill-current-buffer ()
