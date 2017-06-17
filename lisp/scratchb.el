@@ -34,6 +34,9 @@
 (defvar scratchb-after-revert-hook nil "Hook run after `scratchb-revert'.")
 
 ;;;###autoload
+(defvar scratchb-mode-map (make-sparse-keymap) "Keymap for scratchb-mode.")
+
+;;;###autoload
 (defun scratchb-flush ()
   "`erase-buffer' and `set-buffer-modified-p' nil on *scratch* buffer."
   (interactive)
@@ -75,6 +78,24 @@
 (defun scratchb--snapshot-when-scratchb ()
   "Snapshot scratchb when current-frame is *scratch* buffer."
   (if (equal "*scratch*" (buffer-name)) (scratchb-snapshot)))
+
+(define-minor-mode scratchb-mode
+  "Toggle `scratchb-mode'."
+  :group 'scratchb
+  :keymap 'scratchb-mode-map)
+
+;;;###autoload
+(defun scratchb-mode-buffer-sticky ()
+  "Enable `scratchb-mode', and reserve enabling on change of major mode.
+Reservation is restricted on current buffer."
+  (with-current-buffer "*scratch*"
+    (scratchb-mode 1)
+    (add-hook 'change-major-mode-hook
+              (lambda ()
+                (add-hook
+                 'after-change-major-mode-hook #'scratchb-mode-buffer-sticky))
+              nil t)
+    (remove-hook 'after-change-major-mode-hook #'scratchb-mode-buffer-sticky)))
 
 ;;;###autoload
 (define-minor-mode scratchb-auto-revert-mode

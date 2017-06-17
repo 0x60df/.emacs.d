@@ -42,8 +42,8 @@ Generate new buffer instantly.
 
 ;;;***
 
-;;;### (autoloads nil "scratchb" "scratchb.el" (22853 26232 347538
-;;;;;;  984000))
+;;;### (autoloads nil "scratchb" "scratchb.el" (22853 28592 83287
+;;;;;;  119000))
 ;;; Generated autoloads from scratchb.el
 
 (defvar scratchb-snapshot-directory (concat user-emacs-directory "scratchb") "\
@@ -73,6 +73,9 @@ Hook run before `scratchb-revert'.")
 (defvar scratchb-after-revert-hook nil "\
 Hook run after `scratchb-revert'.")
 
+(defvar scratchb-mode-map (make-sparse-keymap) "\
+Keymap for scratchb-mode.")
+
 (autoload 'scratchb-flush "scratchb" "\
 `erase-buffer' and `set-buffer-modified-p' nil on *scratch* buffer.
 
@@ -87,6 +90,12 @@ Generate *scratch* buffer if it does not exist.
 Write *scratch* buffer content to `scratchb-snapshot-directory'
 
 \(fn)" t nil)
+
+(autoload 'scratchb-mode-buffer-sticky "scratchb" "\
+Enable `scratchb-mode', and reserve enabling on change of major mode.
+Reservation is restricted on current buffer.
+
+\(fn)" nil nil)
 
 (defvar scratchb-auto-revert-mode nil "\
 Non-nil if Scratchb-Auto-Revert mode is enabled.
