@@ -10,17 +10,15 @@
   '(progn
      (custom-set-variables
       `(term-unbind-key-list
-        ',(cons "C-q" term-unbind-key-list))) ; work with helm
+        '("C-q" ,@term-unbind-key-list))) ;work with helm
      (custom-set-variables
       `(term-bind-key-alist
         ',(append term-bind-key-alist
-                  '(("C-p" . term-send-up)
-                    ("C-n" . term-send-down)
-                    ("M-p" . previous-line)
-                    ("M-n" . next-line)
-                    ("C-r" . term-send-reverse-search-history)
-                    ("M-s" . isearch-forward)
-                    ("M-r" . isearch-backward)))))))
+                  '(("C-c C-j" . term-line-mode)
+                    ("C-p" . term-send-raw)
+                    ("C-n" . term-send-raw)
+                    ("C-r" . term-send-raw)
+                    ("C-s" . term-send-raw)))))))
 
 
 (resolve init-multi-term)
