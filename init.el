@@ -148,7 +148,6 @@
 (init-feature autorevert)
 (init-feature org)
 (init-feature flyspell)
-(init-feature term)
 (init-feature doc-view)
 (init-feature abbrev)
 (init-feature cc-mode)
