@@ -14,7 +14,8 @@
   '(progn
      (define-key org-mode-map (kbd "C-,") nil)
      (define-key org-mode-map (kbd "C-c ;") nil)
-     (define-key org-mode-map (kbd "C-c :") nil)))
+     (define-key org-mode-map (kbd "C-c :") nil)
+     (custom-set-variables '(org-use-speed-commands t))))
 
 
 (resolve init-org)
