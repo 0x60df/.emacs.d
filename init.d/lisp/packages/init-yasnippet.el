@@ -19,5 +19,15 @@
 (custom-set-variables '(yas-prompt-functions nil)
                       '(yas-use-menu nil))
 
+(add-hook 'after-init-hook
+          (lambda ()
+            (with-current-buffer "*Messages*"
+              (yas-minor-mode -1))))
+
+(defun disable-yas-if-no-snippets ()
+  (when (and yas-minor-mode (null (yas--get-snippet-tables)))
+    (yas-minor-mode -1)))
+(add-hook 'yas-minor-mode-hook #'disable-yas-if-no-snippets)
+
 
 (resolve init-yasnippet)
