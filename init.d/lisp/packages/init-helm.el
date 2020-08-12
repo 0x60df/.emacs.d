@@ -7,6 +7,7 @@
 
 (premise init)
 (premise inst-helm)
+(premise init-dired)
 
 (add-hook 'helm-mode-hook (lambda () (icomplete-mode -1)))
 (setq helm-completion-mode-string " H")
@@ -46,7 +47,9 @@
      (add-to-list 'helm-completing-read-handlers-alist
                   '(load-file . ido-read-file-name))
      (add-to-list 'helm-completing-read-handlers-alist
-                  '(ruby-load-file . ido-read-file-name))))
+                  '(ruby-load-file . ido-read-file-name))
+     (add-to-list 'helm-completing-read-handlers-alist
+                  '(sdired-sort-by . ido-completing-read))))
 
 
 ;;; bindings
