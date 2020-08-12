@@ -57,11 +57,32 @@
                                                             (4  " L%l")))
                                        ((column-number-mode (4  " C%c")))))
                     face mode-line-position-face))
+(defvar mode-line-modes-shrinked-p nil
+  "Status in which `mode-line-modes' is shrinked or not.")
+(make-variable-buffer-local 'mode-line-modes-shrinked-p)
+(defun mode-line-modes-toggle-shrinled ()
+  "toggle mode-line-modes shrink status"
+  (interactive)
+  (if mode-line-modes-shrinked-p
+      (setq mode-line-modes-shrinked-p nil)
+    (setq mode-line-modes-shrinked-p t)))
 (setq mode-line-modes
       '("%["
         ((:propertize mode-name face mode-line-mode-name-face)
          mode-line-process
-         (:propertize minor-mode-alist face mode-line-minor-mode-alist-face)
+         (mode-line-modes-shrinked-p
+          (:eval (propertize
+                  (let* ((minor-modes (format-mode-line minor-mode-alist))
+                         (length (length minor-modes))
+                         (max-width 12))
+                    (if (< max-width length)
+                        (if (string-suffix-p " " minor-modes)
+                            (concat (substring minor-modes 0 (- max-width 1))
+                                    " ")
+                          (substring minor-modes 0 max-width))
+                      minor-modes))
+                  'face '(mode-line-minor-mode-alist-face italic)))
+          (:propertize minor-mode-alist face mode-line-minor-mode-alist-face))
          "%n")
         "%]"
         " "))
@@ -136,6 +157,11 @@
  '(eol-mnemonic-dos "+")
  '(eol-mnemonic-mac "!")
  '(eol-mnemonic-unix ":"))
+
+
+;;; bindings
+
+(global-set-key (kbd "C-c l") 'mode-line-modes-toggle-shrinled)
 
 
 (resolve mode-line)
