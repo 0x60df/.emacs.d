@@ -168,6 +168,7 @@
 (init-feature fmmm)
 (init-feature shifter)
 (init-feature scratch)
+(init-feature sdired)
 
 
 ;;; packages

@@ -3,7 +3,7 @@
 ;;; Code:
 
 
-;;;### (autoloads nil "fmmm" "fmmm.el" (22846 42667 110899 454000))
+;;;### (autoloads nil "fmmm" "fmmm.el" (0 0 0 0))
 ;;; Generated autoloads from fmmm.el
 
 (autoload 'fmmm-declare-major-mode "fmmm" "\
@@ -16,10 +16,11 @@ Declare minor mode for fmmm.
 
 \(fn &rest ARGS)" nil nil)
 
+(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "fmmm" '("fmmm-")))
+
 ;;;***
 
-;;;### (autoloads nil "scratch" "scratch.el" (22853 25226 713370
-;;;;;;  479000))
+;;;### (autoloads nil "scratch" "scratch.el" (0 0 0 0))
 ;;; Generated autoloads from scratch.el
 
 (defvar scratch-mode-map (make-sparse-keymap) "\
@@ -40,10 +41,11 @@ Generate new buffer instantly.
 
 \(fn)" t nil)
 
+(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "scratch" '("scratch-mode-buffer-sticky")))
+
 ;;;***
 
-;;;### (autoloads nil "scratchb" "scratchb.el" (22853 28592 83287
-;;;;;;  119000))
+;;;### (autoloads nil "scratchb" "scratchb.el" (0 0 0 0))
 ;;; Generated autoloads from scratchb.el
 
 (defvar scratchb-snapshot-directory (concat user-emacs-directory "scratchb") "\
@@ -127,10 +129,59 @@ Toggle `scratchb-auto-snapshot-mode'.
 
 \(fn &optional ARG)" t nil)
 
+(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "scratchb" '("scratchb-")))
+
 ;;;***
 
-;;;### (autoloads nil "shifter" "shifter.el" (22849 23431 669205
-;;;;;;  421000))
+;;;### (autoloads nil "sdired" "sdired.el" (0 0 0 0))
+;;; Generated autoloads from sdired.el
+
+(defvar sdired-switches-for-name "-al" "\
+Switches for sort by name")
+
+(custom-autoload 'sdired-switches-for-name "sdired" t)
+
+(defvar sdired-switches-for-date "-alt" "\
+Switches for sort by date")
+
+(custom-autoload 'sdired-switches-for-date "sdired" t)
+
+(defvar sdired-switches-for-size "-alS" "\
+Switches for sort by size")
+
+(custom-autoload 'sdired-switches-for-size "sdired" t)
+
+(defvar sdired-switches-for-type "-alX" "\
+Switches for sort by type")
+
+(custom-autoload 'sdired-switches-for-type "sdired" t)
+
+(defvar sdired-switch-for-reverse "-r" "\
+Switch for reversal sort")
+
+(custom-autoload 'sdired-switch-for-reverse "sdired" t)
+
+(defvar sdired-switch-for-directory-first "--group-directories-first" "\
+Switch for sort where directories are listed first")
+
+(custom-autoload 'sdired-switch-for-directory-first "sdired" t)
+
+(defvar sdired-switch-for-natural "-v" "\
+Switch for natural sort")
+
+(custom-autoload 'sdired-switch-for-natural "sdired" t)
+
+(autoload 'sdired-sort "sdired" "\
+Interface for sort. Basically toggle key.
+ if called with prefix argument, offer other features.
+
+\(fn &optional ARG)" t nil)
+
+(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "sdired" '("sdired-")))
+
+;;;***
+
+;;;### (autoloads nil "shifter" "shifter.el" (0 0 0 0))
 ;;; Generated autoloads from shifter.el
 
 (autoload 'shifter-shift-major-mode "shifter" "\
@@ -169,6 +220,8 @@ When enabled, load `shifter-hist-file' if shifter-major/minor-mode-hist are nil.
 When kill emacs, save shifter-major/minor-mode-hist if this mode is enabled.
 
 \(fn &optional ARG)" t nil)
+
+(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "shifter" '("shifter-")))
 
 ;;;***
 
