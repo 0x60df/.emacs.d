@@ -151,10 +151,7 @@
 (autoload 'ccc-setup-new-frame "ccc")
 
 (defun ccc-setup-new-terminal-function ()
-  (add-hook 'post-command-hook 'ccc-update-buffer-local-frame-params)
-  (add-hook 'after-make-frame-functions 'ccc-setup-new-frame)
-  (ccc-setup-current-colors)
-  (ccc-setup-new-frame (selected-frame))
+  (ccc-setup)
   (remove-hook 'pre-command-hook #'ccc-setup-new-terminal-function))
 (add-hook 'after-make-terminal-functions
           (lambda (terminal)
@@ -165,7 +162,9 @@
 
 (defadvice server-create-window-system-frame
     (after ccc-update-buffer-local-frame-params)
-  (ccc-update-buffer-local-frame-params))
+  (if (not (memq (frame-terminal (selected-frame))
+                 (mapcar 'frame-terminal (remq (selected-frame) (frame-list)))))
+      (ccc-setup-current-colors)))
 (ad-activate 'server-create-window-system-frame)
 
 
