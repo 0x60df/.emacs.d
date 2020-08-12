@@ -209,7 +209,6 @@
 (init-package robe-mode)
 (init-package yaml-mode)
 (init-package yatex)
-(init-package moz-repl)
 (init-package ox-gfm)
 (init-package ox-qmd)
 (init-package smartrep)
