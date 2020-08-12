@@ -6,7 +6,8 @@
 (premise inst-which-key)
 
 (eval-after-load 'which-key
-  '(custom-set-variables '(which-key-idle-delay 0.4)))
+  '(custom-set-variables '(which-key-idle-delay 0.4)
+                         '(which-key-lighter "")))
 
 (which-key-mode 1)
 

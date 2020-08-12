@@ -1,9 +1,11 @@
 
 ;;;; init-autorevert.el
 
+
 (premise init)
 
-(custom-set-variables '(auto-revert-mode-text " AR"))
+(eval-after-load 'autorevert
+    (custom-set-variables '(auto-revert-mode-text " ARv")))
 
 
 (resolve init-autorevert)

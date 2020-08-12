@@ -19,7 +19,7 @@
   '(progn
      (custom-set-variables
       '(anzu-cons-mode-line-p nil)
-      '(anzu-mode-lighter " A"))
+      '(anzu-mode-lighter ""))
 
      (setq mode-line-position (list mode-line-position
                                     " "
