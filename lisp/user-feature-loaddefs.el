@@ -184,6 +184,16 @@ Interface for sort. Basically toggle key.
 ;;;### (autoloads nil "shifter" "shifter.el" (0 0 0 0))
 ;;; Generated autoloads from shifter.el
 
+(defvar shifter-hist-file (concat user-emacs-directory "shifter-hists") "\
+File which stores shifter history.")
+
+(custom-autoload 'shifter-hist-file "shifter" t)
+
+(defvar shifter-keep-hist-volatile nil "\
+When non-nil shifter does not save/load hist file automatically.")
+
+(custom-autoload 'shifter-keep-hist-volatile "shifter" t)
+
 (autoload 'shifter-shift-major-mode "shifter" "\
 shift major mode
 
@@ -221,7 +231,7 @@ When kill emacs, save shifter-major/minor-mode-hist if this mode is enabled.
 
 \(fn &optional ARG)" t nil)
 
-(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "shifter" '("shifter-")))
+(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "shifter" '(#("shifter-" 0 8 (fontified nil face font-lock-function-name-face)))))
 
 ;;;***
 
