@@ -130,15 +130,6 @@
 (line-number-mode t)
 
 
-;;; mode-name abbreviation
-
-(add-hook 'lisp-interaction-mode-hook (lambda () (setq mode-name "Lisp I")))
-(add-hook 'emacs-lisp-mode-hook (lambda () (setq mode-name "E-Lisp")))
-(add-hook 'dired-mode-hook (lambda () (setq mode-name "Dired")))
-(add-hook 'inferior-scheme-mode-hook (lambda () (setq mode-name "InfScm")))
-(setcar (cdr (assq 'abbrev-mode minor-mode-alist)) " Abb")
-
-
 ;;; eol
 
 (custom-set-variables

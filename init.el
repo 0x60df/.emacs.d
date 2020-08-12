@@ -152,10 +152,12 @@
 (init-feature flyspell)
 (init-feature doc-view)
 (init-feature abbrev)
+(init-feature elisp-mode)
 (init-feature cc-mode)
 (init-feature python)
 (init-feature ruby-mode)
 (init-feature scheme)
+(init-feature cmuscheme)
 
 
 ;;; user-features
