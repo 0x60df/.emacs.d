@@ -1,6 +1,7 @@
 
 ;;;; init-scratchb.el
 
+
 (premise init)
 
 (require 'scratchb)

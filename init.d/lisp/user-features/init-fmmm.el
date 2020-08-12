@@ -1,6 +1,7 @@
 
 ;;;; init-fmmm.el
 
+
 (premise init)
 
 (custom-set-variables '(fmmm-minor-mode-variable-alist
