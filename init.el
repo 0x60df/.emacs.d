@@ -120,6 +120,7 @@
 (init mode-line)
 (init functions)
 (init bindings)
+(init risk)
 (init client)
 (init vc)
 (init theme)
