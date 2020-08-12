@@ -147,6 +147,7 @@
 (init-feature wdired)
 (init-feature dired-x)
 (init-feature autorevert)
+(init-feature eldoc)
 (init-feature org)
 (init-feature flyspell)
 (init-feature doc-view)
