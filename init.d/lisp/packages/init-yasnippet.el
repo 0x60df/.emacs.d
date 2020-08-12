@@ -12,14 +12,12 @@
 
 (yas-global-mode 1)
 
-(eval-after-load 'yasnippet
-  '(progn
-     (define-key yas-minor-mode-map (kbd "<tab>") nil)
-     (define-key yas-minor-mode-map (kbd "TAB") nil)
-     (define-key yas-minor-mode-map (kbd "C-'") 'yas-expand)
-     (setcar (cdr (assq 'yas-minor-mode minor-mode-alist)) " YS")
-     (custom-set-variables '(yas-prompt-functions nil)
-                           '(yas-use-menu nil))))
+(define-key yas-minor-mode-map (kbd "<tab>") nil)
+(define-key yas-minor-mode-map (kbd "TAB") nil)
+(define-key yas-minor-mode-map (kbd "C-'") 'yas-expand)
+(setcar (cdr (assq 'yas-minor-mode minor-mode-alist)) " YS")
+(custom-set-variables '(yas-prompt-functions nil)
+                      '(yas-use-menu nil))
 
 
 (resolve init-yasnippet)
