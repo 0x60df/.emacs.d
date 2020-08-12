@@ -10,6 +10,13 @@
 
 ;;; format
 
+(setq-default mode-line-front-space
+              '(:eval (if (display-graphic-p)
+                          (propertize " "
+                                      'display
+                                      '(space :align-to
+                                              (+ left-margin left-fringe)))
+                        "-")))
 (setq-default mode-line-mule-info '("%Z"))
 (setq mode-line-client '(:eval (if (frame-parameter nil 'client)
                                    (let ((l (length server-clients)))
@@ -101,18 +108,50 @@
                    ((equal (car l) o) (cons n (cdr l)))
                    (t (cons (car l)
                             (funcall replace-element o n (cdr l))))))))
-   (funcall replace-element
-            '(vc-mode vc-mode)
-            '(vc-mode (" " (:propertize
-                            (:eval (replace-regexp-in-string
-                                    "^\\s-+\\|\\s-+$" ""
-                                    (substring-no-properties vc-mode)))
-                            face mode-line-vc-mode-face)))
-            (mapcar
-             (lambda (e) (if (stringp e)
-                             (replace-regexp-in-string "^\\s-+$" " " e)
-                           e))
-             (default-value 'mode-line-format)))))
+   `(:eval
+     (let* ((text (format-mode-line
+                   (quote
+                    ,(funcall replace-element
+                              '(vc-mode vc-mode)
+                              '(vc-mode (" " (:propertize
+                                              (:eval (replace-regexp-in-string
+                                                      "^\\s-+\\|\\s-+$" ""
+                                                      (substring-no-properties
+                                                       vc-mode)))
+                                              face mode-line-vc-mode-face)))
+                              (mapcar
+                               (lambda (e) (if (stringp e)
+                                               (replace-regexp-in-string
+                                                "^\\s-+$" " " e)
+                                             e))
+                               (default-value 'mode-line-format))))))
+            (text-width (length text))
+            (window-width (window-body-width)))
+       (replace-regexp-in-string
+        "%" "%%"
+        (if (< text-width (+ window-width 1))
+            text
+          (let* ((subtext (substring text 0 (+ window-width 1)))
+                 (length (length subtext))
+                 (r-text (string-reverse subtext))
+                 (index (- length 1 (string-match "[^ ]" r-text)))
+                 (prop (get-text-property index 'face subtext))
+                 (start (previous-single-property-change
+                         index 'face subtext 0))
+                 (end (next-single-property-change
+                       index 'face subtext length))
+                 (boundary (next-single-property-change
+                         index 'face text text-width)))
+            (if (and (< end boundary)
+                     (string-match "[^ ]" (substring text end boundary)))
+                (progn
+                  (add-text-properties start length
+                                       (list 'face (if (atom prop)
+                                                       (list 'italic prop)
+                                                     (cons 'italic prop)))
+                                       subtext)
+                  subtext)
+              subtext))))))))
 
 
 ;;; faces
