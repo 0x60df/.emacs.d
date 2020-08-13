@@ -1,0 +1,5 @@
+# name: ... ... ( ... ) { ... }
+# key: args
+
+# --
+int ${1:argc}, char *${2:argv}[]

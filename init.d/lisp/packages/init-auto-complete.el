@@ -34,6 +34,12 @@
 (add-hook 'ruby-mode-hook
           (lambda () (setq ac-sources (append '(ac-source-yasnippet)
                                               ac-sources))))
+(add-hook 'python-mode-hook
+          (lambda () (setq ac-sources (append '(ac-source-yasnippet)
+                                              ac-sources))))
+(add-hook 'js-mode-hook
+          (lambda () (setq ac-sources (append '(ac-source-yasnippet)
+                                              ac-sources))))
 
 ;;; patch
 
