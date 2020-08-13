@@ -6,13 +6,13 @@
 ;;;### (autoloads nil "fmmm" "fmmm.el" (0 0 0 0))
 ;;; Generated autoloads from fmmm.el
 
+(defvar fmmm-complementary-minor-mode nil "\
+List of simbols which are considered as minor-mode in `fmmm'")
+
+(custom-autoload 'fmmm-complementary-minor-mode "fmmm" t)
+
 (autoload 'fmmm-declare-major-mode "fmmm" "\
 Declare major mode for fmmm.
-
-\(fn &rest ARGS)" nil nil)
-
-(autoload 'fmmm-declare-minor-mode "fmmm" "\
-Declare minor mode for fmmm.
 
 \(fn &rest ARGS)" nil nil)
 

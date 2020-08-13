@@ -9,11 +9,9 @@
 (defvar fmmm-declared-major-mode nil
   "List of major mode which is declared for `fmmm'")
 
-(defvar fmmm-declared-minor-mode nil
-  "List of minor mode which is declared for `fmmm'")
-
-(defconst fmmm-minor-mode-variable-alist nil
-  "Alist of minor-mode and minor-mode variable")
+;;;###autoload
+(defcustom fmmm-complementary-minor-mode nil
+  "List of simbols which are considered as minor-mode in `fmmm'" :group 'fmmm)
 
 (defun fmmm-major-mode-p (symbol)
   "Non-nil if SYMBOL is not major mode."
@@ -68,55 +66,35 @@
 
 (defun fmmm-minor-mode-p (symbol)
   "Non-nil if SYMBOL is not minor mode."
-  (and (memq symbol minor-mode-list)
-       (string-match "-mode$" (symbol-name symbol))))
+  (memq symbol minor-mode-list))
 
 (defun fmmm-minor-mode-list ()
   "Return list consist of minor mode symbol."
-  (mapc (lambda (s)
-          (if (and (not (autoloadp (symbol-function s)))
-                   (not (fmmm-minor-mode-p s)))
-              (setq fmmm-declared-minor-mode
-                    (delq s fmmm-declared-minor-mode))))
-        fmmm-declared-minor-mode)
-  (let (l)
-    (mapatoms
-     (lambda (a) (if (fmmm-minor-mode-p a) (setq l (cons a l)))))
-    (mapc (lambda (s) (setq l (delq s l))) fmmm-declared-minor-mode)
-    (append fmmm-declared-minor-mode l)))
+  (let ((l minor-mode-list))
+    (mapc (lambda (s) (setq l (delq s l))) fmmm-complementary-minor-mode)
+    (append fmmm-complementary-minor-mode l)))
 
 (defun fmmm-enabled-minor-mode-list ()
   "Return list consist of enabled minor mode symbol."
-  (let (l)
-    (mapc (lambda (s)
-            (if (if (assq s fmmm-minor-mode-variable-alist)
-                    (let ((v (cdr (assq s fmmm-minor-mode-variable-alist))))
-                      (and (boundp v) (symbol-value v)))
-                  (and (boundp s) (symbol-value s)))
-                (setq l (cons s l))))
-          (fmmm-minor-mode-list))
-    l))
+  (letrec ((filter (lambda (p l)
+                     (cond ((null l) l)
+                           ((funcall p (car l)) (funcall filter p (cdr l)))
+                           (t (cons (car l) (funcall filter p (cdr l))))))))
+    (funcall filter (lambda (s)
+                      (and (boundp s)
+                           (symbol-value s)))
+             (fmmm-minor-mode-list))))
 
 (defun fmmm-disbled-minor-mode-list ()
   "Return list consist of disbled minor mode symbol."
-  (let (l)
-    (mapc (lambda (s)
-            (if (not
-                 (if (assq s fmmm-minor-mode-variable-alist)
-                     (let ((v (cdr (assq s fmmm-minor-mode-variable-alist))))
-                       (and (boundp v) (symbol-value v)))
-                   (and (boundp s) (symbol-value s))))
-                (setq l (cons s l))))
-          (fmmm-minor-mode-list))
-    l))
-
-;;;###autoload
-(defun fmmm-declare-minor-mode (&rest args)
-  "Declare minor mode for fmmm."
-  (mapc
-   (lambda (arg)
-     (if (symbolp arg) (add-to-list 'fmmm-declared-minor-mode arg)))
-   args))
+  (letrec ((filter (lambda (p l)
+                     (cond ((null l) l)
+                           ((funcall p (car l)) (funcall filter p (cdr l)))
+                           (t (cons (car l) (funcall filter p (cdr l))))))))
+    (funcall filter (lambda (s)
+                      (not (and (boundp s)
+                                (symbol-value s))))
+             (fmmm-minor-mode-list))))
 
 (provide 'fmmm)
 
