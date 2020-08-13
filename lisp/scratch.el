@@ -42,9 +42,9 @@ Reservation is restricted on current buffer."
         (buffer (generate-new-buffer
                  (concat "*" (substring (format "%07x" (random)) -7) "*"))))
     (switch-to-buffer buffer)
-    (unless (with-local-quit (shifter-shift-major-mode) t)
-      (kill-buffer buffer))
-    (scratch-mode-buffer-sticky)))
+    (if (not (with-local-quit (shifter-shift-major-mode) t))
+        (kill-buffer buffer)
+      (scratch-mode-buffer-sticky))))
 
 (provide 'scratch)
 
