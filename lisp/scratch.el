@@ -44,6 +44,14 @@ Reservation is restricted on current buffer."
       (mapc #'kill-buffer scratch-list)
       (setq scratch-list '())))
 
+(defun scratch-label ()
+  "Rename scratch buffer and remove it from `scratch-list'."
+  (interactive)
+  (when scratch-mode
+    (rename-buffer (read-string "Lable: "))
+    (setq scratch-list (remove (current-buffer) scratch-list))
+    (scratch-mode -1)))
+
 ;;;###autoload
 (defun scratch ()
   "Generate new buffer instantly."
