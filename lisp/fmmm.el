@@ -6,63 +6,60 @@
   "functionalities for major/minor-mode"
   :group 'emacs)
 
-(defvar fmmm-declared-major-mode nil
-  "List of major mode which is declared for `fmmm'")
+;;;###autoload
+(defcustom fmmm-complementary-major-mode-list nil
+  "List of simbols which are considered as major-mode in `fmmm'" :group 'fmmm)
 
 ;;;###autoload
-(defcustom fmmm-complementary-minor-mode nil
+(defcustom fmmm-complementary-minor-mode-list nil
   "List of simbols which are considered as minor-mode in `fmmm'" :group 'fmmm)
 
 (defun fmmm-major-mode-p (symbol)
   "Non-nil if SYMBOL is not major mode."
-  (if (and
-       (commandp symbol)
-       (string-match "-mode$" (symbol-name symbol))
-       (not (memq symbol minor-mode-list)))
-      (let ((byte-compile-warnings nil)
-            (void-byte-code-function (make-byte-code nil nil nil nil)))
-        (letrec ((trace-to-function
-                  (lambda (s)
-                    (let ((f (symbol-function s)))
-                      (cond ((byte-code-function-p f) f)
-                            ((autoloadp f) void-byte-code-function)
-                            ((symbolp f)
-                             (funcall trace-to-function f))
-                            ((functionp f)
-                             (byte-compile s)
-                             (funcall trace-to-function s))
-                            (t void-byte-code-function))))))
-          (memq 'run-mode-hooks
-                (append (aref (funcall trace-to-function symbol) 2) nil))))))
+  (letrec ((inspect
+            (lambda (s)
+              (let ((f (symbol-function s)))
+                (cond ((null f) nil)
+                      ((autoloadp f) nil)
+                      ((byte-code-function-p f)
+                       (memq 'run-mode-hooks (append (aref f 2) nil)))
+                      ((symbolp f) (funcall inspect f))
+                      ((functionp f)
+                       (or (get s 'derived-mode-parent)
+                           (and (listp f)
+                                (memq 'run-mode-hooks
+                                      (mapcar
+                                       (lambda (e) (if (listp e) (car e) nil))
+                                       f)))))
+                      (t nil))))))
+    (funcall inspect symbol)))
 
 (defun fmmm-major-mode-list ()
   "Return list consist of major mode symbol."
-  (mapc (lambda (s)
-          (letrec ((trace-to-function
-                    (lambda (ms)
-                      (let ((f (symbol-function ms)))
-                        (cond ((autoloadp f) f)
-                              ((symbolp f)
-                               (funcall trace-to-function f))
-                              (t f))))))
-            (if (and (not (autoloadp (funcall trace-to-function s)))
-                     (not (fmmm-major-mode-p s)))
-                (setq fmmm-declared-major-mode
-                      (delq s fmmm-declared-major-mode)))))
-        fmmm-declared-major-mode)
-  (let (l)
-    (mapatoms
-     (lambda (a) (if (fmmm-major-mode-p a) (setq l (cons a l)))))
-    (mapc (lambda (s) (setq l (delq s l))) fmmm-declared-major-mode)
-    (append fmmm-declared-major-mode l)))
-
-;;;###autoload
-(defun fmmm-declare-major-mode (&rest args)
-  "Declare major mode for fmmm."
-  (mapc
-   (lambda (arg)
-     (if (symbolp arg) (add-to-list 'fmmm-declared-major-mode arg)))
-   args))
+  (let ((valid-complemntary-list
+         (letrec ((filter
+                   (lambda (p l)
+                     (cond ((null l) l)
+                           ((funcall p (car l)) (funcall filter p (cdr l)))
+                           (t (cons (car l) (funcall filter p (cdr l)))))))
+                  (inspect
+                   (lambda (s)
+                     (let ((f (symbol-function s)))
+                       (cond ((null f) nil)
+                             ((symbolp f) (funcall inspect f))
+                             (t f))))))
+           (funcall filter
+                    (lambda (symbol)
+                      (and (not (autoloadp (funcall inspect symbol)))
+                           (not (fmmm-major-mode-p symbol))))
+                    fmmm-complementary-major-mode-list)
+           )))
+    (let (l)
+      (mapatoms
+       (lambda (a) (if (and (fmmm-major-mode-p a)
+                            (not (memq a valid-complemntary-list)))
+                       (setq l (cons a l)))))
+      (append valid-complemntary-list l))))
 
 (defun fmmm-minor-mode-p (symbol)
   "Non-nil if SYMBOL is not minor mode."
@@ -70,9 +67,27 @@
 
 (defun fmmm-minor-mode-list ()
   "Return list consist of minor mode symbol."
-  (let ((l minor-mode-list))
-    (mapc (lambda (s) (setq l (delq s l))) fmmm-complementary-minor-mode)
-    (append fmmm-complementary-minor-mode l)))
+  (let ((valid-complemntary-list
+         (letrec ((filter
+                   (lambda (p l)
+                     (cond ((null l) l)
+                           ((funcall p (car l)) (funcall filter p (cdr l)))
+                           (t (cons (car l) (funcall filter p (cdr l)))))))
+                  (inspect
+                   (lambda (s)
+                     (let ((f (symbol-function s)))
+                       (cond ((null f) nil)
+                             ((symbolp f) (funcall inspect f))
+                             (t f))))))
+           (funcall filter
+                    (lambda (symbol)
+                      (and (not (autoloadp (funcall inspect symbol)))
+                           (not (fmmm-minor-mode-p symbol))))
+                    fmmm-complementary-minor-mode-list)
+           )))
+    (let ((l minor-mode-list))
+      (mapc (lambda (s) (setq l (delq s l))) fmmm-complementary-minor-mode-list)
+      (append valid-complemntary-list l))))
 
 (defun fmmm-enabled-minor-mode-list ()
   "Return list consist of enabled minor mode symbol."
@@ -85,8 +100,8 @@
                            (symbol-value s)))
              (fmmm-minor-mode-list))))
 
-(defun fmmm-disbled-minor-mode-list ()
-  "Return list consist of disbled minor mode symbol."
+(defun fmmm-disabled-minor-mode-list ()
+  "Return list consist of disabled minor mode symbol."
   (letrec ((filter (lambda (p l)
                      (cond ((null l) l)
                            ((funcall p (car l)) (funcall filter p (cdr l)))

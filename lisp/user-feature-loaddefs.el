@@ -6,15 +6,15 @@
 ;;;### (autoloads nil "fmmm" "fmmm.el" (0 0 0 0))
 ;;; Generated autoloads from fmmm.el
 
-(defvar fmmm-complementary-minor-mode nil "\
+(defvar fmmm-complementary-major-mode-list nil "\
+List of simbols which are considered as major-mode in `fmmm'")
+
+(custom-autoload 'fmmm-complementary-major-mode-list "fmmm" t)
+
+(defvar fmmm-complementary-minor-mode-list nil "\
 List of simbols which are considered as minor-mode in `fmmm'")
 
-(custom-autoload 'fmmm-complementary-minor-mode "fmmm" t)
-
-(autoload 'fmmm-declare-major-mode "fmmm" "\
-Declare major mode for fmmm.
-
-\(fn &rest ARGS)" nil nil)
+(custom-autoload 'fmmm-complementary-minor-mode-list "fmmm" t)
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "fmmm" '("fmmm-")))
 
@@ -193,14 +193,10 @@ When non-nil shifter does not save/load hist file automatically.")
 (custom-autoload 'shifter-keep-hist-volatile "shifter" t)
 
 (autoload 'shifter-shift-major-mode "shifter" "\
-shift major mode
-
-\(fn)" t nil)
+shift major mode" t nil)
 
 (autoload 'shifter-shift-minor-mode "shifter" "\
-shift minor mode
-
-\(fn)" t nil)
+shift minor mode" t nil)
 
 (autoload 'shifter-turn-on-minor-mode "shifter" "\
 turn on minor mode
@@ -227,9 +223,14 @@ Minor mode for supporting shifter history system.
 When enabled, load `shifter-hist-file' if shifter-major/minor-mode-hist are nil.
 When kill emacs, save shifter-major/minor-mode-hist if this mode is enabled.
 
+If called interactively, enable Shifter-Non-Volatile-Hist mode if
+ARG is positive, and disable it if ARG is zero or negative.  If
+called from Lisp, also enable the mode if ARG is omitted or nil,
+and toggle it if ARG is `toggle'; disable the mode otherwise.
+
 \(fn &optional ARG)" t nil)
 
-(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "shifter" '(#("shifter-" 0 8 (fontified nil face font-lock-function-name-face)))))
+(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "shifter" '("shifter-")))
 
 ;;;***
 
