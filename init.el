@@ -177,6 +177,7 @@
 
 (init-package auto-complete)
 (init-package yasnippet)
+(init-package yasnippet-snippets)
 (init-package multiple-cursors)
 (init-package expand-region)
 (init-package magit)
