@@ -26,22 +26,20 @@ Declare minor mode for fmmm.
 (defvar scratch-mode-map (make-sparse-keymap) "\
 Keymap for scratch-mode.")
 
-(autoload 'scratch-kill-current-buffer "scratch" "\
-Kill current buffer
-
-\(fn)" t nil)
-
 (autoload 'scratch-mode "scratch" "\
 Toggle `scratch-mode'.
+
+If called interactively, enable Scratch mode if ARG is positive,
+and disable it if ARG is zero or negative.  If called from Lisp,
+also enable the mode if ARG is omitted or nil, and toggle it if
+ARG is `toggle'; disable the mode otherwise.
 
 \(fn &optional ARG)" t nil)
 
 (autoload 'scratch "scratch" "\
-Generate new buffer instantly.
+Generate new buffer instantly." t nil)
 
-\(fn)" t nil)
-
-(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "scratch" '("scratch-mode-buffer-sticky")))
+(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "scratch" '("scratch-")))
 
 ;;;***
 

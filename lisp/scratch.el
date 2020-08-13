@@ -8,17 +8,31 @@
   "Generate new buffer instantly"
   :group 'emacs)
 
-(defvar scratch-list '() "Scratch buffer list.")
+(defvar scratch-list '() "Scratch buffer list which are not labeled.")
 
 ;;;###autoload
 (defvar scratch-mode-map (make-sparse-keymap) "Keymap for scratch-mode.")
 
-;;;###autoload
-(defun scratch-kill-current-buffer ()
+(defun scratch-shred ()
   "Kill current buffer"
   (interactive)
   (setq scratch-list (remove (current-buffer) scratch-list))
   (kill-buffer (current-buffer)))
+
+(defun scratch-shred-all ()
+  "Kill all scratch buffers which are not labeled."
+  (interactive)
+  (when(yes-or-no-p "Kill all scratch buffers? ")
+      (mapc #'kill-buffer scratch-list)
+      (setq scratch-list '())))
+
+(defun scratch-label ()
+  "Rename scratch buffer and remove it from `scratch-list'."
+  (interactive)
+  (when scratch-mode
+    (rename-buffer (read-string "Lable: "))
+    (setq scratch-list (remove (current-buffer) scratch-list))
+    (scratch-mode -1)))
 
 ;;;###autoload
 (define-minor-mode scratch-mode
@@ -36,21 +50,6 @@ Reservation is restricted on current buffer."
                'after-change-major-mode-hook #'scratch-mode-buffer-sticky))
             nil t)
   (remove-hook 'after-change-major-mode-hook #'scratch-mode-buffer-sticky))
-
-(defun scratch-shred ()
-  "Kill all alive scratch buffer."
-  (interactive)
-  (when(yes-or-no-p "Kill all scratch buffers? ")
-      (mapc #'kill-buffer scratch-list)
-      (setq scratch-list '())))
-
-(defun scratch-label ()
-  "Rename scratch buffer and remove it from `scratch-list'."
-  (interactive)
-  (when scratch-mode
-    (rename-buffer (read-string "Lable: "))
-    (setq scratch-list (remove (current-buffer) scratch-list))
-    (scratch-mode -1)))
 
 ;;;###autoload
 (defun scratch ()
