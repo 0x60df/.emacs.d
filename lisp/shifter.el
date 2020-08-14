@@ -57,7 +57,7 @@
       (if (not (fmmm-major-mode-p s))
           (setq s 'fundamental-mode))
       (when (fmmm-major-mode-p s)
-        (delq s shifter-major-mode-hist)
+        (setq shifter-major-mode-hist (delq s shifter-major-mode-hist))
         (add-to-list 'shifter-major-mode-hist s))
       (funcall s))))
 
@@ -78,7 +78,7 @@
       (if (not (fmmm-minor-mode-p s))
           (setq s 'ignore))
       (when (fmmm-minor-mode-p s)
-        (delq s shifter-minor-mode-hist)
+        (setq shifter-minor-mode-hist (delq s shifter-minor-mode-hist))
         (add-to-list 'shifter-minor-mode-hist s))
       (let ((a (if (and (boundp s) (symbol-value s))
                    -1
@@ -110,7 +110,7 @@
       (if (not (fmmm-minor-mode-p s))
           (setq s 'ignore))
       (when (fmmm-minor-mode-p s)
-        (delq s shifter-minor-mode-hist)
+        (setq shifter-minor-mode-hist (delq s shifter-minor-mode-hist))
         (add-to-list 'shifter-minor-mode-hist s))
       (funcall s 1))))
 
@@ -139,7 +139,7 @@
       (if (not (fmmm-minor-mode-p s))
           (setq s 'ignore))
       (when (fmmm-minor-mode-p s)
-        (delq s shifter-minor-mode-hist)
+        (setq shifter-minor-mode-hist (delq s shifter-minor-mode-hist))
         (add-to-list 'shifter-minor-mode-hist s))
       (funcall s -1))))
 
