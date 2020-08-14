@@ -10,26 +10,26 @@
 
 ;;; yes-or-no-p
 
-(defvar yes-or-no-p-active-p nil
-  "whether `yes-or-no-p' is being executed or not.")
+(defun enable-temporal-key-bind-on-yes-or-no-p (fun &rest args)
+  (unwind-protect
+      (progn
+        (define-key minibuffer-local-map
+          (kbd "M-RET") (lambda ()
+                               (interactive)
+                               (insert "yes")
+                               (exit-minibuffer)))
+        (apply fun args))
+    (define-key minibuffer-local-map (kbd "M-RET") nil)))
 
-(define-key minibuffer-local-map
-  (kbd "y") (lambda ()
-              (interactive)
-              (cond (yes-or-no-p-active-p (insert "yes"))
-                    (t (self-insert-command 1)))))
-(define-key minibuffer-local-map
-  (kbd "n") (lambda ()
-              (interactive)
-              (cond (yes-or-no-p-active-p (insert "no"))
-                    (t (self-insert-command 1)))))
+(define-minor-mode risky-yes-or-no-p-mode
+  "Allow yes return by C-return, and no return by M-return."
+  :global t
+  :lighter " R"
+  (if risky-yes-or-no-p-mode
+      (advice-add 'yes-or-no-p :around
+                  #'enable-temporal-key-bind-on-yes-or-no-p)
+    (advice-remove 'yes-or-no-p #'enable-temporal-key-bind-on-yes-or-no-p)))
 
-(defun follow-yes-or-no-p-active-p (fun &rest args)
-  (setq yes-or-no-p-active-p t)
-  (unwind-protect (apply fun args)
-    (setq yes-or-no-p-active-p nil)))
-
-(advice-add 'yes-or-no-p :around 'follow-yes-or-no-p-active-p)
-
+(global-set-key (kbd "C-c r y") #'risky-yes-or-no-p-mode)
 
 (resolve risk)
