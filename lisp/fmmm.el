@@ -14,6 +14,16 @@
 (defcustom fmmm-complementary-minor-mode-list nil
   "List of simbols which are considered as minor-mode in `fmmm'" :group 'fmmm)
 
+(defvar fmmm-minor-mode-variable-alist
+  (let (l)
+    (mapatoms (lambda (a)
+                (if (symbolp a)
+                    (let ((minor-mode-function (get a :minor-mode-function)))
+                      (if minor-mode-function
+                          (setq l (cons (cons minor-mode-function a) l)))))))
+    l)
+  "Alist of minor-mode and minor-mode variable")
+
 (defun fmmm-major-mode-p (symbol)
   "Non-nil if SYMBOL is not major mode."
   (letrec ((inspect
@@ -52,8 +62,7 @@
                     (lambda (symbol)
                       (and (not (autoloadp (funcall inspect symbol)))
                            (not (fmmm-major-mode-p symbol))))
-                    fmmm-complementary-major-mode-list)
-           )))
+                    fmmm-complementary-major-mode-list))))
     (let (l)
       (mapatoms
        (lambda (a) (if (and (fmmm-major-mode-p a)
@@ -83,8 +92,7 @@
                     (lambda (symbol)
                       (and (not (autoloadp (funcall inspect symbol)))
                            (not (fmmm-minor-mode-p symbol))))
-                    fmmm-complementary-minor-mode-list)
-           )))
+                    fmmm-complementary-minor-mode-list))))
     (let ((l minor-mode-list))
       (mapc (lambda (s) (setq l (delq s l))) fmmm-complementary-minor-mode-list)
       (append valid-complemntary-list l))))
@@ -96,8 +104,10 @@
                            ((funcall p (car l)) (funcall filter p (cdr l)))
                            (t (cons (car l) (funcall filter p (cdr l))))))))
     (funcall filter (lambda (s)
-                      (and (boundp s)
-                           (symbol-value s)))
+                      (let* ((cell (assq s fmmm-minor-mode-variable-alist))
+                             (state (if cell (cdr cell) s)))
+                        (and (boundp state)
+                             (symbol-value state))))
              (fmmm-minor-mode-list))))
 
 (defun fmmm-disabled-minor-mode-list ()
@@ -107,9 +117,23 @@
                            ((funcall p (car l)) (funcall filter p (cdr l)))
                            (t (cons (car l) (funcall filter p (cdr l))))))))
     (funcall filter (lambda (s)
-                      (not (and (boundp s)
-                                (symbol-value s))))
+                      (let* ((cell (assq s fmmm-minor-mode-variable-alist))
+                             (state (if cell (cdr cell) s)))
+                        (not (and (boundp state)
+                                  (symbol-value state)))))
              (fmmm-minor-mode-list))))
+
+(defun fmmm-update-minor-mode-variable-alist (&optional args)
+  "Update `fmmm-minor-mode-variable-alist'.
+ according to current `obarray'"
+  (let (l)
+    (mapatoms (lambda (a)
+                (if (symbolp a)
+                    (let ((minor-mode-function (get a :minor-mode-function)))
+                      (if minor-mode-function
+                          (setq l (cons (cons minor-mode-function a) l)))))))
+    (setq fmmm-minor-mode-variable-alist l)))
+(add-hook 'after-load-functions #'fmmm-update-minor-mode-variable-alist)
 
 (provide 'fmmm)
 
