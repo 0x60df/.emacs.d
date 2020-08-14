@@ -88,7 +88,8 @@
 
 (defun fmmm-minor-mode-p (symbol)
   "Non-nil if SYMBOL is not minor mode."
-  (memq symbol minor-mode-list))
+  (or (memq symbol minor-mode-list)
+      (assq symbol minor-mode-alist)))
 
 (defun fmmm-minor-mode-list ()
   "Return list consist of minor mode symbol."
