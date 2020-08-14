@@ -94,7 +94,7 @@
       (shifter-non-volatile-hist-mode 1))
   (let ((l (if force
                (fmmm-minor-mode-list)
-             (fmmm-disbled-minor-mode-list)))
+             (fmmm-disabled-minor-mode-list)))
         (h (funcall (if force
                         'identity
                       (lambda (l)
@@ -128,7 +128,7 @@
                         'identity
                       (lambda (l)
                         (cl-remove-if
-                         (lambda (s) (memq s (fmmm-disbled-minor-mode-list)))
+                         (lambda (s) (memq s (fmmm-disabled-minor-mode-list)))
                          l)))
                     shifter-minor-mode-hist)))
     (mapc (lambda (s) (setq l (delq s l))) h)
