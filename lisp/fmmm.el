@@ -99,19 +99,7 @@
 
 (defun fmmm-enabled-minor-mode-list ()
   "Return list consist of enabled minor mode symbol."
-  (letrec ((filter (lambda (p l)
-                     (cond ((null l) l)
-                           ((funcall p (car l)) (funcall filter p (cdr l)))
-                           (t (cons (car l) (funcall filter p (cdr l))))))))
-    (funcall filter (lambda (s)
-                      (let* ((cell (assq s fmmm-minor-mode-variable-alist))
-                             (state (if cell (cdr cell) s)))
-                        (and (boundp state)
-                             (symbol-value state))))
-             (fmmm-minor-mode-list))))
-
-(defun fmmm-disabled-minor-mode-list ()
-  "Return list consist of disabled minor mode symbol."
+  (fmmm-update-minor-mode-variable-alist)
   (letrec ((filter (lambda (p l)
                      (cond ((null l) l)
                            ((funcall p (car l)) (funcall filter p (cdr l)))
@@ -123,9 +111,23 @@
                                   (symbol-value state)))))
              (fmmm-minor-mode-list))))
 
+(defun fmmm-disabled-minor-mode-list ()
+  "Return list consist of disabled minor mode symbol."
+  (fmmm-update-minor-mode-variable-alist)
+  (letrec ((filter (lambda (p l)
+                     (cond ((null l) l)
+                           ((funcall p (car l)) (funcall filter p (cdr l)))
+                           (t (cons (car l) (funcall filter p (cdr l))))))))
+    (funcall filter (lambda (s)
+                      (let* ((cell (assq s fmmm-minor-mode-variable-alist))
+                             (state (if cell (cdr cell) s)))
+                        (and (boundp state)
+                             (symbol-value state))))
+             (fmmm-minor-mode-list))))
+
 (defun fmmm-update-minor-mode-variable-alist (&optional args)
   "Update `fmmm-minor-mode-variable-alist'.
- according to current `obarray'"
+according to current `obarray'"
   (let (l)
     (mapatoms (lambda (a)
                 (if (symbolp a)
@@ -133,7 +135,6 @@
                       (if minor-mode-function
                           (setq l (cons (cons minor-mode-function a) l)))))))
     (setq fmmm-minor-mode-variable-alist l)))
-(add-hook 'after-load-functions #'fmmm-update-minor-mode-variable-alist)
 
 (provide 'fmmm)
 
