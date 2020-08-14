@@ -16,6 +16,38 @@ List of simbols which are considered as minor-mode in `fmmm'")
 
 (custom-autoload 'fmmm-complementary-minor-mode-list "fmmm" t)
 
+(defvar fmmm-cache-file (concat user-emacs-directory "fmmm-cache") "\
+File which stores fmmm cache.")
+
+(custom-autoload 'fmmm-cache-file "fmmm" t)
+
+(defvar fmmm-autoload-collector-mode nil "\
+Non-nil if Fmmm-Autoload-Collector mode is enabled.
+See the `fmmm-autoload-collector-mode' command
+for a description of this minor mode.
+Setting this variable directly does not take effect;
+either customize it (see the info node `Easy Customization')
+or call the function `fmmm-autoload-collector-mode'.")
+
+(custom-autoload 'fmmm-autoload-collector-mode "fmmm" nil)
+
+(autoload 'fmmm-autoload-collector-mode "fmmm" "\
+Minor mode for supporting fmmm autoload collecting system.
+When enabled, load `fmmm-cache-file', if
+`fmmm-major-mode-on-autoload-list', and
+`fmmm-minor-mode-on-autoload-list' are nil.
+In addition add hook
+`fmmm-update-major-mode-on-autoload-list',
+`fmmm-update-minor-mode-on-autoload-list',
+and `fmmm-save-cache' to `kill-meacs-hook'
+
+If called interactively, enable Fmmm-Autoload-Collector mode if
+ARG is positive, and disable it if ARG is zero or negative.  If
+called from Lisp, also enable the mode if ARG is omitted or nil,
+and toggle it if ARG is `toggle'; disable the mode otherwise.
+
+\(fn &optional ARG)" t nil)
+
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "fmmm" '("fmmm-")))
 
 ;;;***

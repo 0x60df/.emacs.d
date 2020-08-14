@@ -14,6 +14,12 @@
 (defcustom fmmm-complementary-minor-mode-list nil
   "List of simbols which are considered as minor-mode in `fmmm'" :group 'fmmm)
 
+;;;###autoload
+(defcustom fmmm-cache-file (concat user-emacs-directory "fmmm-cache")
+  "File which stores fmmm cache."
+  :group 'fmmm
+  :type 'file)
+
 (defvar fmmm-minor-mode-variable-alist
   (let (l)
     (mapatoms (lambda (a)
@@ -23,6 +29,15 @@
                           (setq l (cons (cons minor-mode-function a) l)))))))
     l)
   "Alist of minor-mode and minor-mode variable")
+
+(defun fmmm-save-cache ()
+  "Save fmmm-major/minor-mode-on-autoload-list to `fmmm-cache-file'"
+  (with-temp-buffer
+    (insert (format "(setq fmmm-major-mode-on-autoload-list '%S)\n\n"
+                    fmmm-major-mode-on-autoload-list)
+            (format "(setq fmmm-minor-mode-on-autoload-list '%S)\n\n"
+                    fmmm-minor-mode-on-autoload-list))
+    (write-file fmmm-cache-file)))
 
 (defun fmmm-major-mode-p (symbol)
   "Non-nil if SYMBOL is not major mode."
@@ -66,9 +81,10 @@
     (let (l)
       (mapatoms
        (lambda (a) (if (and (fmmm-major-mode-p a)
-                            (not (memq a valid-complemntary-list)))
+                            (not (memq a valid-complemntary-list))
+                            (not (memq a fmmm-major-mode-on-autoload-list)))
                        (setq l (cons a l)))))
-      (append valid-complemntary-list l))))
+      (append valid-complemntary-list fmmm-major-mode-on-autoload-list l))))
 
 (defun fmmm-minor-mode-p (symbol)
   "Non-nil if SYMBOL is not minor mode."
@@ -95,7 +111,8 @@
                     fmmm-complementary-minor-mode-list))))
     (let ((l minor-mode-list))
       (mapc (lambda (s) (setq l (delq s l))) fmmm-complementary-minor-mode-list)
-      (append valid-complemntary-list l))))
+      (mapc (lambda (s) (setq l (delq s l))) fmmm-minor-mode-on-autoload-list)
+      (append valid-complemntary-list fmmm-minor-mode-on-autoload-list l))))
 
 (defun fmmm-enabled-minor-mode-list ()
   "Return list consist of enabled minor mode symbol."
@@ -135,6 +152,75 @@ according to current `obarray'"
                       (if minor-mode-function
                           (setq l (cons (cons minor-mode-function a) l)))))))
     (setq fmmm-minor-mode-variable-alist l)))
+
+(defvar fmmm-major-mode-on-autoload-list nil
+  "List of simbols of major-mode which will be autoloaded")
+
+(defvar fmmm-minor-mode-on-autoload-list nil
+  "List of simbols of minor-mode which will be autoloaded")
+
+(defconst fmmm-initial-major-mode-list (fmmm-major-mode-list)
+  "List of simbols of major-mode which are loaded
+at the time this feature is loaded.")
+
+(defconst fmmm-initial-minor-mode-list (fmmm-minor-mode-list)
+  "List of simbols of minor-mode which are loaded
+at the time this feature is loaded.")
+
+(defun fmmm-update-major-mode-on-autoload-list (&optional args)
+  "Update `fmmm-major-mode-on-autoload-list'.
+according to current `obarray'"
+  (mapatoms
+   (lambda (a)
+     (if (symbolp a)
+         (if (and (fmmm-major-mode-p a)
+                  (not (memq a (append fmmm-initial-major-mode-list
+                                       fmmm-major-mode-on-autoload-list))))
+             (setq fmmm-major-mode-on-autoload-list
+                   (cons a fmmm-major-mode-on-autoload-list)))))))
+
+(defun fmmm-update-minor-mode-on-autoload-list (&optional args)
+  "Update `fmmm-minor-mode-on-autoload-list'.
+according to current `obarray'"
+  (mapatoms
+   (lambda (a)
+     (if (symbolp a)
+         (if (and (fmmm-minor-mode-p a)
+                  (not (memq a (append fmmm-initial-minor-mode-list
+                                       fmmm-minor-mode-on-autoload-list))))
+             (setq fmmm-minor-mode-on-autoload-list
+                   (cons a fmmm-minor-mode-on-autoload-list)))))))
+
+;;;###autoload
+(define-minor-mode fmmm-autoload-collector-mode
+  "Minor mode for supporting fmmm autoload collecting system.
+When enabled, load `fmmm-cache-file', if
+`fmmm-major-mode-on-autoload-list', and
+`fmmm-minor-mode-on-autoload-list' are nil.
+In addition add hook
+`fmmm-update-major-mode-on-autoload-list',
+`fmmm-update-minor-mode-on-autoload-list',
+and `fmmm-save-cache' to `kill-meacs-hook'"
+  :group 'fmmm
+  :global t
+  (if fmmm-autoload-collector-mode
+      (progn
+        (if (and (null fmmm-major-mode-on-autoload-list)
+                 (null fmmm-minor-mode-on-autoload-list))
+            (load fmmm-cache-file t nil t))
+        (add-hook 'kill-emacs-hook
+                  #'fmmm-update-major-mode-on-autoload-list)
+        (add-hook 'kill-emacs-hook
+                  #'fmmm-update-minor-mode-on-autoload-list)
+        (add-hook 'kill-emacs-hook #'fmmm-save-cache))
+    (fmmm-save-cache)
+    (setq fmmm-major-mode-on-autoload-list nil
+          fmmm-minor-mode-on-autoload-list nil)
+    (remove-hook 'kill-emacs-hook
+                 #'fmmm-update-major-mode-on-autoload-list)
+    (remove-hook 'kill-emacs-hook
+                 #'fmmm-update-minor-mode-on-autoload-list)
+    (remove-hook 'kill-emacs-hook #'fmmm-save-cache)))
 
 (provide 'fmmm)
 
