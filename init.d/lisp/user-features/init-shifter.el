@@ -1,5 +1,5 @@
 
-;;;; init-scratch.el
+;;;; init-shifter.el
 
 
 (premise init)
@@ -13,4 +13,4 @@
       (run-with-idle-timer 70 t 'shifter-save-hist))
 
 
-(resolve scratch)
+(resolve shifter)
