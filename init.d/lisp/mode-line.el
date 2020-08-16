@@ -55,8 +55,29 @@
                (number-to-string l)
              "#")))
         " "))
+(defvar mode-line-buffer-identification-shrinked-p nil
+  "Status in which `mode-line-buffer-identification' is shrinked or not.")
+(make-variable-buffer-local 'mode-line-buffer-identification-shrinked-p)
 (setq-default mode-line-buffer-identification
-      '(:propertize "%12b" face mode-line-buffer-identification-face))
+              '(mode-line-buffer-identification-shrinked-p
+                (:eval
+                 (let ((buffer-identification
+                        (replace-regexp-in-string
+                         "%" "%%" (format-mode-line "%12b"))))
+                   (if (< 12 (length buffer-identification))
+                       (propertize
+                        (substring buffer-identification 0 12)
+                        'face '(mode-line-buffer-identification-face italic))
+                     (propertize
+                      buffer-identification
+                      'face 'mode-line-buffer-identification-face))))
+                (:propertize "%12b" face mode-line-buffer-identification-face)))
+(defun mode-line-buffer-identification-toggle-shrinked ()
+  "toggle mode-line-buffer-identification shrink status"
+  (interactive)
+  (if mode-line-buffer-identification-shrinked-p
+      (setq mode-line-buffer-identification-shrinked-p nil)
+    (setq mode-line-buffer-identification-shrinked-p t)))
 (setq mode-line-position
       '(:propertize ((-3 "%p")
                      (size-indication-mode (5 "/%I"))
@@ -67,7 +88,7 @@
 (defvar mode-line-modes-shrinked-p nil
   "Status in which `mode-line-modes' is shrinked or not.")
 (make-variable-buffer-local 'mode-line-modes-shrinked-p)
-(defun mode-line-modes-toggle-shrinled ()
+(defun mode-line-modes-toggle-shrinked ()
   "toggle mode-line-modes shrink status"
   (interactive)
   (if mode-line-modes-shrinked-p
@@ -78,17 +99,19 @@
         ((:propertize mode-name face mode-line-mode-name-face)
          mode-line-process
          (mode-line-modes-shrinked-p
-          (:eval (propertize
-                  (let* ((minor-modes (format-mode-line minor-mode-alist))
-                         (length (length minor-modes))
-                         (max-width 12))
-                    (if (< max-width length)
-                        (if (string-suffix-p " " minor-modes)
-                            (concat (substring minor-modes 0 (- max-width 1))
-                                    " ")
-                          (substring minor-modes 0 max-width))
-                      minor-modes))
-                  'face '(mode-line-minor-mode-alist-face italic)))
+          (:eval 
+           (let* ((minor-modes (format-mode-line minor-mode-alist))
+                  (length (length minor-modes))
+                  (max-width 12))
+             (if (< max-width length)
+                 (propertize
+                  (if (string-suffix-p " " minor-modes)
+                      (concat (substring minor-modes 0 (- max-width 1)) " ")
+                    (substring minor-modes 0 max-width))
+                  'face '(mode-line-minor-mode-alist-face italic))
+               (propertize
+                minor-modes
+                'face 'mode-line-minor-mode-alist-face))))
           (:propertize minor-mode-alist face mode-line-minor-mode-alist-face))
          "%n")
         "%]"
@@ -200,7 +223,14 @@
 
 ;;; bindings
 
-(global-set-key (kbd "C-c l") 'mode-line-modes-toggle-shrinled)
+(defun mode-line-toggle-shrinked (arg)
+  "Interface of toggle shrink status"
+  (interactive "P")
+  (if arg
+      (mode-line-buffer-identification-toggle-shrinked)
+    (mode-line-modes-toggle-shrinked)))
+
+(global-set-key (kbd "C-c l") 'mode-line-toggle-shrinked)
 
 
 (resolve mode-line)
