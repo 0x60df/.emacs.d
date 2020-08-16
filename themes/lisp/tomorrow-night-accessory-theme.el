@@ -12,6 +12,7 @@
   'tomorrow-night-accessory
   `(escape-glyph ((t :foreground ,red)))))
 
+
 ;;; mode-line
 
 (custom-theme-set-faces
@@ -128,51 +129,62 @@
 
 ;; diff
 
+(defface tn-diff-green
+  '((t :background "#335533"))
+  "Base face for the context of diff fit with `tomorrow-night-theme'.")
+(defface tn-diff-red
+  '((t :background "#553333"))
+  "Base face for the context of diff fit with `tomorrow-night-theme'.")
+(defface tn-diff-yellow
+  '((t :background "#524A32"))
+  "Base face for the context of diff fit with `tomorrow-night-theme'.")
+(defface tn-diff-refine-green
+  `((t :foreground ,(color-theme-tomorrow--with-colors 'night-eighties green)
+       :background "#048900"))
+  "Base face for the context of diff fit with `tomorrow-night-theme'.")
+(defface tn-diff-refine-red
+  `((t :foreground "#F5A2A6"
+       :background ,(color-theme-tomorrow--with-colors 'day red)))
+  "Base face for the context of diff fit with `tomorrow-night-theme'.")
+(defface tn-diff-refine-yellow
+  '((t :foreground "#FFE265"
+       :background "#D6A400"))
+  "Base face for the context of diff fit with `tomorrow-night-theme'.")
+(defface tn-diff-indicator-green
+  '((t :foreground "#048900"))
+  "Base face for the context of diff fit with `tomorrow-night-theme'.")
+(defface tn-diff-indicator-red
+  `((t :foreground ,(color-theme-tomorrow--with-colors 'day red)))
+  "Base face for the context of diff fit with `tomorrow-night-theme'.")
+(defface tn-diff-indicator-yellow
+  '((t :foreground "#D6A400"))
+  "Base face for the context of diff fit with `tomorrow-night-theme'.")
+
 (custom-theme-set-faces
  'tomorrow-night-accessory
  '(diff-added ((t :foreground nil
-                  :background "#335533"
-                  :inherit diff-changed)))
+                  :inherit (tn-diff-green diff-changed))))
  '(diff-changed ((t :foreground nil
-                    :background "#524A32")))
+                    :inherit tn-diff-yellow)))
  '(diff-removed ((t :foreground nil
-                    :background "#553333"
-                    :inherit diff-changed)))
- `(diff-refine-added
-   ((t :foreground ,(color-theme-tomorrow--with-colors 'night-eighties green)
-       :background "#048900"
-       :inherit diff-refine-changed)))
- `(diff-refine-changed
-   ((t :foreground "#FFE265"
-       :background "#D6A400")))
- `(diff-refine-removed
-   ((t :foreground "#F5A2A6"
-       :background ,(color-theme-tomorrow--with-colors 'day red)
-       :inherit diff-refine-changed)))
- '(diff-indicator-added ((t :foreground "#048900" :inherit diff-added)))
- '(diff-indicator-changed ((t :foreground "#D6A400" :inherit diff-changed)))
- `(diff-indicator-removed
-   ((t :foreground ,(color-theme-tomorrow--with-colors 'day red)
-       :inherit diff-removed))))
+                    :inherit (tn-diff-red diff-changed ))))
+ '(diff-refine-added ((t :inherit (tn-diff-refine-green diff-refine-changed))))
+ '(diff-refine-changed ((t :inherit tn-diff-refine-yellow)))
+ '(diff-refine-removed ((t :inherit (tn-diff-refine-red diff-refine-changed))))
+ '(diff-indicator-added ((t :inherit (tn-diff-indicator-green diff-added))))
+ '(diff-indicator-changed ((t :inherit (tn-diff-indicator-yellow
+                                        diff-changed))))
+ '(diff-indicator-removed ((t :inherit (tn-diff-indicator-red diff-removed)))))
 
 
 ;;; ediff
 
 (custom-theme-set-faces
  'tomorrow-night-accessory
- '(ediff-current-diff-C
-   ((t :background "#524A32")))
- `(ediff-fine-diff-A
-   ((t :foreground "#F5A2A6"
-       :background ,(color-theme-tomorrow--with-colors 'day red)
-       :inherit diff-refine-changed)))
- `(ediff-fine-diff-B
-   ((t :foreground ,(color-theme-tomorrow--with-colors 'night-eighties green)
-       :background "#048900"
-       :inherit diff-refine-changed)))
- '(ediff-fine-diff-C
-   ((t :foreground "#FFE265"
-       :background "#D6A400")))
+ '(ediff-current-diff-C ((t :inherit tn-diff-yellow)))
+ '(ediff-fine-diff-A ((t :inherit tn-diff-refine-red)))
+ '(ediff-fine-diff-B ((t :inherit tn-diff-refine-green)))
+ '(ediff-fine-diff-C ((t :inherit tn-diff-refine-yellow)))
  '(ediff-even-diff-C
    ((t :foreground nil
        :background nil
@@ -196,10 +208,9 @@
 (when (featurep 'git-gutter-fringe)
   (custom-theme-set-faces
    'tomorrow-night-accessory
-   '(git-gutter-fr:modified ((t :foreground "#D6A400")))
-   '(git-gutter-fr:added ((t :foreground "#048900")))
-   `(git-gutter-fr:deleted
-     ((t :foreground ,(color-theme-tomorrow--with-colors 'day red))))))
+   '(git-gutter-fr:modified ((t :inherit tn-diff-indicator-yellow)))
+   '(git-gutter-fr:added ((t :inherit tn-diff-indicator-green)))
+   '(git-gutter-fr:deleted ((t :inherit tn-diff-indicator-red)))))
 
 
 ;;; helm
