@@ -10,16 +10,23 @@
 
 ;;; yes-or-no-p
 
+(defun exit-yes-or-no-p-with-yes-insertion ()
+  (interactive)
+  (insert "yes")
+  (exit-minibuffer))
+
 (defun enable-temporal-key-bind-on-yes-or-no-p (fun &rest args)
-  (unwind-protect
-      (progn
-        (define-key minibuffer-local-map
-          (kbd "M-RET") (lambda ()
-                               (interactive)
-                               (insert "yes")
-                               (exit-minibuffer)))
-        (apply fun args))
-    (define-key minibuffer-local-map (kbd "M-RET") nil)))
+  (let* ((key-seq (kbd "C-j"))
+         (bound-func  (lookup-key minibuffer-local-map key-seq)))
+    (unwind-protect
+        (progn
+          (define-key minibuffer-local-map key-seq
+            #'exit-yes-or-no-p-with-yes-insertion)
+          (apply fun args))
+      (define-key minibuffer-local-map key-seq
+        (if (equal bound-func #'exit-yes-or-no-p-with-yes-insertion)
+            'exit-minibuffer
+          bound-func)))))
 
 (define-minor-mode risky-yes-or-no-p-mode
   "Allow yes return by C-return, and no return by M-return."
