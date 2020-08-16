@@ -13,6 +13,12 @@
 ;;;###autoload
 (defvar scratch-mode-map (make-sparse-keymap) "Keymap for scratch-mode.")
 
+;;;###autoload
+(define-minor-mode scratch-mode
+  "Toggle `scratch-mode'."
+  :group 'scratch
+  :keymap 'scratch-mode-map)
+
 (defun scratch-shred ()
   "Kill current buffer"
   (interactive)
@@ -33,12 +39,6 @@
     (rename-buffer (read-string "Lable: "))
     (setq scratch-list (remove (current-buffer) scratch-list))
     (scratch-mode -1)))
-
-;;;###autoload
-(define-minor-mode scratch-mode
-  "Toggle `scratch-mode'."
-  :group 'scratch
-  :keymap 'scratch-mode-map)
 
 (defun scratch-mode-buffer-sticky ()
   "Enable `scratch-mode', and reserve enabling on change of major mode.

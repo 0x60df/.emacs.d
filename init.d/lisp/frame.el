@@ -71,10 +71,10 @@
       (modify-all-frames-parameters '((alpha . 0)))
     (modify-all-frames-parameters '((alpha . 100)))))
 
-(defcustom display-pixel-left-margin 0 "" :group 'user)
-(defcustom display-pixel-top-margin 0 "" :group 'user)
-(defcustom display-pixel-right-margin 0 "" :group 'user)
-(defcustom display-pixel-bottom-margin 0 "" :group 'user)
+(defcustom display-pixel-left-margin 0 "" :type 'integer :group 'user)
+(defcustom display-pixel-top-margin 0 "" :type 'integer :group 'user)
+(defcustom display-pixel-right-margin 0 "" :type 'integer :group 'user)
+(defcustom display-pixel-bottom-margin 0 "" :type 'integer :group 'user)
 
 (defun manipulate-frame (arg)
   (interactive "P")

@@ -8,11 +8,15 @@
 
 ;;;###autoload
 (defcustom fmmm-complementary-major-mode-list nil
-  "List of simbols which are considered as major-mode in `fmmm'" :group 'fmmm)
+  "List of simbols which are considered as major-mode in `fmmm'"
+  :type '(list symbol)
+  :group 'fmmm)
 
 ;;;###autoload
 (defcustom fmmm-complementary-minor-mode-list nil
-  "List of simbols which are considered as minor-mode in `fmmm'" :group 'fmmm)
+  "List of simbols which are considered as minor-mode in `fmmm'"
+  :type '(list symbol)
+  :group 'fmmm)
 
 ;;;###autoload
 (defcustom fmmm-cache-file (concat user-emacs-directory "fmmm-cache")
