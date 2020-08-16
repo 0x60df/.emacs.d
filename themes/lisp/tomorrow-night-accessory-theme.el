@@ -386,6 +386,7 @@
 
 
 ;;; skk
+
 (when (fboundp 'skk-mode)
  (custom-theme-set-variables
   'tomorrow-night-accessory
@@ -396,7 +397,14 @@
   '(skk-cursor-katakana-color (color-theme-tomorrow--with-colors 'night green))
   '(skk-cursor-hiragana-color (color-theme-tomorrow--with-colors 'night aqua))
   '(skk-cursor-jisx0201-color (color-theme-tomorrow--with-colors 'night purple))
-  '(skk-cursor-latin-color (color-theme-tomorrow--with-colors 'night comment)))
+  '(skk-cursor-latin-color (color-theme-tomorrow--with-colors 'night comment))
+  `(default-frame-alist
+     (append `((cursor-color . ,(color-theme-tomorrow--with-colors 'night red))
+               (foreground-color . ,(color-theme-tomorrow--with-colors
+                                     'night foreground))
+               (background-color . ,(color-theme-tomorrow--with-colors
+                                     'night background)))
+                default-frame-alist)))
 
  (custom-theme-set-faces
   'tomorrow-night-accessory
