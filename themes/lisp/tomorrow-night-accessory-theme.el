@@ -126,14 +126,80 @@
      ((t :inherit (font-lock-function-name-face ac-selection-face))))))
 
 
+;; diff
+
+(custom-theme-set-faces
+ 'tomorrow-night-accessory
+ '(diff-added ((t :foreground nil
+                  :background "#335533"
+                  :inherit diff-changed)))
+ '(diff-changed ((t :foreground nil
+                    :background "#524A32")))
+ '(diff-removed ((t :foreground nil
+                    :background "#553333"
+                    :inherit diff-changed)))
+ `(diff-refine-added
+   ((t :foreground ,(color-theme-tomorrow--with-colors 'night-eighties green)
+       :background "#048900"
+       :inherit diff-refine-changed)))
+ `(diff-refine-changed
+   ((t :foreground "#FFE265"
+       :background "#D6A400")))
+ `(diff-refine-removed
+   ((t :foreground "#F5A2A6"
+       :background ,(color-theme-tomorrow--with-colors 'day red)
+       :inherit diff-refine-changed)))
+ '(diff-indicator-added ((t :foreground "#048900" :inherit diff-added)))
+ '(diff-indicator-changed ((t :foreground "#D6A400" :inherit diff-changed)))
+ `(diff-indicator-removed
+   ((t :foreground ,(color-theme-tomorrow--with-colors 'day red)
+       :inherit diff-removed))))
+
+
+;;; ediff
+
+(custom-theme-set-faces
+ 'tomorrow-night-accessory
+ '(ediff-current-diff-C
+   ((t :background "#524A32")))
+ `(ediff-fine-diff-A
+   ((t :foreground "#F5A2A6"
+       :background ,(color-theme-tomorrow--with-colors 'day red)
+       :inherit diff-refine-changed)))
+ `(ediff-fine-diff-B
+   ((t :foreground ,(color-theme-tomorrow--with-colors 'night-eighties green)
+       :background "#048900"
+       :inherit diff-refine-changed)))
+ '(ediff-fine-diff-C
+   ((t :foreground "#FFE265"
+       :background "#D6A400")))
+ '(ediff-even-diff-C
+   ((t :foreground nil
+       :background nil
+       :inverse-video t)))
+ `(ediff-odd-diff-C
+   ((t :foreground ,(color-theme-tomorrow--with-colors 'night comment)
+       :background nil
+       :inverse-video t)))
+ '(ediff-even-diff-Ancestor
+   ((t :foreground nil
+       :background nil
+       :inverse-video t)))
+ `(ediff-odd-diff-Ancestor
+   ((t :foreground ,(color-theme-tomorrow--with-colors 'night comment)
+       :background nil
+       :inverse-video t))))
+
+
 ;;; git-getter-fringe
 
 (when (featurep 'git-gutter-fringe)
   (custom-theme-set-faces
    'tomorrow-night-accessory
-   '(git-gutter-fr:modified ((t :foreground "#aaaa22")))
-   '(git-gutter-fr:added ((t :foreground "#22aa22")))
-   '(git-gutter-fr:deleted ((t :foreground "#aa2222")))))
+   '(git-gutter-fr:modified ((t :foreground "#D6A400")))
+   '(git-gutter-fr:added ((t :foreground "#048900")))
+   `(git-gutter-fr:deleted
+     ((t :foreground ,(color-theme-tomorrow--with-colors 'day red))))))
 
 
 ;;; helm
