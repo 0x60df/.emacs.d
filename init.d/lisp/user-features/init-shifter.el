@@ -9,9 +9,11 @@
 (global-set-key (kbd "s-m e") 'shifter-turn-on-minor-mode)
 (global-set-key (kbd "s-m d") 'shifter-turn-off-minor-mode)
 
-(defvar shifter-hist-auto-save-timer)
-(setq shifter-hist-auto-save-timer
-      (run-with-idle-timer 70 t 'shifter-save-hist))
+(eval-after-load 'shifter
+  '(progn
+    (defvar shifter-hist-auto-save-timer)
+    (setq shifter-hist-auto-save-timer
+          (run-with-idle-timer 70 t 'shifter-save-hist))))
 
 
 (resolve shifter)
