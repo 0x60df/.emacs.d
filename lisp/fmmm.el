@@ -34,6 +34,12 @@
     l)
   "Alist of minor-mode and minor-mode variable")
 
+(defvar fmmm-major-mode-on-autoload-list nil
+  "List of simbols of major-mode which will be autoloaded")
+
+(defvar fmmm-minor-mode-on-autoload-list nil
+  "List of simbols of minor-mode which will be autoloaded")
+
 (defun fmmm-save-cache ()
   "Save fmmm-major/minor-mode-on-autoload-list to `fmmm-cache-file'"
   (with-temp-buffer
@@ -158,12 +164,6 @@ according to current `obarray'"
                           (setq l (cons (cons minor-mode-function a) l)))))))
     (setq fmmm-minor-mode-variable-alist l)))
 
-(defvar fmmm-major-mode-on-autoload-list nil
-  "List of simbols of major-mode which will be autoloaded")
-
-(defvar fmmm-minor-mode-on-autoload-list nil
-  "List of simbols of minor-mode which will be autoloaded")
-
 (defconst fmmm-initial-major-mode-list (fmmm-major-mode-list)
   "List of simbols of major-mode which are loaded
 at the time this feature is loaded.")
@@ -212,7 +212,7 @@ and `fmmm-save-cache' to `kill-meacs-hook'"
       (progn
         (if (and (null fmmm-major-mode-on-autoload-list)
                  (null fmmm-minor-mode-on-autoload-list))
-            (load fmmm-cache-file t nil t))
+            (load fmmm-cache-file t t t))
         (add-hook 'kill-emacs-hook
                   #'fmmm-update-major-mode-on-autoload-list)
         (add-hook 'kill-emacs-hook
