@@ -158,10 +158,14 @@
   (if arg
       (setq sdired-other-base-switches ""
             sdired-base-switches sdired-switches-for-name)
-    (setq sdired-other-base-switches
-          (read-string "ls switches (must contain -l): "
-                       dired-actual-switches)
-          sdired-base-switches sdired-other-base-switches))
+    (let ((s (read-string "ls switches (must contain -l): "
+                          dired-actual-switches)))
+      (setq sdired-base-switches s)
+      (unless (or (string-equal s sdired-switches-for-name)
+                  (string-equal s sdired-switches-for-date)
+                  (string-equal s sdired-switches-for-size)
+                  (string-equal s sdired-switches-for-type))
+        (setq sdired-other-base-switches s))))
   (sdired-refresh))
 
 (defun sdired-sort-by (&optional key)
