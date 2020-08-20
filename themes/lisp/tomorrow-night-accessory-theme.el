@@ -25,6 +25,15 @@
  '(mode-line-which-func-mode-face ((t :inherit font-lock-function-name-face))))
 
 
+;;; risk
+(color-theme-tomorrow--with-colors
+ 'night
+ (custom-theme-set-faces
+  'tomorrow-night-accessory
+  `(risky-yes-or-no-p-prefix-face
+    ((t :foreground ,red)))))
+
+
 ;;; term-mode
 
 (color-theme-tomorrow--with-colors

@@ -10,6 +10,11 @@
 
 ;;; yes-or-no-p
 
+(defface risky-yes-or-no-p-prefix-face
+  '((t :inherit minibuffer-prompt
+       :weight bold))
+  "Face for prefix of risky-yes-or-no-p prompt.")
+
 (define-minor-mode risky-yes-or-no-p-transient-mode
   "Minor mode holding risky keymap for `yes-or-no-p'."
   :global t
@@ -19,17 +24,18 @@
                           (insert "yes")
                           (exit-minibuffer))))))
 
-(defun with-risky-yes-or-no-p-transient-mode (fun &rest args)
+(defun with-risky-yes-or-no-p-transient-mode (fun arg)
   (unwind-protect
       (progn
         (risky-yes-or-no-p-transient-mode 1)
-        (apply fun args))
+        (funcall fun (concat (propertize "[RISKY] "
+                                         'face 'risky-yes-or-no-p-prefix-face)
+                             arg)))
     (risky-yes-or-no-p-transient-mode -1)))
 
 (define-minor-mode risky-yes-or-no-p-mode
   "Allow answering yes by C-j on `yes-or-no-p'."
   :global t
-  :lighter " R"
   (if risky-yes-or-no-p-mode
       (advice-add 'yes-or-no-p :around #'with-risky-yes-or-no-p-transient-mode)
     (advice-remove 'yes-or-no-p #'with-risky-yes-or-no-p-transient-mode)))
