@@ -50,6 +50,15 @@
   `(term-color-yellow ((t :foreground ,yellow :background ,yellow)))))
 
 
+;;; org-mode
+
+(color-theme-tomorrow--with-colors
+ 'night
+ (custom-theme-set-faces
+  'tomorrow-night-accessory
+  `(org-drawer ((t :foreground ,comment)))))
+
+
 ;;; hi-lock
 
 (color-theme-tomorrow--with-colors
