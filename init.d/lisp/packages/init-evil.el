@@ -36,7 +36,6 @@
 (define-key evil-emacs-state-map (kbd "H-e") #'evil-exit-emacs-state)
 
 (evil-set-toggle-key "C-]")
-(global-set-key (kbd "C-z") #'abort-recursive-edit)
 
 ;; leader
 (defun evil-leader (command)
