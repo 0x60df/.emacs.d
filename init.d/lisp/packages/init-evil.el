@@ -35,7 +35,7 @@
 (define-key evil-insert-state-map (kbd "H-e") #'evil-emacs-state)
 (define-key evil-emacs-state-map (kbd "H-e") #'evil-exit-emacs-state)
 
-(evil-set-toggle-key "C-]")
+(evil-set-toggle-key "C-c ^")
 
 ;; leader
 (defun evil-leader (command)
