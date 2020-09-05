@@ -25,16 +25,16 @@
   "Switches for sort by type" :group 'sdired)
 
 ;;;###autoload
+(defcustom sdired-switches-for-vnum "-alv"
+  "Switch for natural sort" :group 'sdired)
+
+;;;###autoload
 (defcustom sdired-switch-for-reverse "-r"
   "Switch for reversal sort" :group 'sdired)
 
 ;;;###autoload
 (defcustom sdired-switch-for-directory-first "--group-directories-first"
   "Switch for sort where directories are listed first" :group 'sdired)
-
-;;;###autoload
-(defcustom sdired-switch-for-natural "-v"
-  "Switch for natural sort" :group 'sdired)
 
 (defvar sdired-base-switches sdired-switches-for-name "Base switches for sort")
 (make-variable-buffer-local 'sdired-base-switches)
@@ -90,15 +90,7 @@
                                 'dired-marked
                               'dired-mark)
                             'bold))
-                     "] directory first ["
-                     (propertize
-                      "v"  'face
-                      (list (if (member sdired-switch-for-natural
-                                        sdired-optional-switches)
-                                'dired-marked
-                              'dired-mark)
-                            'bold))
-                     "] natural order\n"
+                     "] directory first\n"
                      (propertize "Sort control      "
                                  'face '(dired-ignored italic))
                      ": "
@@ -122,8 +114,6 @@
                           (sdired-toggle-reverse))
                          ((string-equal s "d")
                           (sdired-toggle-directory-first))
-                         ((string-equal s "v")
-                          (sdired-toggle-natural))
                          ((string-equal s "s")
                           (sdired-reset))
                          ((string-equal s "q")
@@ -145,6 +135,8 @@
               ((string-equal sdired-base-switches sdired-switches-for-size)
                sdired-switches-for-type)
               ((string-equal sdired-base-switches sdired-switches-for-type)
+               sdired-switches-for-vnum)
+              ((string-equal sdired-base-switches sdired-switches-for-vnum)
                (if (string-equal sdired-other-base-switches "")
                    sdired-switches-for-name
                  sdired-other-base-switches))
@@ -164,7 +156,8 @@
       (unless (or (string-equal s sdired-switches-for-name)
                   (string-equal s sdired-switches-for-date)
                   (string-equal s sdired-switches-for-size)
-                  (string-equal s sdired-switches-for-type))
+                  (string-equal s sdired-switches-for-type)
+                  (string-equal s sdired-switches-for-vnum))
         (setq sdired-other-base-switches s))))
   (sdired-refresh))
 
@@ -172,13 +165,15 @@
   "Sort dired by KEY.
 If called with prefix argument, sort switches can be edit manually"
   (interactive (list
-                (completing-read "Key: " '("name" "date" "size" "type"))))
+                (completing-read "Key: "
+                                 '("name" "date" "size" "type" "vnum"))))
   (setq sdired-base-switches
         (cond ((stringp key)
                (cond ((string-equal key "name") sdired-switches-for-name)
                      ((string-equal key "date") sdired-switches-for-date)
                      ((string-equal key "size") sdired-switches-for-size)
-                     ((string-equal key "type") sdired-switches-for-type)))
+                     ((string-equal key "type") sdired-switches-for-type)
+                     ((string-equal key "vnum") sdired-switches-for-vnum)))
               (t dired-actual-switches)))
   (sdired-refresh))
 
@@ -198,15 +193,6 @@ If called with prefix argument, sort switches can be edit manually"
       (setq sdired-optional-switches
             (remove sdired-switch-for-directory-first sdired-optional-switches))
     (add-to-list 'sdired-optional-switches sdired-switch-for-directory-first))
-  (sdired-refresh))
-
-(defun sdired-toggle-natural ()
-  "Sort dired with natural option"
-  (interactive)
-  (if (member sdired-switch-for-natural sdired-optional-switches)
-      (setq sdired-optional-switches
-            (remove sdired-switch-for-natural sdired-optional-switches))
-    (add-to-list 'sdired-optional-switches sdired-switch-for-natural))
   (sdired-refresh))
 
 (defun sdired-reset ()
@@ -232,6 +218,8 @@ switches are shown literally."
                  "Dired by size")
                 ((string-equal sdired-base-switches sdired-switches-for-type)
                  "Dired by type")
+                ((string-equal sdired-base-switches sdired-switches-for-vnum)
+                 "Dired by vnum")
                 (t
                  (concat "Dired " sdired-base-switches))))
     (force-mode-line-update)))
