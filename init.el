@@ -207,6 +207,7 @@
 (init-package quickrun)
 (init-package smartparens)
 (init-package which-key)
+(init-package volatile-highlights)
 (init-package frame-dealer)
 (init-package web-mode)
 (init-package markdown-mode)

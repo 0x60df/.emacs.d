@@ -74,6 +74,13 @@
   `(hi-yellow ((t :foreground ,yellow :inverse-video t)))))
 
 
+;;; volatile-highlights
+
+(custom-theme-set-faces
+ 'tomorrow-night-accessory
+ '(vhl/default-face ((t :inherit region))))
+
+
 ;;; wgrep
 
 (color-theme-tomorrow--with-colors
