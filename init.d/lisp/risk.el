@@ -41,5 +41,6 @@
     (advice-remove 'yes-or-no-p #'with-risky-yes-or-no-p-transient-mode)))
 
 (global-set-key (kbd "C-c r y") #'risky-yes-or-no-p-mode)
+(risky-yes-or-no-p-mode 1)
 
 (resolve risk)
