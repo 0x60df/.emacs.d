@@ -183,6 +183,7 @@
 (init-package multiple-cursors)
 (init-package expand-region)
 (init-package anzu)
+(init-package loophole)
 (init-package helm)
 (init-package helm-ls-git)
 (init-package helm-ag)
