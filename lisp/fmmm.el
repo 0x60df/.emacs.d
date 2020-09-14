@@ -50,7 +50,7 @@
     (write-file fmmm-cache-file)))
 
 (defun fmmm-major-mode-p (symbol)
-  "Non-nil if SYMBOL is not major mode."
+  "Non-nil if SYMBOL seems to be major mode."
   (letrec ((inspect
             (lambda (s)
               (let ((f (symbol-function s)))
@@ -97,7 +97,7 @@
       (append valid-complemntary-list fmmm-major-mode-on-autoload-list l))))
 
 (defun fmmm-minor-mode-p (symbol)
-  "Non-nil if SYMBOL is not minor mode."
+  "Non-nil if SYMBOL seems to be minor mode."
   (or (memq symbol minor-mode-list)
       (assq symbol minor-mode-alist)))
 
