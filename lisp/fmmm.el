@@ -43,11 +43,17 @@
 (defun fmmm-save-cache ()
   "Save fmmm-major/minor-mode-on-autoload-list to `fmmm-cache-file'"
   (with-temp-buffer
-    (insert (format "(setq fmmm-major-mode-on-autoload-list '%S)\n\n"
-                    fmmm-major-mode-on-autoload-list)
-            (format "(setq fmmm-minor-mode-on-autoload-list '%S)\n\n"
-                    fmmm-minor-mode-on-autoload-list))
-    (write-file fmmm-cache-file)))
+    (prin1 `(mapc (lambda (m)
+                    (if (symbol-function m)
+                        (push m fmmm-major-mode-on-autoload-list)))
+                  ',fmmm-major-mode-on-autoload-list)
+           (current-buffer))
+    (prin1 `(mapc (lambda (m)
+                    (if (symbol-function m)
+                        (push m fmmm-minor-mode-on-autoload-list)))
+                  ',fmmm-minor-mode-on-autoload-list)
+           (current-buffer))
+  (write-file fmmm-cache-file)))
 
 (defun fmmm-major-mode-p (symbol)
   "Non-nil if SYMBOL seems to be major mode."
