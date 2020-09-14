@@ -27,10 +27,16 @@
 (defun shifter-save-hist ()
   "save shifter-major/minor-mode-hist to `shifter-hist-file'"
   (with-temp-buffer
-    (insert (format "(setq shifter-major-mode-hist '%S)\n\n"
-                    shifter-major-mode-hist)
-            (format "(setq shifter-minor-mode-hist '%S)\n\n"
-                    shifter-minor-mode-hist))
+    (prin1 `(mapc (lambda (m)
+                    (if (symbol-function m)
+                        (push m shifter-major-mode-hist)))
+                  ',shifter-major-mode-hist)
+           (current-buffer))
+    (prin1 `(mapc (lambda (m)
+                    (if (symbol-function m)
+                        (push m shifter-minor-mode-hist)))
+                  ',shifter-minor-mode-hist)
+           (current-buffer))
     (write-file shifter-hist-file)))
 
 ;;;###autoload
