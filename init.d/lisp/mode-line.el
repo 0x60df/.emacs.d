@@ -231,6 +231,7 @@
     (mode-line-modes-toggle-shrinked)))
 
 (global-set-key (kbd "C-c l") 'mode-line-toggle-shrinked)
+(global-set-key (kbd "C-l l") 'mode-line-buffer-identification-toggle-shrinked)
 
 
 (resolve mode-line)
