@@ -243,9 +243,10 @@
 (when (featurep 'helm)
   (custom-theme-set-faces
    'tomorrow-night-accessory
-   '(helm-source-header ((t :inherit (info-title-1 hl-line))))
+   '(helm-source-header ((t :inherit (info-title-2 hl-line))))
    '(helm-action ((t :inherit default)))
-   '(helm-candidate-number ((t :inherit isearch)))
+   `(helm-candidate-number
+     ((t :foreground ,(color-theme-tomorrow--with-colors 'night yellow))))
    '(helm-header-line-left-margin ((t :inherit dired-header :inverse-video t)))
    '(helm-selection ((t :inherit region)))
    '(helm-selection-line ((t :inherit highlight :distant-foreground nil)))
@@ -256,6 +257,11 @@
    '(helm-buffer-file ((t :inherit default)))
    '(helm-buffer-not-saved ((t :inherit warning)))
    '(helm-buffer-saved-out ((t :inherit error)))
+   `(helm-buffer-modified
+     ((t :foreground ,(color-theme-tomorrow--with-colors 'night yellow))))
+   `(helm-buffer-size ((t :inherit font-lock-comment-face)))
+   `(helm-buffer-process
+     ((t :foreground ,(color-theme-tomorrow--with-colors 'night aqua))))
    '(helm-ff-denied ((t :inherit (dired-warning italic))))
    '(helm-ff-directory ((t :inherit dired-directory)))
    '(helm-ff-dirs ((t :inherit dired-directory :inverse-video t)))
@@ -266,7 +272,9 @@
    '(helm-ff-file-extension ((t :inherit helm-ff-file)))
    '(helm-ff-invalid-symlink ((t :inherit dired-warning)))
    '(helm-ff-pipe ((t :inherit (dired-special))))
-   '(helm-ff-prefix ((t :inherit isearch)))
+   `(helm-ff-prefix
+     ((t :foreground ,(color-theme-tomorrow--with-colors 'day yellow)
+         :weight bold)))
    '(helm-ff-socket ((t :inherit (dired-special italic))))
    '(helm-ff-suid ((t :inherit (dired-header))))
    '(helm-ff-symlink ((t :inherit dired-symlink)))
