@@ -273,6 +273,7 @@
    '(helm-grep-file ((t :inherit font-lock-keyword-face)))
    '(helm-grep-finish ((t :inherit compilation-mode-line-exit)))
    '(helm-grep-lineno ((t :inherit font-lock-variable-name-face)))
+   '(helm-match ((t :foreground "#ffd700")))
    '(helm-moccur-buffer ((t :inherit font-lock-builtin-face)))
    '(helm-mode-prefix ((t :inherit isearch)))))
 
@@ -282,7 +283,8 @@
 (when (fboundp 'ace-jump-mode)
   (custom-theme-set-faces
    'tomorrow-night-accessory
-   '(ace-jump-face-foreground ((t :foreground "gold")))))
+   '(ace-jump-face-foreground ((t :foreground "#ffd700")))
+   ))
 
 
 ;;; helm swoop
@@ -419,7 +421,7 @@
     `(anzu-mode-line ((t :foreground ,aqua)))
     `(anzu-mode-line-no-match ((t :foreground ,aqua)))
     '(anzu-replace-highlight ((t :inherit lazy-highlight)))
-    '(anzu-replace-to ((t :foreground "gold"))))))
+    '(anzu-replace-to ((t :foreground "#ffd700"))))))
 
 
 ;;; skk
