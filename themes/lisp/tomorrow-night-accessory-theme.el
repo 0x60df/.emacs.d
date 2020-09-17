@@ -317,6 +317,18 @@
               (setq visible-mark-non-trailing-faces nil)
               (visible-mark-initialize-faces))))
 
+;;; magit
+
+(color-theme-tomorrow--with-colors
+ 'night
+ (custom-theme-set-faces
+  'tomorrow-night-accessory
+  `(magit-branch-local ((t :foreground ,aqua)))
+  `(magit-branch-remote ((t :foreground ,blue)))
+  `(magit-hash ((t :foreground ,comment)))
+  `(magit-log-author ((t :foreground ,orange)))
+  `(magit-section-heading ((t :foreground ,yellow :weight bold)))))
+
 
 ;;; evil
 
