@@ -60,6 +60,7 @@
 (global-unset-key "\C-l")
 (global-set-key "\C-l\C-l" 'recenter-top-bottom)
 (global-set-key "\C-l\C-f" 'find-file-at-point)
+(global-set-key "\C-l\C-c" 'save-buffers-kill-emacs)
 
 
 (resolve bindings)
