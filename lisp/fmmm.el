@@ -162,7 +162,7 @@
                              (symbol-value state))))
              (fmmm-minor-mode-list))))
 
-(defun fmmm-update-minor-mode-variable-alist (&optional args)
+(defun fmmm-update-minor-mode-variable-alist ()
   "Update `fmmm-minor-mode-variable-alist'.
 according to current `obarray'"
   (let (l)
@@ -181,27 +181,27 @@ at the time this feature is loaded.")
   "List of simbols of minor-mode which are loaded
 at the time this feature is loaded.")
 
-(defun fmmm-update-major-mode-on-autoload-list (&optional args)
+(defun fmmm-update-major-mode-on-autoload-list ()
   "Update `fmmm-major-mode-on-autoload-list'.
 according to current `obarray'"
   (mapatoms
    (lambda (a)
      (if (symbolp a)
          (if (and (fmmm-major-mode-p a)
-                  (not (memq a (append fmmm-initial-major-mode-list
-                                       fmmm-major-mode-on-autoload-list))))
+                  (not (memq a fmmm-initial-major-mode-list))
+                  (not (memq a fmmm-major-mode-on-autoload-list)))
              (setq fmmm-major-mode-on-autoload-list
                    (cons a fmmm-major-mode-on-autoload-list)))))))
 
-(defun fmmm-update-minor-mode-on-autoload-list (&optional args)
+(defun fmmm-update-minor-mode-on-autoload-list ()
   "Update `fmmm-minor-mode-on-autoload-list'.
 according to current `obarray'"
   (mapatoms
    (lambda (a)
      (if (symbolp a)
          (if (and (fmmm-minor-mode-p a)
-                  (not (memq a (append fmmm-initial-minor-mode-list
-                                       fmmm-minor-mode-on-autoload-list))))
+                  (not (memq a fmmm-initial-minor-mode-list))
+                  (not (memq a fmmm-minor-mode-on-autoload-list)))
              (setq fmmm-minor-mode-on-autoload-list
                    (cons a fmmm-minor-mode-on-autoload-list)))))))
 
