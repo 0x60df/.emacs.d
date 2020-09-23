@@ -93,6 +93,21 @@
 (define-error 'init-exit "Init exit" 'error)
 (define-error 'init-error "Init error" 'error)
 
+(add-hook
+ 'emacs-lisp-mode-hook
+ (lambda ()
+   (font-lock-add-keywords
+    nil
+    `((,(concat "(\\(init\\|init-feature\\|init-package\\)\\_>"
+                "[ 	]*"
+                "\\(\\(?:\\sw\\|\\s_\\|\\\\.\\)+\\)?")
+       (1 font-lock-keyword-face)
+       (2 font-lock-constant-face nil t))
+      ("(init-by\\_>" . font-lock-keyword-face)
+      ("(\\(resolve\\|premise\\)\\_>[ 	]*\\(\\(?:\\sw\\|\\s_\\|\\\\.\\)+\\)?"
+       (1 font-lock-keyword-face)
+       (2 font-lock-constant-face nil t))))))
+
 (setq message-truncate-lines t)
 (add-hook 'after-init-hook (lambda () (setq message-truncate-lines nil)))
 
