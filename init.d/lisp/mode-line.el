@@ -117,9 +117,10 @@
                   (max-width 12))
              (if (< max-width length)
                  (propertize
-                  (if (string-suffix-p " " minor-modes)
-                      (concat (substring minor-modes 0 (- max-width 1)) " ")
-                    (substring minor-modes 0 max-width))
+                  (substring minor-modes 0
+                             (if (= (aref minor-modes (- max-width 1)) 32)
+                                 (- max-width 1)
+                               max-width))
                   'face '(mode-line-minor-mode-alist-face italic))
                (propertize
                 minor-modes
