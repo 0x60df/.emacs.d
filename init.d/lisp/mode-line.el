@@ -17,15 +17,20 @@
                                       '(space :align-to
                                               (+ left-margin left-fringe)))
                         "-")))
+
 (setq-default mode-line-mule-info '("%Z"))
+
 (setq mode-line-client '(:eval (if (frame-parameter nil 'client)
                                    (let ((l (length server-clients)))
                                      (if (< l 10)
                                          (number-to-string l)
                                        "#"))
                                  "")))
+
 (setq-default mode-line-modified '("%1*%1+"))
+
 (setq-default mode-line-remote '("%1@"))
+
 (setq mode-line-frame-identification
       '((:eval
          (let ((l (length
@@ -55,9 +60,11 @@
                (number-to-string l)
              "#")))
         " "))
+
 (defvar mode-line-buffer-identification-shrinked-p nil
   "Status in which `mode-line-buffer-identification' is shrinked or not.")
 (make-variable-buffer-local 'mode-line-buffer-identification-shrinked-p)
+
 (setq-default mode-line-buffer-identification
               '(mode-line-buffer-identification-shrinked-p
                 (:eval
@@ -72,12 +79,14 @@
                       buffer-identification
                       'face 'mode-line-buffer-identification-face))))
                 (:propertize "%12b" face mode-line-buffer-identification-face)))
+
 (defun mode-line-buffer-identification-toggle-shrinked ()
   "toggle mode-line-buffer-identification shrink status"
   (interactive)
   (if mode-line-buffer-identification-shrinked-p
       (setq mode-line-buffer-identification-shrinked-p nil)
     (setq mode-line-buffer-identification-shrinked-p t)))
+
 (setq mode-line-position
       '(:propertize ((-3 "%p")
                      (size-indication-mode (5 "/%I"))
@@ -85,21 +94,24 @@
                                                             (4  " L%l")))
                                        ((column-number-mode (4  " C%c")))))
                     face mode-line-position-face))
+
 (defvar mode-line-modes-shrinked-p nil
   "Status in which `mode-line-modes' is shrinked or not.")
 (make-variable-buffer-local 'mode-line-modes-shrinked-p)
+
 (defun mode-line-modes-toggle-shrinked ()
   "toggle mode-line-modes shrink status"
   (interactive)
   (if mode-line-modes-shrinked-p
       (setq mode-line-modes-shrinked-p nil)
     (setq mode-line-modes-shrinked-p t)))
+
 (setq mode-line-modes
       '("%["
         ((:propertize mode-name face mode-line-mode-name-face)
          mode-line-process
          (mode-line-modes-shrinked-p
-          (:eval 
+          (:eval
            (let* ((minor-modes (format-mode-line minor-mode-alist))
                   (length (length minor-modes))
                   (max-width 12))
@@ -116,6 +128,7 @@
          "%n")
         "%]"
         " "))
+
 (setq mode-line-misc-info
       '((which-func-mode
          (""
@@ -184,22 +197,27 @@
        :weight bold))
   "Face used for buffer identification parts of the mode line."
   :group 'mode-line-faces)
+
 (defface mode-line-position-face
   '((t))
   "Face used for position in the buffer parts of the mode line."
   :group 'mode-line-faces)
+
 (defface mode-line-vc-mode-face
   '((t :slant italic))
   "Face used for vc-mode parts of the mode line."
   :group 'mode-line-faces)
+
 (defface mode-line-mode-name-face
   '((t :weight bold))
   "Face used for mode-name parts of the mode line."
   :group 'mode-line-faces)
+
 (defface mode-line-minor-mode-alist-face
   '((t))
   "Face used for minor-mode-alist parts of the mode line."
   :group 'mode-line-faces)
+
 (defface mode-line-which-func-mode-face
   '((t :slant italic))
   "Face used for which-func-mode parts of the mode line."
@@ -221,17 +239,20 @@
  '(eol-mnemonic-unix ":"))
 
 
+;;; functions
+
+(defun show-which-function ()
+  "Show which-function in echo area."
+  (interactive)
+  (message "%s" (which-function)))
+
+
 ;;; bindings
 
-(defun mode-line-toggle-shrinked (arg)
-  "Interface of toggle shrink status"
-  (interactive "P")
-  (if arg
-      (mode-line-buffer-identification-toggle-shrinked)
-    (mode-line-modes-toggle-shrinked)))
-
-(global-set-key (kbd "C-c l") 'mode-line-toggle-shrinked)
-(global-set-key (kbd "C-l l") 'mode-line-buffer-identification-toggle-shrinked)
+(global-set-key (kbd "C-c l m") #'mode-line-modes-toggle-shrinked)
+(global-set-key (kbd "C-c l b")
+                #'mode-line-buffer-identification-toggle-shrinked)
+(global-set-key (kbd "C-c l f") #'show-which-function)
 
 
 (resolve mode-line)

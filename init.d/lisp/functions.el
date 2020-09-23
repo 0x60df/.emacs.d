@@ -54,9 +54,5 @@
                  (search-backward (char-to-string c) (point-at-bol) t))
       (setq this-command last-command))))
 
-(defun print-which-function ()
-  (interactive)
-  (message "%s" (which-function)))
-
 
 (resolve functions)

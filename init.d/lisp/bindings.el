@@ -30,7 +30,6 @@
 (global-set-key "\M-sf" 'grep-find)
 (global-set-key "\C-ct" 'eshell)
 (global-set-key "\C-cw" 'eww)
-(global-set-key "\C-cf" 'print-which-function)
 (global-set-key "\M-Y" 'yank-pop-forwards)
 (global-set-key (kbd "M-+") 'duplicate-and-comment-out)
 (global-set-key (kbd "C-S-n") 'next-line-scroll-up)
