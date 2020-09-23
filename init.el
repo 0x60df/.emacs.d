@@ -140,6 +140,7 @@
 (init vc)
 (init theme)
 (init mouse)
+(init feature)
 (init package)
 (init japanese)
 
