@@ -6,20 +6,27 @@
 ;;;### (autoloads nil "fmmm" "fmmm.el" (0 0 0 0))
 ;;; Generated autoloads from fmmm.el
 
-(defvar fmmm-complementary-major-mode-list nil "\
-List of simbols which are considered as major-mode in `fmmm'")
+(autoload 'fmmm-major-mode-p "fmmm" "\
+Non-nil if SYMBOL seems to be major mode.
 
-(custom-autoload 'fmmm-complementary-major-mode-list "fmmm" t)
+\(fn SYMBOL)" nil nil)
 
-(defvar fmmm-complementary-minor-mode-list nil "\
-List of simbols which are considered as minor-mode in `fmmm'")
+(autoload 'fmmm-major-mode-list "fmmm" "\
+Return list consist of major mode symbol." nil nil)
 
-(custom-autoload 'fmmm-complementary-minor-mode-list "fmmm" t)
+(autoload 'fmmm-minor-mode-p "fmmm" "\
+Non-nil if SYMBOL seems to be minor mode.
 
-(defvar fmmm-cache-file (concat user-emacs-directory "fmmm-cache") "\
-File which stores fmmm cache.")
+\(fn SYMBOL)" nil nil)
 
-(custom-autoload 'fmmm-cache-file "fmmm" t)
+(autoload 'fmmm-minor-mode-list "fmmm" "\
+Return list consist of minor mode symbol." nil nil)
+
+(autoload 'fmmm-enabled-minor-mode-list "fmmm" "\
+Return list consist of enabled minor mode symbol." nil nil)
+
+(autoload 'fmmm-disabled-minor-mode-list "fmmm" "\
+Return list consist of disabled minor mode symbol." nil nil)
 
 (defvar fmmm-autoload-collector-mode nil "\
 Non-nil if Fmmm-Autoload-Collector mode is enabled.
@@ -55,9 +62,6 @@ and toggle it if ARG is `toggle'; disable the mode otherwise.
 ;;;### (autoloads nil "scratch" "scratch.el" (0 0 0 0))
 ;;; Generated autoloads from scratch.el
 
-(defvar scratch-mode-map (make-sparse-keymap) "\
-Keymap for scratch-mode.")
-
 (autoload 'scratch-mode "scratch" "\
 Toggle `scratch-mode'.
 
@@ -78,56 +82,18 @@ Generate new buffer instantly." t nil)
 ;;;### (autoloads nil "scratchb" "scratchb.el" (0 0 0 0))
 ;;; Generated autoloads from scratchb.el
 
-(defvar scratchb-snapshot-directory (concat user-emacs-directory "scratchb") "\
-Directory in which snapshots of scratch buffer is saved.")
-
-(custom-autoload 'scratchb-snapshot-directory "scratchb" t)
-
-(defvar scratchb-default-directory "~" "\
-Directory which is selected when scratch buffer is reverted.")
-
-(custom-autoload 'scratchb-default-directory "scratchb" t)
-
-(defvar scratchb-snapshot-limit 256 "\
-Number of limit for scratchb snapshot files.")
-
-(custom-autoload 'scratchb-snapshot-limit "scratchb" t)
-
-(defvar scratchb-before-flush-hook nil "\
-Hook run before `scratchb-flush'.")
-
-(defvar scratchb-after-flush-hook nil "\
-Hook run after `scratchb-flush'.")
-
-(defvar scratchb-before-revert-hook nil "\
-Hook run before `scratchb-revert'.")
-
-(defvar scratchb-after-revert-hook nil "\
-Hook run after `scratchb-revert'.")
-
-(defvar scratchb-mode-map (make-sparse-keymap) "\
-Keymap for scratchb-mode.")
-
 (autoload 'scratchb-flush "scratchb" "\
-`erase-buffer' and `set-buffer-modified-p' nil on *scratch* buffer.
-
-\(fn)" t nil)
+`erase-buffer' and `set-buffer-modified-p' nil on *scratch* buffer." t nil)
 
 (autoload 'scratchb-revert "scratchb" "\
-Generate *scratch* buffer if it does not exist.
-
-\(fn)" t nil)
+Generate *scratch* buffer if it does not exist." t nil)
 
 (autoload 'scratchb-snapshot "scratchb" "\
-Write *scratch* buffer content to `scratchb-snapshot-directory'
-
-\(fn)" t nil)
+Write *scratch* buffer content to `scratchb-snapshot-directory'" t nil)
 
 (autoload 'scratchb-mode-buffer-sticky "scratchb" "\
 Enable `scratchb-mode', and reserve enabling on change of major mode.
-Reservation is restricted on current buffer.
-
-\(fn)" nil nil)
+Reservation is restricted on current buffer." nil nil)
 
 (defvar scratchb-auto-revert-mode nil "\
 Non-nil if Scratchb-Auto-Revert mode is enabled.
@@ -141,6 +107,11 @@ or call the function `scratchb-auto-revert-mode'.")
 
 (autoload 'scratchb-auto-revert-mode "scratchb" "\
 Toggle `scratchb-auto-revert-mode'.
+
+If called interactively, enable Scratchb-Auto-Revert mode if ARG
+is positive, and disable it if ARG is zero or negative.  If
+called from Lisp, also enable the mode if ARG is omitted or nil,
+and toggle it if ARG is `toggle'; disable the mode otherwise.
 
 \(fn &optional ARG)" t nil)
 
@@ -157,6 +128,11 @@ or call the function `scratchb-auto-snapshot-mode'.")
 (autoload 'scratchb-auto-snapshot-mode "scratchb" "\
 Toggle `scratchb-auto-snapshot-mode'.
 
+If called interactively, enable Scratchb-Auto-Snapshot mode if
+ARG is positive, and disable it if ARG is zero or negative.  If
+called from Lisp, also enable the mode if ARG is omitted or nil,
+and toggle it if ARG is `toggle'; disable the mode otherwise.
+
 \(fn &optional ARG)" t nil)
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "scratchb" '("scratchb-")))
@@ -165,41 +141,6 @@ Toggle `scratchb-auto-snapshot-mode'.
 
 ;;;### (autoloads nil "sdired" "sdired.el" (0 0 0 0))
 ;;; Generated autoloads from sdired.el
-
-(defvar sdired-switches-for-name "-al" "\
-Switches for sort by name")
-
-(custom-autoload 'sdired-switches-for-name "sdired" t)
-
-(defvar sdired-switches-for-date "-alt" "\
-Switches for sort by date")
-
-(custom-autoload 'sdired-switches-for-date "sdired" t)
-
-(defvar sdired-switches-for-size "-alS" "\
-Switches for sort by size")
-
-(custom-autoload 'sdired-switches-for-size "sdired" t)
-
-(defvar sdired-switches-for-type "-alX" "\
-Switches for sort by type")
-
-(custom-autoload 'sdired-switches-for-type "sdired" t)
-
-(defvar sdired-switch-for-reverse "-r" "\
-Switch for reversal sort")
-
-(custom-autoload 'sdired-switch-for-reverse "sdired" t)
-
-(defvar sdired-switch-for-directory-first "--group-directories-first" "\
-Switch for sort where directories are listed first")
-
-(custom-autoload 'sdired-switch-for-directory-first "sdired" t)
-
-(defvar sdired-switch-for-natural "-v" "\
-Switch for natural sort")
-
-(custom-autoload 'sdired-switch-for-natural "sdired" t)
 
 (autoload 'sdired-sort "sdired" "\
 Interface for sort. Basically toggle key.
@@ -213,16 +154,6 @@ Interface for sort. Basically toggle key.
 
 ;;;### (autoloads nil "shifter" "shifter.el" (0 0 0 0))
 ;;; Generated autoloads from shifter.el
-
-(defvar shifter-hist-file (concat user-emacs-directory "shifter-hists") "\
-File which stores shifter history.")
-
-(custom-autoload 'shifter-hist-file "shifter" t)
-
-(defvar shifter-keep-hist-volatile nil "\
-When non-nil shifter does not save/load hist file automatically.")
-
-(custom-autoload 'shifter-keep-hist-volatile "shifter" t)
 
 (autoload 'shifter-shift-major-mode "shifter" "\
 shift major mode" t nil)

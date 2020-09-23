@@ -9,13 +9,11 @@
   "shift major/minor-mode"
   :group 'emacs)
 
-;;;###autoload
 (defcustom shifter-hist-file (concat user-emacs-directory "shifter-hists")
   "File which stores shifter history."
   :group 'shifter
   :type 'file)
 
-;;;###autoload
 (defcustom shifter-keep-hist-volatile nil
   "When non-nil shifter does not save/load hist file automatically."
   :group 'shifter

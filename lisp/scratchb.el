@@ -6,34 +6,26 @@
   "*scratch* buffer utilities"
   :group 'emacs)
 
-;;;###autoload
 (defcustom scratchb-snapshot-directory (concat user-emacs-directory "scratchb")
   "Directory in which snapshots of scratch buffer is saved."
   :group 'scratchb)
 
-;;;###autoload
 (defcustom scratchb-default-directory "~"
   "Directory which is selected when scratch buffer is reverted."
   :group'scratchb)
 
-;;;###autoload
 (defcustom scratchb-snapshot-limit 256
   "Number of limit for scratchb snapshot files."
   :group 'scratchb)
 
-;;;###autoload
 (defvar scratchb-before-flush-hook nil "Hook run before `scratchb-flush'.")
 
-;;;###autoload
 (defvar scratchb-after-flush-hook nil "Hook run after `scratchb-flush'.")
 
-;;;###autoload
 (defvar scratchb-before-revert-hook nil "Hook run before `scratchb-revert'.")
 
-;;;###autoload
 (defvar scratchb-after-revert-hook nil "Hook run after `scratchb-revert'.")
 
-;;;###autoload
 (defvar scratchb-mode-map (make-sparse-keymap) "Keymap for scratchb-mode.")
 
 ;;;###autoload

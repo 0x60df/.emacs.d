@@ -10,7 +10,6 @@
 
 (defvar scratch-list '() "Scratch buffer list which are not labeled.")
 
-;;;###autoload
 (defvar scratch-mode-map (make-sparse-keymap) "Keymap for scratch-mode.")
 
 ;;;###autoload
@@ -28,7 +27,7 @@
 (defun scratch-shred-all ()
   "Kill all scratch buffers which are not labeled."
   (interactive)
-  (when(yes-or-no-p "Kill all scratch buffers? ")
+  (when (yes-or-no-p "Kill all scratch buffers? ")
       (mapc #'kill-buffer scratch-list)
       (setq scratch-list '())))
 

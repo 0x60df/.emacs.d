@@ -6,19 +6,16 @@
   "functionalities for major/minor-mode"
   :group 'emacs)
 
-;;;###autoload
 (defcustom fmmm-complementary-major-mode-list nil
   "List of simbols which are considered as major-mode in `fmmm'"
   :type '(list symbol)
   :group 'fmmm)
 
-;;;###autoload
 (defcustom fmmm-complementary-minor-mode-list nil
   "List of simbols which are considered as minor-mode in `fmmm'"
   :type '(list symbol)
   :group 'fmmm)
 
-;;;###autoload
 (defcustom fmmm-cache-file (concat user-emacs-directory "fmmm-cache")
   "File which stores fmmm cache."
   :group 'fmmm
@@ -55,6 +52,7 @@
            (current-buffer))
   (write-file fmmm-cache-file)))
 
+;;;###autoload
 (defun fmmm-major-mode-p (symbol)
   "Non-nil if SYMBOL seems to be major mode."
   (letrec ((inspect
@@ -75,6 +73,7 @@
                       (t nil))))))
     (funcall inspect symbol)))
 
+;;;###autoload
 (defun fmmm-major-mode-list ()
   "Return list consist of major mode symbol."
   (let ((valid-complemntary-list
@@ -102,11 +101,13 @@
                        (setq l (cons a l)))))
       (append valid-complemntary-list fmmm-major-mode-on-autoload-list l))))
 
+;;;###autoload
 (defun fmmm-minor-mode-p (symbol)
   "Non-nil if SYMBOL seems to be minor mode."
   (or (memq symbol minor-mode-list)
       (assq symbol minor-mode-alist)))
 
+;;;###autoload
 (defun fmmm-minor-mode-list ()
   "Return list consist of minor mode symbol."
   (let ((valid-complemntary-list
@@ -131,6 +132,7 @@
       (mapc (lambda (s) (setq l (delq s l))) fmmm-minor-mode-on-autoload-list)
       (append valid-complemntary-list fmmm-minor-mode-on-autoload-list l))))
 
+;;;###autoload
 (defun fmmm-enabled-minor-mode-list ()
   "Return list consist of enabled minor mode symbol."
   (fmmm-update-minor-mode-variable-alist)
@@ -145,6 +147,7 @@
                                   (symbol-value state)))))
              (fmmm-minor-mode-list))))
 
+;;;###autoload
 (defun fmmm-disabled-minor-mode-list ()
   "Return list consist of disabled minor mode symbol."
   (fmmm-update-minor-mode-variable-alist)

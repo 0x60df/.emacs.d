@@ -8,31 +8,24 @@
   "dired sorting utilities"
   :group 'emacs)
 
-;;;###autoload
 (defcustom sdired-switches-for-name "-al"
   "Switches for sort by name" :group 'sdired)
 
-;;;###autoload
 (defcustom sdired-switches-for-date "-alt"
   "Switches for sort by date" :group 'sdired)
 
-;;;###autoload
 (defcustom sdired-switches-for-size "-alS"
   "Switches for sort by size" :group 'sdired)
 
-;;;###autoload
 (defcustom sdired-switches-for-type "-alX"
   "Switches for sort by type" :group 'sdired)
 
-;;;###autoload
 (defcustom sdired-switches-for-vnum "-alv"
   "Switch for natural sort" :group 'sdired)
 
-;;;###autoload
 (defcustom sdired-switch-for-reverse "-r"
   "Switch for reversal sort" :group 'sdired)
 
-;;;###autoload
 (defcustom sdired-switch-for-directory-first "--group-directories-first"
   "Switch for sort where directories are listed first" :group 'sdired)
 
