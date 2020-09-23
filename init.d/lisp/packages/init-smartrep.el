@@ -9,6 +9,10 @@
 (premise subr)
 (premise inst-smartrep)
 
+(premise init-git-gutter-fringe)
+(premise init-multiple-cursors)
+(premise init-dired-hacks)
+
 (require 'smartrep)
 
 (eval-when-compile
