@@ -9,25 +9,39 @@
   :group 'emacs)
 
 (defcustom sdired-switches-for-name "-al"
-  "Switches for sort by name" :group 'sdired)
+  "Switches for sort by name"
+  :type 'string
+  :group 'sdired)
 
 (defcustom sdired-switches-for-date "-alt"
-  "Switches for sort by date" :group 'sdired)
+  "Switches for sort by date"
+  :type 'string
+  :group 'sdired)
 
 (defcustom sdired-switches-for-size "-alS"
-  "Switches for sort by size" :group 'sdired)
+  "Switches for sort by size"
+  :type 'string
+  :group 'sdired)
 
 (defcustom sdired-switches-for-type "-alX"
-  "Switches for sort by type" :group 'sdired)
+  "Switches for sort by type"
+  :type 'string
+  :group 'sdired)
 
 (defcustom sdired-switches-for-vnum "-alv"
-  "Switch for natural sort" :group 'sdired)
+  "Switch for natural sort"
+  :type 'string
+  :group 'sdired)
 
 (defcustom sdired-switch-for-reverse "-r"
-  "Switch for reversal sort" :group 'sdired)
+  "Switch for reversal sort"
+  :type 'string
+  :group 'sdired)
 
 (defcustom sdired-switch-for-directory-first "--group-directories-first"
-  "Switch for sort where directories are listed first" :group 'sdired)
+  "Switch for sort where directories are listed first"
+  :type 'string
+  :group 'sdired)
 
 (defvar sdired-base-switches sdired-switches-for-name "Base switches for sort")
 (make-variable-buffer-local 'sdired-base-switches)
