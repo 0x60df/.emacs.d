@@ -13,7 +13,8 @@
 (defface risky-yes-or-no-p-prefix-face
   '((t :inherit minibuffer-prompt
        :weight bold))
-  "Face for prefix of risky-yes-or-no-p prompt.")
+  "Face for prefix of risky-yes-or-no-p prompt."
+  :group 'user)
 
 (define-minor-mode risky-yes-or-no-p-transient-mode
   "Minor mode holding risky keymap for `yes-or-no-p'."
