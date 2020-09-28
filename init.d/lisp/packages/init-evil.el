@@ -71,7 +71,20 @@
                                           "^ <\\(.\\)> $" "\\1" ,tag)
                                          'face ',face))
                       (propertize " " 'face 'evil-mode-line-tag-face)))))
- '(normal insert visual replace operator motion))
+ '(normal insert replace operator motion))
+(defface evil-visual-state-tag-face
+  '((t :inherit evil-mode-line-tag-face))
+  (format "Face for evil-visual-state-tag.")
+  :group 'evil)
+(mapc
+ (lambda (selection)
+   (let ((tag (intern (format "evil-visual-%s-tag" selection))))
+     (set tag (concat (propertize "V:" 'face 'evil-mode-line-tag-face)
+                      (propertize (replace-regexp-in-string
+                                   "^ <\\(.+\\)> $" "\\1" (symbol-value tag))
+                                  'face 'evil-visual-state-tag-face)
+                      (propertize " " 'face 'evil-mode-line-tag-face)))))
+ '(char line screen-line block))
 
 ;; patch for mouse
 (defadvice evil-generate-mode-line-tag (after evil-generate-dry-mode-line-tag)
