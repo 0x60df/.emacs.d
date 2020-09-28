@@ -12,14 +12,16 @@
        (if (null el)
            (unless ,noerror
              (signal 'init-error
-                     '("Cannot init unit" ".el file is missing" ,unit)))
+                     (list (format-message "Cannot init unit `%s'" ',unit)
+                           ".el file is missing")))
          (unless (and elc (file-newer-than-file-p elc el))
            (if elc (and (delete-file elc) (setq elc nil)))
            (and (byte-compile-file el) (setq elc (byte-compile-dest-file el))))
          (if (null elc)
              (unless ,noerror
                (signal 'init-error
-                       '("Cannot init unit" ".elc file is missing" ,unit)))
+                       (list (format-message "Cannot init unit `%s'" ',unit)
+                             ".elc file is missing")))
            (letrec ((load-unit
                      (lambda ()
                        (when (catch 'compile-unit
@@ -58,8 +60,8 @@
          (eval '(init ,unit ,noerror ,nomessage)))
        (if (not (assq ',unit init-units))
            (signal 'init-error
-                   (list (format "Premised unit '%s' was not resolved"
-                                 ',unit)))))
+                   (list (format-message
+                          "Premised unit `%s' has not been resolved" ',unit)))))
      (if (and load-file-name (string-match ".elc$" load-file-name))
          (let ((unit-file-name (cdr (assq ',unit init-units))))
            (if (and unit-file-name
