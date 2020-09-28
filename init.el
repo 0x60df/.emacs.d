@@ -51,15 +51,14 @@
 
 (defmacro premise (unit &optional filename noerror nomessage)
   `(progn
-     (if (not (assq ',unit init-units))
-         (if ,filename
-             (progn
-               (eval '(init-by ,filename ,noerror ,nomessage))
-               (if (not (assq ',unit init-units))
-                   (signal 'init-error
-                           (list (format "Premised unit '%s' was not resolved"
-                                         ',unit)))))
-           (eval '(init ,unit ,noerror ,nomessage))))
+     (when (not (assq ',unit init-units))
+       (if ,filename
+           (eval '(init-by ,filename ,noerror ,nomessage))
+         (eval '(init ,unit ,noerror ,nomessage)))
+       (if (not (assq ',unit init-units))
+           (signal 'init-error
+                   (list (format "Premised unit '%s' was not resolved"
+                                 ',unit)))))
      (if (and load-file-name (string-match ".elc$" load-file-name))
          (let ((unit-file-name (cdr (assq ',unit init-units))))
            (if (and unit-file-name
