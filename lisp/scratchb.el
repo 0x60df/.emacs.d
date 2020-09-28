@@ -8,14 +8,17 @@
 
 (defcustom scratchb-snapshot-directory (concat user-emacs-directory "scratchb")
   "Directory in which snapshots of scratch buffer is saved."
+  :type 'directory
   :group 'scratchb)
 
 (defcustom scratchb-default-directory "~"
   "Directory which is selected when scratch buffer is reverted."
+  :type 'directory
   :group'scratchb)
 
 (defcustom scratchb-snapshot-limit 256
   "Number of limit for scratchb snapshot files."
+  :type 'integer
   :group 'scratchb)
 
 (defvar scratchb-before-flush-hook nil "Hook run before `scratchb-flush'.")
