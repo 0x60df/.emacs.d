@@ -75,17 +75,17 @@
 (defvar init-path
   (letrec ((filter (lambda (p l)
                      (cond ((null l) l)
-                           ((funcall p (car l)) (funcall filter p (cdr l)))
-                           (t (cons (car l) (funcall filter p (cdr l))))))))
+                           ((funcall p (car l))
+                            (cons (car l) (funcall filter p (cdr l))))
+                           (t (funcall filter p (cdr l)))))))
     (apply
      'append
      (mapcar
       (lambda (d)
-        (setq d (concat user-emacs-directory d))
-        (funcall filter (lambda (f) (not (file-directory-p f)))
-                 (mapcar (lambda (f) (expand-file-name (concat d "/" f)))
-                         (remove ".."
-                                 (directory-files d)))))
+        (let ((p (concat user-emacs-directory d)))
+          (funcall filter #'file-directory-p
+                   (mapcar (lambda (f) (expand-file-name (concat p "/" f)))
+                           (remove ".." (directory-files p))))))
       '("init.d/site-lisp" "init.d/lisp")))))
 
 (defvar init-units nil)
