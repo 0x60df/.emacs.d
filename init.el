@@ -20,14 +20,15 @@
              (unless ,noerror
                (signal 'init-error
                        '("Cannot init unit" ".elc file is missing" ,unit)))
-           (condition-case status
-               (load elc ,noerror ,nomessage t t)
-             (init-exit
-              (cond ((eq (cadr status) 'recompile)
-                     (and (delete-file elc) (setq elc nil))
-                     (and (byte-compile-file el)
-                          (setq elc (byte-compile-dest-file el)))
-                     (load elc ,noerror ,nomessage t t))))))))))
+           (letrec ((load-unit
+                     (lambda ()
+                       (when (catch 'compile-unit
+                               (and (load elc ,noerror ,nomessage t t) nil))
+                         (and (delete-file elc) (setq elc nil))
+                         (and (byte-compile-file el)
+                              (setq elc (byte-compile-dest-file el)))
+                         (funcall load-unit)))))
+             (funcall load-unit)))))))
 
 (defmacro init-by (file &optional noerror nomessage)
   `(let ((unit (intern (replace-regexp-in-string
@@ -63,10 +64,7 @@
          (let ((unit-file-name (cdr (assq ',unit init-units))))
            (if (and unit-file-name
                     (file-newer-than-file-p unit-file-name load-file-name))
-               (signal 'init-exit
-                       (list 'recompile
-                             (format "Premised unit '%s' was updated"
-                                     ',unit))))))))
+               (throw 'compile-unit t))))))
 
 (defmacro resolve (unit)
   `(add-to-list 'init-units (cons ',unit load-file-name)))
@@ -89,7 +87,6 @@
 
 (defvar init-units nil)
 
-(define-error 'init-exit "Init exit" 'error)
 (define-error 'init-error "Init error" 'error)
 
 (add-hook
