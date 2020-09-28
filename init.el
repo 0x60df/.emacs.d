@@ -6,6 +6,15 @@
 ;;; init
 
 (defmacro init (unit &optional noerror nomessage)
+  "Initialize UNIT by compile and load unit file.
+UNIT is a literal symbol which may be found in `init-path'
+as a file whose name is UNIT suffixed with '.el'.
+
+If optional arguments NOERROR and NOMESSAGE is not nil,
+errors and messages are suppressed.
+
+If compile-unit is thrown during load-unit,
+compile and load are performed recursively."
   (let ((name (symbol-name unit)))
     `(let ((el (locate-file ,name init-path '(".el")))
            (elc (locate-file ,name init-path '(".elc"))))
@@ -33,16 +42,29 @@
              (funcall load-unit)))))))
 
 (defmacro init-by (file &optional noerror nomessage)
+  "`init' unit by FILE.
+FILE is any lisp form which returns a name of unit file.
+NOERROR and NOMESSAGE suppress errors and messages."
   `(let ((unit (intern (replace-regexp-in-string
                         "\\.elc?$" ""
                         (expand-file-name ,file)))))
      (eval `(init ,unit ,',noerror ,',nomessage))))
 
 (defmacro init-feature (feature &optional noerror nomessage)
+  "`init' FEATURE.
+FEATURE is a literal symbol and initialized by the unit
+whose name is init-FEATURE.
+NOERROR and NOMESSAGE suppress errors and messages."
   (let ((unit (intern (concat "init-" (symbol-name feature)))))
     `(init ,unit ,noerror ,nomessage)))
 
 (defmacro init-package (package &optional noerror nomessage)
+  "`init' PACKAGE.
+PACKAGE is a literal symbol and initialized by the units
+whose names are inst-PACKAGE and init-PACKAGE.
+inst-PACKAGE should specify only installation procedure, and
+any other initialization should be done by init-PACKAGE.
+NOERROR and NOMESSAGE suppress errors and messages."
   (let* ((name-inst (concat "inst-" (symbol-name package)))
          (name-init (concat "init-" (symbol-name package)))
          (unit-inst (intern name-inst))
@@ -53,6 +75,16 @@
            (init ,unit-init ,noerror ,nomessage)))))
 
 (defmacro premise (unit &optional filename noerror nomessage)
+  "State UNIT must be initialized.
+UNIT is a literal symbol.
+If UNIT is not initialized, `init' UNIT.
+
+If FILENAME is not nil and UNIT has not been initialized,
+initialize UNIT by using FILENAME.
+NOERROR and NOMESSAGE suppress errors and messages.
+
+If UNIT is newer than loading unit, throw compile-unit,
+then loading unit will be compiled and loaded again."
   `(progn
      (when (not (assq ',unit init-units))
        (if ,filename
@@ -69,6 +101,8 @@
                (throw 'compile-unit t))))))
 
 (defmacro resolve (unit)
+  "State UNIT is initialized.
+UNIT is a literal symbol."
   `(add-to-list 'init-units (cons ',unit load-file-name)))
 
 (defvar init-path
@@ -85,9 +119,10 @@
           (funcall filter #'file-directory-p
                    (mapcar (lambda (f) (expand-file-name (concat p "/" f)))
                            (remove ".." (directory-files p))))))
-      '("init.d/site-lisp" "init.d/lisp")))))
+      '("init.d/site-lisp" "init.d/lisp"))))
+  "List of directories to search for files to be used for `init'.")
 
-(defvar init-units nil)
+(defvar init-units nil "alist of initialized units and their file paths.")
 
 (define-error 'init-error "Init error" 'error)
 
