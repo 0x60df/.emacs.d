@@ -6,6 +6,7 @@
 ;;; base
 
 (premise init)
+(require 'which-func)
 
 
 ;;; format
