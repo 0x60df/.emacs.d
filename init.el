@@ -150,7 +150,6 @@ UNIT is a literal symbol."
 
 ;;; units
 
-(init bars)
 (init custom)
 (init suppression)
 (init greeting)
