@@ -14,7 +14,7 @@
 (define-key key-translation-map (kbd "ESC M-m") 'event-apply-meta-modifier)
 (define-key key-translation-map (kbd "ESC M-s") 'event-apply-super-modifier)
 (define-key key-translation-map (kbd "<home>") 'event-apply-alt-modifier)
-(define-key key-translation-map (kbd "<end>") 'event-apply-meta-modifier)
+(define-key key-translation-map (kbd "<end>") 'event-apply-alt-modifier)
 (define-key key-translation-map (kbd "<prior>") 'event-apply-hyper-modifier)
 (define-key key-translation-map (kbd "<next>") 'event-apply-super-modifier)
 (global-set-key "\C-ch" 'help-command)
