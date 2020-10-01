@@ -161,7 +161,7 @@ UNIT is a literal symbol."
 (init correction)
 (init indent)
 (init whitespace)
-(init insurance)
+(init backup)
 (init tooltip)
 (init functions)
 (init bindings)

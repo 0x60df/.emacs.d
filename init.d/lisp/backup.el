@@ -1,5 +1,5 @@
 
-;;;; insurance.el
+;;;; backup.el
 
 
 (premise init)
@@ -14,4 +14,4 @@
  '(delete-auto-save-files t))
 
 
-(resolve insurance)
+(resolve backup)
