@@ -31,7 +31,7 @@
 (global-set-key "\C-ct" 'eshell)
 (global-set-key "\C-cw" 'eww)
 (global-set-key "\M-Y" 'yank-pop-forwards)
-(global-set-key (kbd "M-+") 'duplicate-and-comment-out)
+(global-set-key (kbd "M-+") 'duplicate-and-comment)
 (global-set-key (kbd "C-S-n") 'next-line-scroll-up)
 (global-set-key (kbd "C-S-p") 'previous-line-scroll-down)
 (global-set-key (kbd "C->") 'next-error)
