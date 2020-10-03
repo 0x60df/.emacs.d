@@ -1,5 +1,5 @@
 
-;;;; functions.el
+;;;; simple.el
 
 
 (premise init)
@@ -88,4 +88,4 @@ same character. "
       (setq search-char-in-line-matched (if success char nil)))))
 
 
-(resolve functions)
+(resolve simple)

@@ -3,7 +3,7 @@
 
 
 (premise init)
-(premise functions)
+(premise simple)
 (premise frame)
 
 (define-key key-translation-map [?\C-h] [?\C-?])
