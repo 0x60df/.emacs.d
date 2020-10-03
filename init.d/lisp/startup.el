@@ -9,7 +9,6 @@
  '(inhibit-startup-screen t)
  '(initial-scratch-message nil))
 
-
 (add-hook
  'emacs-startup-hook
  (lambda ()
