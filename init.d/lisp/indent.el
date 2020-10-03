@@ -3,6 +3,7 @@
 
 
 (premise init)
+(premise custom)
 
 (custom-set-variables
  '(indent-tabs-mode nil))

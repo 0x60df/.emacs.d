@@ -3,6 +3,7 @@
 
 
 (premise init)
+(premise custom)
 
 (custom-set-variables
  '(backup-directory-alist `((".*" . ,(concat user-emacs-directory "backup"))))

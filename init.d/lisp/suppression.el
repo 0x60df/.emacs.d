@@ -3,6 +3,7 @@
 
 
 (premise init)
+(premise custom)
 
 (menu-bar-mode 0)
 (tool-bar-mode 0)

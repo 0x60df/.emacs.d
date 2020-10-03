@@ -3,6 +3,7 @@
 
 
 (premise init)
+(premise custom)
 
 (eval-when-compile (require 'paren))
 

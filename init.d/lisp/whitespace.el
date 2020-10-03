@@ -3,6 +3,7 @@
 
 
 (premise init)
+(premise custom)
 
 (custom-set-variables
  '(show-trailing-whitespace t))
