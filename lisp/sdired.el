@@ -3,6 +3,7 @@
 ;;; code:
 
 (require 'dired)
+(require 'isearch)
 
 (defgroup sdired nil
   "dired sorting utilities"
@@ -126,9 +127,20 @@
                    (throw 'sdired-quit-sort t))
                   (t (let ((current-prefix-arg nil))
                        (ignore-errors (call-interactively (key-binding s)))
+                       (if isearch-mode (sdired--start-isearch))
                        (if (not (eq major-mode 'dired-mode))
                            (throw 'sdired-quit-sort t))))))))
     (sdired-toggle-key)))
+
+(defun sdired--start-isearch ()
+  "Start isearch while interactive sdired sort interface is active."
+  (add-hook 'isearch-mode-end-hook #'sdired--end-isearch)
+  (recursive-edit))
+
+(defun sdired--end-isearch ()
+  "End isearch while and return back to sdired interface."
+  (remove-hook 'isearch-mode-end-hook #'sdired--end-isearch)
+  (exit-recursive-edit))
 
 (defun sdired-toggle-key ()
   "Toggle key of dired sort."
