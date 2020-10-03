@@ -18,8 +18,8 @@
         (newline-and-indent)
         (goto-char p))))
 
-(defun yank-pop-forward (&optional n)
-  "Yank pop by forward direction.
+(defun yank-pop-reverse (&optional n)
+  "Yank pop by reverse direction.
 The N-th next kill is inserted.
 If called with no argument, insert the next kill"
   (interactive "p")

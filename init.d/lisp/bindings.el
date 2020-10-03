@@ -36,7 +36,7 @@
 (global-set-key (kbd "M-s f") #'grep-find)
 
 (global-set-key (kbd "M-+") #'duplicate-and-comment)
-(global-set-key (kbd "H-y") #'yank-pop-forward)
+(global-set-key (kbd "H-y") #'yank-pop-reverse)
 (global-set-key (kbd "C-S-n") #'next-line-scroll-up)
 (global-set-key (kbd "C-S-p") #'previous-line-scroll-down)
 (global-set-key (kbd "H-f") #'search-forward-char-in-line)
