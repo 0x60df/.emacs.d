@@ -239,6 +239,9 @@
 
 (custom-theme-set-faces
  'tomorrow-night-accessory
+ `(helm-M-x-key
+   ((t :foreground ,(color-theme-tomorrow--with-colors 'night orange)
+       :underline t)))
  '(helm-source-header ((t :inherit (info-title-2 hl-line))))
  '(helm-action ((t :inherit default)))
  `(helm-candidate-number
