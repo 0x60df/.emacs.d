@@ -42,27 +42,50 @@ Increment is N. If N is ommited, use 1."
   (vertical-motion (- n))
   (scroll-down n))
 
-(defun search-forward-char (&optional char)
-  (interactive)
-  (let ((c (cond ((characterp char) char)
-                 ((stringp char) (string-to-char char))
-                 ((eq this-command last-command) (following-char))
-                 (t (read-char "char: ")))))
-    (if (and (characterp c)
-             (search-forward (char-to-string c) (point-at-eol) t
-                        (if (eq c (following-char) ) 2 1)))
-        (backward-char)
-      (setq this-command last-command))))
+(defvar search-char-in-line-matched nil
+  "Matched char by search-char-in-line functions.
+`search-forward-char-in-line' and
+`search-backward-char-in-line' use this.")
 
-(defun search-backward-char (&optional char)
-  (interactive)
-  (let ((c (cond ((characterp char) char)
-                 ((stringp char) (string-to-char char))
-                 ((eq this-command last-command) (following-char))
-                 (t (read-char "char: ")))))
-    (unless (and (characterp c)
-                 (search-backward (char-to-string c) (point-at-bol) t))
-      (setq this-command last-command))))
+(defun search-forward-char-in-line (char)
+  "Search forward character on current line from cursor position.
+CHAR is searching character.
+If called interactively, this function `read-char' for CHAR.
+If CHAR is searched successfully, consecutive call searches
+same character."
+  (interactive
+   (list (cond ((and (eq this-command last-command)
+                     search-char-in-line-matched)
+                search-char-in-line-matched)
+               (t (read-char "Char: ")))))
+  (let (success)
+    (unwind-protect
+        (when (and (characterp char)
+                   (search-forward
+                    (char-to-string char) (line-end-position) t
+                    (if (char-equal char (following-char)) 2 1)))
+          (backward-char)
+          (setq success t))
+      (setq search-char-in-line-matched (if success char nil)))))
+
+(defun search-backward-char-in-line (char)
+  "Search backward character on this line from cursor position.
+CHAR is searching character.
+If called interactively, this function `read-char' for CHAR.
+If CHAR is searched successfully, consecutive call searches
+same character. "
+  (interactive
+   (list (cond ((and (eq this-command last-command)
+                     search-char-in-line-matched)
+                search-char-in-line-matched)
+               (t (read-char "Char: ")))))
+  (let (success)
+    (unwind-protect
+        (when (and (characterp char)
+                   (search-backward
+                    (char-to-string char) (line-beginning-position) t))
+          (setq success t))
+      (setq search-char-in-line-matched (if success char nil)))))
 
 
 (resolve functions)
