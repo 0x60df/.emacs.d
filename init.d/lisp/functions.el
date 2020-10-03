@@ -26,13 +26,20 @@ If called with no argument, insert the next kill"
   (unless n (setq n 1))
   (yank-pop (- n)))
 
-(defun next-line-scroll-up (n)
+(defun next-line-scroll-up (&optional n)
+  "Move cursor to next screen line and scroll up.
+Increment is N. If N is ommited, use 1."
   (interactive "p")
-  (forward-line n)
+  (unless n (setq n 1))
+  (vertical-motion n)
   (scroll-up n))
+
 (defun previous-line-scroll-down (n)
+  "Move cursor to previous screen line and scroll down.
+Increment is N. If N is ommited, use 1."
   (interactive "p")
-  (forward-line (* -1 n))
+  (unless n (setq n 1))
+  (vertical-motion (- n))
   (scroll-down n))
 
 (defun search-forward-char (&optional char)
