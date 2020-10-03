@@ -152,6 +152,7 @@ UNIT is a literal symbol."
 
 (init custom)
 (init suppression)
+(init startup)
 (init subr)
 (init frame)
 (init window)
