@@ -10,5 +10,7 @@
 
 (global-set-key "\C-cw" 'eww)
 
+(add-hook 'eww-mode-hook (lambda () (setq show-trailing-whitespace nil)))
+
 
 (resolve init-eww)
