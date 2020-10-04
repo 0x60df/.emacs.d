@@ -166,7 +166,7 @@ UNIT is a literal symbol."
 (init simple)
 (init bindings)
 (init mode-line)
-(init risk)
+(init risky)
 (init client)
 (init vc)
 (init theme)
