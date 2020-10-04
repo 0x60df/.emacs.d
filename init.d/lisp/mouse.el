@@ -4,10 +4,12 @@
 
 (premise init)
 
-(defadvice mouse-drag-region (before set-mark-before-mouse-drag-region)
+(defun push-mark-at-point (&rest args)
+  "Push mark at point.
+Any ARGS are omitted."
   (push-mark))
 
-(ad-activate 'mouse-drag-region)
+(advice-add 'mouse-drag-region :before #'push-mark-at-point)
 
 
 (resolve mouse)
