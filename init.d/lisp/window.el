@@ -4,6 +4,10 @@
 
 (premise init)
 
+(defun other-window-reverse (arg)
+  (interactive "p")
+  (other-window (- arg)))
+
 (defun split-window-below-or-right (arg)
   (interactive "P")
   (if arg

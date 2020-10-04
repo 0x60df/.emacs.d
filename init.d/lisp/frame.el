@@ -5,6 +5,10 @@
 (premise init)
 (premise custom)
 
+(defun other-frame-reverse (arg)
+  (interactive "p")
+  (other-frame (- arg)))
+
 (defvar after-make-terminal-functions nil)
 (defadvice make-frame (around list-terminal)
   (let ((existing-terminal-list (terminal-list)))
