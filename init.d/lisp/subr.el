@@ -4,6 +4,10 @@
 
 (premise init)
 
+(defun echo (&rest args)
+  "Message ARGS delimited by space."
+  (apply #'message (mapconcat (lambda (a) "Return %s." "%s") args " ") args))
+
 (defmacro call-with-runtime-bindings (binders function name)
   (let ((varlist
           (mapcar
