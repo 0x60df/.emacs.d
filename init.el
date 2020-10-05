@@ -173,7 +173,6 @@ UNIT is a literal symbol."
 (init mouse)
 (init feature)
 (init package)
-(init japanese)
 
 
 ;;; site-init
