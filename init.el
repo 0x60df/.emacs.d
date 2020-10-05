@@ -171,8 +171,6 @@ UNIT is a literal symbol."
 (init vc)
 (init theme)
 (init mouse)
-(init feature)
-(init package)
 
 
 ;;; site-init
@@ -181,6 +179,8 @@ UNIT is a literal symbol."
 
 
 ;;; features
+
+(init feature)
 
 (init-feature eshell)
 (init-feature eww)
@@ -220,6 +220,8 @@ UNIT is a literal symbol."
 
 
 ;;; packages
+
+(init package)
 
 (init-package el-get)
 
