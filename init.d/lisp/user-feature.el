@@ -6,20 +6,29 @@
 
 (mapc (lambda (e) (add-to-list 'load-path e))
       (reverse
-       (letrec ((filter
-                 (lambda (p l)
+       (letrec ((list-directories-recursively
+                 (lambda (l)
                    (cond ((null l) l)
-                         ((funcall p (car l)) (funcall filter p (cdr l)))
-                         (t (cons (car l) (funcall filter p (cdr l))))))))
+                         ((file-directory-p (car l))
+                          (append
+                           (cons (car l)
+                                 (funcall
+                                  list-directories-recursively
+                                  (directory-files
+                                   (car l) t "[^.]$\\|[^./]\\.$\\|[^/]\\.\\.")))
+                           (funcall list-directories-recursively (cdr l))))
+                         (t (funcall list-directories-recursively (cdr l)))))))
          (apply 'append
                 (mapcar
-                 (lambda (d)
-                   (setq d (concat user-emacs-directory d))
-                   (funcall
-                    filter
-                    (lambda (f) (not (file-directory-p f)))
-                    (mapcar (lambda (f) (expand-file-name (concat d "/" f)))
-                            (remove ".." (directory-files d)))))
+                 (lambda (directory-relative-name)
+                   (let ((directory-absolute-name
+                          (expand-file-name (concat user-emacs-directory
+                                                    directory-relative-name))))
+                     (cons directory-absolute-name
+                           (funcall list-directories-recursively
+                                    (directory-files
+                                     directory-absolute-name
+                                     t "[^.]$\\|[^./]\\.$\\|[^/]\\.\\.")))))
                  '("site-lisp" "lisp"))))))
 
 (require 'user-feature-loaddefs nil 'noerror)
