@@ -38,7 +38,13 @@
    (let ((elc (concat el "c")))
      (unless (and (file-exists-p elc) (file-newer-than-file-p elc el))
        (byte-compile-file el))))
- (directory-files-recursively (concat user-emacs-directory "lisp/") "\\.el$"))
+ (apply 'append
+        (mapcar
+         (lambda (d)
+           (directory-files-recursively
+            (expand-file-name (concat user-emacs-directory d))
+            "\\.el$"))
+         '("site-lisp" "lisp"))))
 
 
 (resolve user-feature)
