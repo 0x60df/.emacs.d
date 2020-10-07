@@ -2,6 +2,8 @@
 ;;;; user-feature.el
 
 
+(premise init)
+
 (mapc (lambda (e) (add-to-list 'load-path e))
       (reverse
        (letrec ((filter
