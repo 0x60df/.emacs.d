@@ -106,20 +106,30 @@ UNIT is a literal symbol."
   `(add-to-list 'init-units (cons ',unit load-file-name)))
 
 (defvar init-path
-  (letrec ((filter (lambda (p l)
-                     (cond ((null l) l)
-                           ((funcall p (car l))
-                            (cons (car l) (funcall filter p (cdr l))))
-                           (t (funcall filter p (cdr l)))))))
-    (apply
-     'append
-     (mapcar
-      (lambda (d)
-        (let ((p (concat user-emacs-directory d)))
-          (funcall filter #'file-directory-p
-                   (mapcar (lambda (f) (expand-file-name (concat p "/" f)))
-                           (remove ".." (directory-files p))))))
-      '("init.d/site-lisp" "init.d/lisp"))))
+  (letrec ((list-directories-recursively
+            (lambda (l)
+              (cond ((null l) l)
+                    ((file-directory-p (car l))
+                     (append
+                      (cons (car l)
+                            (funcall
+                             list-directories-recursively
+                             (directory-files
+                              (car l) t "[^.]$\\|[^./]\\.$\\|[^/]\\.\\.")))
+                      (funcall list-directories-recursively (cdr l))))
+                    (t (funcall list-directories-recursively (cdr l)))))))
+    (apply 'append
+           (mapcar
+            (lambda (directory-relative-name)
+              (let ((directory-absolute-name
+                     (expand-file-name
+                      (concat user-emacs-directory directory-relative-name))))
+                (cons directory-absolute-name
+                      (funcall list-directories-recursively
+                               (directory-files
+                                directory-absolute-name
+                                t "[^.]$\\|[^./]\\.$\\|[^/]\\.\\.")))))
+            '("init.d/site-lisp" "init.d/lisp"))))
   "List of directories to search for files to be used for `init'.")
 
 (defvar init-units nil "alist of initialized units and their file paths.")
