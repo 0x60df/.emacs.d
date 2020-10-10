@@ -6,6 +6,7 @@
 (premise custom)
 
 (defun other-frame-reverse (arg)
+  "Other frame by reverse order."
   (interactive "p")
   (other-frame (- arg)))
 
