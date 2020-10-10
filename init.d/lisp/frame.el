@@ -5,10 +5,8 @@
 (premise init)
 (premise custom)
 
-(defun other-frame-reverse (arg)
-  "Other frame by reverse order."
-  (interactive "p")
-  (other-frame (- arg)))
+
+;;; terminal support
 
 (defvar after-make-terminal-functions nil
   "Functions to run after `make-frame' created a new terminal.
@@ -28,6 +26,14 @@ newly created terminal."
     made-frame))
 
 (advice-add 'make-frame :around #'run-after-make-terminal-functions)
+
+
+;;; utilities
+
+(defun other-frame-reverse (arg)
+  "Other frame by reverse order."
+  (interactive "p")
+  (other-frame (- arg)))
 
 (defcustom frame-alpha-default-variation 10
   "Default value of increment or decrement for manipulating alpha."
