@@ -9,15 +9,24 @@
   (interactive "p")
   (other-frame (- arg)))
 
-(defvar after-make-terminal-functions nil)
-(defadvice make-frame (around list-terminal)
-  (let ((existing-terminal-list (terminal-list)))
-    ad-do-it
-    (let ((made-frame-terminal (frame-terminal ad-return-value)))
-      (unless (memq made-frame-terminal existing-terminal-list)
-        (run-hook-with-args
-         'after-make-terminal-functions made-frame-terminal)))))
-(ad-activate 'make-frame)
+(defvar after-make-terminal-functions nil
+  "Functions to run after `make-frame' created a new terminal.
+The functions are run with one argument, the newly created
+terminal, like `after-make-frame-functions'.")
+
+(defun run-after-make-terminal-functions (make-frame &rest args)
+  "Function for advising `make-frame'.
+If new terminal is created by `make-frame',
+`run-hook-with-args' `after-make-terminal-functions' with
+newly created terminal."
+  (let* ((existing-terminal-list (terminal-list))
+         (made-frame (apply make-frame args))
+         (made-frame-terminal (frame-terminal made-frame)))
+    (unless (memq made-frame-terminal existing-terminal-list)
+      (run-hook-with-args 'after-make-terminal-functions made-frame-terminal))
+    made-frame))
+
+(advice-add 'make-frame :around #'run-after-make-terminal-functions)
 
 (defun increase-frame-alpha (&optional arg frame)
   (interactive "p")
