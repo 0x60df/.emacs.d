@@ -121,23 +121,48 @@ Otherwise, set 100."
       (modify-all-frames-parameters '((alpha . 0)))
     (modify-all-frames-parameters '((alpha . 100)))))
 
-(defcustom display-pixel-left-margin 0 "" :type 'integer :group 'user)
-(defcustom display-pixel-top-margin 0 "" :type 'integer :group 'user)
-(defcustom display-pixel-right-margin 0 "" :type 'integer :group 'user)
-(defcustom display-pixel-bottom-margin 0 "" :type 'integer :group 'user)
+(defcustom display-pixel-left-margin 0
+  "Display margin on left side by pixelwise.
+`manipulate-frame' keeps frame in this margin."
+  :type 'integer
+  :group 'user)
 
-(defun manipulate-frame (arg)
+(defcustom display-pixel-top-margin 0
+  "Display margin on top side by pixelwise.
+`manipulate-frame' keeps frame in this margin."
+  :type 'integer
+  :group 'user)
+
+(defcustom display-pixel-right-margin 0
+  "Display margin on right side by pixelwise.
+`manipulate-frame' keeps frame in this margin."
+  :type 'integer
+  :group 'user)
+
+(defcustom display-pixel-bottom-margin 0
+  "Display margin on bottom side by pixelwise.
+`manipulate-frame' keeps frame in this margin."
+  :type 'integer
+  :group 'user)
+
+(defcustom manipulate-frame-default-factor 8
+  "Defult factor of motion and deformation for manipulating frame."
+  :type 'number
+  :group 'user)
+
+(defun manipulate-frame (&optional arg)
+  "Manipulate frame position and size interactively."
   (interactive "P")
   (let* ((left-border display-pixel-left-margin)
          (top-border display-pixel-top-margin)
          (right-border (- (display-pixel-width) display-pixel-right-margin))
          (bottom-border (- (display-pixel-height) display-pixel-bottom-margin))
          (frame (selected-frame))
-         (d (or arg 1))
-         l
-         c)
-    (let* ((left-edge (cdr (assoc 'left (frame-parameters))))
-           (top-edge (cdr (assoc 'top (frame-parameters)))))
+         (factor (if arg
+                        (prefix-numeric-value arg)
+                      manipulate-frame-default-factor)))
+    (let ((left-edge (cdr (assoc 'left (frame-parameters))))
+          (top-edge (cdr (assoc 'top (frame-parameters)))))
       (cond ((or (listp left-edge)
                  (< left-edge left-border))
              (set-frame-position frame left-border top-edge))
@@ -154,109 +179,105 @@ Otherwise, set 100."
                                  (- bottom-border (frame-pixel-height))))))
     (catch 'quit
       (while t
-        (let ((left-edge (cdr (assoc 'left (frame-parameters))))
-              (top-edge (cdr (assoc 'top (frame-parameters))))
-              (d (if (null l)
-                     d
-                   (let ((digits (remq ?- (reverse l))))
-                     (string-to-number
-                      (concat (make-string
-                               (% (- (length l) (length digits)) 2) ?-)
-                              (or digits "1")))))))
-          (setq c (read-char (format
-                              (concat "position[%04d,%04d]" " "
-                                      "size[%04dx%04d]" " "
-                                      "display[%04dx%04d]" " "
-                                      "step[%02d]")
-                              left-edge top-edge
-                              (frame-pixel-width) (frame-pixel-height)
-                              (display-pixel-width) (display-pixel-height)
-                              d)))
-          (cond ((= c ?f)
+        (let* ((left-edge (cdr (assoc 'left (frame-parameters))))
+               (top-edge (cdr (assoc 'top (frame-parameters))))
+               (key-sequence (read-key-sequence-vector
+                              (format
+                               (concat "position[%04d,%04d]" " "
+                                       "size[%04dx%04d]" " "
+                                       "display[%04dx%04d]" " "
+                                       "step[%02d]")
+                               left-edge top-edge
+                               (frame-pixel-width) (frame-pixel-height)
+                               (display-pixel-width) (display-pixel-height)
+                               factor)))
+               (key-description (key-description key-sequence))
+               (key-binding (key-binding key-sequence)))
+          (cond ((equal key-description "f")
                  (set-frame-position
                   frame
-                  (let ((dest (+ left-edge (* d (frame-char-width))))
+                  (let ((dest (+ left-edge (* factor (frame-char-width))))
                         (bound (- right-border (frame-pixel-width))))
                     (if (< bound dest) bound dest))
                   top-edge))
-                ((= c ?b)
+                ((equal key-description "b")
                  (set-frame-position
                   frame
-                  (let ((dest (- left-edge (* d (frame-char-width))))
+                  (let ((dest (- left-edge (* factor (frame-char-width))))
                         (bound left-border))
                     (if (< dest bound) bound dest))
                   top-edge))
-                ((= c ?n)
+                ((equal key-description "n")
                  (set-frame-position
                   frame
                   left-edge
-                  (let ((dest (+ top-edge (* d (frame-char-height))))
+                  (let ((dest (+ top-edge (* factor (frame-char-height))))
                         (bound (- bottom-border (frame-pixel-height))))
                     (if (< bound dest) bound dest))))
-                ((= c ?p)
+                ((equal key-description "p")
                  (set-frame-position
                   frame
                   left-edge
-                  (let ((dest (- top-edge (* d (frame-char-height))))
+                  (let ((dest (- top-edge (* factor (frame-char-height))))
                         (bound top-border))
                     (if (< dest bound) bound dest))))
-                ((= c ?a)
+                ((equal key-description "a")
                  (set-frame-position frame left-border top-edge))
-                ((= c ?e)
+                ((equal key-description "e")
                  (set-frame-position
                   frame
                   (- right-border (frame-pixel-width))
                   top-edge))
-                ((= c 134217830)        ;M-f
+                ((equal key-description "M-f")
                  (set-frame-position
                   frame
                   (let ((dest (+ left-edge (frame-pixel-width)))
                         (bound (- right-border (frame-pixel-width))))
                     (if (< bound dest) bound dest))
                   top-edge))
-                ((= c 134217826)        ;M-b
+                ((equal key-description "M-b")
                  (set-frame-position
                   frame
                   (let ((dest (- left-edge (frame-pixel-width)))
                         (bound left-border))
                     (if (< dest bound) bound dest))
                   top-edge))
-                ((= c 134217788)        ;M-<
+                ((equal key-description "<")
                  (set-frame-position frame left-edge top-border))
-                ((= c 134217790)        ;M->
+                ((equal key-description ">")
                  (set-frame-position
                   frame
                   left-edge
                   (- bottom-border (frame-pixel-height))))
-                ((= c ?v)
+                ((equal key-description "v")
                  (set-frame-position
                   frame
                   left-edge
                   (let ((dest (+ top-edge (frame-pixel-height)))
                         (bound (- bottom-border (frame-pixel-height))))
                     (if (< bound dest) bound dest))))
-                ((= c 134217846)        ;M-v
+                ((equal key-description "M-v")
                  (set-frame-position
                   frame
                   left-edge
                   (let ((dest (- top-edge (frame-pixel-height)))
                         (bound top-border))
                     (if (< dest bound) bound dest))))
-                ((or (= c ?-) (and (<= ?0 c) (<= c ?9)))
-                 (setq l (cons c l)))
-                ((= c ?g)
-                 (setq l '()))
-                ((= c 6)                ;C-f
-                 (set-frame-width frame (+ (frame-width) d)))
-                ((= c 2)                ;C-b
-                 (set-frame-width frame (- (frame-width) d)))
-                ((= c 14)               ;C-n
-                 (set-frame-height frame (+ (frame-height) d)))
-                ((= c 16)               ;C-p
-                 (set-frame-height frame (- (frame-height) d)))
-                ((= c ?q)
-                 (message "quit")
-                 (throw 'quit t))))))))
+                ((equal key-description "C-f")
+                 (set-frame-width frame (+ (frame-width) factor)))
+                ((equal key-description "C-b")
+                 (set-frame-width frame (- (frame-width) factor)))
+                ((equal key-description "C-n")
+                 (set-frame-height frame (+ (frame-height) factor)))
+                ((equal key-description "C-p")
+                 (set-frame-height frame (- (frame-height) factor)))
+                ((equal key-description "q")
+                 (throw 'quit t))
+                ((and (not (eq key-binding 'self-insert-command))
+                      (commandp key-binding))
+                 (call-interactively key-binding)
+                 (throw 'quit t))
+                (t (throw 'quit t))))))))
 
 
 (resolve frame)
