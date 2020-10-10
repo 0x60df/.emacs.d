@@ -29,56 +29,92 @@ newly created terminal."
 
 (advice-add 'make-frame :around #'run-after-make-terminal-functions)
 
-(defun increase-frame-alpha (&optional arg frame)
-  (interactive "p")
+(defcustom frame-alpha-default-variation 10
+  "Default value of increment or decrement for manipulating alpha."
+  :type 'number
+  :group 'user)
+
+(defun increase-frame-alpha (&optional value frame)
+  "Increase alpha value of the FRAME by VALUE.
+If VALUE is nil or omitted, use
+`frame-alpha-default-variation'.
+If FRAME is nil or omitted, use current frame."
+  (interactive "P")
   (set-frame-parameter
    frame
    'alpha
    (if (null (frame-parameter frame 'alpha))
        100
-     (let ((result (+ (frame-parameter frame 'alpha) arg)))
-       (if (and (<= 0 result)(<= result 100))
+     (let ((result (+ (frame-parameter frame 'alpha)
+                      (if value
+                          (prefix-numeric-value value)
+                        frame-alpha-default-variation))))
+       (if (and (<= 0 result) (<= result 100))
            result
          (frame-parameter frame 'alpha))))))
 
-(defun decrease-frame-alpha (&optional arg frame)
-  (interactive "p")
+(defun decrease-frame-alpha (&optional value frame)
+  "Decrease alpha value of the FRAME by VALUE.
+If VALUE is nil or omitted, use
+`frame-alpha-default-variation'.
+If FRAME is nil or omitted, use current frame."
+  (interactive "P")
   (set-frame-parameter
    frame
    'alpha
    (if (null (frame-parameter frame 'alpha))
        100
-     (let ((result (- (frame-parameter frame 'alpha) arg)))
-       (if (and (<= 0 result)(<= result 100))
+     (let ((result (- (frame-parameter frame 'alpha)
+                      (if value
+                          (prefix-numeric-value value )
+                        frame-alpha-default-variation))))
+       (if (and (<= 0 result) (<= result 100))
            result
          (frame-parameter frame 'alpha))))))
 
-(defun set-frame-alpha (arg &optional frame)
+(defun set-frame-alpha (value &optional frame)
+  "Set alpha value of the FRAME by VALUE.
+If FRAME is nil or omitted, use current frame."
   (interactive "Nalpha: ")
-  (set-frame-parameter frame 'alpha arg))
+  (set-frame-parameter frame 'alpha value))
 
 (defun toggle-frame-opacity (&optional frame)
+  "Toggle opacity of the FRAME.
+If FRAME is nil or omitted, use current frame.
+If FRAME is opaque, set frame alpha as 0, which results in
+`frame-alpha-lower-limit'. Otherwise, set 100."
   (interactive)
   (if (or (null (frame-parameter frame 'alpha))
           (= (frame-parameter frame 'alpha) 100))
       (set-frame-parameter frame 'alpha  0)
     (set-frame-parameter frame 'alpha 100)))
 
-(defun increase-all-frames-alpha (&optional arg)
-  (interactive "p")
-  (mapc (lambda (frame) (increase-frame-alpha arg frame))
+(defun increase-all-frames-alpha (&optional value)
+  "Increase alpha value of all frames by VALUE.
+If VALUE is nil or omitted, use
+`frame-alpha-default-variation'."
+  (interactive "P")
+  (mapc (lambda (frame) (increase-frame-alpha value frame))
         (frame-list)))
 
-(defun decrease-all-frames-alpha (&optional arg)
-  (interactive "p")
-  (mapc (lambda (frame) (decrease-frame-alpha arg frame))
+(defun decrease-all-frames-alpha (&optional value)
+  "Decrease alpha value of all frames by VALUE.
+If VALUE is nil or omitted, use
+`frame-alpha-default-variation'. "
+  (interactive "P")
+  (mapc (lambda (frame) (decrease-frame-alpha value frame))
         (frame-list)))
 
-(defun set-all-frames-alpha (arg)
+(defun set-all-frames-alpha (value)
+  "Set alpha value of all frames by VALUE."
   (interactive "Nalpha: ")
-  (modify-all-frames-parameters `((alpha . ,arg))))
+  (modify-all-frames-parameters `((alpha . ,value))))
 
 (defun toggle-all-frames-opacity ()
+  "Toggle opacity of all frames.
+If current fram is opaque, set alpha of all frames as 0,
+which results in `frame-alpha-lower-limit'.
+Otherwise, set 100."
   (interactive)
   (if (or (null (frame-parameter nil 'alpha))
           (= (frame-parameter nil 'alpha) 100))
