@@ -63,87 +63,89 @@
             (warning-message nil))
         (catch 'sdired-quit-sort
           (while t
-            (let* ((s (read-key-sequence
-                       (concat
-                        (propertize "Key control       "
-                                    'face '(dired-ignored italic))
-                        ": "
-                        "["
-                        (propertize "k" 'face '(dired-mark bold))
-                        "] select key      ["
-                        (propertize "t"  'face '(dired-mark bold))
-                        "] toggle key\n"
-                        (propertize "Custom switch     " 'face
-                                    '(dired-ignored italic))
-                        ": "
-                        "["
-                        (propertize "e"  'face '(dired-mark bold))
-                        "] edit switches   ["
-                        (propertize "c"  'face '(dired-mark bold))
-                        "] clean switches\n"
-                        (propertize "Optional switch   " 'face
-                                    '(dired-ignored italic))
-                        ": "
-                        "["
-                        (propertize
-                         "r"  'face
-                         (list (if (member sdired-switch-for-reverse
-                                           sdired-optional-switches)
-                                   'dired-marked
-                                 'dired-mark)
-                               'bold))
-                        "] reversal order  ["
-                        (propertize
-                         "d"  'face
-                         (list (if (member sdired-switch-for-directory-first
-                                           sdired-optional-switches)
-                                   'dired-marked
-                                 'dired-mark)
-                               'bold))
-                        "] directory first\n"
-                        (propertize "Sort control      "
-                                    'face '(dired-ignored italic))
-                        ": "
-                        "["
-                        (propertize "s"  'face '(dired-mark bold))
-                        "] reset           ["
-                        (propertize "q"  'face '(dired-mark bold))
-                        "] quit"
-                        (if (stringp warning-message)
-                            warning-message))))
-                   (c (key-binding s)))
+            (let* ((sequence
+                    (read-key-sequence
+                     (concat
+                      (propertize "Key control       "
+                                  'face '(dired-ignored italic))
+                      ": "
+                      "["
+                      (propertize "k" 'face '(dired-mark bold))
+                      "] select key      ["
+                      (propertize "t"  'face '(dired-mark bold))
+                      "] toggle key\n"
+                      (propertize "Custom switch     " 'face
+                                  '(dired-ignored italic))
+                      ": "
+                      "["
+                      (propertize "e"  'face '(dired-mark bold))
+                      "] edit switches   ["
+                      (propertize "c"  'face '(dired-mark bold))
+                      "] clean switches\n"
+                      (propertize "Optional switch   " 'face
+                                  '(dired-ignored italic))
+                      ": "
+                      "["
+                      (propertize
+                       "r"  'face
+                       (list (if (member sdired-switch-for-reverse
+                                         sdired-optional-switches)
+                                 'dired-marked
+                               'dired-mark)
+                             'bold))
+                      "] reversal order  ["
+                      (propertize
+                       "d"  'face
+                       (list (if (member sdired-switch-for-directory-first
+                                         sdired-optional-switches)
+                                 'dired-marked
+                               'dired-mark)
+                             'bold))
+                      "] directory first\n"
+                      (propertize "Sort control      "
+                                  'face '(dired-ignored italic))
+                      ": "
+                      "["
+                      (propertize "s"  'face '(dired-mark bold))
+                      "] reset           ["
+                      (propertize "q"  'face '(dired-mark bold))
+                      "] quit"
+                      (if (stringp warning-message)
+                          warning-message))))
+                   (command (key-binding sequence)))
               (setq warning-message nil)
-              (cond ((equal s "k")
+              (cond ((equal sequence "k")
                      (let ((resize-mini-windows t))
                        (call-interactively 'sdired-sort-by)))
-                    ((equal s "t")
+                    ((equal sequence "t")
                      (sdired-toggle-key))
-                    ((equal s "e")
+                    ((equal sequence "e")
                      (sdired-edit-switches nil))
-                    ((equal s "c")
+                    ((equal sequence "c")
                      (sdired-edit-switches t))
-                    ((equal s "r")
+                    ((equal sequence "r")
                      (sdired-toggle-reverse))
-                    ((equal s "d")
+                    ((equal sequence "d")
                      (sdired-toggle-directory-first))
-                    ((equal s "s")
+                    ((equal sequence "s")
                      (sdired-reset))
-                    ((equal s "q")
+                    ((equal sequence "q")
                      (throw 'sdired-quit-sort t))
-                    ((or (eq c 'universal-argument)
-                         (eq c 'digit-argument)
-                         (eq c 'negative-argument))
+                    ((or (eq command 'universal-argument)
+                         (eq command 'digit-argument)
+                         (eq command 'negative-argument))
                      (setq warning-message
                            (concat "\n"
                                    (propertize "Warning message   "
                                                'face '(dired-ignored italic))
                                    ": "
                                    "["
-                                   (propertize (key-description s)
+                                   (propertize (key-description sequence)
                                                'face '(dired-warning bold))
                                    "] "
-                                   (format-message "`%s' is not supported" c))))
-                    (t (ignore-errors (call-interactively c))
+                                   (format-message "`%s' is not supported"
+                                                   command))))
+                    (t (ignore-errors (call-interactively command))
                        (if isearch-mode (sdired--start-isearch))
                        (if (not (eq major-mode 'dired-mode))
                            (throw 'sdired-quit-sort t))))
