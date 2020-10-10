@@ -15,5 +15,7 @@
       '(magit-mode-hook
         magit-popup-mode-hook))
 
+(add-hook 'git-commit-setup-hook 'git-commit-turn-on-flyspell)
+
 
 (resolve init-magit)
