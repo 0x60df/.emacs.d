@@ -169,6 +169,7 @@ UNIT is a literal symbol."
 (init cursor)
 (init paren)
 (init mark)
+(init region)
 (init correction)
 (init indent)
 (init whitespace)
