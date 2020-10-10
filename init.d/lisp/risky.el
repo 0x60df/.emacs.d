@@ -25,13 +25,20 @@
   :global t
   :keymap `(("\C-j" . ,#'risky-yes-or-no-p-yes)))
 
-(defun with-risky-yes-or-no-p-transient-mode (fun arg)
+(defun with-risky-yes-or-no-p-transient-mode (yes-or-no-p prompt &rest args)
+  "Function for advising `yes-or-no-p'.
+Enable `risky-yes-or-no-p-transient-mode' before calling
+`yes-or-no-p' with PROMPT prefixed with [RISKY],
+and disable `risky-yes-or-no-p-transient-mode' after call
+regardless of any error."
   (unwind-protect
       (progn
         (risky-yes-or-no-p-transient-mode 1)
-        (funcall fun (concat (propertize "[RISKY] "
-                                         'face 'risky-yes-or-no-p-prefix-face)
-                             arg)))
+        (apply yes-or-no-p
+               (concat
+                (propertize "[RISKY] " 'face 'risky-yes-or-no-p-prefix-face)
+                prompt)
+               args))
     (risky-yes-or-no-p-transient-mode -1)))
 
 (define-minor-mode risky-yes-or-no-p-mode
