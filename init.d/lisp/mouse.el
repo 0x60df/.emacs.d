@@ -3,6 +3,10 @@
 
 
 (premise init)
+(premise custom)
+
+(custom-set-variables
+ '(mouse-highlight nil))
 
 (defun push-mark-at-point (&rest args)
   "Push mark at point.
