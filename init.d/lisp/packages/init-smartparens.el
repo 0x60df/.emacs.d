@@ -21,20 +21,8 @@
 
 ;;; bindings
 
-(global-set-key (kbd "C-(") 'sp-forward-barf-sexp)
-(global-set-key (kbd "C-)") 'sp-forward-slurp-sexp)
-(global-set-key (kbd "M-(") (lambda (arg)
-                              (interactive "P")
-                              (if arg
-                                  (insert-parentheses)
-                                (sp-backward-slurp-sexp))))
-(global-set-key (kbd "M-)") (lambda (arg)
-                              (interactive "P")
-                              (if arg
-                                  (move-past-close-and-reindent)
-                                (sp-backward-barf-sexp))))
-(global-set-key (kbd "s-(") 'sp-splice-sexp)
-(global-set-key (kbd "s-)") 'sp-rewrap-sexp)
+(global-set-key (kbd "C-(") 'sp-splice-sexp)
+(global-set-key (kbd "C-)") 'sp-rewrap-sexp)
 
 
 (resolve init-smartparens)
