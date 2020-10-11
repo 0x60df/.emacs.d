@@ -49,8 +49,8 @@
                          ("p" . (scroll-other-window -1))
                          ("v" . 'scroll-other-window)
                          ("M-v" . (scroll-other-window '-))
-                         ("M-<" . (beginning-of-buffer-other-window 0))
-                         ("M->" . (end-of-buffer-other-window 0))))
+                         ("<" . (beginning-of-buffer-other-window 0))
+                         (">" . (end-of-buffer-other-window 0))))
 
 ;; frame
 (smartrep-define-key
