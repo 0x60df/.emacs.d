@@ -87,12 +87,12 @@ If FRAME is nil or omitted, use current frame."
 (defun toggle-frame-opacity (&optional frame)
   "Toggle opacity of the FRAME.
 If FRAME is nil or omitted, use current frame.
-If FRAME is opaque, set frame alpha as 0, which results in
-`frame-alpha-lower-limit'. Otherwise, set 100."
+If FRAME is opaque, set frame alpha as 0.
+Otherwise, set 100."
   (interactive)
   (if (or (null (frame-parameter frame 'alpha))
           (= (frame-parameter frame 'alpha) 100))
-      (set-frame-parameter frame 'alpha  0)
+      (set-frame-parameter frame 'alpha 0)
     (set-frame-parameter frame 'alpha 100)))
 
 (defun increase-all-frames-alpha (&optional value)
@@ -106,7 +106,7 @@ If VALUE is nil or omitted, use
 (defun decrease-all-frames-alpha (&optional value)
   "Decrease alpha value of all frames by VALUE.
 If VALUE is nil or omitted, use
-`frame-alpha-default-variation'. "
+`frame-alpha-default-variation'."
   (interactive "P")
   (mapc (lambda (frame) (decrease-frame-alpha value frame))
         (frame-list)))
@@ -118,8 +118,7 @@ If VALUE is nil or omitted, use
 
 (defun toggle-all-frames-opacity ()
   "Toggle opacity of all frames.
-If current fram is opaque, set alpha of all frames as 0,
-which results in `frame-alpha-lower-limit'.
+If current fram is opaque, set alpha of all frames as 0.
 Otherwise, set 100."
   (interactive)
   (if (or (null (frame-parameter nil 'alpha))
