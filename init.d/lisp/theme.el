@@ -3,13 +3,16 @@
 
 
 (premise init)
+(premise custom)
 
 (custom-set-variables
  '(custom-theme-directory (concat user-emacs-directory "themes/")))
-(add-to-list 'custom-theme-load-path
-             (concat user-emacs-directory "themes/lisp"))
-(add-to-list 'custom-theme-load-path
-             (concat user-emacs-directory "themes/site-lisp"))
+
+(with-eval-after-load 'custom
+  (add-to-list 'custom-theme-load-path
+               (concat user-emacs-directory "themes/lisp"))
+  (add-to-list 'custom-theme-load-path
+               (concat user-emacs-directory "themes/site-lisp")))
 
 (defun put-on (theme)
   (interactive
