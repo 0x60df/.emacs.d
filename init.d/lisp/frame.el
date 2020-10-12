@@ -284,5 +284,49 @@ Otherwise, set 100."
                  (throw 'quit t))
                 (t (throw 'quit t))))))))
 
+(defun raise-other-frame (arg)
+  "Raise other frame which is selected interactively.
+ARG-th frame is initially focused."
+  (interactive "p")
+  (let ((frame
+         (letrec ((nth-frame
+                   (lambda (n frame)
+                     (cond ((zerop n) frame)
+                           ((< 0 n)
+                            (funcall nth-frame (- n 1) (next-frame frame)))
+                           ((< n 0)
+                            (funcall nth-frame (+ n 1) (previous-frame frame)))
+                           (t frame)))))
+           (funcall nth-frame arg (selected-frame))))
+        (frame-alpha-alist
+         (mapcar (lambda (frame) (cons frame (frame-parameter frame 'alpha)))
+                 (frame-list))))
+    (unwind-protect
+        (progn
+          (mapc (lambda (frame)
+                  (set-frame-parameter frame 'alpha 0))
+                (remove frame (frame-list)))
+          (catch 'quit
+            (while t
+              (let* ((key-sequence (read-key-sequence-vector "Selected"))
+                     (key-description (key-description key-sequence)))
+                (cond ((equal key-description "n")
+                       (set-frame-parameter frame 'alpha 0)
+                       (setq frame (next-frame frame))
+                       (set-frame-parameter frame 'alpha 100))
+                      ((equal key-description "p")
+                       (set-frame-parameter frame 'alpha 0)
+                       (setq frame (previous-frame frame))
+                       (set-frame-parameter frame 'alpha 100))
+                      ((or (equal key-description "RET")
+                           (equal key-description "C-j"))
+                       (raise-frame frame)
+                       (throw 'quit t))
+                      (t (throw 'quit t)))))))
+      (mapc (lambda (frame-alpha)
+              (set-frame-parameter
+               (car frame-alpha) 'alpha (or (cdr frame-alpha) 100)))
+            frame-alpha-alist))))
+
 
 (resolve frame)
