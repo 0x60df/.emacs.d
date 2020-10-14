@@ -12,7 +12,7 @@
 (add-hook 'emacs-startup-hook #'scratchb-mode-buffer-sticky)
 (add-hook 'scratchb-after-revert-hook #'scratchb-mode-buffer-sticky)
 
-(define-key scratchb-mode-map (kbd "ESC ESC DEL") #'scratchb-flush)
+(define-key scratchb-mode-map (kbd "C-c k") #'scratchb-flush)
 
 
 (resolve scratchb)
