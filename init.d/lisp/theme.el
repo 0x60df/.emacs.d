@@ -15,10 +15,18 @@
                (concat user-emacs-directory "themes/site-lisp")))
 
 (defun put-on (theme)
+  "Load THEME if not loaded and enable that one.
+If theme-settings contains theme-value for
+non-custom-variable, this function may save pseudo standard
+value for that variable as symbol property. Pseudo standard
+value named saved-symbol-value is saved if variable is
+bound, is not set by any other theme, and does not have the
+symbol property saved-symbol-value."
   (interactive
-   (list (intern (completing-read "Custom theme: "
-                                  (mapcar 'symbol-name
-                                          (custom-available-themes))))))
+   (list (intern (completing-read "Enable custom theme: "
+                                  (mapcar #'symbol-name
+                                          (custom-available-themes))
+                                  nil t))))
   (unless (custom-theme-p theme)
     (load-theme theme t t)
     (let ((settings (get theme 'theme-settings)))
@@ -29,17 +37,24 @@
           (if (and (eq prop 'theme-value)
                    (boundp symbol)
                    (not (custom-variable-p symbol))
-                   (not spec-list))
-              ;; put original propery
+                   (not spec-list)
+                   (not (plist-member
+                         (symbol-plist symbol) 'saved-symbol-value)))
               (put symbol 'saved-symbol-value (symbol-value symbol)))))))
   (enable-theme theme))
 
 (defun take-off (theme)
-  (interactive (list (intern
-		      (completing-read
-		       "Disable custom theme: "
-		       (mapcar 'symbol-name custom-enabled-themes)
-		       nil t))))
+  "Disable THEME.
+If theme-settings contains theme-value for
+non-custom-variable, this function may restore pseudo
+standard value for that variable. Pseudo standard value
+saved as symbol property saved-symbol-value is restored if
+variable is bound, is not set by any other theme, and have
+the symbol property saved-symbol-value."
+  (interactive
+   (list (intern (completing-read "Disable custom theme: "
+		                  (mapcar #'symbol-name custom-enabled-themes)
+		                  nil t))))
   (disable-theme theme)
   (let ((settings (get theme 'theme-settings)))
     (dolist (s settings)
@@ -49,7 +64,8 @@
         (if (and (eq prop 'theme-value)
                  (boundp symbol)
                  (not (custom-variable-p symbol))
-                 (not val))
+                 (not val)
+                 (plist-member (symbol-plist symbol) 'saved-symbol-value))
             (set symbol (get symbol 'saved-symbol-value)))))))
 
 
