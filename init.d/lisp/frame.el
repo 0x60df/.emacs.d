@@ -22,7 +22,9 @@ newly created terminal."
          (made-frame (apply make-frame args))
          (made-frame-terminal (frame-terminal made-frame)))
     (unless (memq made-frame-terminal existing-terminal-list)
-      (run-hook-with-args 'after-make-terminal-functions made-frame-terminal))
+      (with-selected-frame made-frame
+        (run-hook-with-args 'after-make-terminal-functions
+                            made-frame-terminal)))
     made-frame))
 
 (advice-add 'make-frame :around #'run-after-make-terminal-functions)
