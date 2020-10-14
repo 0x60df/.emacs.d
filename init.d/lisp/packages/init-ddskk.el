@@ -43,13 +43,6 @@
                          '(skk-study-backup-file
                            (expand-file-name "study.bak" skk-user-directory))))
 
-(defadvice skk-mode (before bind-modifier)
-  (define-key key-translation-map (kbd "<muhenkan>")
-            (if skk-mode
-                nil
-              (kbd "C-j"))))
-(ad-activate 'skk-mode)
-
 
 ;;; multiple terminal enviroment
 

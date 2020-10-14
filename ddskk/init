@@ -6,12 +6,10 @@
 (custom-set-variables
  '(skk-previous-completion-use-backtab t)
  '(skk-egg-like-newline t)
- '(skk-sticky-key [henkan])
+ '(skk-sticky-key (kbd "<prior>"))
+ '(skk-kakutei-key (kbd "<next>"))
  '(skk-status-indicator 'minor-mode)
  '(skk-compare-jisyo-size-when-saving nil))
-
-(define-key skk-j-mode-map (kbd "C-<henkan>")
-  'skk-backward-and-set-henkan-point)
 
 (let ((site-init (locate-file "site-init" `(,skk-user-directory)))
       (elc (locate-file "site-init.elc" `(,skk-user-directory))))
