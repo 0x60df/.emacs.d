@@ -191,41 +191,56 @@ When non-nil, `mode-line-mule-info' shows input method.")
 (setq-default
  mode-line-format
  `(:eval
-   (let* ((text (format-mode-line
-                 (quote
-                  ,(mapcar (lambda (e)
+   (let* ((text
+           (format-mode-line
+            ',(mapcar (lambda (e)
                         (if (stringp e)
                             (replace-regexp-in-string "^\\s-+$" " " e)
                           e))
-                      (default-value 'mode-line-format)))))
+                      (default-value 'mode-line-format))))
           (text-width (length text))
-          (window-width (window-body-width)))
-     (replace-regexp-in-string
-      "%" "%%"
-      (if (< text-width (+ window-width 1))
-          text
-        (let* ((subtext (substring text 0 (+ window-width 1)))
-               (length (length subtext))
-               (r-text (string-reverse subtext))
-               (index (- length 1 (string-match "[^ ]" r-text)))
-               (prop (get-text-property index 'face subtext))
-               (start (previous-single-property-change
-                       index 'face subtext 0))
-               (end (next-single-property-change
-                     index 'face subtext length))
-               (boundary (next-single-property-change
-                          index 'face text text-width)))
-          (if (and (< end boundary)
-                   (string-match "[^ ]" (substring text end boundary)))
-              (progn
-                (add-text-properties
-                 start length
-                 (list 'face (if (atom prop)
-                                 (list 'mode-line-shrinked prop)
-                               (cons 'mode-line-shrinked prop)))
+          (max-width (+ (window-body-width) 1))
+          (shrinked
+           (if (< max-width text-width)
+               (let* ((subtext (substring text 0 max-width))
+                      (r-subtext (string-reverse subtext))
+                      (last-non-space
+                       (- max-width 1 (string-match "[^ ]" r-subtext)))
+                      (last-element-end
+                       (next-single-property-change
+                        last-non-space 'face subtext max-width))
+                      (original-last-element-end
+                       (next-single-property-change
+                        last-non-space 'face text text-width)))
+                 (if (and (< last-element-end original-last-element-end)
+                          (string-match
+                           "[^ ]"
+                           (substring text
+                                      last-element-end
+                                      original-last-element-end)))
+                     (let ((last-element-start
+                            (previous-single-property-change
+                             (+ last-non-space 1) 'face subtext 0))
+                           (property (get-text-property
+                                  last-non-space 'face subtext)))
+                       (add-text-properties
+                        last-element-start max-width
+                        (list 'face (if (atom property)
+                                        (list 'mode-line-shrinked property)
+                                      (cons 'mode-line-shrinked property)))
+                        subtext)))
                  subtext)
-                subtext)
-            subtext)))))))
+             text)))
+     (letrec ((duplicate-percent
+               (lambda (string start)
+                 (let ((end (string-match "%" string start)))
+                   (cond ((null end) (substring string start (length string)))
+                         (t (concat
+                             (substring string start end)
+                             (substring string end (+ end 1))
+                             (substring string end (+ end 1))
+                             (funcall duplicate-percent string (+ end 1)))))))))
+       (funcall duplicate-percent shrinked 0)))))
 
 
 ;;; option setting
