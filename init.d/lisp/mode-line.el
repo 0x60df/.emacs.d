@@ -2,11 +2,44 @@
 ;;;; mode-line.el
 
 
-
-;;; base
-
 (premise init)
+(premise custom)
+
 (require 'which-func)
+
+
+;;; faces
+
+(defface mode-line-buffer-identification-face
+  '((t :inherit mode-line-buffer-id
+       :weight bold))
+  "Face used for buffer identification parts of the mode line."
+  :group 'mode-line-faces)
+
+(defface mode-line-position-face
+  '((t))
+  "Face used for position in the buffer parts of the mode line."
+  :group 'mode-line-faces)
+
+(defface mode-line-vc-mode-face
+  '((t :slant italic))
+  "Face used for vc-mode parts of the mode line."
+  :group 'mode-line-faces)
+
+(defface mode-line-mode-name-face
+  '((t :weight bold))
+  "Face used for mode-name parts of the mode line."
+  :group 'mode-line-faces)
+
+(defface mode-line-minor-mode-alist-face
+  '((t))
+  "Face used for minor-mode-alist parts of the mode line."
+  :group 'mode-line-faces)
+
+(defface mode-line-which-func-mode-face
+  '((t :slant italic))
+  "Face used for which-func-mode parts of the mode line."
+  :group 'mode-line-faces)
 
 
 ;;; format
@@ -62,12 +95,12 @@
              "#")))
         " "))
 
-(defvar mode-line-buffer-identification-shrinked-p nil
+(defvar mode-line-buffer-identification-shrinked nil
   "Status in which `mode-line-buffer-identification' is shrinked or not.")
-(make-variable-buffer-local 'mode-line-buffer-identification-shrinked-p)
+(make-variable-buffer-local 'mode-line-buffer-identification-shrinked)
 
 (setq-default mode-line-buffer-identification
-              '(mode-line-buffer-identification-shrinked-p
+              '(mode-line-buffer-identification-shrinked
                 (:eval
                  (let ((buffer-identification
                         (replace-regexp-in-string
@@ -84,9 +117,9 @@
 (defun mode-line-buffer-identification-toggle-shrinked ()
   "toggle mode-line-buffer-identification shrink status"
   (interactive)
-  (if mode-line-buffer-identification-shrinked-p
-      (setq mode-line-buffer-identification-shrinked-p nil)
-    (setq mode-line-buffer-identification-shrinked-p t)))
+  (if mode-line-buffer-identification-shrinked
+      (setq mode-line-buffer-identification-shrinked nil)
+    (setq mode-line-buffer-identification-shrinked t)))
 
 (setq mode-line-position
       '(:propertize ((-3 "%p")
@@ -96,22 +129,22 @@
                                        ((column-number-mode (4  " C%c")))))
                     face mode-line-position-face))
 
-(defvar mode-line-modes-shrinked-p nil
+(defvar mode-line-modes-shrinked nil
   "Status in which `mode-line-modes' is shrinked or not.")
-(make-variable-buffer-local 'mode-line-modes-shrinked-p)
+(make-variable-buffer-local 'mode-line-modes-shrinked)
 
 (defun mode-line-modes-toggle-shrinked ()
   "toggle mode-line-modes shrink status"
   (interactive)
-  (if mode-line-modes-shrinked-p
-      (setq mode-line-modes-shrinked-p nil)
-    (setq mode-line-modes-shrinked-p t)))
+  (if mode-line-modes-shrinked
+      (setq mode-line-modes-shrinked nil)
+    (setq mode-line-modes-shrinked t)))
 
 (setq mode-line-modes
       '("%["
         ((:propertize mode-name face mode-line-mode-name-face)
          mode-line-process
-         (mode-line-modes-shrinked-p
+         (mode-line-modes-shrinked
           (:eval
            (let* ((minor-modes (format-mode-line minor-mode-alist))
                   (length (length minor-modes))
@@ -192,40 +225,6 @@
               subtext))))))))
 
 
-;;; faces
-
-(defface mode-line-buffer-identification-face
-  '((t :inherit mode-line-buffer-id
-       :weight bold))
-  "Face used for buffer identification parts of the mode line."
-  :group 'mode-line-faces)
-
-(defface mode-line-position-face
-  '((t))
-  "Face used for position in the buffer parts of the mode line."
-  :group 'mode-line-faces)
-
-(defface mode-line-vc-mode-face
-  '((t :slant italic))
-  "Face used for vc-mode parts of the mode line."
-  :group 'mode-line-faces)
-
-(defface mode-line-mode-name-face
-  '((t :weight bold))
-  "Face used for mode-name parts of the mode line."
-  :group 'mode-line-faces)
-
-(defface mode-line-minor-mode-alist-face
-  '((t))
-  "Face used for minor-mode-alist parts of the mode line."
-  :group 'mode-line-faces)
-
-(defface mode-line-which-func-mode-face
-  '((t :slant italic))
-  "Face used for which-func-mode parts of the mode line."
-  :group 'mode-line-faces)
-
-
 ;;; option setting
 
 (which-function-mode 1)
@@ -246,7 +245,7 @@
 (defun show-which-function ()
   "Show which-function in echo area."
   (interactive)
-  (message "%s" (which-function)))
+  (message "Function %s" (which-function)))
 
 
 ;;; bindings
