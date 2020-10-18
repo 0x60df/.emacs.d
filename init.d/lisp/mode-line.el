@@ -13,23 +13,23 @@
 
 (defface mode-line-buffer-identification-face
   '((t :weight bold))
-  "Face used for buffer identification parts of the mode line."
-  :group 'mode-line-faces)
+  "Face used for buffer identification part of the mode line."
+  :group 'user)
 
 (defface mode-line-vc-mode-face
   '((t :slant italic))
-  "Face used for vc-mode parts of the mode line."
-  :group 'mode-line-faces)
+  "Face used for vc-mode part of the mode line."
+  :group 'user)
 
 (defface mode-line-mode-name-face
   '((t :weight bold))
-  "Face used for mode-name parts of the mode line."
-  :group 'mode-line-faces)
+  "Face used for mode-name part of the mode line."
+  :group 'user)
 
 (defface mode-line-which-func-mode-face
   '((t :slant italic))
-  "Face used for which-func-mode parts of the mode line."
-  :group 'mode-line-faces)
+  "Face used for which-func-mode part of the mode line."
+  :group 'user)
 
 (defface mode-line-shrinked
   '((t :slant italic))
@@ -39,23 +39,18 @@
 
 ;;; format
 
-(setq-default mode-line-front-space
-              '(:eval (if (display-graphic-p)
-                          (propertize " "
-                                      'display
-                                      '(space :align-to
-                                              (+ left-margin left-fringe)))
-                        "-")))
+(setq mode-line-front-space
+      '(:eval
+        (if (display-graphic-p)
+            (propertize " "
+                        'display
+                        '(space :align-to (+ left-margin left-fringe)))
+          "-")))
 
 (defvar mode-line-mule-info-showing-input-method nil
   "State of `mode-line-mule-info' replesentation.
 When non-nil, `mode-line-mule-info' shows input method.")
 (make-variable-buffer-local 'mode-line-mule-info-showing-input-method)
-
-(setq-default mode-line-mule-info
-              '((mode-line-mule-info-showing-input-method
-                 (current-input-method current-input-method-title))
-                "%Z"))
 
 (defun mode-line-mule-info-toggle-showing-input-method ()
   "Toggle `mode-line-mule-info' showing input method state."
@@ -64,12 +59,17 @@ When non-nil, `mode-line-mule-info' shows input method.")
       (setq mode-line-mule-info-showing-input-method nil)
     (setq mode-line-mule-info-showing-input-method t)))
 
-(setq mode-line-client '(:eval (if (frame-parameter nil 'client)
-                                   (let ((l (length server-clients)))
-                                     (if (< l 10)
-                                         (number-to-string l)
-                                       "#"))
-                                 "")))
+(setq-default mode-line-mule-info
+              '((mode-line-mule-info-showing-input-method
+                 (current-input-method current-input-method-title))
+                "%Z"))
+
+(setq mode-line-client
+      '(:eval
+        (if (frame-parameter nil 'client)
+            (let ((l (length server-clients)))
+              (if (< l 10) (number-to-string l) "#"))
+          "")))
 
 (setq-default mode-line-modified '("%1*%1+"))
 
@@ -84,8 +84,16 @@ When non-nil, `mode-line-mule-info' shows input method.")
         " "))
 
 (defvar mode-line-buffer-identification-shrinked nil
-  "Status in which `mode-line-buffer-identification' is shrinked or not.")
+  "State of `mode-line-buffer-identification' replesentation.
+When non-nil, `mode-line-buffer-identification' is shrinked.")
 (make-variable-buffer-local 'mode-line-buffer-identification-shrinked)
+
+(defun mode-line-buffer-identification-toggle-shrinked ()
+  "Toggle `mode-line-buffer-identification' shrinking state."
+  (interactive)
+  (if mode-line-buffer-identification-shrinked
+      (setq mode-line-buffer-identification-shrinked nil)
+    (setq mode-line-buffer-identification-shrinked t)))
 
 (setq-default mode-line-buffer-identification
               (let* ((max-width 12)
@@ -104,13 +112,6 @@ When non-nil, `mode-line-mule-info' shows input method.")
                               'mode-line-buffer-identification-face))))
                   (:propertize ,format
                                face mode-line-buffer-identification-face))))
-
-(defun mode-line-buffer-identification-toggle-shrinked ()
-  "toggle mode-line-buffer-identification shrink status"
-  (interactive)
-  (if mode-line-buffer-identification-shrinked
-      (setq mode-line-buffer-identification-shrinked nil)
-    (setq mode-line-buffer-identification-shrinked t)))
 
 (custom-set-variables
  '(mode-line-percent-position '(-3 "%p"))
@@ -140,11 +141,12 @@ When non-nil, `mode-line-mule-info' shows input method.")
             face mode-line-vc-mode-face))))
 
 (defvar mode-line-modes-shrinked nil
-  "Status in which `mode-line-modes' is shrinked or not.")
+  "State of `mode-line-modes' replesentation.
+When non-nil, `'mode-line-modes is shrinked.")
 (make-variable-buffer-local 'mode-line-modes-shrinked)
 
 (defun mode-line-modes-toggle-shrinked ()
-  "toggle mode-line-modes shrink status"
+  "Toggle `mode-line-modes' shrinking state"
   (interactive)
   (if mode-line-modes-shrinked
       (setq mode-line-modes-shrinked nil)
@@ -243,14 +245,11 @@ When non-nil, `mode-line-mule-info' shows input method.")
        (funcall duplicate-percent shrinked 0)))))
 
 
-;;; option setting
+;;; settings
 
 (which-function-mode 1)
 (column-number-mode t)
 (line-number-mode t)
-
-
-;;; eol
 
 (custom-set-variables
  '(eol-mnemonic-dos "+")
@@ -258,7 +257,7 @@ When non-nil, `mode-line-mule-info' shows input method.")
  '(eol-mnemonic-unix ":"))
 
 
-;;; functions
+;;; utilities
 
 (defun show-which-function ()
   "Show which-function in echo area."
