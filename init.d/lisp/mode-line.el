@@ -11,14 +11,8 @@
 ;;; faces
 
 (defface mode-line-buffer-identification-face
-  '((t :inherit mode-line-buffer-id
-       :weight bold))
+  '((t :weight bold))
   "Face used for buffer identification parts of the mode line."
-  :group 'mode-line-faces)
-
-(defface mode-line-position-face
-  '((t))
-  "Face used for position in the buffer parts of the mode line."
   :group 'mode-line-faces)
 
 (defface mode-line-vc-mode-face
@@ -31,15 +25,15 @@
   "Face used for mode-name parts of the mode line."
   :group 'mode-line-faces)
 
-(defface mode-line-minor-mode-alist-face
-  '((t))
-  "Face used for minor-mode-alist parts of the mode line."
-  :group 'mode-line-faces)
-
 (defface mode-line-which-func-mode-face
   '((t :slant italic))
   "Face used for which-func-mode parts of the mode line."
   :group 'mode-line-faces)
+
+(defface mode-line-shrinked
+  '((t :slant italic))
+  "Face for the potion of mode-line which is shirinked."
+  :group 'user)
 
 
 ;;; format
@@ -108,7 +102,8 @@
                    (if (< 12 (length buffer-identification))
                        (propertize
                         (substring buffer-identification 0 12)
-                        'face '(mode-line-buffer-identification-face italic))
+                        'face '(mode-line-buffer-identification-face
+                                mode-line-shrinked))
                      (propertize
                       buffer-identification
                       'face 'mode-line-buffer-identification-face))))
@@ -122,12 +117,11 @@
     (setq mode-line-buffer-identification-shrinked t)))
 
 (setq mode-line-position
-      '(:propertize ((-3 "%p")
-                     (size-indication-mode (5 "/%I"))
-                     (line-number-mode ((column-number-mode (7  " %l %c")
-                                                            (4  " L%l")))
-                                       ((column-number-mode (4  " C%c")))))
-                    face mode-line-position-face))
+      '((-3 "%p")
+        (size-indication-mode (5 "/%I"))
+        (line-number-mode ((column-number-mode (7  " %l %c")
+                                               (4  " L%l")))
+                          ((column-number-mode (4  " C%c"))))))
 
 (defvar mode-line-modes-shrinked nil
   "Status in which `mode-line-modes' is shrinked or not.")
@@ -155,11 +149,9 @@
                              (if (= (aref minor-modes (- max-width 1)) 32)
                                  (- max-width 1)
                                max-width))
-                  'face '(mode-line-minor-mode-alist-face italic))
-               (propertize
-                minor-modes
-                'face 'mode-line-minor-mode-alist-face))))
-          (:propertize minor-mode-alist face mode-line-minor-mode-alist-face))
+                  'face 'mode-line-shrinked)
+               minor-modes)))
+          minor-mode-alist)
          "%n")
         "%]"
         " "))
@@ -216,11 +208,12 @@
             (if (and (< end boundary)
                      (string-match "[^ ]" (substring text end boundary)))
                 (progn
-                  (add-text-properties start length
-                                       (list 'face (if (atom prop)
-                                                       (list 'italic prop)
-                                                     (cons 'italic prop)))
-                                       subtext)
+                  (add-text-properties
+                   start length
+                   (list 'face (if (atom prop)
+                                   (list 'mode-line-shrinked prop)
+                                 (cons 'mode-line-shrinked prop)))
+                   subtext)
                   subtext)
               subtext))))))))
 
