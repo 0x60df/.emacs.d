@@ -175,11 +175,14 @@ When non-nil, `mode-line-mule-info' shows input method.")
           "%]"
           " ")))
 
+(custom-set-variables
+ '(which-func-format
+   '(:propertize which-func-current face mode-line-which-func-mode-face)))
+
 (setq mode-line-misc-info
-      '((which-func-mode
-         (""
-          (:propertize which-func-current face mode-line-which-func-mode-face)
-          " "))
+      '((which-function-mode
+         (which-func-mode
+          ("" which-func-format " ")))
         (global-mode-string ("" global-mode-string " "))))
 
 (setq-default
