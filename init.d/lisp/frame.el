@@ -128,28 +128,14 @@ Otherwise, set 100."
       (modify-all-frames-parameters '((alpha . 0)))
     (modify-all-frames-parameters '((alpha . 100)))))
 
-(defcustom display-pixel-left-margin 0
-  "Display margin on left side by pixelwise.
-`manipulate-frame' keeps frame in this margin."
-  :type 'integer
-  :group 'user)
-
-(defcustom display-pixel-top-margin 0
-  "Display margin on top side by pixelwise.
-`manipulate-frame' keeps frame in this margin."
-  :type 'integer
-  :group 'user)
-
-(defcustom display-pixel-right-margin 0
-  "Display margin on right side by pixelwise.
-`manipulate-frame' keeps frame in this margin."
-  :type 'integer
-  :group 'user)
-
-(defcustom display-pixel-bottom-margin 0
-  "Display margin on bottom side by pixelwise.
-`manipulate-frame' keeps frame in this margin."
-  :type 'integer
+(defcustom monitor-margin-alist nil
+  "Monitor margin list.
+This looks like '(pattern . (left top righ bottom)).
+pattern is a list whose elements are compared with elements
+of monitor attributes. If all elements of pattern are
+matched, left top right bottom are used as margin for each
+side of the monitor. Otherwise, margin is regarded as 0."
+  :type 'alist
   :group 'user)
 
 (defcustom manipulate-frame-default-factor 8
@@ -160,116 +146,156 @@ Otherwise, set 100."
 (defun manipulate-frame (&optional arg)
   "Manipulate frame position and size interactively."
   (interactive "P")
-  (let* ((left-border display-pixel-left-margin)
-         (top-border display-pixel-top-margin)
-         (right-border (- (display-pixel-width) display-pixel-right-margin))
-         (bottom-border (- (display-pixel-height) display-pixel-bottom-margin))
+  (let* ((place-frame
+          (lambda (frame x y)
+            (modify-frame-parameters
+             frame
+             `((left . ,(if (< x 0) `(+ ,x) x))
+               (top . ,(if (< y 0) `(+ ,y) y))))))
+         (monitor-margin
+          (lambda (monitor-attributes)
+            (let ((margin-definition
+                   (seq-find
+                    (lambda (monitor-margin)
+                      (seq-every-p
+                       (lambda (pattern)
+                         (seq-contains-p monitor-attributes pattern))
+                       (car monitor-margin)))
+                    monitor-margin-alist)))
+              (if margin-definition
+                  (cdr margin-definition)
+                '(0 0 0 0)))))
          (frame (selected-frame))
          (factor (if arg
-                        (prefix-numeric-value arg)
-                      manipulate-frame-default-factor)))
-    (let ((left-edge (cdr (assoc 'left (frame-parameters))))
-          (top-edge (cdr (assoc 'top (frame-parameters)))))
-      (cond ((or (listp left-edge)
-                 (< left-edge left-border))
-             (set-frame-position frame left-border top-edge))
-            ((< right-border (+ left-edge (frame-pixel-width)))
-             (set-frame-position frame
-                                 (- right-border (frame-pixel-width))
-                                 top-edge)))
-      (cond ((or (listp top-edge)
-                 (< top-edge top-border))
-             (set-frame-position frame left-edge top-border))
-            ((< bottom-border (+ top-edge (frame-pixel-height)))
-             (set-frame-position frame
-                                 left-edge
-                                 (- bottom-border (frame-pixel-height))))))
+                     (prefix-numeric-value arg)
+                   manipulate-frame-default-factor)))
     (catch 'quit
       (while t
-        (let* ((left-edge (cdr (assoc 'left (frame-parameters))))
-               (top-edge (cdr (assoc 'top (frame-parameters))))
-               (key-sequence (read-key-sequence-vector
+        (let* ((workarea (frame-monitor-workarea))
+               (margin (funcall monitor-margin (frame-monitor-attributes)))
+               (left-border (+ (car workarea)
+                               (car margin)))
+               (top-border (+ (cadr workarea)
+                              (cadr margin)))
+               (right-border (- (+ (caddr workarea)
+                                   (car workarea))
+                                (caddr margin)))
+               (bottom-border (- (+ (cadddr workarea)
+                                    (cadr workarea))
+                                 (cadddr margin)))
+               (left-edge (cadr (assq 'outer-position (frame-geometry))))
+               (top-edge (cddr (assq 'outer-position (frame-geometry)))))
+          (cond ((< left-edge left-border)
+                 (setq left-edge left-border))
+                ((< right-border (+ left-edge (frame-outer-width)))
+                 (setq left-edge (- right-border (frame-outer-width)))))
+          (cond ((< top-edge top-border)
+                 (setq top-edge top-border))
+                ((< bottom-border (+ top-edge (frame-outer-height)))
+                 (setq top-edge (- bottom-border (frame-outer-height)))))
+          (funcall place-frame frame left-edge top-edge))
+        (let* ((key-sequence (read-key-sequence-vector
                               (format
                                (concat "position[%04d,%04d]" " "
                                        "size[%04dx%04d]" " "
                                        "display[%04dx%04d]" " "
                                        "step[%02d]")
-                               left-edge top-edge
-                               (frame-pixel-width) (frame-pixel-height)
-                               (display-pixel-width) (display-pixel-height)
+                               (cadr (assq 'outer-position (frame-geometry)))
+                               (cddr (assq 'outer-position (frame-geometry)))
+                               (frame-outer-width) (frame-outer-height)
+                               (caddr (frame-monitor-workarea))
+                               (cadddr (frame-monitor-workarea))
                                factor)))
                (key-description (key-description key-sequence))
-               (key-binding (key-binding key-sequence)))
+               (key-binding (key-binding key-sequence))
+               (workarea (frame-monitor-workarea))
+               (margin (funcall monitor-margin (frame-monitor-attributes)))
+               (left-border (+ (car workarea)
+                               (car margin)))
+               (top-border (+ (cadr workarea)
+                              (cadr margin)))
+               (right-border (- (+ (caddr workarea)
+                                   (car workarea))
+                                (caddr margin)))
+               (bottom-border (- (+ (cadddr workarea)
+                                    (cadr workarea))
+                                 (cadddr margin)))
+               (left-edge (cadr (assq 'outer-position (frame-geometry))))
+               (top-edge (cddr (assq 'outer-position (frame-geometry)))))
           (cond ((equal key-description "f")
-                 (set-frame-position
-                  frame
-                  (let ((dest (+ left-edge (* factor (frame-char-width))))
-                        (bound (- right-border (frame-pixel-width))))
-                    (if (< bound dest) bound dest))
-                  top-edge))
+                 (funcall place-frame
+                          frame
+                          (let ((dest (+ left-edge
+                                         (* factor (frame-char-width))))
+                                (bound (- right-border (frame-outer-width))))
+                            (if (< bound dest) bound dest))
+                          top-edge))
                 ((equal key-description "b")
-                 (set-frame-position
-                  frame
-                  (let ((dest (- left-edge (* factor (frame-char-width))))
-                        (bound left-border))
-                    (if (< dest bound) bound dest))
-                  top-edge))
+                 (funcall place-frame
+                          frame
+                          (let ((dest (- left-edge
+                                         (* factor (frame-char-width))))
+                                (bound left-border))
+                            (if (< dest bound) bound dest))
+                          top-edge))
                 ((equal key-description "n")
-                 (set-frame-position
-                  frame
-                  left-edge
-                  (let ((dest (+ top-edge (* factor (frame-char-height))))
-                        (bound (- bottom-border (frame-pixel-height))))
-                    (if (< bound dest) bound dest))))
+                 (funcall place-frame
+                          frame
+                          left-edge
+                          (let ((dest (+ top-edge
+                                         (* factor (frame-char-height))))
+                                (bound (- bottom-border (frame-outer-height))))
+                            (if (< bound dest) bound dest))))
                 ((equal key-description "p")
-                 (set-frame-position
-                  frame
-                  left-edge
-                  (let ((dest (- top-edge (* factor (frame-char-height))))
-                        (bound top-border))
-                    (if (< dest bound) bound dest))))
+                 (funcall place-frame
+                          frame
+                          left-edge
+                          (let ((dest (- top-edge
+                                         (* factor (frame-char-height))))
+                                (bound top-border))
+                            (if (< dest bound) bound dest))))
                 ((equal key-description "a")
-                 (set-frame-position frame left-border top-edge))
+                 (funcall place-frame frame left-border top-edge))
                 ((equal key-description "e")
-                 (set-frame-position
-                  frame
-                  (- right-border (frame-pixel-width))
-                  top-edge))
+                 (funcall place-frame
+                          frame
+                          (- right-border (frame-outer-width))
+                          top-edge))
                 ((equal key-description "M-f")
-                 (set-frame-position
-                  frame
-                  (let ((dest (+ left-edge (frame-pixel-width)))
-                        (bound (- right-border (frame-pixel-width))))
-                    (if (< bound dest) bound dest))
-                  top-edge))
+                 (funcall place-frame
+                          frame
+                          (let ((dest (+ left-edge (frame-outer-width)))
+                                (bound (- right-border (frame-outer-width))))
+                            (if (< bound dest) bound dest))
+                          top-edge))
                 ((equal key-description "M-b")
-                 (set-frame-position
-                  frame
-                  (let ((dest (- left-edge (frame-pixel-width)))
-                        (bound left-border))
-                    (if (< dest bound) bound dest))
-                  top-edge))
+                 (funcall place-frame
+                          frame
+                          (let ((dest (- left-edge (frame-outer-width)))
+                                (bound left-border))
+                            (if (< dest bound) bound dest))
+                          top-edge))
                 ((equal key-description "<")
-                 (set-frame-position frame left-edge top-border))
+                 (funcall place-frame frame left-edge top-border))
                 ((equal key-description ">")
-                 (set-frame-position
-                  frame
-                  left-edge
-                  (- bottom-border (frame-pixel-height))))
+                 (funcall place-frame
+                          frame
+                          left-edge
+                          (- bottom-border (frame-outer-height))))
                 ((equal key-description "v")
-                 (set-frame-position
-                  frame
-                  left-edge
-                  (let ((dest (+ top-edge (frame-pixel-height)))
-                        (bound (- bottom-border (frame-pixel-height))))
-                    (if (< bound dest) bound dest))))
+                 (funcall place-frame
+                          frame
+                          left-edge
+                          (let ((dest (+ top-edge (frame-outer-height)))
+                                (bound (- bottom-border (frame-outer-height))))
+                            (if (< bound dest) bound dest))))
                 ((equal key-description "M-v")
-                 (set-frame-position
-                  frame
-                  left-edge
-                  (let ((dest (- top-edge (frame-pixel-height)))
-                        (bound top-border))
-                    (if (< dest bound) bound dest))))
+                 (funcall place-frame
+                          frame
+                          left-edge
+                          (let ((dest (- top-edge (frame-outer-height)))
+                                (bound top-border))
+                            (if (< dest bound) bound dest))))
                 ((equal key-description "C-f")
                  (set-frame-width frame (+ (frame-width) factor)))
                 ((equal key-description "C-b")
@@ -278,6 +304,56 @@ Otherwise, set 100."
                  (set-frame-height frame (+ (frame-height) factor)))
                 ((equal key-description "C-p")
                  (set-frame-height frame (- (frame-height) factor)))
+                ((equal key-description ".")
+                 (letrec
+                     ((dig
+                       (lambda (p l)
+                         (cond ((null l) (cons l nil))
+                               ((funcall p (car l)) nil)
+                               (t (cons (car l) (funcall dig p (cdr l))))))))
+                   (let* ((monitor-attributes-list
+                           (display-monitor-attributes-list))
+                          (dug (funcall
+                                dig
+                                (lambda (monitor-attributes)
+                                  (and (equal (cdr (assq 'geometry
+                                                         monitor-attributes))
+                                              (frame-monitor-geometry))
+                                       (equal (cdr (assq 'workarea
+                                                         monitor-attributes))
+                                              (frame-monitor-workarea))))
+                                monitor-attributes-list))
+                          (monitor-attributes
+                           (car (last (if (null dug)
+                                          monitor-attributes-list
+                                        dug))))
+                          (workarea (cdr (assq 'workarea monitor-attributes)))
+                          (margin (funcall monitor-margin monitor-attributes))
+                          (left (- (+ (+ (car workarea) (car margin))
+                                      (/ (- (caddr workarea)
+                                            (car margin)
+                                            (caddr margin))
+                                         2))
+                                   (/ (frame-outer-width) 2)))
+                          (top (- (+ (+ (cadr workarea)  (cadr margin))
+                                     (/ (- (cadddr workarea)
+                                           (cadr margin)
+                                           (cadddr margin))
+                                        2))
+                                  (/ (frame-outer-height) 2)))
+                          (frame-workare (frame-monitor-workarea)))
+                     (unless (and (and (< (car frame-workare) left)
+                                       (< left (+ (car frame-workare)
+                                                  (caddr frame-workare))))
+                                  (and (< (cadr frame-workare) top)
+                                       (< top (+ (cadr frame-workare)
+                                                 (cadddr frame-workare)))))
+                       (funcall place-frame frame left top)))))
+                ((equal key-description "s")
+                 (let ((read (read-from-minibuffer
+                              (format "Step[%d]: " factor)
+                              nil nil t nil (number-to-string factor))))
+                   (if (integerp read) (setq factor read))))
                 ((equal key-description "q")
                  (throw 'quit t))
                 ((and (not (eq key-binding 'self-insert-command))
