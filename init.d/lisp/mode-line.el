@@ -185,6 +185,9 @@ When non-nil, `mode-line-mule-info' shows input method.")
           ("" which-func-format " ")))
         (global-mode-string ("" global-mode-string " "))))
 
+(setq mode-line-end-spaces
+      '(:eval (unless (display-graphic-p) "-%-")))
+
 (setq-default
  mode-line-format
  `(:eval
