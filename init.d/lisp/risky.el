@@ -1,5 +1,5 @@
 
-;;;; risk.el
+;;;; risky.el
 
 
 (premise init)
@@ -55,4 +55,4 @@ realise it as `insert' yes and `exit-minibuffer'."
 (risky-yes-or-no-p-mode 1)
 
 
-(resolve risk)
+(resolve risky)
