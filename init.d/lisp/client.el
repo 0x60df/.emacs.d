@@ -4,7 +4,6 @@
 
 (premise init)
 (premise frame)
-(premise bindings)
 
 
 ;;; subr
@@ -143,16 +142,6 @@ Otherwise, set 100."
             (client-frame-list))
     (mapc (lambda (frame) (set-frame-parameter frame 'alpha  100))
           (client-frame-list))))
-
-
-;;; binding
-
-(with-eval-after-load 'server
-  (global-set-key (kbd "C-.") #'other-frame-on-selected-client)
-  (global-set-key (kbd "C-M-.") #'other-frame-on-selected-client-reverse)
-  (global-set-key (kbd "s-.") #'other-client-frame)
-  (global-set-key (kbd "s-M-.") #'other-client-frame-reverse)
-  (global-set-key (kbd "C-s-+") #'toggle-all-client-frames-opacity))
 
 
 (resolve client)

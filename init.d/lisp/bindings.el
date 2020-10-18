@@ -4,8 +4,11 @@
 
 (premise init)
 (premise simple)
+(premise risky)
 (premise window)
 (premise frame)
+(premise client)
+(premise mode-line)
 
 (define-key key-translation-map [?\C-h] [?\C-?])
 
@@ -55,6 +58,7 @@
 (global-set-key (kbd "C-S-p") #'previous-line-scroll-down)
 (global-set-key (kbd "H-f") #'search-forward-char-in-line)
 (global-set-key (kbd "H-b") #'search-backward-char-in-line)
+(global-set-key (kbd "C-c r y") #'risky-yes-or-no-p-mode)
 
 (global-set-key (kbd "C-:") #'split-window-below)
 (global-set-key (kbd "C-M-:") #'split-window-right)
@@ -72,6 +76,20 @@
 (global-set-key (kbd "C-c .") #'raise-other-frame)
 (global-set-key (kbd "s-;") #'toggle-frame-opacity)
 (global-set-key (kbd "s-+") #'toggle-all-frames-opacity)
+
+(with-eval-after-load 'server
+  (global-set-key (kbd "C-.") #'other-frame-on-selected-client)
+  (global-set-key (kbd "C-M-.") #'other-frame-on-selected-client-reverse)
+  (global-set-key (kbd "s-.") #'other-client-frame)
+  (global-set-key (kbd "s-M-.") #'other-client-frame-reverse)
+  (global-set-key (kbd "C-s-+") #'toggle-all-client-frames-opacity))
+
+(global-set-key (kbd "C-c l m") #'mode-line-modes-toggle-shrinked)
+(global-set-key (kbd "C-c l b")
+                #'mode-line-buffer-identification-toggle-shrinked)
+(global-set-key (kbd "C-c l i")
+                #'mode-line-mule-info-toggle-showing-input-method)
+(global-set-key (kbd "C-c l f") #'show-which-function)
 
 (global-unset-key (kbd "C-l"))
 (global-set-key (kbd "C-l C-l") #'recenter-top-bottom)

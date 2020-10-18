@@ -265,14 +265,4 @@ When non-nil, `'mode-line-modes is shrinked.")
   (message "Function %s" (which-function)))
 
 
-;;; bindings
-
-(global-set-key (kbd "C-c l m") #'mode-line-modes-toggle-shrinked)
-(global-set-key (kbd "C-c l b")
-                #'mode-line-buffer-identification-toggle-shrinked)
-(global-set-key (kbd "C-c l i")
-                #'mode-line-mule-info-toggle-showing-input-method)
-(global-set-key (kbd "C-c l f") #'show-which-function)
-
-
 (resolve mode-line)
