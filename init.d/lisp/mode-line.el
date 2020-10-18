@@ -4,6 +4,7 @@
 
 (premise init)
 (premise custom)
+(premise client)
 
 (require 'which-func)
 
@@ -76,32 +77,10 @@ When non-nil, `mode-line-mule-info' shows input method.")
 
 (setq mode-line-frame-identification
       '((:eval
-         (let ((l (length
-                   (let* ((proc (frame-parameter nil 'client))
-                          (sift
-                           (if proc
-                               (lambda (fl)
-                                 (letrec ((filter (lambda (p l)
-                                                    (cond ((null l) l)
-                                                          ((funcall p (car l))
-                                                           (funcall
-                                                            filter p (cdr l)))
-                                                          (t (cons
-                                                              (car l)
-                                                              (funcall
-                                                               filter
-                                                               p (cdr l))))))))
-                                   (funcall filter
-                                            (lambda (f)
-                                              (not (eq proc
-                                                       (frame-parameter
-                                                        f 'client))))
-                                            fl)))
-                             (symbol-function 'identity))))
-                     (funcall sift (frame-list))))))
-           (if (< l 10)
-               (number-to-string l)
-             "#")))
+         (let ((l (length (if (frame-parameter nil 'client)
+                              (client-frame-list)
+                            (frame-list)))))
+           (if (< l 10) (number-to-string l) "#")))
         " "))
 
 (defvar mode-line-buffer-identification-shrinked nil
