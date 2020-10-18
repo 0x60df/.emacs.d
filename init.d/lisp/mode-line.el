@@ -112,12 +112,24 @@ When non-nil, `mode-line-mule-info' shows input method.")
       (setq mode-line-buffer-identification-shrinked nil)
     (setq mode-line-buffer-identification-shrinked t)))
 
+(custom-set-variables
+ '(mode-line-percent-position '(-3 "%p"))
+ '(column-number-indicator-zero-based nil))
+
 (setq mode-line-position
-      '((-3 "%p")
-        (size-indication-mode (5 "/%I"))
-        (line-number-mode ((column-number-mode (7  " %l %c")
-                                               (4  " L%l")))
-                          ((column-number-mode (4  " C%c"))))))
+      '(""
+       mode-line-percent-position
+       (size-indication-mode (5 "/%I"))
+       (line-number-mode
+        (column-number-mode
+         (column-number-indicator-zero-based
+          (7  " %l %c")
+          (7  " %l %C"))
+         (4  " L%l"))
+        (column-number-mode
+         (column-number-indicator-zero-based
+          (4  " C%c")
+          (4  " C%C"))))))
 
 (defvar mode-line-modes-shrinked nil
   "Status in which `mode-line-modes' is shrinked or not.")
