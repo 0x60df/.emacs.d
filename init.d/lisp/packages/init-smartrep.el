@@ -76,11 +76,11 @@
 (eval-after-load 'server
   '(smartrep-define-key
        global-map "C-H-+"
-     '(("s" . server-set-all-client-frames-alpha)
-       ("p" . server-increase-all-client-frames-alpha)
-       ("n" . server-decrease-all-client-frames-alpha)
-       ("i" . server-increase-all-client-frames-alpha)
-       ("d" . server-decrease-all-client-frames-alpha))))
+     '(("s" . set-all-client-frames-alpha)
+       ("p" . increase-all-client-frames-alpha)
+       ("n" . decrease-all-client-frames-alpha)
+       ("i" . increase-all-client-frames-alpha)
+       ("d" . decrease-all-client-frames-alpha))))
 
 ;; org
 (eval-after-load 'org
