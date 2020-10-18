@@ -131,6 +131,14 @@ When non-nil, `mode-line-mule-info' shows input method.")
           (4  " C%c")
           (4  " C%C"))))))
 
+(setcdr (assq 'vc-mode mode-line-format)
+        '((" "
+           (:propertize
+            (:eval (replace-regexp-in-string
+                    "^\\s-+\\|\\s-+$" ""
+                    (substring-no-properties vc-mode)))
+            face mode-line-vc-mode-face))))
+
 (defvar mode-line-modes-shrinked nil
   "Status in which `mode-line-modes' is shrinked or not.")
 (make-variable-buffer-local 'mode-line-modes-shrinked)
@@ -173,57 +181,42 @@ When non-nil, `mode-line-mule-info' shows input method.")
 
 (setq-default
  mode-line-format
- (letrec ((replace-element
-           (lambda (o n l)
-             (cond ((null l) l)
-                   ((equal (car l) o) (cons n (cdr l)))
-                   (t (cons (car l)
-                            (funcall replace-element o n (cdr l))))))))
-   `(:eval
-     (let* ((text (format-mode-line
-                   (quote
-                    ,(funcall replace-element
-                              '(vc-mode vc-mode)
-                              '(vc-mode (" " (:propertize
-                                              (:eval (replace-regexp-in-string
-                                                      "^\\s-+\\|\\s-+$" ""
-                                                      (substring-no-properties
-                                                       vc-mode)))
-                                              face mode-line-vc-mode-face)))
-                              (mapcar
-                               (lambda (e) (if (stringp e)
-                                               (replace-regexp-in-string
-                                                "^\\s-+$" " " e)
-                                             e))
-                               (default-value 'mode-line-format))))))
-            (text-width (length text))
-            (window-width (window-body-width)))
-       (replace-regexp-in-string
-        "%" "%%"
-        (if (< text-width (+ window-width 1))
-            text
-          (let* ((subtext (substring text 0 (+ window-width 1)))
-                 (length (length subtext))
-                 (r-text (string-reverse subtext))
-                 (index (- length 1 (string-match "[^ ]" r-text)))
-                 (prop (get-text-property index 'face subtext))
-                 (start (previous-single-property-change
-                         index 'face subtext 0))
-                 (end (next-single-property-change
-                       index 'face subtext length))
-                 (boundary (next-single-property-change
-                         index 'face text text-width)))
-            (if (and (< end boundary)
-                     (string-match "[^ ]" (substring text end boundary)))
-                (progn
-                  (add-text-properties
-                   start length
-                   (list 'face (if (atom prop)
-                                   (list 'mode-line-shrinked prop)
-                                 (cons 'mode-line-shrinked prop)))
-                   subtext)
-                  subtext)
-              subtext))))))))
+ `(:eval
+   (let* ((text (format-mode-line
+                 (quote
+                  ,(mapcar (lambda (e)
+                        (if (stringp e)
+                            (replace-regexp-in-string "^\\s-+$" " " e)
+                          e))
+                      (default-value 'mode-line-format)))))
+          (text-width (length text))
+          (window-width (window-body-width)))
+     (replace-regexp-in-string
+      "%" "%%"
+      (if (< text-width (+ window-width 1))
+          text
+        (let* ((subtext (substring text 0 (+ window-width 1)))
+               (length (length subtext))
+               (r-text (string-reverse subtext))
+               (index (- length 1 (string-match "[^ ]" r-text)))
+               (prop (get-text-property index 'face subtext))
+               (start (previous-single-property-change
+                       index 'face subtext 0))
+               (end (next-single-property-change
+                     index 'face subtext length))
+               (boundary (next-single-property-change
+                          index 'face text text-width)))
+          (if (and (< end boundary)
+                   (string-match "[^ ]" (substring text end boundary)))
+              (progn
+                (add-text-properties
+                 start length
+                 (list 'face (if (atom prop)
+                                 (list 'mode-line-shrinked prop)
+                               (cons 'mode-line-shrinked prop)))
+                 subtext)
+                subtext)
+            subtext)))))))
 
 
 ;;; option setting
