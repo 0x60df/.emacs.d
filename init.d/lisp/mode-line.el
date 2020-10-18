@@ -11,22 +11,22 @@
 
 ;;; faces
 
-(defface mode-line-buffer-identification-face
+(defface mode-line-buffer-identification
   '((t :weight bold))
   "Face used for buffer identification part of the mode line."
   :group 'user)
 
-(defface mode-line-vc-mode-face
+(defface mode-line-vc-mode
   '((t :slant italic))
   "Face used for vc-mode part of the mode line."
   :group 'user)
 
-(defface mode-line-mode-name-face
+(defface mode-line-mode-name
   '((t :weight bold))
   "Face used for mode-name part of the mode line."
   :group 'user)
 
-(defface mode-line-which-func-mode-face
+(defface mode-line-which-func-mode
   '((t :slant italic))
   "Face used for which-func-mode part of the mode line."
   :group 'user)
@@ -107,11 +107,11 @@ When non-nil, `mode-line-buffer-identification' is shrinked.")
                      (propertize
                       canonicalized
                       'face (if (< ,max-width (length text))
-                                '(mode-line-buffer-identification-face
+                                '(mode-line-buffer-identification
                                   mode-line-shrinked)
-                              'mode-line-buffer-identification-face))))
+                              'mode-line-buffer-identification))))
                   (:propertize ,format
-                               face mode-line-buffer-identification-face))))
+                               face mode-line-buffer-identification))))
 
 (custom-set-variables
  '(mode-line-percent-position '(-3 "%p"))
@@ -138,7 +138,7 @@ When non-nil, `mode-line-buffer-identification' is shrinked.")
             (:eval (replace-regexp-in-string
                     "^\\s-+\\|\\s-+$" ""
                     (substring-no-properties vc-mode)))
-            face mode-line-vc-mode-face))))
+            face mode-line-vc-mode))))
 
 (defvar mode-line-modes-shrinked nil
   "State of `mode-line-modes' replesentation.
@@ -155,7 +155,7 @@ When non-nil, `'mode-line-modes is shrinked.")
 (setq mode-line-modes
       (let ((max-width 12))
         `("%["
-          (:propertize mode-name face mode-line-mode-name-face)
+          (:propertize mode-name face mode-line-mode-name)
           mode-line-process
           (mode-line-modes-shrinked
            (:eval
@@ -179,7 +179,7 @@ When non-nil, `'mode-line-modes is shrinked.")
 
 (custom-set-variables
  '(which-func-format
-   '(:propertize which-func-current face mode-line-which-func-mode-face)))
+   '(:propertize which-func-current face mode-line-which-func-mode)))
 
 (setq mode-line-misc-info
       '((which-function-mode

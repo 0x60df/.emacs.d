@@ -7,7 +7,7 @@
 
 ;;; yes-or-no-p
 
-(defface risky-yes-or-no-p-prefix-face
+(defface risky-yes-or-no-p-prefix
   '((t :inherit minibuffer-prompt
        :weight bold))
   "Face for prefix of risky-yes-or-no-p prompt."
@@ -36,7 +36,7 @@ regardless of any error."
         (risky-yes-or-no-p-transient-mode 1)
         (apply yes-or-no-p
                (concat
-                (propertize "[RISKY] " 'face 'risky-yes-or-no-p-prefix-face)
+                (propertize "[RISKY] " 'face 'risky-yes-or-no-p-prefix)
                 prompt)
                args))
     (risky-yes-or-no-p-transient-mode -1)))
