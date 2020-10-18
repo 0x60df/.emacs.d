@@ -4,6 +4,7 @@
 
 (premise init)
 (premise inst-anzu)
+(premise mode-line)
 
 (global-anzu-mode +1)
 (global-set-key [remap query-replace] 'anzu-query-replace)
