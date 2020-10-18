@@ -10,7 +10,10 @@
  'night
  (custom-theme-set-faces
   'tomorrow-night-accessory
-  `(escape-glyph ((t :foreground ,red)))))
+  `(escape-glyph ((t :foreground ,red)))
+  `(homoglyph ((t :foreground ,red :weight bold)))
+  `(nobreak-space ((t :box ,red)))
+  `(nobreak-hyphen ((t :foreground ,red :weight bold)))))
 
 
 ;;; mode-line
