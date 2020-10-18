@@ -151,26 +151,29 @@ When non-nil, `mode-line-mule-info' shows input method.")
     (setq mode-line-modes-shrinked t)))
 
 (setq mode-line-modes
-      '("%["
-        ((:propertize mode-name face mode-line-mode-name-face)
-         mode-line-process
-         (mode-line-modes-shrinked
-          (:eval
-           (let* ((minor-modes (format-mode-line minor-mode-alist))
-                  (length (length minor-modes))
-                  (max-width 12))
-             (if (< max-width length)
-                 (propertize
-                  (substring minor-modes 0
-                             (if (= (aref minor-modes (- max-width 1)) 32)
-                                 (- max-width 1)
-                               max-width))
-                  'face 'mode-line-shrinked)
-               minor-modes)))
-          minor-mode-alist)
-         "%n")
-        "%]"
-        " "))
+      (let ((max-width 12))
+        `("%["
+          (:propertize mode-name face mode-line-mode-name-face)
+          mode-line-process
+          (mode-line-modes-shrinked
+           (:eval
+            (let* ((text (format-mode-line minor-mode-alist))
+                   (canonicalized
+                    (replace-regexp-in-string
+                     "%" "%%"
+                     (if (< ,max-width (length text))
+                         (substring text 0
+                                    (if (= (aref text (- ,max-width 1)) 32)
+                                        (- ,max-width 1)
+                                      ,max-width))
+                       text))))
+              (if (< ,max-width (length text))
+                  (propertize canonicalized 'face 'mode-line-shrinked)
+                canonicalized)))
+           minor-mode-alist)
+          (-4 "%n")
+          "%]"
+          " ")))
 
 (setq mode-line-misc-info
       '((which-func-mode
