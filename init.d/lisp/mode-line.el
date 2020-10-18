@@ -88,20 +88,22 @@ When non-nil, `mode-line-mule-info' shows input method.")
 (make-variable-buffer-local 'mode-line-buffer-identification-shrinked)
 
 (setq-default mode-line-buffer-identification
-              '(mode-line-buffer-identification-shrinked
-                (:eval
-                 (let ((buffer-identification
-                        (replace-regexp-in-string
-                         "%" "%%" (format-mode-line "%12b"))))
-                   (if (< 12 (length buffer-identification))
-                       (propertize
-                        (substring buffer-identification 0 12)
-                        'face '(mode-line-buffer-identification-face
-                                mode-line-shrinked))
+              (let* ((max-width 12)
+                     (format (format "%%%db" max-width)))
+                `(mode-line-buffer-identification-shrinked
+                  (:eval
+                   (let* ((text (format-mode-line ,format))
+                          (canonicalized
+                           (replace-regexp-in-string
+                            "%" "%%" (substring text 0 ,max-width))))
                      (propertize
-                      buffer-identification
-                      'face 'mode-line-buffer-identification-face))))
-                (:propertize "%12b" face mode-line-buffer-identification-face)))
+                      canonicalized
+                      'face (if (< ,max-width (length text))
+                                '(mode-line-buffer-identification-face
+                                  mode-line-shrinked)
+                              'mode-line-buffer-identification-face))))
+                  (:propertize ,format
+                               face mode-line-buffer-identification-face))))
 
 (defun mode-line-buffer-identification-toggle-shrinked ()
   "toggle mode-line-buffer-identification shrink status"
