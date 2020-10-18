@@ -46,7 +46,22 @@
                                               (+ left-margin left-fringe)))
                         "-")))
 
-(setq-default mode-line-mule-info '("%Z"))
+(defvar mode-line-mule-info-showing-input-method nil
+  "State of `mode-line-mule-info' replesentation.
+When non-nil, `mode-line-mule-info' shows input method.")
+(make-variable-buffer-local 'mode-line-mule-info-showing-input-method)
+
+(setq-default mode-line-mule-info
+              '((mode-line-mule-info-showing-input-method
+                 (current-input-method current-input-method-title))
+                "%Z"))
+
+(defun mode-line-mule-info-toggle-showing-input-method ()
+  "Toggle `mode-line-mule-info' showing input method state."
+  (interactive)
+  (if mode-line-mule-info-showing-input-method
+      (setq mode-line-mule-info-showing-input-method nil)
+    (setq mode-line-mule-info-showing-input-method t)))
 
 (setq mode-line-client '(:eval (if (frame-parameter nil 'client)
                                    (let ((l (length server-clients)))
@@ -246,6 +261,8 @@
 (global-set-key (kbd "C-c l m") #'mode-line-modes-toggle-shrinked)
 (global-set-key (kbd "C-c l b")
                 #'mode-line-buffer-identification-toggle-shrinked)
+(global-set-key (kbd "C-c l i")
+                #'mode-line-mule-info-toggle-showing-input-method)
 (global-set-key (kbd "C-c l f") #'show-which-function)
 
 
