@@ -84,10 +84,7 @@
       (when (fmmm-minor-mode-p s)
         (setq shifter-minor-mode-hist (delq s shifter-minor-mode-hist))
         (add-to-list 'shifter-minor-mode-hist s))
-      (let ((a (if (and (boundp s) (symbol-value s))
-                   -1
-                 1)))
-        (funcall s a)))))
+      (funcall s 'toggle))))
 
 ;;;###autoload
 (defun shifter-turn-on-minor-mode (force)

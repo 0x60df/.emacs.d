@@ -127,7 +127,7 @@
                       (and (not (autoloadp (funcall inspect symbol)))
                            (not (fmmm-minor-mode-p symbol))))
                     fmmm-complementary-minor-mode-list))))
-    (let ((l minor-mode-list))
+    (let ((l (copy-tree minor-mode-list)))
       (mapc (lambda (s) (setq l (delq s l))) fmmm-complementary-minor-mode-list)
       (mapc (lambda (s) (setq l (delq s l))) fmmm-minor-mode-on-autoload-list)
       (append valid-complemntary-list fmmm-minor-mode-on-autoload-list l))))
