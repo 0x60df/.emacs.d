@@ -86,14 +86,16 @@ NOERROR and NOMESSAGE suppress errors and messages.
 If UNIT is newer than loading unit, throw compile-unit,
 then loading unit will be compiled and loaded again."
   `(progn
-     (when (not (assq ',unit init-units))
-       (if ,filename
-           (eval '(init-by ,filename ,noerror ,nomessage))
-         (eval '(init ,unit ,noerror ,nomessage)))
-       (if (not (assq ',unit init-units))
-           (signal 'init-error
-                   (list (format-message
-                          "Premised unit `%s' has not been resolved" ',unit)))))
+     (eval-and-compile
+       (when (not (assq ',unit init-units))
+         (if ,filename
+             (eval '(init-by ,filename ,noerror ,nomessage))
+           (eval '(init ,unit ,noerror ,nomessage)))
+         (if (not (assq ',unit init-units))
+             (signal 'init-error
+                     (list (format-message
+                            "Premised unit `%s' has not been resolved"
+                            ',unit))))))
      (if (and load-file-name (string-match ".elc$" load-file-name))
          (let ((unit-file-name (cdr (assq ',unit init-units))))
            (if (and unit-file-name
