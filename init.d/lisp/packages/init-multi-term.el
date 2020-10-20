@@ -6,6 +6,7 @@
 (premise inst-multi-term)
 
 (global-set-key (kbd "H-t") 'multi-term)
+(global-set-key (kbd "C-l t") 'multi-term)
 (eval-after-load 'multi-term
   '(progn
      (custom-set-variables
