@@ -3,8 +3,10 @@
 
 
 (premise init)
+(premise whitespace)
 
-(add-hook 'term-mode-hook (lambda () (setq show-trailing-whitespace nil)))
+(with-eval-after-load 'term
+  (add-hook 'term-mode-hook (lambda () (setq show-trailing-whitespace nil))))
 
 
 (resolve init-term)
