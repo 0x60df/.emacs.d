@@ -283,6 +283,7 @@
  '(helm-grep-file ((t :inherit font-lock-keyword-face)))
  '(helm-grep-finish ((t :inherit compilation-mode-line-exit)))
  '(helm-grep-lineno ((t :inherit font-lock-variable-name-face)))
+ '(helm-locate-finish ((t :inherit success)))
  '(helm-match ((t :foreground "#ffd700")))
  '(helm-moccur-buffer ((t :inherit font-lock-builtin-face)))
  '(helm-mode-prefix ((t :inherit isearch))))
