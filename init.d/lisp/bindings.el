@@ -84,7 +84,8 @@
   (global-set-key (kbd "C-M-.") #'other-frame-on-selected-client-reverse)
   (global-set-key (kbd "s-.") #'other-client-frame)
   (global-set-key (kbd "s-M-.") #'other-client-frame-reverse)
-  (global-set-key (kbd "C-s-+") #'toggle-all-client-frames-opacity))
+  (global-set-key (kbd "C-c .") #'pick-frame-on-selected-client)
+  (global-set-key (kbd "s-c .") #'pick-typical-frame-of-each-client))
 
 (global-set-key (kbd "C-c l m") #'mode-line-modes-toggle-shrinked)
 (global-set-key (kbd "C-c l b")
