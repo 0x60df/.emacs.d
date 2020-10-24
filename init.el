@@ -287,6 +287,7 @@ UNIT is a literal symbol."
 (init-package ox-gfm)
 (init-package ox-qmd)
 (init-package smartrep)
+(init-package page-break-lines)
 (init-package tomorrow-theme)
 (init-package color-theme-zenburn)
 (init-package color-theme-solarized)
