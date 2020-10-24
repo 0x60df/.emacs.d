@@ -36,6 +36,7 @@
   "Face for the potion of mode-line which is shirinked."
   :group 'user)
 
+
 
 ;;; format
 
@@ -244,6 +245,7 @@ When non-nil, `'mode-line-modes is shrinked.")
                              (funcall duplicate-percent string (+ end 1)))))))))
        (funcall duplicate-percent shrinked 0)))))
 
+
 
 ;;; settings
 
@@ -256,6 +258,7 @@ When non-nil, `'mode-line-modes is shrinked.")
  '(eol-mnemonic-mac "!")
  '(eol-mnemonic-unix ":"))
 
+
 
 ;;; utilities
 

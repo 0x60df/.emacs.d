@@ -29,6 +29,7 @@ newly created terminal."
 
 (advice-add 'make-frame :around #'run-after-make-terminal-functions)
 
+
 
 ;;; utilities
 

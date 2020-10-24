@@ -37,6 +37,8 @@
    (define-key local-function-key-map (kbd "<next>")
      #'event-apply-super-modifier)))
 
+
+
 (global-set-key (kbd "C-c h") #'help-command)
 (global-set-key (kbd "C->") #'next-error)
 (global-set-key (kbd "C-<") #'previous-error)
@@ -53,6 +55,8 @@
 (global-set-key (kbd "M-s l") #'lgrep)
 (global-set-key (kbd "M-s r") #'rgrep)
 (global-set-key (kbd "M-s f") #'grep-find)
+
+
 
 (global-set-key (kbd "M-+") #'duplicate-and-comment)
 (global-set-key (kbd "H-y") #'yank-pop-reverse)
@@ -95,6 +99,8 @@
                 #'mode-line-mule-info-toggle-showing-input-method)
 (global-set-key (kbd "C-c l f") #'show-which-function)
 (global-set-key (kbd "C-c i f") #'show-which-function)
+
+
 
 (global-unset-key (kbd "C-l"))
 (global-set-key (kbd "C-l C-l") #'recenter-top-bottom)

@@ -47,6 +47,7 @@ If current frame is not a client, return nil."
                    (lambda (f) (eq proc (frame-parameter f 'client)))
                    (frame-list))))))
 
+
 
 ;;; utilities
 
