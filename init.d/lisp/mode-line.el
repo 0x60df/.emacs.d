@@ -47,20 +47,20 @@
                         '(space :align-to (+ left-margin left-fringe)))
           "-")))
 
-(defvar mode-line-mule-info-showing-input-method nil
+(defvar mode-line-mule-info-showing-input-method-flag nil
   "State of `mode-line-mule-info' replesentation.
 When non-nil, `mode-line-mule-info' shows input method.")
-(make-variable-buffer-local 'mode-line-mule-info-showing-input-method)
+(make-variable-buffer-local 'mode-line-mule-info-showing-input-method-flag)
 
 (defun mode-line-mule-info-toggle-showing-input-method ()
   "Toggle `mode-line-mule-info' showing input method state."
   (interactive)
-  (if mode-line-mule-info-showing-input-method
-      (setq mode-line-mule-info-showing-input-method nil)
-    (setq mode-line-mule-info-showing-input-method t)))
+  (if mode-line-mule-info-showing-input-method-flag
+      (setq mode-line-mule-info-showing-input-method-flag nil)
+    (setq mode-line-mule-info-showing-input-method-flag t)))
 
 (setq-default mode-line-mule-info
-              '((mode-line-mule-info-showing-input-method
+              '((mode-line-mule-info-showing-input-method-flag
                  (current-input-method current-input-method-title))
                 "%Z"))
 
@@ -83,22 +83,22 @@ When non-nil, `mode-line-mule-info' shows input method.")
            (if (< l 10) (number-to-string l) "#")))
         " "))
 
-(defvar mode-line-buffer-identification-shrinked nil
+(defvar mode-line-buffer-identification-shrinked-flag nil
   "State of `mode-line-buffer-identification' replesentation.
 When non-nil, `mode-line-buffer-identification' is shrinked.")
-(make-variable-buffer-local 'mode-line-buffer-identification-shrinked)
+(make-variable-buffer-local 'mode-line-buffer-identification-shrinked-flag)
 
 (defun mode-line-buffer-identification-toggle-shrinked ()
   "Toggle `mode-line-buffer-identification' shrinking state."
   (interactive)
-  (if mode-line-buffer-identification-shrinked
-      (setq mode-line-buffer-identification-shrinked nil)
-    (setq mode-line-buffer-identification-shrinked t)))
+  (if mode-line-buffer-identification-shrinked-flag
+      (setq mode-line-buffer-identification-shrinked-flag nil)
+    (setq mode-line-buffer-identification-shrinked-flag t)))
 
 (setq-default mode-line-buffer-identification
               (let* ((max-width 12)
                      (format (format "%%%db" max-width)))
-                `(mode-line-buffer-identification-shrinked
+                `(mode-line-buffer-identification-shrinked-flag
                   (:eval
                    (let* ((text (format-mode-line ,format))
                           (canonicalized
@@ -140,24 +140,24 @@ When non-nil, `mode-line-buffer-identification' is shrinked.")
                     (substring-no-properties vc-mode)))
             face mode-line-vc-mode))))
 
-(defvar mode-line-modes-shrinked nil
+(defvar mode-line-modes-shrinked-flag nil
   "State of `mode-line-modes' replesentation.
 When non-nil, `'mode-line-modes is shrinked.")
-(make-variable-buffer-local 'mode-line-modes-shrinked)
+(make-variable-buffer-local 'mode-line-modes-shrinked-flag)
 
 (defun mode-line-modes-toggle-shrinked ()
   "Toggle `mode-line-modes' shrinking state"
   (interactive)
-  (if mode-line-modes-shrinked
-      (setq mode-line-modes-shrinked nil)
-    (setq mode-line-modes-shrinked t)))
+  (if mode-line-modes-shrinked-flag
+      (setq mode-line-modes-shrinked-flag nil)
+    (setq mode-line-modes-shrinked-flag t)))
 
 (setq mode-line-modes
       (let ((max-width 12))
         `("%["
           (:propertize mode-name face mode-line-mode-name)
           mode-line-process
-          (mode-line-modes-shrinked
+          (mode-line-modes-shrinked-flag
            (:eval
             (let* ((text (format-mode-line minor-mode-alist))
                    (canonicalized
