@@ -362,49 +362,385 @@ side of the monitor. Otherwise, margin is regarded as 0."
                  (throw 'quit t))
                 (t (throw 'quit t))))))))
 
-(defun raise-other-frame (arg)
-  "Raise other frame which is selected interactively.
-ARG-th frame is initially focused."
-  (interactive "p")
-  (let ((frame
-         (letrec ((nth-frame
-                   (lambda (n frame)
-                     (cond ((zerop n) frame)
-                           ((< 0 n)
-                            (funcall nth-frame (- n 1) (next-frame frame)))
-                           ((< n 0)
-                            (funcall nth-frame (+ n 1) (previous-frame frame)))
-                           (t frame)))))
-           (funcall nth-frame arg (selected-frame))))
-        (frame-alpha-alist
-         (mapcar (lambda (frame) (cons frame (frame-parameter frame 'alpha)))
-                 (frame-list))))
-    (unwind-protect
-        (progn
-          (mapc (lambda (frame)
-                  (set-frame-parameter frame 'alpha 0))
-                (remove frame (frame-list)))
-          (catch 'quit
-            (while t
-              (let* ((key-sequence (read-key-sequence-vector "Selected"))
-                     (key-description (key-description key-sequence)))
-                (cond ((equal key-description "n")
-                       (set-frame-parameter frame 'alpha 0)
-                       (setq frame (next-frame frame))
-                       (set-frame-parameter frame 'alpha 100))
-                      ((equal key-description "p")
-                       (set-frame-parameter frame 'alpha 0)
-                       (setq frame (previous-frame frame))
-                       (set-frame-parameter frame 'alpha 100))
-                      ((or (equal key-description "RET")
-                           (equal key-description "C-j"))
-                       (raise-frame frame)
-                       (throw 'quit t))
-                      (t (throw 'quit t)))))))
-      (mapc (lambda (frame-alpha)
-              (set-frame-parameter
-               (car frame-alpha) 'alpha (or (cdr frame-alpha) 100)))
-            frame-alpha-alist))))
+(defun pick-frame (&optional arg)
+  "Choose frame interactively and select it directly.
+If prefix argument is specified, this function does not
+select frame but just raise it."
+  (interactive "P")
+  (letrec ((frame (selected-frame))
+           (frame-alpha-alist
+            (mapcar (lambda (frame) (cons frame (frame-parameter frame 'alpha)))
+                    (frame-list)))
+           (most (lambda (p m l)
+                   (cond ((null l) m)
+                         ((funcall p (car l) m)
+                          (funcall most p (car l) (cdr l)))
+                         (t (funcall most p m (cdr l)))))))
+    (when (< 1 (length (frame-list)))
+      (unwind-protect
+          (progn
+            (mapc (lambda (frame)
+                    (set-frame-parameter frame 'alpha 0))
+                  (remove frame (frame-list)))
+            (catch 'quit
+              (while t
+                (let* ((key-sequence (read-key-sequence-vector ""))
+                       (key-description (key-description key-sequence))
+                       (key-binding (key-binding key-sequence)))
+                  (cond ((equal key-description ".")
+                         (set-frame-parameter frame 'alpha 0)
+                         (setq frame (next-frame frame))
+                         (set-frame-parameter frame 'alpha 100))
+                        ((or (equal key-description "M-.")
+                             (equal key-description ","))
+                         (set-frame-parameter frame 'alpha 0)
+                         (setq frame (previous-frame frame))
+                         (set-frame-parameter frame 'alpha 100))
+                        ((equal key-description "f")
+                         (let ((right-frame-list
+                                (seq-filter
+                                 (lambda (f)
+                                   (let ((test-left
+                                          (cadr (assq
+                                                 'outer-position
+                                                 (frame-geometry f))))
+                                         (test-top
+                                          (cddr (assq
+                                                 'outer-position
+                                                 (frame-geometry f))))
+                                         (base-left
+                                          (cadr (assq
+                                                 'outer-position
+                                                 (frame-geometry frame))))
+                                         (base-top
+                                          (cddr (assq
+                                                 'outer-position
+                                                 (frame-geometry frame)))))
+                                     (or (< base-left test-left)
+                                         (and (= base-left test-left)
+                                              (< base-top test-top)))))
+                                 (frame-list))))
+                           (unless (null right-frame-list)
+                             (set-frame-parameter frame 'alpha 0)
+                             (setq frame
+                                   (funcall
+                                    most
+                                    (lambda (try now)
+                                      (let ((try-left
+                                             (cadr (assq
+                                                    'outer-position
+                                                    (frame-geometry try))))
+                                            (try-top
+                                             (cddr (assq
+                                                    'outer-position
+                                                    (frame-geometry try))))
+                                            (now-left
+                                             (cadr (assq
+                                                    'outer-position
+                                                    (frame-geometry now))))
+                                            (now-top
+                                             (cddr (assq
+                                                    'outer-position
+                                                    (frame-geometry now)))))
+                                        (or (< try-left now-left)
+                                            (and (= try-left now-left)
+                                                 (< try-top now-top)))))
+                                    (car right-frame-list)
+                                    right-frame-list))
+                             (set-frame-parameter frame 'alpha 100))))
+                        ((equal key-description "b")
+                         (let ((left-frame-list
+                                (seq-filter
+                                 (lambda (f)
+                                   (let ((test-left
+                                          (cadr (assq
+                                                 'outer-position
+                                                 (frame-geometry f))))
+                                         (test-top
+                                          (cddr (assq
+                                                 'outer-position
+                                                 (frame-geometry f))))
+                                         (base-left
+                                          (cadr (assq
+                                                 'outer-position
+                                                 (frame-geometry frame))))
+                                         (base-top
+                                          (cddr (assq
+                                                 'outer-position
+                                                 (frame-geometry frame)))))
+                                     (or (< test-left base-left)
+                                         (and (= test-left base-left)
+                                              (< test-top base-top)))))
+                                 (frame-list))))
+                           (unless (null left-frame-list)
+                             (set-frame-parameter frame 'alpha 0)
+                             (setq frame
+                                   (funcall
+                                    most
+                                    (lambda (try now)
+                                      (let ((try-left
+                                             (cadr (assq
+                                                    'outer-position
+                                                    (frame-geometry try))))
+                                            (try-top
+                                             (cddr (assq
+                                                    'outer-position
+                                                    (frame-geometry try))))
+                                            (now-left
+                                             (cadr (assq
+                                                    'outer-position
+                                                    (frame-geometry now))))
+                                            (now-top
+                                             (cddr (assq
+                                                    'outer-position
+                                                    (frame-geometry now)))))
+                                        (or (< now-left try-left)
+                                            (and (= now-left try-left)
+                                                 (< now-top try-top)))))
+                                    (car left-frame-list)
+                                    left-frame-list))
+                             (set-frame-parameter frame 'alpha 100))))
+                        ((equal key-description "n")
+                         (let ((below-frame-list
+                                (seq-filter
+                                 (lambda (f)
+                                   (let ((test-left
+                                          (cadr (assq
+                                                 'outer-position
+                                                 (frame-geometry f))))
+                                         (test-top
+                                          (cddr (assq
+                                                 'outer-position
+                                                 (frame-geometry f))))
+                                         (base-left
+                                          (cadr (assq
+                                                 'outer-position
+                                                 (frame-geometry frame))))
+                                         (base-top
+                                          (cddr (assq
+                                                 'outer-position
+                                                 (frame-geometry frame)))))
+                                     (or (< base-top test-top)
+                                         (and (= base-top test-top)
+                                              (< base-left test-left)))))
+                                 (frame-list))))
+                           (unless (null below-frame-list)
+                             (set-frame-parameter frame 'alpha 0)
+                             (setq frame
+                                   (funcall
+                                    most
+                                    (lambda (try now)
+                                      (let ((try-left
+                                             (cadr (assq
+                                                    'outer-position
+                                                    (frame-geometry try))))
+                                            (try-top
+                                             (cddr (assq
+                                                    'outer-position
+                                                    (frame-geometry try))))
+                                            (now-left
+                                             (cadr (assq
+                                                    'outer-position
+                                                    (frame-geometry now))))
+                                            (now-top
+                                             (cddr (assq
+                                                    'outer-position
+                                                    (frame-geometry now)))))
+                                        (or (< try-top now-top)
+                                            (and (= try-top now-top)
+                                                 (< try-left now-left)))))
+                                    (car below-frame-list)
+                                    below-frame-list))
+                             (set-frame-parameter frame 'alpha 100))))
+                        ((equal key-description "p")
+                         (let ((above-frame-list
+                                (seq-filter
+                                 (lambda (f)
+                                   (let ((test-left
+                                          (cadr (assq
+                                                 'outer-position
+                                                 (frame-geometry f))))
+                                         (test-top
+                                          (cddr (assq
+                                                 'outer-position
+                                                 (frame-geometry f))))
+                                         (base-left
+                                          (cadr (assq
+                                                 'outer-position
+                                                 (frame-geometry frame))))
+                                         (base-top
+                                          (cddr (assq
+                                                 'outer-position
+                                                 (frame-geometry frame)))))
+                                     (or (< test-top base-top)
+                                         (and (= test-top base-top)
+                                              (< test-left base-left)))))
+                                 (frame-list))))
+                           (unless (null above-frame-list)
+                             (set-frame-parameter frame 'alpha 0)
+                             (setq frame
+                                   (funcall
+                                    most
+                                    (lambda (try now)
+                                      (let ((try-left
+                                             (cadr (assq
+                                                    'outer-position
+                                                    (frame-geometry try))))
+                                            (try-top
+                                             (cddr (assq
+                                                    'outer-position
+                                                    (frame-geometry try))))
+                                            (now-left
+                                             (cadr (assq
+                                                    'outer-position
+                                                    (frame-geometry now))))
+                                            (now-top
+                                             (cddr (assq
+                                                    'outer-position
+                                                    (frame-geometry now)))))
+                                        (or (< now-top try-top)
+                                            (and (= now-top try-top)
+                                                 (< now-left try-left)))))
+                                    (car above-frame-list)
+                                    above-frame-list))
+                             (set-frame-parameter frame 'alpha 100))))
+                        ((equal key-description "a")
+                         (let ((left-most-frame
+                                (funcall
+                                 most
+                                 (lambda (try now)
+                                   (let ((try-left
+                                          (cadr (assq
+                                                 'outer-position
+                                                 (frame-geometry try))))
+                                         (try-top
+                                          (cddr (assq
+                                                 'outer-position
+                                                 (frame-geometry try))))
+                                         (now-left
+                                          (cadr (assq
+                                                 'outer-position
+                                                 (frame-geometry now))))
+                                         (now-top
+                                          (cddr (assq
+                                                 'outer-position
+                                                 (frame-geometry now)))))
+                                     (or (< try-left now-left)
+                                         (and (= try-left now-left)
+                                              (< try-top now-top)))))
+                                 (car (frame-list))
+                                 (frame-list))))
+                           (unless (eq left-most-frame frame)
+                             (set-frame-parameter frame 'alpha 0)
+                             (setq frame left-most-frame)
+                             (set-frame-parameter frame 'alpha 100))))
+                        ((equal key-description "e")
+                         (let ((right-most-frame
+                                (funcall
+                                 most
+                                 (lambda (try now)
+                                   (let ((try-left
+                                          (cadr (assq
+                                                 'outer-position
+                                                 (frame-geometry try))))
+                                         (try-top
+                                          (cddr (assq
+                                                 'outer-position
+                                                 (frame-geometry try))))
+                                         (now-left
+                                          (cadr (assq
+                                                 'outer-position
+                                                 (frame-geometry now))))
+                                         (now-top
+                                          (cddr (assq
+                                                 'outer-position
+                                                 (frame-geometry now)))))
+                                     (or (< now-left try-left)
+                                         (and (= now-left try-left)
+                                              (< now-top try-top)))))
+                                 (car (frame-list))
+                                 (frame-list))))
+                           (unless (eq right-most-frame frame)
+                             (set-frame-parameter frame 'alpha 0)
+                             (setq frame right-most-frame)
+                             (set-frame-parameter frame 'alpha 100))))
+                        ((equal key-description "<")
+                         (let ((top-most-frame
+                                (funcall
+                                 most
+                                 (lambda (try now)
+                                   (let ((try-left
+                                          (cadr (assq
+                                                 'outer-position
+                                                 (frame-geometry try))))
+                                         (try-top
+                                          (cddr (assq
+                                                 'outer-position
+                                                 (frame-geometry try))))
+                                         (now-left
+                                          (cadr (assq
+                                                 'outer-position
+                                                 (frame-geometry now))))
+                                         (now-top
+                                          (cddr (assq
+                                                 'outer-position
+                                                 (frame-geometry now)))))
+                                     (or (< try-top now-top)
+                                         (and (= try-top now-top)
+                                              (< try-left now-left)))))
+                                 (car (frame-list))
+                                 (frame-list))))
+                           (unless (eq top-most-frame frame)
+                             (set-frame-parameter frame 'alpha 0)
+                             (setq frame top-most-frame)
+                             (set-frame-parameter frame 'alpha 100))))
+                        ((equal key-description ">")
+                         (let ((bottom-most-frame
+                                (funcall
+                                 most
+                                 (lambda (try now)
+                                   (let ((try-left
+                                          (cadr (assq
+                                                 'outer-position
+                                                 (frame-geometry try))))
+                                         (try-top
+                                          (cddr (assq
+                                                 'outer-position
+                                                 (frame-geometry try))))
+                                         (now-left
+                                          (cadr (assq
+                                                 'outer-position
+                                                 (frame-geometry now))))
+                                         (now-top
+                                          (cddr (assq
+                                                 'outer-position
+                                                 (frame-geometry now)))))
+                                     (or (< now-top try-top)
+                                         (and (= now-top try-top)
+                                              (< now-left try-left)))))
+                                 (car (frame-list))
+                                 (frame-list))))
+                           (unless (eq bottom-most-frame frame)
+                             (set-frame-parameter frame 'alpha 0)
+                             (setq frame bottom-most-frame)
+                             (set-frame-parameter frame 'alpha 100))))
+                        ((or (equal key-description "RET")
+                             (equal key-description "C-j"))
+                         (if arg
+                             (raise-frame frame)
+                           (select-frame-set-input-focus frame))
+                         (throw 'quit frame))
+                        ((equal key-description "q")
+                         (throw 'quit nil))
+                        ((and (not (eq key-binding 'self-insert-command))
+                              (commandp key-binding))
+                         (call-interactively key-binding)
+                         (throw 'quit nil))
+                        (t (throw 'quit nil)))))))
+        (mapc (lambda (frame-alpha)
+                (set-frame-parameter
+                 (car frame-alpha) 'alpha (or (cdr frame-alpha) 100)))
+              frame-alpha-alist)))))
 
 
 (resolve frame)

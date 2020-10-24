@@ -75,7 +75,7 @@
 (global-set-key (kbd "C-.") #'other-frame)
 (global-set-key (kbd "C-M-.") #'other-frame-reverse)
 (global-set-key (kbd "C-c ;") #'manipulate-frame)
-(global-set-key (kbd "C-c .") #'raise-other-frame)
+(global-set-key (kbd "C-c .") #'pick-frame)
 (global-set-key (kbd "s-;") #'toggle-frame-opacity)
 (global-set-key (kbd "s-+") #'toggle-all-frames-opacity)
 
