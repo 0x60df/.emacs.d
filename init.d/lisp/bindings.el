@@ -69,6 +69,7 @@
 (global-set-key (kbd "C-,") #'other-window)
 (global-set-key (kbd "C-M-,") #'other-window-reverse)
 (global-set-key (kbd "C-c :") #'manipulate-window)
+(global-set-key (kbd "C-c ,") #'view-other-window)
 
 (global-set-key (kbd "C-;") #'make-frame)
 (global-set-key (kbd "C-+") #'delete-frame)
