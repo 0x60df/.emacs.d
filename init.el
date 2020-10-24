@@ -181,6 +181,7 @@ UNIT is a literal symbol."
 (init frame)
 (init client)
 (init vc)
+(init register)
 (init mode-line)
 (init theme)
 (init bindings)
