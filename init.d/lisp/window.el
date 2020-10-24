@@ -10,6 +10,20 @@
   (interactive "p")
   (other-window (- arg)))
 
+(defun split-window-above ()
+  "Split window below and select it."
+  (interactive)
+  (let ((original-window (selected-window)))
+    (select-window (call-interactively #'split-window-below))
+    original-window))
+
+(defun split-window-left ()
+  "Split window right and select it."
+  (interactive)
+  (let ((original-window (selected-window)))
+    (select-window (call-interactively #'split-window-right))
+    original-window))
+
 (defun split-window-below-or-right (&optional arg)
   "Split window below or right according to a prefix argument."
   (interactive "P")

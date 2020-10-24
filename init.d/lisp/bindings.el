@@ -62,7 +62,7 @@
 (global-set-key (kbd "H-b") #'search-backward-char-in-line)
 (global-set-key (kbd "C-c r y") #'risky-yes-or-no-p-mode)
 
-(global-set-key (kbd "C-:") #'split-window-below)
+(global-set-key (kbd "C-:") #'split-window-above)
 (global-set-key (kbd "C-M-:") #'split-window-right)
 (global-set-key (kbd "C-*") #'delete-other-windows)
 (global-set-key (kbd "C-M-*") #'delete-window)
