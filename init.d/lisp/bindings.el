@@ -23,19 +23,17 @@
 (global-unset-key (kbd "<end>"))
 (global-unset-key (kbd "<prior>"))
 (global-unset-key (kbd "<next>"))
-(funcall
- (if (daemonp)
-     (lambda (body) (add-hook 'after-make-terminal-functions body))
-   #'funcall)
- (lambda (&optional terminal)
-   (define-key local-function-key-map (kbd "<home>")
-     #'event-apply-alt-modifier)
-   (define-key local-function-key-map (kbd "<end>")
-     #'event-apply-alt-modifier)
-   (define-key local-function-key-map (kbd "<prior>")
-     #'event-apply-hyper-modifier)
-   (define-key local-function-key-map (kbd "<next>")
-     #'event-apply-super-modifier)))
+(let ((form (lambda (&optional terminal)
+              (define-key local-function-key-map (kbd "<home>")
+                #'event-apply-alt-modifier)
+              (define-key local-function-key-map (kbd "<end>")
+                #'event-apply-alt-modifier)
+              (define-key local-function-key-map (kbd "<prior>")
+                #'event-apply-hyper-modifier)
+              (define-key local-function-key-map (kbd "<next>")
+                #'event-apply-super-modifier))))
+  (funcall form)
+  (add-hook 'after-make-terminal-functions form))
 
 
 
