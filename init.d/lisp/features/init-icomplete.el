@@ -2,25 +2,23 @@
 ;;;; init-icomplete.el
 
 
-
-;;; base
-
 (premise init)
+(premise custom)
 
 (eval-when-compile (require 'icomplete))
-(icomplete-mode -1)
-(eval-after-load 'icomplete
-  '(custom-set-variables '(icomplete-prospects-height 1)))
 
+(declare-function icomplete-forward-completions "icomplete")
+(declare-function icomplete-backward-completions "icomplete")
 
-;;; bindings
+(custom-set-variables
+ '(icomplete-prospects-height 1))
 
-(eval-after-load 'icomplete
-  '(progn
-     (define-key icomplete-minibuffer-map " "
-       'icomplete-forward-completions)
-     (define-key icomplete-minibuffer-map (kbd "S-SPC")
-       'icomplete-backward-completions)))
+(with-eval-after-load 'icomplete
+  (icomplete-mode 0)
+  (define-key icomplete-minibuffer-map (kbd "SPC")
+    #'icomplete-forward-completions)
+  (define-key icomplete-minibuffer-map (kbd "S-SPC")
+    #'icomplete-backward-completions))
 
 
 (resolve init-icomplete)
