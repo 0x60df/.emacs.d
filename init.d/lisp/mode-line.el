@@ -249,9 +249,9 @@ When non-nil, `'mode-line-modes is shrinked.")
 
 ;;; settings
 
-(which-function-mode 1)
-(column-number-mode t)
-(line-number-mode t)
+(which-function-mode)
+(column-number-mode)
+(line-number-mode)
 
 (custom-set-variables
  '(eol-mnemonic-dos "+")

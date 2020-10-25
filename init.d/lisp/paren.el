@@ -5,7 +5,7 @@
 (premise init)
 (premise custom)
 
-(show-paren-mode 1)
+(show-paren-mode)
 (custom-set-variables
  '(show-paren-style 'mixed))
 

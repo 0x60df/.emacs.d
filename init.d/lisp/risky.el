@@ -51,7 +51,7 @@ realise it as `insert' yes and `exit-minibuffer'."
       (advice-add 'yes-or-no-p :around #'with-risky-yes-or-no-p-transient-mode)
     (advice-remove 'yes-or-no-p #'with-risky-yes-or-no-p-transient-mode)))
 
-(risky-yes-or-no-p-mode 1)
+(risky-yes-or-no-p-mode)
 
 
 (resolve risky)
