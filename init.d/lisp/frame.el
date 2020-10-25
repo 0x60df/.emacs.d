@@ -6,6 +6,26 @@
 (premise custom)
 
 
+;;; redirect event
+
+(defcustom keeping-time-for-frame-focus-redirection-on-make-frame 0.3
+  "Keeping time for the redirection for the moment of make frame."
+  :type 'float
+  :group 'user)
+
+(defun set-frame-focus-redirection-on-make-frame (frame)
+  "Redirect frame focus for the moment of make frame.
+This function work with `after-make-frame-functions'.
+Redirection is canceled after "
+  (let ((base (selected-frame)))
+    (redirect-frame-focus base frame)
+    (run-with-timer keeping-time-for-frame-focus-redirection-on-make-frame
+                    nil
+                    #'redirect-frame-focus base nil)))
+
+(add-hook 'after-make-frame-functions
+          #'set-frame-focus-redirection-on-make-frame)
+
 ;;; terminal support
 
 (defvar after-make-terminal-functions nil
