@@ -8,6 +8,8 @@
 (global-set-key (kbd "M-g M-j") 'ace-jump-mode)
 (global-set-key (kbd "H-g") 'ace-jump-mode)
 (mapc (lambda (c)
+        (eval-after-load 'iso-transl
+          `(define-key key-translation-map (vector (logior ,c ?\A-\^@)) nil))
         (global-set-key
          (kbd (concat "A-" (char-to-string c)))
          `(lambda ()
