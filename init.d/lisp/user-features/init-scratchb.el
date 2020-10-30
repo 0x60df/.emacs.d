@@ -3,11 +3,12 @@
 
 
 (premise init)
+(premise user-feature)
 
 (require 'scratchb)
 
-(scratchb-auto-revert-mode 1)
-(scratchb-auto-snapshot-mode 1)
+(scratchb-auto-revert-mode)
+(scratchb-auto-snapshot-mode)
 
 (add-hook 'emacs-startup-hook #'scratchb-mode-buffer-sticky)
 (add-hook 'scratchb-after-revert-hook #'scratchb-mode-buffer-sticky)
