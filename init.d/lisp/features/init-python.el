@@ -5,9 +5,9 @@
 (premise init)
 
 (eval-when-compile (require 'python))
-(eval-after-load 'python
-  '(progn
-     (define-key python-mode-map "\C-ccr" 'run-python)))
+
+(with-eval-after-load 'python
+  (define-key python-mode-map "\C-ccr" #'run-python))
 
 
 (resolve init-python)
