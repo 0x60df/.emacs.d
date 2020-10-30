@@ -343,7 +343,9 @@
   `(magit-branch-remote ((t :foreground ,blue)))
   `(magit-hash ((t :foreground ,comment)))
   `(magit-log-author ((t :foreground ,orange)))
-  `(magit-section-heading ((t :foreground ,yellow :weight bold)))))
+  `(magit-section-heading ((t :foreground ,yellow :weight bold)))
+  `(magit-process-ng ((t :foreground ,red :inherit magit-section-heading)))
+  `(magit-process-ok ((t :foreground ,green :inherit magit-section-heading)))))
 
 
 ;;; evil
