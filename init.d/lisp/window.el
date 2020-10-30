@@ -114,7 +114,7 @@ window to use."
         (original-window (selected-window)))
     (unwind-protect
         (let* ((frame (if arg
-                          (funcall-interactively #'pick-frame t)
+                          (pick-frame 'raise)
                         original-frame))
                (window (if arg
                            (let* ((window-list

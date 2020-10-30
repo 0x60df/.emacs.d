@@ -385,11 +385,15 @@ side of the monitor. Otherwise, margin is regarded as 0."
                  (throw 'quit t))
                 (t (throw 'quit t))))))))
 
-(defun pick-frame (&optional arg)
-  "Choose frame interactively and select it directly.
-If prefix argument is specified, this function does not
-select frame but just raise it."
-  (interactive "P")
+(defun pick-frame (&optional post-process)
+  "Choose frame interactively and return it.
+POST-PROCESS specifies how to deal with chosen frame.
+`focus' or 1: `select-frame-set-input-focus'.
+`raise' or 4: `raise-frame'.
+Otherwise: do nothing.
+Thus, interactive call without prefix arguments focus frame,
+and raise frame with prefix arguments."
+  (interactive "p")
   (letrec ((frame (selected-frame))
            (frame-alpha-alist
             (mapcar (lambda (frame) (cons frame (frame-parameter frame 'alpha)))
@@ -749,9 +753,12 @@ select frame but just raise it."
                              (set-frame-parameter frame 'alpha 100))))
                         ((or (equal key-description "RET")
                              (equal key-description "C-j"))
-                         (if arg
-                             (raise-frame frame)
-                           (select-frame-set-input-focus frame))
+                         (cond ((or (eq post-process 'focus)
+                                    (eql post-process 1))
+                                (select-frame-set-input-focus frame))
+                               ((or (eq post-process 'raise)
+                                    (eql post-process 4))
+                                (raise-frame frame)))
                          (throw 'quit frame))
                         ((equal key-description "q")
                          (throw 'quit nil))
