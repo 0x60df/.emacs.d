@@ -28,7 +28,7 @@
  '(mode-line-which-func-mode ((t :inherit font-lock-function-name-face))))
 
 
-;;; risk
+;;; risky
 (color-theme-tomorrow--with-colors
  'night
  (custom-theme-set-faces
@@ -75,6 +75,13 @@
   `(hi-pink ((t :foreground ,red :inverse-video t)))
   `(hi-red-b ((t :foreground ,red :weight bold)))
   `(hi-yellow ((t :foreground ,yellow :inverse-video t)))))
+
+;;; eww
+
+(custom-theme-set-faces
+ 'tomorrow-night-accessory
+ '(eww-invalid-certificate ((t :inherit error)))
+ '(eww-valid-certificate ((t :inherit success))))
 
 
 ;;; volatile-highlights
