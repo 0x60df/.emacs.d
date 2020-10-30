@@ -43,12 +43,12 @@
     (prin1 `(mapc (lambda (m)
                     (if (symbol-function m)
                         (push m fmmm-major-mode-on-autoload-list)))
-                  ',fmmm-major-mode-on-autoload-list)
+                  ',(reverse fmmm-major-mode-on-autoload-list))
            (current-buffer))
     (prin1 `(mapc (lambda (m)
                     (if (symbol-function m)
                         (push m fmmm-minor-mode-on-autoload-list)))
-                  ',fmmm-minor-mode-on-autoload-list)
+                  ',(reverse fmmm-minor-mode-on-autoload-list))
            (current-buffer))
   (write-file fmmm-cache-file)))
 
@@ -222,19 +222,21 @@ and `fmmm-save-cache' to `kill-meacs-hook'"
         (if (and (null fmmm-major-mode-on-autoload-list)
                  (null fmmm-minor-mode-on-autoload-list))
             (load fmmm-cache-file t t t))
-        (add-hook 'kill-emacs-hook
-                  #'fmmm-update-major-mode-on-autoload-list)
+        (add-hook 'kill-emacs-hook #'fmmm-save-cache)
         (add-hook 'kill-emacs-hook
                   #'fmmm-update-minor-mode-on-autoload-list)
-        (add-hook 'kill-emacs-hook #'fmmm-save-cache))
+        (add-hook 'kill-emacs-hook
+                  #'fmmm-update-major-mode-on-autoload-list))
+    (fmmm-update-major-mode-on-autoload-list)
+    (fmmm-update-minor-mode-on-autoload-list)
     (fmmm-save-cache)
     (setq fmmm-major-mode-on-autoload-list nil
           fmmm-minor-mode-on-autoload-list nil)
-    (remove-hook 'kill-emacs-hook
-                 #'fmmm-update-major-mode-on-autoload-list)
+    (remove-hook 'kill-emacs-hook #'fmmm-save-cache)
     (remove-hook 'kill-emacs-hook
                  #'fmmm-update-minor-mode-on-autoload-list)
-    (remove-hook 'kill-emacs-hook #'fmmm-save-cache)))
+    (remove-hook 'kill-emacs-hook
+                 #'fmmm-update-major-mode-on-autoload-list)))
 
 (provide 'fmmm)
 
