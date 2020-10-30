@@ -3,15 +3,16 @@
 
 
 (premise init)
+(premise custom)
 
-(eval-after-load 'abbrev
-  '(progn
-     (custom-set-variables '(abbrev-file-name
-                             (concat user-emacs-directory "abbrev_defs"))
-                           '(save-abbrevs 'silently))
-     (setcar (cdr (assq 'abbrev-mode minor-mode-alist)) " Ab")))
+(custom-set-variables
+ '(abbrev-file-name (concat user-emacs-directory "abbrev_defs"))
+ '(save-abbrevs 'silently))
 
-(if (file-readable-p abbrev-file-name) (quietly-read-abbrev-file))
+(with-eval-after-load 'abbrev
+  (setcar (cdr (assq 'abbrev-mode minor-mode-alist)) " Ab")
+
+  (if (file-readable-p abbrev-file-name) (quietly-read-abbrev-file)))
 
 
 (resolve init-abbrev)
