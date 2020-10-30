@@ -3,11 +3,11 @@
 
 
 (premise init)
+(premise custom)
 
-(eval-after-load 'dired
-  '(progn
-     (custom-set-variables '(dired-dwim-target t)
-                           '(dired-recursive-copies 'always))))
+(custom-set-variables
+ '(dired-dwim-target t)
+ '(dired-recursive-copies 'always))
 
 
 (resolve init-dired)
