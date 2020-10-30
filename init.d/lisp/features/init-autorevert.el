@@ -3,9 +3,10 @@
 
 
 (premise init)
+(premise custom)
 
-(eval-after-load 'autorevert
-    (custom-set-variables '(auto-revert-mode-text " ARv")))
+(custom-set-variables
+ '(auto-revert-mode-text " ARv"))
 
 
 (resolve init-autorevert)
