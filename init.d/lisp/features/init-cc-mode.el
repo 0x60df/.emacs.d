@@ -2,29 +2,21 @@
 ;;;; init-cc-mode.el
 
 
-
-;;; base
-
 (premise init)
 
 (eval-when-compile (require 'cc-mode))
 
-(add-hook 'c-mode-common-hook
-          (lambda ()
-            (c-set-style "gnu")
-	    (setq c-hungry-delete-key t)))
+(with-eval-after-load 'cc-vars
+  (add-hook 'c-mode-common-hook (lambda ()
+                                  (c-set-style "gnu")
+	                          (setq c-hungry-delete-key t))))
 
+(with-eval-after-load 'cc-mode
+  (define-key c-mode-map "\C-ccc" #'compile)
+  (define-key c-mode-map "\C-ccb" #'gdb)
 
-;;; bindings
-
-(eval-after-load 'cc-mode
-  `(progn
-     (define-key c-mode-map "\C-ccc" 'compile)
-     (define-key c-mode-map "\C-ccb" 'gdb)
-
-     (define-key c++-mode-map "\C-ccc" 'compile)
-     (define-key c++-mode-map "\C-ccb" 'gdb)
-     (define-key c++-mode-map (kbd "C-c :") nil)))
+  (define-key c++-mode-map "\C-ccc" #'compile)
+  (define-key c++-mode-map "\C-ccb" #'gdb))
 
 
 (resolve init-cc-mode)
