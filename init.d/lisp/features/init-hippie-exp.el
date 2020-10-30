@@ -3,8 +3,9 @@
 
 
 (premise init)
+(premise bindings)
 
-(global-set-key (kbd "C-<tab>") 'hippie-expand)
+(overriding-set-key (kbd "C-<tab>") #'hippie-expand)
 
 
 (resolve init-hippie-exp)
