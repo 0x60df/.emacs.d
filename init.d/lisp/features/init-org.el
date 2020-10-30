@@ -3,19 +3,14 @@
 
 
 (premise init)
+(premise custom)
+(premise bindings)
 
-(eval-when-compile (require 'org))
+(custom-set-variables
+ '(org-use-speed-commands t))
 
-(global-set-key "\C-col" 'org-store-link)
-(global-set-key "\C-coa" 'org-agenda)
-(global-set-key "\C-coc" 'org-capture)
-(global-set-key "\C-cob" 'org-iswitchb)
-(eval-after-load 'org
-  '(progn
-     (define-key org-mode-map (kbd "C-,") nil)
-     (define-key org-mode-map (kbd "C-c ;") nil)
-     (define-key org-mode-map (kbd "C-c :") nil)
-     (custom-set-variables '(org-use-speed-commands t))))
+(overriding-set-key (kbd "C-c o a") #'org-agenda)
+(overriding-set-key (kbd "C-c o c") #'org-capture)
 
 
 (resolve init-org)
