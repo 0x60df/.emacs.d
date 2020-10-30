@@ -89,7 +89,7 @@
 ;; flyspell
 (eval-after-load 'flyspell
   '(smartrep-define-key
-       flyspell-mode-map "C-c $"
+       overriding-flyspell-mode-map "C-c $"
      '((">" . flyspell-goto-next-error)
        ("." . flyspell-auto-correct-word)
        ("," . flyspell-goto-next-error)

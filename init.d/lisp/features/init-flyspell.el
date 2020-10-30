@@ -3,24 +3,32 @@
 
 
 (premise init)
+(premise bindings)
 
-(eval-when-compile
-  (require 'flyspell))
+(eval-when-compile (require 'flyspell))
 
-(global-set-key (kbd "C-c $") 'flyspell-mode)
-(eval-after-load 'flyspell
-  '(progn
-     (define-key flyspell-mode-map (kbd "C-c $") nil)
-     (define-key flyspell-mode-map (kbd "C-c $ $") 'flyspell-mode)
-     (define-key flyspell-mode-map (kbd "C-,") nil)
-     (define-key flyspell-mode-map (kbd "C-.") nil)
-     (define-key flyspell-mode-map (kbd "C-;") nil)
+(declare-function flyspell-goto-next-error "flyspell")
+(declare-function flyspell-auto-correct-word "flyspell")
+(declare-function flyspell-auto-correct-previous-word "flyspell")
 
-     (define-key flyspell-mode-map (kbd "C-c $ >") 'flyspell-goto-next-error)
-     (define-key flyspell-mode-map (kbd "C-c $ .") 'flyspell-auto-correct-word)
-     (define-key flyspell-mode-map (kbd "C-c $ ,") 'flyspell-goto-next-error)
-     (define-key flyspell-mode-map (kbd "C-c $ ;")
-       'flyspell-auto-correct-previous-word)))
+
+(overriding-set-key (kbd "C-c $") #'flyspell-mode)
+
+(with-eval-after-load 'flyspell
+  (defvar overriding-flyspell-mode-map
+    (let ((map (make-sparse-keymap)))
+      (define-key map (kbd "C-c $") (make-sparse-keymap))
+      (define-key map (kbd "C-c $ $") #'flyspell-mode)
+
+      (define-key map (kbd "C-c $ >") #'flyspell-goto-next-error)
+      (define-key map (kbd "C-c $ .") #'flyspell-auto-correct-word)
+      (define-key map (kbd "C-c $ ,") #'flyspell-goto-next-error)
+      (define-key map (kbd "C-c $ ;") #'flyspell-auto-correct-previous-word)
+      map)
+    "Keymap for `flyspell-mode' which overrides global overriding maps.")
+
+  (push `(flyspell-mode . ,overriding-flyspell-mode-map)
+        overriding-reserved-key-map-alist))
 
 
 (resolve init-flyspell)
