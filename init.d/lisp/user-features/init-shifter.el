@@ -3,11 +3,10 @@
 
 
 (premise init)
+(premise bindings)
 
-(global-set-key (kbd "C-c m") 'shifter-shift-major-mode)
-(global-set-key (kbd "C-l m") 'shifter-shift-minor-mode)
-(global-set-key (kbd "s-m e") 'shifter-turn-on-minor-mode)
-(global-set-key (kbd "s-m d") 'shifter-turn-off-minor-mode)
+(overriding-set-key (kbd "C-c m") #'shifter-shift-major-mode)
+(overriding-set-key (kbd "C-l m") #'shifter-shift-minor-mode)
 
 (with-eval-after-load 'shifter
   (defvar shifter-hist-auto-save-timer nil

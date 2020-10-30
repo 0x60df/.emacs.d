@@ -9,9 +9,9 @@
 (custom-set-variables
  '(ediff-window-setup-function 'ediff-setup-windows-default))
 
-(global-set-key (kbd "C-c d f") #'ediff-files)
-(global-set-key (kbd "C-c d b") #'ediff-buffers)
-(global-set-key (kbd "C-c d r") #'ediff-regions-linewise)
+(overriding-set-key (kbd "C-c d f") #'ediff-files)
+(overriding-set-key (kbd "C-c d b") #'ediff-buffers)
+(overriding-set-key (kbd "C-c d r") #'ediff-regions-linewise)
 
 
 (resolve init-ediff)

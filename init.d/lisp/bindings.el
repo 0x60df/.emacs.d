@@ -35,75 +35,140 @@
   (funcall form)
   (add-hook 'after-make-terminal-functions form))
 
+(defvar overriding-standard-key-map (make-sparse-keymap)
+  "Overriding map for standard reserved keys.")
+
+(defvar overriding-standard-key t
+  "If non-nil, `overriding-standard-key-map' is activated.")
+
+(defvar overriding-major-mode-key-map (make-sparse-keymap)
+  "Overriding map for reserved keys for major mode.")
+
+(defvar overriding-major-mode-key t
+  "If non-nil, `overriding-major-mode-key-map' is activated.")
+
+(defvar overriding-minor-mode-key-map (make-sparse-keymap)
+  "Overriding map for reserved keys for minor mode.")
+
+(defvar overriding-minor-mode-key t
+  "If non-nil, `overriding-minor-mode-key-map' is activated.")
+
+(defvar overriding-reserved-key-map-alist
+  `((overriding-minor-mode-key . ,overriding-minor-mode-key-map)
+    (overriding-major-mode-key . ,overriding-major-mode-key-map)
+    (overriding-standard-key . ,overriding-standard-key-map))
+  "Overriding map alist for reserved keys.")
+(add-to-list 'emulation-mode-map-alists 'overriding-reserved-key-map-alist)
+
+(defun overriding-set-key (key command)
+  "Give KEY a overriding binding as COMMAND.
+keymap will be selected according to KEY as follows.
+Standard researved key: `overriding-standard-key-map'.
+Researved for major mode: `overriding-major-mode-key-map'.
+Researved for minor mode: `overriding-minor-mode-key-map'.
+If KEY is a key researved for user, use `global-map',
+because no other keymap may override it."
+  (interactive
+   (let* ((menu-prompting nil)
+          (key (read-key-sequence "Set overriding key: " nil t)))
+     (list key
+           (read-command (format "Set key %s to command: "
+                                 (key-description key))))))
+  (or (vectorp key) (stringp key)
+      (signal 'wrong-type-argument (list 'arrayp key)))
+  (let ((keymap
+         (or (if (< 0 (length key))
+                 (let ((k1 (aref key 0)))
+                   (cond ((and (characterp k1)
+                               (= k1 ?\^C)
+                               (< 1 (length key)))
+                          (let ((k2 (aref key 1)))
+                            (if (characterp k2)
+                                (cond ((or (and (<= ?A k2) (<= k2 ?Z))
+                                           (and (<= ?a k2) (<= k2 ?z)))
+                                       global-map)
+                                      ((or (and (<= ?\^@ k2) (<= k2 ?\^_))
+                                           (= k2 ?\^?)
+                                           (and (<= ?0 k2) (<= k2 ?9))
+                                           (memql k2 '(?{ ?} ?< ?> ?: ?\;)))
+                                       overriding-major-mode-key-map)
+                                      ((or (and (<= ?! k2) (<= k2 ?/))
+                                           (and (<= ?\[ k2) (<= k2 ?\`))
+                                           (memql k2 '(?= ?? ?\| ?~)))
+                                       overriding-minor-mode-key-map)))))
+                         ((and (memq k1 '(f5 f6 f7 f8 f9))) global-map))))
+             overriding-standard-key-map)))
+    (define-key keymap key command)))
+
 
 
-(global-set-key (kbd "C-c h") #'help-command)
-(global-set-key (kbd "C->") #'next-error)
-(global-set-key (kbd "C-<") #'previous-error)
-(global-set-key (kbd "C-c i d") #'pwd)
-(global-set-key (kbd "C-c [ e") #'exit-recursive-edit)
-(global-set-key (kbd "C-c [ a") #'abort-recursive-edit)
+(overriding-set-key (kbd "C-c h") #'help-command)
+(overriding-set-key (kbd "C->") #'next-error)
+(overriding-set-key (kbd "C-<") #'previous-error)
+(overriding-set-key (kbd "C-c i d") #'pwd)
+(overriding-set-key (kbd "C-c [ e") #'exit-recursive-edit)
+(overriding-set-key (kbd "C-c [ a") #'abort-recursive-edit)
 
-(global-set-key (kbd "C-c s g") #'grep)
-(global-set-key (kbd "C-c s l") #'lgrep)
-(global-set-key (kbd "C-c s r") #'rgrep)
-(global-set-key (kbd "C-c s f") #'grep-find)
-(global-set-key (kbd "C-c s o") #'occur)
-(global-set-key (kbd "M-s g") #'grep)
-(global-set-key (kbd "M-s l") #'lgrep)
-(global-set-key (kbd "M-s r") #'rgrep)
-(global-set-key (kbd "M-s f") #'grep-find)
+(overriding-set-key (kbd "C-c s g") #'grep)
+(overriding-set-key (kbd "C-c s l") #'lgrep)
+(overriding-set-key (kbd "C-c s r") #'rgrep)
+(overriding-set-key (kbd "C-c s z") #'zrgrep)
+(overriding-set-key (kbd "C-c s f") #'grep-find)
+(overriding-set-key (kbd "C-c s o") #'occur)
+(overriding-set-key (kbd "M-s g") #'grep)
+(overriding-set-key (kbd "M-s l") #'lgrep)
+(overriding-set-key (kbd "M-s r") #'rgrep)
+(overriding-set-key (kbd "M-s f") #'grep-find)
 
 
 
-(global-set-key (kbd "M-+") #'duplicate-and-comment)
-(global-set-key (kbd "H-y") #'yank-pop-reverse)
-(global-set-key (kbd "C-S-n") #'next-line-scroll-up)
-(global-set-key (kbd "C-S-p") #'previous-line-scroll-down)
-(global-set-key (kbd "H-f") #'search-forward-char-in-line)
-(global-set-key (kbd "H-b") #'search-backward-char-in-line)
-(global-set-key (kbd "C-c r y") #'risky-yes-or-no-p-mode)
+(overriding-set-key (kbd "M-+") #'duplicate-and-comment)
+(overriding-set-key (kbd "H-y") #'yank-pop-reverse)
+(overriding-set-key (kbd "C-S-n") #'next-line-scroll-up)
+(overriding-set-key (kbd "C-S-p") #'previous-line-scroll-down)
+(overriding-set-key (kbd "H-f") #'search-forward-char-in-line)
+(overriding-set-key (kbd "H-b") #'search-backward-char-in-line)
+(overriding-set-key (kbd "C-c r y") #'risky-yes-or-no-p-mode)
 
-(global-set-key (kbd "C-:") #'split-window-above)
-(global-set-key (kbd "C-M-:") #'split-window-right)
-(global-set-key (kbd "C-*") #'delete-other-windows)
-(global-set-key (kbd "C-M-*") #'delete-window)
-(global-set-key (kbd "C-,") #'other-window)
-(global-set-key (kbd "C-M-,") #'other-window-reverse)
-(global-set-key (kbd "C-c :") #'manipulate-window)
-(global-set-key (kbd "C-c ,") #'view-other-window)
+(overriding-set-key (kbd "C-:") #'split-window-above)
+(overriding-set-key (kbd "C-M-:") #'split-window-right)
+(overriding-set-key (kbd "C-*") #'delete-other-windows)
+(overriding-set-key (kbd "C-M-*") #'delete-window)
+(overriding-set-key (kbd "C-,") #'other-window)
+(overriding-set-key (kbd "C-M-,") #'other-window-reverse)
+(overriding-set-key (kbd "C-c :") #'manipulate-window)
+(overriding-set-key (kbd "C-c ,") #'view-other-window)
 
-(global-set-key (kbd "C-;") #'make-frame)
-(global-set-key (kbd "C-+") #'delete-frame)
-(global-set-key (kbd "C-.") #'other-frame)
-(global-set-key (kbd "C-M-.") #'other-frame-reverse)
-(global-set-key (kbd "C-c ;") #'manipulate-frame)
-(global-set-key (kbd "C-c .") #'pick-frame)
-(global-set-key (kbd "s-;") #'toggle-frame-opacity)
-(global-set-key (kbd "s-+") #'toggle-all-frames-opacity)
+(overriding-set-key (kbd "C-;") #'make-frame)
+(overriding-set-key (kbd "C-+") #'delete-frame)
+(overriding-set-key (kbd "C-.") #'other-frame)
+(overriding-set-key (kbd "C-M-.") #'other-frame-reverse)
+(overriding-set-key (kbd "C-c ;") #'manipulate-frame)
+(overriding-set-key (kbd "C-c .") #'pick-frame)
+(overriding-set-key (kbd "s-;") #'toggle-frame-opacity)
+(overriding-set-key (kbd "s-+") #'toggle-all-frames-opacity)
 
 (with-eval-after-load 'server
-  (global-set-key (kbd "C-.") #'other-frame-on-selected-client)
-  (global-set-key (kbd "C-M-.") #'other-frame-on-selected-client-reverse)
-  (global-set-key (kbd "s-.") #'other-client-frame)
-  (global-set-key (kbd "s-M-.") #'other-client-frame-reverse)
-  (global-set-key (kbd "C-c .") #'pick-frame-on-selected-client)
-  (global-set-key (kbd "s-c .") #'pick-typical-frame-of-each-client))
+  (overriding-set-key (kbd "C-.") #'other-frame-on-selected-client)
+  (overriding-set-key (kbd "C-M-.") #'other-frame-on-selected-client-reverse)
+  (overriding-set-key (kbd "s-.") #'other-client-frame)
+  (overriding-set-key (kbd "s-M-.") #'other-client-frame-reverse)
+  (overriding-set-key (kbd "C-c .") #'pick-frame-on-selected-client)
+  (overriding-set-key (kbd "s-c .") #'pick-typical-frame-of-each-client))
 
-(global-set-key (kbd "C-c l m") #'mode-line-modes-toggle-shrinked)
-(global-set-key (kbd "C-c l b")
-                #'mode-line-buffer-identification-toggle-shrinked)
-(global-set-key (kbd "C-c l i")
-                #'mode-line-mule-info-toggle-showing-input-method)
-(global-set-key (kbd "C-c l f") #'show-which-function)
-(global-set-key (kbd "C-c i f") #'show-which-function)
+(overriding-set-key (kbd "C-c l m") #'mode-line-modes-toggle-shrinked)
+(overriding-set-key (kbd "C-c l b")
+                    #'mode-line-buffer-identification-toggle-shrinked)
+(overriding-set-key (kbd "C-c l i")
+                    #'mode-line-mule-info-toggle-showing-input-method)
+(overriding-set-key (kbd "C-c l f") #'show-which-function)
+(overriding-set-key (kbd "C-c i f") #'show-which-function)
 
 
 
-(global-unset-key (kbd "C-l"))
-(global-set-key (kbd "C-l C-l") #'recenter-top-bottom)
-(global-set-key (kbd "C-l C-f") #'find-file-at-point)
-(global-set-key (kbd "C-l C-c") #'save-buffers-kill-emacs)
+(overriding-set-key (kbd "C-l C-l") #'recenter-top-bottom)
+(overriding-set-key (kbd "C-l C-f") #'find-file-at-point)
+(overriding-set-key (kbd "C-l C-c") #'save-buffers-kill-emacs)
 
 
 (resolve bindings)
