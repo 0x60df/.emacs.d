@@ -3,9 +3,16 @@
 
 
 (premise init)
+(premise user-feature)
 (premise bindings)
 
-(global-set-key (kbd "C-c b") 'scratch)
+(eval-when-compile (require 'scratch))
+
+(declare-function scratch-shred-all "scratch")
+(declare-function scratch-shred "scratch")
+(declare-function scratch-label "scratch")
+
+(overriding-set-key (kbd "C-c b") #'scratch)
 
 (with-eval-after-load 'scratch
   (overriding-set-key (kbd "C-l b s") #'scratch-shred-all)
