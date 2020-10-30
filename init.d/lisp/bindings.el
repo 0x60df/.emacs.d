@@ -11,6 +11,7 @@
 (premise mode-line)
 
 (define-key key-translation-map [?\C-h] [?\C-?])
+(define-key key-translation-map (kbd "ESC M-DEL") [?\C-h])
 
 (define-key key-translation-map (kbd "ESC M-S") #'event-apply-shift-modifier)
 (define-key key-translation-map (kbd "ESC M-a") #'event-apply-alt-modifier)
