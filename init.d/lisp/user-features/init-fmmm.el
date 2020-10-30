@@ -3,9 +3,12 @@
 
 
 (premise init)
+(premise user-feature)
+(premise custom)
 
-(custom-set-variables '(fmmm-complementary-major-mode
-                        '(shell-script-mode ruby-mode)))
+(declare-function fmmm-update-major-mode-on-autoload-list "fmmm")
+(declare-function fmmm-update-minor-mode-on-autoload-list "fmmm")
+(declare-function fmmm-save-cache "fmmm")
 
 (with-eval-after-load 'fmmm
   (defvar fmmm-cache-auto-save-timer nil
@@ -16,7 +19,7 @@
                        (fmmm-update-major-mode-on-autoload-list)
                        (fmmm-update-minor-mode-on-autoload-list)
                        (fmmm-save-cache))))
-  (fmmm-autoload-collector-mode 1))
+  (fmmm-autoload-collector-mode))
 
 
 (resolve fmmm)
