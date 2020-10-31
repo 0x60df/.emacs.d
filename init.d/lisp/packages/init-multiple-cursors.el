@@ -2,32 +2,27 @@
 ;;;; init-multiple-cursors.el
 
 
-
-;;; base
-
 (premise init)
+(premise custom)
+(premise bindings)
 (premise inst-multiple-cursors)
 
-(eval-when-compile (require 'org))
+(eval-when-compile (require 'multiple-cursors))
 
-(require 'multiple-cursors)
+(custom-set-variables
+ '(mc/always-run-for-all t))
 
-(global-set-key (kbd "C-@") 'mc/mark-all-dwim)
-(global-set-key (kbd "C-c @ e") 'mc/edit-lines)
-(global-set-key (kbd "C-c @ n") 'mc/mark-next-like-this)
-(global-set-key (kbd "C-c @ p") 'mc/mark-previous-like-this)
-(global-set-key (kbd "C-c @ a") 'mc/mark-all-like-this)
-(global-set-key (kbd "C-c @ SPC") 'set-mark-command)
+(overriding-set-key (kbd "C-@") #'mc/mark-all-dwim)
+(overriding-set-key (kbd "C-c @ e") #'mc/edit-lines)
+(overriding-set-key (kbd "C-c @ n") #'mc/mark-next-like-this)
+(overriding-set-key (kbd "C-c @ p") #'mc/mark-previous-like-this)
+(overriding-set-key (kbd "C-c @ a") #'mc/mark-all-like-this)
+(overriding-set-key (kbd "C-c @ SPC") #'set-mark-command)
 
-(add-to-list 'mc/unsupported-minor-modes 'show-paren-mode)
-
-(custom-set-variables '(mc/always-run-for-all t))
-
-(eval-after-load 'org
-  '(define-key org-mode-map (kbd "C-c @") nil))
-
-(eval-after-load 'visible-mark
-  '(add-to-list 'mc/unsupported-minor-modes 'visible-mark-mode))
+(with-eval-after-load 'multiple-cursors
+  (add-to-list 'mc/unsupported-minor-modes 'show-paren-mode)
+  (eval-after-load 'visible-mark
+    '(add-to-list 'mc/unsupported-minor-modes 'visible-mark-mode)))
 
 
 (resolve init-multiple-cursors)
