@@ -25,6 +25,6 @@
               (define-key ido-common-completion-map
                 (kbd "S-SPC") #'ido-prev-match))))
 
-(ido-mode)
+(add-hook 'emacs-startup-hook #'ido-mode)
 
 (resolve init-ido)
