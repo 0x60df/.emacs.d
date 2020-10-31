@@ -3,28 +3,27 @@
 
 
 (premise init)
-(premise inst-anzu)
+(premise custom)
+(premise bindings)
 (premise mode-line)
+(premise inst-anzu)
 
-(global-anzu-mode +1)
-(global-set-key [remap query-replace] 'anzu-query-replace)
-(global-set-key [remap query-replace-regexp] 'anzu-query-replace-regexp)
+(custom-set-variables
+ '(anzu-cons-mode-line-p nil)
+ '(anzu-mode-lighter ""))
+
+(overriding-set-key (kbd "M-%") #'anzu-query-replace)
+(overriding-set-key (kbd "C-M-%") #'anzu-query-replace-regexp)
 (define-key isearch-mode-map [remap isearch-query-replace]
-  'anzu-isearch-query-replace)
+  #'anzu-isearch-query-replace)
 (define-key isearch-mode-map [remap isearch-query-replace-regexp]
-  'anzu-isearch-query-replace-regexp)
+  #'anzu-isearch-query-replace-regexp)
 
-(defvar mode-line-anzu nil)
+(with-eval-after-load 'anzu
+  (setq mode-line-position
+        (list mode-line-position " " '(:eval (anzu--update-mode-line)))))
 
-(eval-after-load 'anzu
-  '(progn
-     (custom-set-variables
-      '(anzu-cons-mode-line-p nil)
-      '(anzu-mode-lighter ""))
-
-     (setq mode-line-position (list mode-line-position
-                                    " "
-                                    '(:eval (anzu--update-mode-line))))))
+(add-hook 'emacs-startup-hook #'global-anzu-mode)
 
 
 (resolve init-anzu)
