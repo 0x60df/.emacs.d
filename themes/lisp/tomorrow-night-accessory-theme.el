@@ -235,6 +235,16 @@
        :background nil
        :inverse-video t))))
 
+;;; smerge
+
+(custom-theme-set-faces
+ 'tomorrow-night-accessory
+ '(smerge-base ((t :inherit tn-diff-yellow)))
+ '(smerge-lower ((t :inherit tn-diff-green)))
+ '(smerge-refined-added ((t :inherit tn-diff-refine-green)))
+ '(smerge-refined-removed ((t :inherit tn-diff-refine-red)))
+ '(smerge-upper ((t :inherit tn-diff-red))))
+
 
 ;;; git-getter-fringe
 
