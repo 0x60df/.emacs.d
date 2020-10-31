@@ -11,11 +11,6 @@
 
 ;;; faces
 
-(defface mode-line-buffer-identification
-  '((t :weight bold))
-  "Face used for buffer identification part of the mode line."
-  :group 'user)
-
 (defface mode-line-vc-mode
   '((t :slant italic))
   "Face used for vc-mode part of the mode line."
@@ -29,6 +24,11 @@
 (defface mode-line-which-func-mode
   '((t :slant italic))
   "Face used for which-func-mode part of the mode line."
+  :group 'user)
+
+(defface mode-line-warning
+  '((t :weight bold))
+  "Face for the potion of mode-line which call attention."
   :group 'user)
 
 (defface mode-line-shrinked
@@ -111,8 +111,7 @@ When non-nil, `mode-line-buffer-identification' is shrinked.")
                                 '(mode-line-buffer-identification
                                   mode-line-shrinked)
                               'mode-line-buffer-identification))))
-                  (:propertize ,format
-                               face mode-line-buffer-identification))))
+                  (:propertize ,format face mode-line-buffer-id))))
 
 (custom-set-variables
  '(mode-line-percent-position '(-3 "%p"))
@@ -174,7 +173,7 @@ When non-nil, `'mode-line-modes is shrinked.")
                   (propertize canonicalized 'face 'mode-line-shrinked)
                 canonicalized)))
            minor-mode-alist)
-          (-4 "%n")
+          (:propertize (-4 "%n") face mode-line-highlight)
           "%]"
           " ")))
 
