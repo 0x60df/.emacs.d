@@ -7,6 +7,8 @@
 
 (premise init)
 (premise subr)
+(premise custom)
+(premise mode-line)
 (premise inst-smartrep)
 
 (premise init-git-gutter-fringe)
@@ -20,8 +22,18 @@
   (require 'flyspell)
   (require 'smerge-mode))
 
-(eval-after-load 'smartrep
-  '(custom-set-variables '(smartrep-mode-line-string-activated "")))
+(custom-set-variables '(smartrep-mode-line-string-activated " SRe"))
+(letrec ((insert-before-recursive-edit-close
+          (lambda (l)
+            (cond ((null l) l)
+                  ((equal (cadr l) "%]")
+                   (setcdr l (cons '(:propertize
+                                     smartrep-mode-line-string
+                                     face mode-line-warning)
+                                   (cdr l))))
+                  (t (funcall insert-before-recursive-edit-close (cdr l)))))))
+  (funcall insert-before-recursive-edit-close mode-line-modes))
+
 (defcustom smartrep-mode-line-active-bg-adjuster nil ""
   :type 'function :group 'smartrep)
 (call-with-runtime-bindings
