@@ -266,7 +266,9 @@
  `(helm-M-x-key
    ((t :foreground ,(color-theme-tomorrow--with-colors 'night orange)
        :underline t)))
- '(helm-source-header ((t :inherit (info-title-2 hl-line))))
+ `(helm-source-header ((t :weight bold
+                          :height 1.4
+                          :inherit (variable-pitch hl-line))))
  '(helm-action ((t :inherit default)))
  `(helm-candidate-number
    ((t :foreground ,(color-theme-tomorrow--with-colors 'night yellow))))
