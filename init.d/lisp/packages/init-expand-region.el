@@ -2,19 +2,15 @@
 ;;;; init-expand-region.el
 
 
-
-;;; base
-
 (premise init)
+(premise bindings)
 (premise inst-expand-region)
 
-(transient-mark-mode t)
+(declare-function er/contract-region "expand-region")
 
-
-;;; bindings
-
-(global-set-key (kbd "C-`") 'er/expand-region)
-(global-set-key (kbd "C-M-`") 'er/contract-region)
+(overriding-set-key (kbd "C-`") #'er/expand-region)
+(with-eval-after-load 'expand-region
+  (overriding-set-key (kbd "C-M-`") #'er/contract-region))
 
 
 (resolve init-expand-region)
