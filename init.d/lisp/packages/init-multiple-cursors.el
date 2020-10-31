@@ -26,5 +26,8 @@
 (eval-after-load 'org
   '(define-key org-mode-map (kbd "C-c @") nil))
 
+(eval-after-load 'visible-mark
+  '(add-to-list 'mc/unsupported-minor-modes 'visible-mark-mode))
+
 
 (resolve init-multiple-cursors)

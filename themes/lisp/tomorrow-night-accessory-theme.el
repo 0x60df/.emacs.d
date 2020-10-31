@@ -344,10 +344,7 @@
   `(show-paren-mismatch ((t :background ,current-line
                             :foreground ,orange
                             :inverse-video t)))))
-(add-hook 'after-init-hook
-          (lambda ()
-            (setq visible-mark-non-trailing-faces nil)
-            (visible-mark-initialize-faces)))
+
 
 ;;; magit
 
