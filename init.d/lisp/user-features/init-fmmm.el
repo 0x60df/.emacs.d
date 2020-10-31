@@ -22,4 +22,4 @@
   (fmmm-autoload-collector-mode))
 
 
-(resolve fmmm)
+(resolve init-fmmm)

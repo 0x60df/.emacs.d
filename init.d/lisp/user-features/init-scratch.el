@@ -20,4 +20,4 @@
   (define-key scratch-mode-map (kbd "C-l b l") #'scratch-label))
 
 
-(resolve scratch)
+(resolve init-scratch)

@@ -16,4 +16,4 @@
 (define-key scratchb-mode-map (kbd "C-c k") #'scratchb-flush)
 
 
-(resolve scratchb)
+(resolve init-scratchb)

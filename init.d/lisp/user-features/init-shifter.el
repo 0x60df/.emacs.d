@@ -18,4 +18,4 @@
         (run-with-idle-timer (* 60 63) t #'shifter-save-hist)))
 
 
-(resolve shifter)
+(resolve init-shifter)

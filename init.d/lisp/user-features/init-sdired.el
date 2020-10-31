@@ -11,4 +11,4 @@
   (define-key dired-mode-map "s" #'sdired-sort))
 
 
-(resolve sdired)
+(resolve init-sdired)
