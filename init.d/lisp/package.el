@@ -5,12 +5,14 @@
 (premise init)
 (premise custom)
 
-(custom-set-variables
- '(package-archives
-   (let ((package-archive '("melpa" . "https://melpa.org/packages/")))
-     (if (member package-archive package-archives)
-         package-archives
-       (cons package-archive package-archives)))))
+(with-eval-after-load 'package
+  (custom-set-variables
+   '(package-archives
+     (append
+      package-archives
+      (seq-filter (lambda (repository)
+                    (not (member repository package-archives)))
+                  '(("melpa" . "https://melpa.org/packages/")))))))
 
 (package-initialize)
 
