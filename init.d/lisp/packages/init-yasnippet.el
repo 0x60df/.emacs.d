@@ -2,23 +2,37 @@
 ;;;; init-yasnippet.el
 
 
-
-;;; base
-
 (premise init)
+(premise custom)
+(premise bindings)
 (premise inst-yasnippet)
 
-(require 'yasnippet)
+(eval-when-compile (require 'yasnippet))
 
-(yas-reload-all)
+(declare-function yas-reload-all "yasnippet")
+(declare-function yas-expand "yasnippet")
+
+(custom-set-variables
+ '(yas-prompt-functions nil)
+ '(yas-use-menu nil))
+
+(with-eval-after-load 'yasnippet
+  (define-key yas-minor-mode-map (kbd "<tab>") nil)
+  (define-key yas-minor-mode-map (kbd "TAB") nil)
+
+  (defvar overriding-yas-minor-mode-map
+    (let ((map (make-sparse-keymap)))
+      (define-key map (kbd "C-'") #'yas-expand)
+      map)
+    "Keymap for `yas-minor-mode' which overrides global overriding maps.")
+
+  (push `(yas-minor-mode . ,overriding-yas-minor-mode-map)
+        overriding-reserved-key-map-alist)
+
+  (setcar (cdr (assq 'yas-minor-mode minor-mode-alist)) " YS"))
+
+(add-hook 'emacs-startup-hook #'yas-reload-all)
 (add-hook 'prog-mode-hook #'yas-minor-mode)
-
-(define-key yas-minor-mode-map (kbd "<tab>") nil)
-(define-key yas-minor-mode-map (kbd "TAB") nil)
-(define-key yas-minor-mode-map (kbd "C-'") 'yas-expand)
-(setcar (cdr (assq 'yas-minor-mode minor-mode-alist)) " YS")
-(custom-set-variables '(yas-prompt-functions nil)
-                      '(yas-use-menu nil))
 
 
 (resolve init-yasnippet)
