@@ -3,9 +3,15 @@
 
 
 (premise init)
+(premise custom)
+(premise init-helm)
+(premise init-projectile)
 (premise inst-helm-projectile)
 
-(define-key helm-command-map (kbd "C-p") 'helm-projectile)
+(custom-set-variables
+ '(helm-projectile-truncate-lines t))
+
+(define-key helm-command-map (kbd "C-p") #'helm-projectile)
 
 
 (resolve init-helm-projectile)
