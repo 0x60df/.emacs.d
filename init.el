@@ -134,7 +134,13 @@ UNIT is a literal symbol."
             '("init.d/site-lisp" "init.d/lisp"))))
   "List of directories to search for files to be used for `init'.")
 
-(defvar init-units nil "alist of initialized units and their file paths.")
+(defvar init-units nil "Alist of initialized units and their file paths.")
+
+(defmacro init-unit-p (unit)
+  "Return t if UNIT is initialized."
+  `(if (assq ',unit init-units)
+       t
+     nil))
 
 (define-error 'init-error "Init error" 'error)
 
@@ -149,7 +155,8 @@ UNIT is a literal symbol."
        (1 font-lock-keyword-face)
        (2 font-lock-constant-face nil t))
       ("(init-by\\_>" . font-lock-keyword-face)
-      ("(\\(resolve\\|premise\\)\\_>[ 	]*\\(\\(?:\\sw\\|\\s_\\|\\\\.\\)+\\)?"
+      (,(concat "(\\(resolve\\|premise\\|init-unit-p\\)\\_>"
+                "[ 	]*\\(\\(?:\\sw\\|\\s_\\|\\\\.\\)+\\)?")
        (1 font-lock-keyword-face)
        (2 font-lock-constant-face nil t))))))
 
