@@ -3,23 +3,28 @@
 
 
 (premise init)
+(premise custom)
 (premise inst-which-key)
 
-(eval-when-compile (require 'which-key))
+(declare-function which-key--propertize "which-key")
 
-(eval-after-load 'which-key
-  '(progn
-     (custom-set-variables '(which-key-idle-delay 0.4)
-                           '(which-key-lighter "")
-                           '(which-key-paging-key "C-?"))
-     (mapc
-      (lambda (s)
-        (define-key which-key-mode-map
-          (kbd (concat s " " which-key-paging-key))
-          'which-key-C-h-dispatch))
-      '("C-x" "C-c h" "C-q"))))
+(custom-set-variables
+ '(which-key-idle-delay 0.4)
+ '(which-key-lighter ""))
 
-(which-key-mode 1)
+(defun patch-which-key--next-page-hint (return)
+  "Advising function for `which-key--next-page-hint'.
+Replace C-h by ^H/?."
+  (replace-regexp-in-string
+   "C-h"
+   (which-key--propertize "^H/?" 'face 'which-key-note-face)
+   return))
+
+(with-eval-after-load 'which-key
+  (advice-add 'which-key--next-page-hint
+              :filter-return #'patch-which-key--next-page-hint))
+
+(add-hook 'emacs-startup-hook #'which-key-mode)
 
 
 (resolve init-which-key)
