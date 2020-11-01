@@ -388,8 +388,9 @@ side of the monitor. Otherwise, margin is regarded as 0."
 (defun pick-frame (&optional post-process)
   "Choose frame interactively and return it.
 POST-PROCESS specifies how to deal with chosen frame.
-`focus' or 1: `select-frame-set-input-focus'.
-`raise' or 4: `raise-frame'.
+`focus' or 1   : `select-frame-set-input-focus'.
+`raise' or 4   : `raise-frame'.
+`delete' or 16 : `delete-frame'.
 Otherwise: do nothing.
 Thus, interactive call without prefix arguments focus frame,
 and raise frame with prefix arguments."
@@ -758,7 +759,10 @@ and raise frame with prefix arguments."
                                 (select-frame-set-input-focus frame))
                                ((or (eq post-process 'raise)
                                     (eql post-process 4))
-                                (raise-frame frame)))
+                                (raise-frame frame))
+                               ((or (eq post-process 'delete)
+                                    (eql post-process 16))
+                                (delete-frame frame)))
                          (throw 'quit frame))
                         ((equal key-description "q")
                          (throw 'quit nil))
@@ -768,8 +772,10 @@ and raise frame with prefix arguments."
                          (throw 'quit nil))
                         (t (throw 'quit nil)))))))
         (mapc (lambda (frame-alpha)
-                (set-frame-parameter
-                 (car frame-alpha) 'alpha (or (cdr frame-alpha) 100)))
+                (let ((frame (car frame-alpha))
+                      (alpha (cdr frame-alpha)))
+                  (if (frame-live-p frame)
+                      (set-frame-parameter frame 'alpha (or alpha 100)))))
               frame-alpha-alist)))))
 
 

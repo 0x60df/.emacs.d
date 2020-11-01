@@ -219,8 +219,10 @@ belongs to the same client as originally selected frame."
         (advice-remove 'next-frame #'seek-nearest-typical-frame-of-each-client)
         (advice-remove 'frame-list #'filter-typical-frame-of-each-client)
         (mapc (lambda (frame-alpha)
-                (set-frame-parameter
-                 (car frame-alpha) 'alpha (or (cdr frame-alpha) 100)))
+                (let ((frame (car frame-alpha))
+                      (alpha (cdr frame-alpha)))
+                  (if (frame-live-p frame)
+                      (set-frame-parameter frame 'alpha (or alpha 100)))))
               frame-alpha-alist)))))
 
 (defun filter-frame-on-selected-client (frame-list)
@@ -275,8 +277,10 @@ belongs the other client than originally selected frame."
         (advice-remove 'next-frame #'seek-nearest-frame-on-selected-frame)
         (advice-remove 'previous-frame #'seek-nearest-frame-on-selected-frame)
         (mapc (lambda (frame-alpha)
-                (set-frame-parameter
-                 (car frame-alpha) 'alpha (or (cdr frame-alpha) 100)))
+                (let ((frame (car frame-alpha))
+                      (alpha (cdr frame-alpha)))
+                  (if (frame-live-p frame)
+                      (set-frame-parameter frame 'alpha (or alpha 100)))))
               frame-alpha-alist)))))
 
 
