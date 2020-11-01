@@ -1,5 +1,5 @@
 
-;;;; inst-yasnippet.el
+;;;; inst-yasnippet-snippets.el
 
 
 (premise init)
@@ -8,4 +8,4 @@
 (el-get-bundle yasnippet-snippets)
 
 
-(resolve inst-yasnippet)
+(resolve inst-yasnippet-snippets)
