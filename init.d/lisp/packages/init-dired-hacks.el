@@ -3,6 +3,7 @@
 
 
 (premise init)
+(premise bindings)
 (premise inst-dired-hacks)
 
 (define-key dired-mode-map (kbd "/") dired-filter-map)
