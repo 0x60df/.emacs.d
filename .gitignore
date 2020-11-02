@@ -31,6 +31,7 @@
 !/lisp/
 !/lisp/**/
 !/lisp/**/*.el
+/lisp/**/*-loaddefs.el
 !/package/
 !/package/**/
 !/package/**/*.el

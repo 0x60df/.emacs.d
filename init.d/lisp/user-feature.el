@@ -31,7 +31,27 @@
                                      t "[^.]$\\|[^./]\\.$\\|[^/]\\.\\.")))))
                  '("site-lisp" "lisp"))))))
 
+(mapc
+ (lambda (prefix)
+   (let* ((directory (concat user-emacs-directory prefix "lisp"))
+          (files (directory-files-recursively directory "\\.el$"))
+          (generated-autoload-file
+           (concat directory "/" prefix "user-feature-loaddefs.el")))
+     (unless (or (null files)
+                 (and (file-exists-p generated-autoload-file)
+                      (seq-every-p (lambda (file)
+                                     (or (file-newer-than-file-p
+                                          generated-autoload-file file)
+                                         (file-equal-p
+                                          generated-autoload-file file)))
+                                   files)))
+       (if (file-exists-p generated-autoload-file)
+           (delete-file generated-autoload-file))
+       (update-directory-autoloads directory))))
+ '("site-" ""))
+
 (require 'user-feature-loaddefs nil 'noerror)
+(require 'site-user-feature-loaddefs nil 'noerror)
 
 (mapc
  (lambda (el)
