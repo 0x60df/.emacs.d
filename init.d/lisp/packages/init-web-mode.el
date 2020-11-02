@@ -2,9 +2,6 @@
 ;;;; init-web-mode.el
 
 
-
-;;; base
-
 (premise init)
 (premise inst-web-mode)
 
