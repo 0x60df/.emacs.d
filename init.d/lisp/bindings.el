@@ -95,7 +95,7 @@ because no other keymap may override it."
                                        overriding-major-mode-key-map)
                                       ((or (and (<= ?! k2) (<= k2 ?/))
                                            (and (<= ?\[ k2) (<= k2 ?\`))
-                                           (memql k2 '(?= ?? ?\| ?~)))
+                                           (memql k2 '(?= ?? ?@ ?\| ?~)))
                                        overriding-minor-mode-key-map)))))
                          ((and (memq k1 '(f5 f6 f7 f8 f9))) global-map))))
              overriding-standard-key-map)))

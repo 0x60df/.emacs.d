@@ -149,15 +149,15 @@
        ("q" . git-gutter:close-popup))))
 
 ;; multiple-cursors
-(eval-after-load 'multiple-cursors
-  '(smartrep-define-key
-       global-map "C-c @"
-     '(("p" . mc/mark-previous-like-this)
-       ("n" . mc/mark-next-like-this)
-       ("P". mc/unmark-next-like-this)
-       ("N". mc/unmark-previous-like-this)
-       ("C-v" . mc/cycle-forward)
-       ("M-v" . mc/cycle-backward))))
+(with-eval-after-load 'mc-mark-more
+  (smartrep-define-key
+      overriding-minor-mode-key-map "C-c @"
+    '(("p" . mc/mark-previous-like-this)
+      ("n" . mc/mark-next-like-this)
+      ("P". mc/unmark-next-like-this)
+      ("N". mc/unmark-previous-like-this)
+      ("C-v" . mc/cycle-forward)
+      ("M-v" . mc/cycle-backward))))
 
 ;; dired-backs
 (eval-after-load 'dired-subtree
