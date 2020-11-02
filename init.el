@@ -302,7 +302,6 @@ UNIT is a literal symbol."
 (init-package smartrep)
 (init-package page-break-lines)
 (init-package tomorrow-theme)
-(init-package color-theme-zenburn)
 (init-package color-theme-solarized)
 (init-package base16)
 (init-package replace-colorthemes)
