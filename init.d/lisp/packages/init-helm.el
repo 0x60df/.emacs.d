@@ -11,10 +11,12 @@
 (premise init-sdired)
 (premise inst-helm)
 
-(with-eval-after-load 'helm-mode
-  (setq helm-completion-mode-string " H"))
+(custom-set-variables
+ '(helm-truncate-lines t))
 
 (with-eval-after-load 'helm-mode
+  (setq helm-completion-mode-string " H")
+
   (custom-set-variables
    '(helm-completing-read-handlers-alist
      (append
