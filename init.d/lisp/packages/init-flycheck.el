@@ -3,7 +3,6 @@
 
 
 (premise init)
-(premise custom)
 (premise bindings)
 (premise inst-flycheck)
 
@@ -18,15 +17,7 @@
     "Keymap for `flycheck-mode' which overrides global overriding maps.")
 
   (push `(flycheck-mode . ,overriding-flycheck-mode-map)
-        overriding-reserved-key-map-alist)
-
-  (custom-set-variables
-   '(flycheck-disabled-checkers
-     (append
-      flycheck-disabled-checkers
-      (seq-filter (lambda (checker)
-                    (not (member checker flycheck-disabled-checkers)))
-                  '(emacs-lisp-checkdoc))))))
+        overriding-reserved-key-map-alist))
 
 
 (resolve init-flycheck)
