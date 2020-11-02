@@ -304,7 +304,6 @@ UNIT is a literal symbol."
 (init-package tomorrow-theme)
 (init-package color-theme-solarized)
 (init-package base16)
-(init-package replace-colorthemes)
 (init-package ddskk)
 
 
