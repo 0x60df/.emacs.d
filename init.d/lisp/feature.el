@@ -18,5 +18,19 @@ SECS must be something number, which is valid for
          ,secs nil (lambda ()
                      (autoload-do-load (symbol-function ,function))))))
 
+(defmacro lazy-autoload (function file)
+  "Define `autoload' for FUNCTION and FILE automatically.
+
+FUNCTION is a symbol to define autoload.
+FILE is a file name string for autoload.
+Rest optional arguments for autoload will be generated."
+  (load file nil t)
+  (let ((expand-quote (cadr function)))
+    `(autoload ,function ,file
+       ,(if (fboundp expand-quote) (documentation  expand-quote))
+       ,(commandp expand-quote)
+       ,(cond ((keymapp expand-quote) 'keymap)
+              ((macrop expand-quote) 'macro)))))
+
 
 (resolve feature)
