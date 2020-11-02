@@ -454,6 +454,12 @@
  'tomorrow-night-accessory
  '(moccur-face ((t :inherit match))))
 
+;;; flex-isearch
+
+(custom-theme-set-faces
+ 'tomorrow-night-accessory
+ '(flex-isearch-message-prefix ((t :inherit font-lock-constant-face))))
+
 
 ;;; skk
 
