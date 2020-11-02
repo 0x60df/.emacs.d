@@ -7,35 +7,42 @@
 
 (premise init)
 (premise subr)
+(premise custom)
 (premise inst-evil)
 
 
 ;; setting
-(eval-after-load 'evil-vars
-  '(custom-set-variables '(evil-default-state 'emacs)
-                         '(evil-insert-state-modes nil)
-                         '(evil-motion-state-modes nil)
-                         '(evil-mode-line-format 'after)))
+
+(custom-set-variables
+ '(evil-default-state 'emacs)
+ '(evil-insert-state-modes nil)
+ '(evil-motion-state-modes nil)
+ '(evil-mode-line-format 'after))
 
 ;; toggle
 (defun vi ()
   (interactive)
   (evil-exit-emacs-state))
-(evil-ex-define-cmd "q[uit]" 'evil-emacs-state)
-(evil-define-command evil-save-and-emacs-state (file &optional bang)
-  "Saves the current buffer and toggle to emacs state."
-  :repeat nil
-  (interactive "<f><!>")
-  (evil-write nil nil nil file bang)
-  (evil-emacs-state))
-(evil-ex-define-cmd "wq" 'evil-save-and-emacs-state)
 
+(with-eval-after-load 'evil-common
+  (evil-define-command evil-save-and-emacs-state (file &optional bang)
+    "Saves the current buffer and toggle to emacs state."
+    :repeat nil
+    (interactive "<f><!>")
+    (evil-write nil nil nil file bang)
+    (evil-emacs-state)))
 
-(define-key evil-motion-state-map (kbd "H-e") #'evil-emacs-state)
-(define-key evil-insert-state-map (kbd "H-e") #'evil-emacs-state)
-(define-key evil-emacs-state-map (kbd "H-e") #'evil-exit-emacs-state)
+(with-eval-after-load 'evil-ex
+  (evil-ex-define-cmd "q[uit]" 'evil-emacs-state)
+  (evil-ex-define-cmd "wq" 'evil-save-and-emacs-state))
 
-(evil-set-toggle-key "C-c ^")
+(with-eval-after-load 'evil-states
+  (define-key evil-motion-state-map (kbd "H-e") #'evil-emacs-state)
+  (define-key evil-insert-state-map (kbd "H-e") #'evil-emacs-state)
+  (define-key evil-emacs-state-map (kbd "H-e") #'evil-exit-emacs-state))
+
+(with-eval-after-load 'evil-vars
+    (evil-set-toggle-key "C-c DEL"))
 
 ;; leader
 (defun evil-leader (command)
@@ -46,7 +53,8 @@
   (cond ((equal command "q") (evil-quit))
         (t nil)))
 
-(define-key evil-motion-state-map (kbd "\\") #'evil-leader)
+(with-eval-after-load 'evil-vars
+  (define-key evil-motion-state-map (kbd "\\") #'evil-leader))
 
 
 ;;; tag
@@ -57,7 +65,10 @@
   :group 'evil)
 
 ;; tag string
-(setq evil-emacs-state-tag "")
+
+(with-eval-after-load 'evil-states
+  (setq evil-emacs-state-tag ""))
+
 (mapc
  (lambda (state)
    (let* ((toggle (intern (format "evil-%s-state" state)))
@@ -150,7 +161,8 @@
 
 ;;; start
 
-(evil-mode 1)
+(add-hook 'emacs-startup-hook #'evil-mode)
+
 
 ;; undo-tree
 (eval-after-load 'undo-tree
