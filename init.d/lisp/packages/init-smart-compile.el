@@ -2,9 +2,6 @@
 ;;;; init-smart-compile.el
 
 
-
-;;; base
-
 (premise init)
 (premise inst-smart-compile)
 
@@ -13,17 +10,14 @@
   (require 'ruby-mode))
 
 
-;;; bindings
+(with-eval-after-load 'cc-mode
+  (define-key c-mode-map (kbd "C-c c s") #'smart-compile))
 
-(eval-after-load 'cc-mode
-  '(progn
-     (define-key c-mode-map "\C-ccs" 'smart-compile)))
-(eval-after-load 'cc-mode
-  '(progn
-     (define-key c++-mode-map "\C-ccs" 'smart-compile)))
-(eval-after-load 'ruby-mode
-  '(progn
-     (define-key ruby-mode-map "\C-ccs" 'smart-compile)))
+(with-eval-after-load 'cc-mode
+  (define-key c++-mode-map (kbd "C-c c s") #'smart-compile))
+
+(with-eval-after-load 'ruby-mode
+  (define-key ruby-mode-map (kbd "C-c c s") #'smart-compile))
 
 
 (resolve init-smart-compile)

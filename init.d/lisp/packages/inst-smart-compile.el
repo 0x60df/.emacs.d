@@ -5,7 +5,7 @@
 (premise init)
 (premise init-el-get)
 
-(el-get-bundle smart-compile)
+(el-get-bundle smart-compile-)
 
 
 (resolve inst-smart-compile)
