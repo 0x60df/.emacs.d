@@ -29,9 +29,8 @@
 !/init.d/site-lisp/
 !/init.el
 !/lisp/
+!/lisp/**/
 !/lisp/**/*.el
-!/moz-functions/
-!/moz-functions/*.js
 !/package/
 !/package/**/
 !/package/**/*.el
