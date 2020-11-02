@@ -2,20 +2,16 @@
 ;;;; init-ag.el
 
 
-
-;;; base
-
 (premise init)
+(premise custom)
+(premise bindings)
 (premise inst-ag)
 
-(eval-after-load 'ag
-  '(custom-set-variables '(ag-group-matches nil)))
+(custom-set-variables
+ '(ag-group-matches nil))
 
-
-;;; bindings
-
-(global-set-key "\C-csa" 'ag)
-(global-set-key "\M-sa" 'ag)
+(overriding-set-key (kbd "C-c s a") #'ag)
+(overriding-set-key (kbd "M-s a") #'ag)
 
 
 (resolve init-ag)
