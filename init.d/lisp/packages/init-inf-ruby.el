@@ -31,13 +31,8 @@
 ;;; helm
 
 (with-eval-after-load 'helm-mode
-  (custom-set-variables
-   '(helm-completing-read-handlers-alist
-     (append
-      (seq-filter (lambda (handler)
-                    (not (member handler helm-completing-read-handlers-alist)))
-                  '((ruby-load-file . ido-read-file-name)))
-      helm-completing-read-handlers-alist))))
+  (add-to-list 'helm-completing-read-handlers-alist
+               '(ruby-load-file . ido-read-file-name)))
 
 
 (resolve init-inf-ruby)

@@ -17,19 +17,15 @@
 (with-eval-after-load 'helm-mode
   (setq helm-completion-mode-string " H")
 
-  (custom-set-variables
-   '(helm-completing-read-handlers-alist
-     (append
-      (seq-filter (lambda (handler)
-                    (not (member handler helm-completing-read-handlers-alist)))
-                  '((find-file . ido-read-file-name)
-                    (find-alternate-file . ido-read-file-name)
-                    (switch-to-buffer . ido-completing-read)
-                    (kill-buffer . ido-completing-read)
-                    (load-file . ido-read-file-name)
-                    (dired . ido-read-file-name)
-                    (sdired-sort-by . ido-completing-read)))
-      helm-completing-read-handlers-alist))))
+  (mapc (lambda (handler)
+          (add-to-list 'helm-completing-read-handlers-alist handler))
+        '((find-file . ido-read-file-name)
+          (find-alternate-file . ido-read-file-name)
+          (switch-to-buffer . ido-completing-read)
+          (kill-buffer . ido-completing-read)
+          (load-file . ido-read-file-name)
+          (dired . ido-read-file-name)
+          (sdired-sort-by . ido-completing-read))))
 
 (custom-set-variables
  '(helm-command-prefix-key "C-q"))
