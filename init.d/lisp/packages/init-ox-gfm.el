@@ -4,7 +4,8 @@
 
 (premise init)
 
-(eval-after-load 'org '(require 'ox-gfm))
+(with-eval-after-load 'ox
+  (require 'ox-gfm))
 
 
 (resolve init-ox-gfm)
