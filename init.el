@@ -267,6 +267,7 @@ UNIT is a literal symbol."
 (init-package helm-swoop)
 (init-package helm-descbinds)
 (init-package helm-projectile)
+(init-package helm-frames)
 (init-package which-key)
 (init-package volatile-highlights)
 (init-package flycheck)

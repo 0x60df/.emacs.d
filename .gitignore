@@ -32,6 +32,10 @@
 !/lisp/**/*.el
 !/moz-functions/
 !/moz-functions/*.js
+!/package/
+!/package/**/
+!/package/**/*.el
+/package/**/*-loaddefs.el
 !/scratchb/
 !/site-lisp/
 !/snippets/
