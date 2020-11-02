@@ -448,6 +448,13 @@
   '(anzu-replace-to ((t :foreground "#ffd700")))))
 
 
+;;; color-moccur
+
+(custom-theme-set-faces
+ 'tomorrow-night-accessory
+ '(moccur-face ((t :inherit match))))
+
+
 ;;; skk
 
 (custom-theme-set-variables

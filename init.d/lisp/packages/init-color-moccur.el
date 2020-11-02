@@ -2,25 +2,18 @@
 ;;;; init-color-moccur.el
 
 
-
-;;; base
-
 (premise init)
+(premise custom)
+(premise bindings)
+(premise feature)
 (premise inst-color-moccur)
 
-(autoload 'moccur "color-moccur"
-    "Show all lines of all buffers containing a match for REGEXP.
-The lines are shown in a buffer named *Moccur*.
-It serves as a menu to find any of the occurrences in this buffer.
-\\[describe-mode] in that buffer will explain how." t)
+(lazy-autoload 'moccur "color-moccur")
 
-(eval-after-load 'color-moccur
-  (custom-set-variables '(moccur-split-word t)))
+(custom-set-variables
+ '(moccur-split-word t))
 
-
-;;; bindings
-
-(global-set-key "\C-csm" 'moccur)
+(overriding-set-key (kbd "C-c s m") 'moccur)
 
 
 (resolve init-color-moccur)
