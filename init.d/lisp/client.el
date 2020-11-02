@@ -4,6 +4,10 @@
 
 (premise init)
 (premise frame)
+(premise feature)
+
+(lazy-autoload 'frameset-name "frameset")
+(lazy-autoload 'frameset-description "frameset")
 
 
 ;;; subr
@@ -282,6 +286,84 @@ belongs the other client than originally selected frame."
                   (if (frame-live-p frame)
                       (set-frame-parameter frame 'alpha (or alpha 100)))))
               frame-alpha-alist)))))
+
+
+
+;;; session
+
+(defcustom client-session-max 16
+  "Maximum number of `client-session-alist'."
+  :type 'integer
+  :group 'user)
+
+(defvar client-session-list nil
+  "List to store client sessions.")
+
+(defun client-save-session (&optional client)
+  "Save current session for CLIENT as a `frameset'.
+If CLIENT is not specified, use current client.
+Session will be saved in `client-session-list'."
+  (interactive)
+  (let* ((client (or client (frame-parameter nil 'client)))
+         (frame-list (client-frame-list client))
+         (frame-num (length frame-list))
+         (frameset
+          (frameset-save frame-list
+                         :app 'user
+                         :name (format "%s" client)
+                         :description (format "[%s] %d frame%s: %s"
+                                              (format-time-string "%FT%T")
+                                              frame-num
+                                              (if (not (eql frame-num 1))
+                                                  "s"
+                                                "")
+                                              (mapconcat
+                                               (lambda (frame)
+                                                 (frame-parameter frame 'name))
+                                               frame-list
+                                               ", ")))))
+    (let ((session-num (length client-session-list)))
+      (setq client-session-list
+            (cons frameset
+                  (if (< session-num client-session-max)
+                      client-session-list
+                    (butlast client-session-list
+                             (+ 1 (- session-num client-session-max)))))))))
+
+(defun client-restore-session (session)
+  "Restore client session by SESSION.
+SESSION is a `frameset'.
+When interactively, ask SESSION from `client-session-list'."
+  (interactive (list
+                (let ((name-session-alist
+                       (mapcar (lambda (session)
+                                 (cons (format "%s %s"
+                                               (frameset-name session)
+                                               (frameset-description session))
+                                       session))
+                               client-session-list)))
+                  (cdr (assoc (completing-read "Session: "
+                                               name-session-alist nil t)
+                              name-session-alist)))))
+  (let ((selected-frame (selected-frame)))
+    (frameset-restore session
+                      :reuse-frames
+                      (lambda (frame)
+                        (eq (frame-parameter selected-frame 'client)
+                            (frame-parameter frame 'client)))
+                      :cleanup-frames
+                      (lambda (frame action)
+                        (if (and (memq action '(:rejected :ignored))
+                             (eq (frame-parameter selected-frame 'client)
+                                 (frame-parameter frame 'client)))
+                            (delete-frame frame))))))
+
+(defun client-save-session-when-kill-terminal (&rest args)
+  "Advising function for `save-buffers-kill-terminal'."
+  (client-save-session))
+
+(advice-add 'save-buffers-kill-terminal
+            :before #' client-save-session-when-kill-terminal)
 
 
 (resolve client)
