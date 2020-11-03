@@ -4,6 +4,7 @@
 
 (premise init)
 (premise init-ido)
+(premise init-ruby-mode)
 (premise init-helm)
 (premise inst-inf-ruby)
 
