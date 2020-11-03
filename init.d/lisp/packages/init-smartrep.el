@@ -2,177 +2,145 @@
 ;;;; init-smartrep.el
 
 
-
-;;; base
-
 (premise init)
-(premise subr)
 (premise custom)
+(premise bindings)
 (premise mode-line)
-(premise inst-smartrep)
-
-(premise init-git-gutter-fringe)
 (premise init-multiple-cursors)
+(premise init-git-gutter-fringe)
 (premise init-dired-hacks)
-
-(require 'smartrep)
+(premise inst-smartrep)
 
 (eval-when-compile
   (require 'org)
-  (require 'flyspell)
   (require 'smerge-mode))
 
-(custom-set-variables '(smartrep-mode-line-string-activated " SRe"))
-(letrec ((insert-before-recursive-edit-close
-          (lambda (l)
-            (cond ((null l) l)
-                  ((equal (cadr l) "%]")
-                   (setcdr l (cons '(:propertize
-                                     smartrep-mode-line-string
-                                     face mode-line-warning)
-                                   (cdr l))))
-                  (t (funcall insert-before-recursive-edit-close (cdr l)))))))
-  (funcall insert-before-recursive-edit-close mode-line-modes))
+(declare-function smartrep-define-key "smartrep")
 
-(defcustom smartrep-mode-line-active-bg-adjuster nil ""
-  :type 'function :group 'smartrep)
-(call-with-runtime-bindings
- ((smartrep-mode-line-active-bg smartrep-mode-line-active-bg-adjuster))
- smartrep-map-internal bind-mode-line-active-bg)
+;;; settings
 
+(custom-set-variables
+ '(smartrep-mode-line-string-activated " SRe")
+ '(smartrep-mode-line-active-bg (face-background 'mode-line)))
+
+(with-eval-after-load 'smartrep
+  (letrec ((insert-before-recursive-edit-close
+            (lambda (l)
+              (cond ((null l) l)
+                    ((equal (cadr l) "%]")
+                     (setcdr l (cons '(:propertize
+                                       smartrep-mode-line-string
+                                       face mode-line-warning)
+                                     (cdr l))))
+                    (t (funcall insert-before-recursive-edit-close (cdr l)))))))
+    (funcall insert-before-recursive-edit-close mode-line-modes)))
+
+(add-hook 'emacs-startup-hook (lambda () (require 'smartrep)))
+
+
 
 ;;; bindings
 
+(with-eval-after-load 'smartrep
 
-;; window
-(smartrep-define-key
-    global-map "C-x"
-  '(("0" . delete-window)
-    ("2" . split-window-below)
-    ("3" . split-window-right)
-    ("^" . enlarge-window)
-    ("o" . other-window)
-    ("{" . shrink-window-horizontally)
-    ("}" . enlarge-window-horizontally)))
+  ;; page
+  (let ((key "C-x"))
+    (smartrep-define-key (overriding-map-for (kbd key))  key
+      '(("[" . backward-page)
+        ("]" . forward-page))))
 
-;; frame
-(smartrep-define-key
-    global-map "C-x 5"
-  '(("0" . delete-frame)
-    ("o" . other-frame)))
+  ;; window
+  (let ((key "C-x"))
+    (smartrep-define-key (overriding-map-for (kbd key)) key
+      '(("0" . delete-window)
+        ("1" . delete-other-windows)
+        ("2" . split-window-below)
+        ("3" . split-window-right)
+        ("^" . enlarge-window)
+        ("o" . other-window)
+        ("{" . shrink-window-horizontally)
+        ("}" . enlarge-window-horizontally))))
 
-;; frame alpha
-(smartrep-define-key
-    global-map "H-;"
-  '(("s" . set-frame-alpha)
-    ("p" . increase-frame-alpha)
-    ("n" . decrease-frame-alpha)
-    ("i" . increase-frame-alpha)
-    ("d" . decrease-frame-alpha)))
-(smartrep-define-key
-    global-map "H-+"
-  '(("s" . set-all-frames-alpha)
-    ("p" . increase-all-frames-alpha)
-    ("n" . decrease-all-frames-alpha)
-    ("i" . increase-all-frames-alpha)
-    ("d" . decrease-all-frames-alpha)))
-(eval-after-load 'server
-  '(smartrep-define-key
-       global-map "C-H-+"
-     '(("s" . set-all-client-frames-alpha)
-       ("p" . increase-all-client-frames-alpha)
-       ("n" . decrease-all-client-frames-alpha)
-       ("i" . increase-all-client-frames-alpha)
-       ("d" . decrease-all-client-frames-alpha))))
+  ;; frame
+  (let ((key "C-x 5"))
+    (smartrep-define-key (overriding-map-for (kbd key)) key
+      '(("0" . delete-frame)
+        ("o" . other-frame))))
 
-;; org
-(eval-after-load 'org
-  '(progn
-     (define-key org-mode-map "\C-c\C-u" (lookup-key org-mode-map "\C-c\C-v"))
-     (smartrep-define-key
-         org-mode-map "C-c"
-       '(("C-n" . (lambda () (outline-next-visible-heading 1)))
-         ("C-p" . (lambda () (outline-previous-visible-heading 1)))
-         ("C-f" . org-down-element)
-         ("C-b" . org-up-element)
-         ("C-v" . (lambda () (org-forward-heading-same-level 1)))
-         ("M-v" . (lambda () (org-backward-heading-same-level 1)))))))
+  ;; org
+  (with-eval-after-load 'org
+    (define-key org-mode-map (kbd "C-c C-u")
+      (lookup-key org-mode-map (kbd "C-c C-v")))
+    (smartrep-define-key org-mode-map "C-c"
+      '(("C-n" . (outline-next-visible-heading 1))
+        ("C-p" . (outline-previous-visible-heading 1))
+        ("C-f" . org-down-element)
+        ("C-b" . org-up-element)
+        ("C-v" . (org-forward-heading-same-level 1))
+        ("M-v" . (org-backward-heading-same-level 1)))))
 
-;; flyspell
-(eval-after-load 'flyspell
-  '(smartrep-define-key
-       overriding-flyspell-mode-map "C-c $"
-     '((">" . flyspell-goto-next-error)
-       ("." . flyspell-auto-correct-word)
-       ("," . flyspell-goto-next-error)
-       (";" . flyspell-auto-correct-previous-word))))
+  ;; flyspell
+  (with-eval-after-load 'flyspell
+    (smartrep-define-key overriding-flyspell-mode-map "C-c $"
+       '((">" . flyspell-goto-next-error)
+         ("." . flyspell-auto-correct-word)
+         ("," . flyspell-goto-next-error)
+         (";" . flyspell-auto-correct-previous-word))))
 
-;; smerge-mode
+  ;; smerge-mode
+  (with-eval-after-load 'smerge-mode
+    (smartrep-define-key smerge-mode-map "C-c ^"
+      '(("RET" . smerge-keep-current)
+        ("<return>" . smerge-keep-current)
+        ("= <" . smerge-diff-base-mine)
+        ("= =" . smerge-diff-mine-other)
+        ("= >" . smerge-diff-base-other)
+        ("C" . smerge-combine-with-next)
+        ("E" . smerge-ediff)
+        ("R" . smerge-refine)
+        ("a" . smerge-keep-all)
+        ("b" . smerge-keep-base)
+        ("m" . smerge-keep-mine)
+        ("n" . smerge-next)
+        ("o" . smerge-keep-other)
+        ("p" . smerge-prev)
+        ("r" . smerge-resolve))))
 
-(eval-after-load 'smerge-mode
-  '(smartrep-define-key
-       smerge-mode-map "C-c ^"
-     '(("RET" . smerge-keep-current)
-       ("<return>" . smerge-keep-current)
-       ("= <" . smerge-diff-base-mine)
-       ("= =" . smerge-diff-mine-other)
-       ("= >" . smerge-diff-base-other)
-       ("C" . smerge-combine-with-next)
-       ("E" . smerge-ediff)
-       ("R" . smerge-refine)
-       ("a" . smerge-keep-all)
-       ("b" . smerge-keep-base)
-       ("m" . smerge-keep-mine)
-       ("n" . smerge-next)
-       ("o" . smerge-keep-other)
-       ("p" . smerge-prev)
-       ("r" . smerge-resolve))))
+  ;; multiple-cursors
+  (let ((key "C-c @"))
+      (smartrep-define-key (overriding-map-for (kbd key)) key
+        '(("p" . mc/mark-previous-like-this)
+          ("n" . mc/mark-next-like-this)
+          ("P". mc/unmark-next-like-this)
+          ("N". mc/unmark-previous-like-this)
+          ("C-v" . mc/cycle-forward)
+          ("M-v" . mc/cycle-backward))))
 
-;; page
-(eval-after-load 'page
-  '(smartrep-define-key
-       global-map "C-x"
-     '(("[" . backward-page)
-       ("]" . forward-page))))
+  ;; git-gutter
+  (with-eval-after-load 'git-gutter
+    (let ((key "C-c v"))
+      (smartrep-define-key (overriding-map-for (kbd key)) key
+        '(("<" . git-gutter:previous-hunk)
+          (">" . git-gutter:next-hunk)
+          ("p" . git-gutter:previous-hunk)
+          ("n" . git-gutter:next-hunk)
+          ("d" . git-gutter:popup-hunk)
+          ("r" . git-gutter:revert-hunk)
+          ("s" . git-gutter:stage-hunk)
+          ("q" . git-gutter:close-popup)))))
 
-;; git-gutter
-(eval-after-load 'git-gutter
-  '(smartrep-define-key
-       global-map "C-c v"
-     '(("<" . git-gutter:previous-hunk)
-       (">" . git-gutter:next-hunk)
-       ("p" . git-gutter:previous-hunk)
-       ("n" . git-gutter:next-hunk)
-       ("d" . git-gutter:popup-hunk)
-       ("r" . git-gutter:revert-hunk)
-       ("s" . git-gutter:stage-hunk)
-       ("q" . git-gutter:close-popup))))
-
-;; multiple-cursors
-(with-eval-after-load 'mc-mark-more
-  (smartrep-define-key
-      overriding-minor-mode-key-map "C-c @"
-    '(("p" . mc/mark-previous-like-this)
-      ("n" . mc/mark-next-like-this)
-      ("P". mc/unmark-next-like-this)
-      ("N". mc/unmark-previous-like-this)
-      ("C-v" . mc/cycle-forward)
-      ("M-v" . mc/cycle-backward))))
-
-;; dired-backs
-(eval-after-load 'dired-subtree
-  '(smartrep-define-key
-       dired-mode-map ";"
-     '(("b" . dired-subtree-up)
-       ("f" . dired-subtree-down)
-       ("n" . dired-subtree-next-sibling)
-       ("p" . dired-subtree-previous-sibling)
-       ("M-<" . dired-subtree-beginning)
-       ("M->" . dired-subtree-end)
-       ("m" . dired-subtree-mark-subtree)
-       ("u" . dired-subtree-unmark-subtree)
-       ("o f" . dired-subtree-only-this-file)
-       ("o d" . dired-subtree-only-this-directory))))
+  ;; dired-backs
+  (smartrep-define-key dired-mode-map ";"
+    '(("b" . dired-subtree-up)
+      ("f" . dired-subtree-down)
+      ("n" . dired-subtree-next-sibling)
+      ("p" . dired-subtree-previous-sibling)
+      ("M-<" . dired-subtree-beginning)
+      ("M->" . dired-subtree-end)
+      ("m" . dired-subtree-mark-subtree)
+      ("u" . dired-subtree-unmark-subtree)
+      ("o f" . dired-subtree-only-this-file)
+      ("o d" . dired-subtree-only-this-directory))))
 
 
 (resolve init-smartrep)

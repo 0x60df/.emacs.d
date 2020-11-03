@@ -422,8 +422,8 @@
 
 (custom-theme-set-variables
  'tomorrow-night-accessory
- '(smartrep-mode-line-active-bg-adjuster
-   (lambda () (face-background 'mode-line))))
+ '(smartrep-mode-line-active-bg
+   (color-theme-tomorrow--with-colors 'night selection)))
 
 
 ;;; visual-regexp
