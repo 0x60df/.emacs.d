@@ -294,7 +294,7 @@ UNIT is a literal symbol."
 (init-package markdown-mode)
 (init-package ruby-end)
 (init-package inf-ruby)
-(init-package robe-mode)
+(init-package robe)
 (init-package yaml-mode)
 (init-package yatex)
 (init-package ox-gfm)
