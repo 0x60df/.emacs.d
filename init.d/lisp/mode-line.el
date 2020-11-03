@@ -11,6 +11,18 @@
 
 ;;; faces
 
+(face-spec-set 'mode-line-highlight
+               '((t (:inverse-video t)))
+               'face-defface-spec)
+
+(face-spec-set 'mode-line-emphasis
+               '((t (:weight bold :slant italic)))
+               'face-defface-spec)
+
+(face-spec-set 'mode-line-buffer-id
+               '((t (:weight bold)))
+               'face-defface-spec)
+
 (defface mode-line-vc-mode
   '((t :slant italic))
   "Face used for vc-mode part of the mode line."
@@ -27,13 +39,13 @@
   :group 'user)
 
 (defface mode-line-warning
-  '((t :weight bold))
+  '((t :weight bold :slant italic :inverse-video t))
   "Face for the potion of mode-line which call attention."
   :group 'user)
 
-(defface mode-line-shrinked
-  '((t :slant italic))
-  "Face for the potion of mode-line which is shirinked."
+(defface mode-line-transform
+  '((t :underline t))
+  "Face for the potion of mode-line which is transformed."
   :group 'user)
 
 
@@ -108,9 +120,9 @@ When non-nil, `mode-line-buffer-identification' is shrinked.")
                      (propertize
                       canonicalized
                       'face (if (< ,max-width (length text))
-                                '(mode-line-buffer-identification
-                                  mode-line-shrinked)
-                              'mode-line-buffer-identification))))
+                                '(mode-line-buffer-id
+                                  mode-line-transform)
+                              'mode-line-buffer-id))))
                   (:propertize ,format face mode-line-buffer-id))))
 
 (custom-set-variables
@@ -170,10 +182,10 @@ When non-nil, `'mode-line-modes is shrinked.")
                                       ,max-width))
                        text))))
               (if (< ,max-width (length text))
-                  (propertize canonicalized 'face 'mode-line-shrinked)
+                  (propertize canonicalized 'face 'mode-line-transform)
                 canonicalized)))
            minor-mode-alist)
-          (:propertize (-4 "%n") face mode-line-highlight)
+          (:propertize (-4 "%n") face mode-line-emphasis)
           "%]"
           " ")))
 
@@ -228,8 +240,8 @@ When non-nil, `'mode-line-modes is shrinked.")
                        (add-text-properties
                         last-element-start max-width
                         (list 'face (if (atom property)
-                                        (list 'mode-line-shrinked property)
-                                      (cons 'mode-line-shrinked property)))
+                                        (list 'mode-line-transform property)
+                                      (cons 'mode-line-transform property)))
                         subtext)))
                  subtext)
              text)))

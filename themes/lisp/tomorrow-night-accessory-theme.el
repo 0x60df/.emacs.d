@@ -21,15 +21,20 @@
 (custom-theme-set-faces
  'tomorrow-night-accessory
  '(mode-line-buffer-id ((t :weight bold)))
- '(mode-line-emphasis ((t :foreground nil)))
  '(mode-line-highlight ((t :inherit font-lock-string-face
-                           :weight normal
+                           :weight bold
+                           :slant italic
                            :foreground nil)))
+ '(mode-line-emphasis ((t :inherit font-lock-string-face
+                          :weight bold
+                          :slant normal
+                          :foreground nil)))
  '(mode-line-vc-mode ((t :inherit font-lock-variable-name-face)))
  '(mode-line-mode-name ((t :inherit font-lock-type-face)))
  '(mode-line-which-func-mode ((t :inherit font-lock-function-name-face)))
  '(mode-line-warning ((t :inherit font-lock-warning-face
-                         :weight normal))))
+                         :weight normal)))
+ '(mode-line-transform ((t :slant italic))))
 
 
 ;;; risky
