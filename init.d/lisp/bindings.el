@@ -61,14 +61,40 @@
   "Overriding map alist for reserved keys.")
 (add-to-list 'emulation-mode-map-alists 'overriding-reserved-key-map-alist)
 
-(defun overriding-set-key (key command)
-  "Give KEY a overriding binding as COMMAND.
-keymap will be selected according to KEY as follows.
+(defun overriding-map-for (key)
+  "Return appropriate overriding keymap for KEY.
+
+keymap will be selected as follows.
 Standard researved key: `overriding-standard-key-map'.
 Researved for major mode: `overriding-major-mode-key-map'.
 Researved for minor mode: `overriding-minor-mode-key-map'.
-If KEY is a key researved for user, use `global-map',
+If KEY is a key researved for user, return `global-map',
 because no other keymap may override it."
+  (or (if (< 0 (length key))
+          (let ((k1 (aref key 0)))
+            (cond ((and (characterp k1)
+                        (= k1 ?\^C)
+                        (< 1 (length key)))
+                   (let ((k2 (aref key 1)))
+                     (if (characterp k2)
+                         (cond ((or (and (<= ?A k2) (<= k2 ?Z))
+                                    (and (<= ?a k2) (<= k2 ?z)))
+                                global-map)
+                               ((or (and (<= ?\^@ k2) (<= k2 ?\^_))
+                                    (= k2 ?\^?)
+                                    (and (<= ?0 k2) (<= k2 ?9))
+                                    (memql k2 '(?{ ?} ?< ?> ?: ?\;)))
+                                overriding-major-mode-key-map)
+                               ((or (and (<= ?! k2) (<= k2 ?/))
+                                    (and (<= ?\[ k2) (<= k2 ?\`))
+                                    (memql k2 '(?= ?? ?@ ?\| ?~)))
+                                overriding-minor-mode-key-map)))))
+                  ((and (memq k1 '(f5 f6 f7 f8 f9))) global-map))))
+      overriding-standard-key-map))
+
+(defun overriding-set-key (key command)
+  "Give KEY a overriding binding as COMMAND.
+Keymap is determined by `overriding-map-for'"
   (interactive
    (let* ((menu-prompting nil)
           (key (read-key-sequence "Set overriding key: " nil t)))
@@ -77,29 +103,7 @@ because no other keymap may override it."
                                  (key-description key))))))
   (or (vectorp key) (stringp key)
       (signal 'wrong-type-argument (list 'arrayp key)))
-  (let ((keymap
-         (or (if (< 0 (length key))
-                 (let ((k1 (aref key 0)))
-                   (cond ((and (characterp k1)
-                               (= k1 ?\^C)
-                               (< 1 (length key)))
-                          (let ((k2 (aref key 1)))
-                            (if (characterp k2)
-                                (cond ((or (and (<= ?A k2) (<= k2 ?Z))
-                                           (and (<= ?a k2) (<= k2 ?z)))
-                                       global-map)
-                                      ((or (and (<= ?\^@ k2) (<= k2 ?\^_))
-                                           (= k2 ?\^?)
-                                           (and (<= ?0 k2) (<= k2 ?9))
-                                           (memql k2 '(?{ ?} ?< ?> ?: ?\;)))
-                                       overriding-major-mode-key-map)
-                                      ((or (and (<= ?! k2) (<= k2 ?/))
-                                           (and (<= ?\[ k2) (<= k2 ?\`))
-                                           (memql k2 '(?= ?? ?@ ?\| ?~)))
-                                       overriding-minor-mode-key-map)))))
-                         ((and (memq k1 '(f5 f6 f7 f8 f9))) global-map))))
-             overriding-standard-key-map)))
-    (define-key keymap key command)))
+  (define-key (overriding-map-for key) key command))
 
 
 
