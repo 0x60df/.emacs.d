@@ -4,12 +4,16 @@
 
 (premise init)
 (premise custom)
+(premise mode-line)
 (premise bindings)
 (premise init-icomplete)
 (premise init-ido)
 (premise init-dired)
 (premise init-sdired)
 (premise inst-helm)
+
+
+;;; settings
 
 (custom-set-variables
  '(helm-truncate-lines t))
@@ -26,6 +30,24 @@
           (load-file . ido-read-file-name)
           (dired . ido-read-file-name)
           (sdired-sort-by . ido-completing-read))))
+
+
+
+;;; patches
+
+(defun modify-helm-mode-line (&rest args)
+  "Advising function to modify mode-line-format for helm."
+  (when helm-mode-line-string
+    (let ((head (cadr mode-line-format)))
+      (setcdr head (cons 'mode-line-front-space (cdr head)))
+      (setcar head ""))
+    (setq mode-line-format (mode-line-format-auto-truncate mode-line-format))))
+
+(advice-add 'helm-display-mode-line :after #'modify-helm-mode-line)
+
+
+
+;;; bindings
 
 (custom-set-variables
  '(helm-command-prefix-key "C-q"))
@@ -46,6 +68,10 @@
 (with-eval-after-load 'helm
   (define-key helm-map (kbd "TAB") #'helm-execute-persistent-action)
   (define-key helm-map (kbd "C-j") #'helm-select-action))
+
+
+
+;;; start
 
 (remove-hook 'emacs-startup-hook #'ido-mode)
 (add-hook 'emacs-startup-hook #'helm-mode)
