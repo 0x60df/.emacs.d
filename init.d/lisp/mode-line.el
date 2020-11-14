@@ -202,59 +202,68 @@ When non-nil, `'mode-line-modes is shrinked.")
 (setq mode-line-end-spaces
       '(:eval (unless (display-graphic-p) "-%-")))
 
-(setq-default
- mode-line-format
- `(:eval
-   (let* ((text
-           (format-mode-line
-            ',(mapcar (lambda (e)
-                        (if (stringp e)
-                            (replace-regexp-in-string "^\\s-+$" " " e)
-                          e))
-                      (default-value 'mode-line-format))))
-          (text-width (length text))
-          (max-width (+ (window-body-width) 1))
-          (shrinked
-           (if (< max-width text-width)
-               (let* ((subtext (substring text 0 max-width))
-                      (r-subtext (string-reverse subtext))
-                      (last-non-space
-                       (- max-width 1 (string-match "[^ ]" r-subtext)))
-                      (last-element-end
-                       (next-single-property-change
-                        last-non-space 'face subtext max-width))
-                      (original-last-element-end
-                       (next-single-property-change
-                        last-non-space 'face text text-width)))
-                 (if (and (< last-element-end original-last-element-end)
-                          (string-match
-                           "[^ ]"
-                           (substring text
-                                      last-element-end
-                                      original-last-element-end)))
-                     (let ((last-element-start
-                            (previous-single-property-change
-                             (+ last-non-space 1) 'face subtext 0))
-                           (property (get-text-property
-                                  last-non-space 'face subtext)))
-                       (add-text-properties
-                        last-element-start max-width
-                        (list 'face (if (atom property)
-                                        (list 'mode-line-transform property)
-                                      (cons 'mode-line-transform property)))
-                        subtext)))
-                 subtext)
-             text)))
-     (letrec ((duplicate-percent
-               (lambda (string start)
-                 (let ((end (string-match "%" string start)))
-                   (cond ((null end) (substring string start (length string)))
-                         (t (concat
-                             (substring string start end)
-                             (substring string end (+ end 1))
-                             (substring string end (+ end 1))
-                             (funcall duplicate-percent string (+ end 1)))))))))
-       (funcall duplicate-percent shrinked 0)))))
+(defvar mode-line-format-raw
+  (mapcar (lambda (e)
+            (if (stringp e)
+                (replace-regexp-in-string "^\\s-+$" " " e)
+              e))
+          (default-value 'mode-line-format))
+  "Default value of `mode-line-format'.")
+(make-variable-buffer-local 'mode-line-format-raw)
+
+(defun mode-line-format-auto-truncate (form)
+  "Construct form for `mode-line-format' from FORM.
+Constructed form wrap FORM by :eval form which truncate
+mode-line string by window-width."
+  `(:eval
+    (let* ((text (format-mode-line ',form))
+           (text-width (length text))
+           (max-width (+ (window-body-width) 1))
+           (shrinked
+            (if (< max-width text-width)
+                (let* ((subtext (substring text 0 max-width))
+                       (r-subtext (string-reverse subtext))
+                       (last-non-space
+                        (- max-width 1 (string-match "[^ ]" r-subtext)))
+                       (last-element-end
+                        (next-single-property-change
+                         last-non-space 'face subtext max-width))
+                       (original-last-element-end
+                        (next-single-property-change
+                         last-non-space 'face text text-width)))
+                  (if (and (< last-element-end original-last-element-end)
+                           (string-match
+                            "[^ ]"
+                            (substring text
+                                       last-element-end
+                                       original-last-element-end)))
+                      (let ((last-element-start
+                             (previous-single-property-change
+                              (+ last-non-space 1) 'face subtext 0))
+                            (property (get-text-property
+                                       last-non-space 'face subtext)))
+                        (add-text-properties
+                         last-element-start max-width
+                         (list 'face (if (atom property)
+                                         (list 'mode-line-transform property)
+                                       (cons 'mode-line-transform property)))
+                         subtext)))
+                  subtext)
+              text)))
+      (letrec ((duplicate-percent
+                (lambda (string start)
+                  (let ((end (string-match "%" string start)))
+                    (cond
+                     ((null end) (substring string start (length string)))
+                     (t (concat
+                         (substring string start end)
+                         (substring string end (+ end 1))
+                         (substring string end (+ end 1))
+                         (funcall duplicate-percent string (+ end 1)))))))))
+        (funcall duplicate-percent shrinked 0)))))
+
+(setq-default mode-line-format
+              (mode-line-format-auto-truncate mode-line-format-raw))
 
 
 
