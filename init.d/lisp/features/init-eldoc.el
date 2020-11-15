@@ -23,6 +23,9 @@
         (let* ((cell (assq 'eldoc-mode-line-string mode-line-format))
                (format (cadr cell)))
           (when (and format (not (equal format "")))
+            (let ((last (last format)))
+              (if (equal (car last) " ")
+                  (setcar last '(:propertize " " face mode-line-separator))))
             (letrec ((insert-eldoc-after-front-space
                       (lambda (l)
                         (cond ((null l)

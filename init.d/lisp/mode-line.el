@@ -48,6 +48,11 @@
   "Face for the potion of mode-line which is transformed."
   :group 'user)
 
+(defface mode-line-separator
+  '((t))
+  "Face for separator space of the mode line."
+  :group 'user)
+
 
 
 ;;; format
@@ -94,7 +99,7 @@ When non-nil, `mode-line-mule-info' shows input method.")
                               (client-frame-list)
                             (frame-list)))))
            (if (< l 10) (number-to-string l) "#")))
-        " "))
+        (:propertize " " face mode-line-separator)))
 
 (defvar mode-line-buffer-identification-shrinked-flag nil
   "State of `mode-line-buffer-identification' replesentation.
@@ -131,21 +136,21 @@ When non-nil, `mode-line-buffer-identification' is shrinked.")
 
 (setq mode-line-position
       '(""
-       mode-line-percent-position
-       (size-indication-mode (5 "/%I"))
-       (line-number-mode
-        (column-number-mode
-         (column-number-indicator-zero-based
-          (7  " %l %c")
-          (7  " %l %C"))
-         (4  " L%l"))
-        (column-number-mode
-         (column-number-indicator-zero-based
-          (4  " C%c")
-          (4  " C%C"))))))
+        mode-line-percent-position
+        (size-indication-mode (5 "/%I"))
+        (line-number-mode
+         (column-number-mode
+          (column-number-indicator-zero-based
+           (7  " %l %c")
+           (7  " %l %C"))
+          (4  " L%l"))
+         (column-number-mode
+          (column-number-indicator-zero-based
+           (4  " C%c")
+           (4  " C%C"))))))
 
 (setcdr (assq 'vc-mode mode-line-format)
-        '((" "
+        '(((:propertize " " face mode-line-separator)
            (:propertize
             (:eval (replace-regexp-in-string
                     "^\\s-+\\|\\s-+$" ""
@@ -187,7 +192,7 @@ When non-nil, `'mode-line-modes is shrinked.")
            minor-mode-alist)
           (:propertize (-4 "%n") face mode-line-emphasis)
           "%]"
-          " ")))
+          (:propertize " " face mode-line-separator))))
 
 (custom-set-variables
  '(which-func-format
@@ -205,7 +210,10 @@ When non-nil, `'mode-line-modes is shrinked.")
 (defvar mode-line-format-raw
   (mapcar (lambda (e)
             (if (stringp e)
-                (replace-regexp-in-string "^\\s-+$" " " e)
+                (let ((string (replace-regexp-in-string "^\\s-+$" " " e)))
+                  (if (equal string " ")
+                      (propertize string 'face 'mode-line-separator)
+                    string))
               e))
           (default-value 'mode-line-format))
   "Default value of `mode-line-format'.")

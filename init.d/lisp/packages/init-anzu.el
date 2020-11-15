@@ -21,7 +21,9 @@
 
 (with-eval-after-load 'anzu
   (setq mode-line-position
-        (list mode-line-position " " '(:eval (anzu--update-mode-line)))))
+        (list mode-line-position
+              '(anzu--state " ")
+              '(:eval (anzu--update-mode-line)))))
 
 (add-hook 'emacs-startup-hook #'global-anzu-mode)
 
