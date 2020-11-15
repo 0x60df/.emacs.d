@@ -115,8 +115,8 @@
 
 (custom-theme-set-variables
  'tomorrow-night-accessory
- '(popup-isearch-cursor-color-adjuster
-   (lambda () (face-foreground 'isearch))))
+ `(popup-isearch-cursor-color
+   ,(color-theme-tomorrow--with-colors 'night-eighties yellow)))
 
 (custom-theme-set-faces
  'tomorrow-night-accessory
@@ -137,8 +137,8 @@
 
 (custom-theme-set-variables
  'tomorrow-night-accessory
- '(ac-fuzzy-cursor-color-adjuster
-   (lambda () (face-foreground 'warning))))
+ `(ac-fuzzy-cursor-color
+   ,(color-theme-tomorrow--with-colors 'night-eighties orange)))
 
 (custom-theme-set-faces
  'tomorrow-night-accessory
