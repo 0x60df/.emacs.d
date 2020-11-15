@@ -68,7 +68,8 @@
  'night
  (custom-theme-set-faces
   'tomorrow-night-accessory
-  `(org-drawer ((t :foreground ,comment)))))
+  `(org-drawer ((t :foreground ,comment)))
+  `(org-time-grid ((t :foreground ,yellow)))))
 
 
 ;;; hi-lock
