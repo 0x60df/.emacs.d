@@ -2,173 +2,158 @@
 ;;;; init-evil.el
 
 
-
-;;; base
-
 (premise init)
-(premise subr)
 (premise custom)
+(premise mode-line)
 (premise inst-evil)
 
+(declare-function evil-save-and-emacs-state load-file-name t t)
 
-;; setting
 
+;;; settings
+
+;; base
 (custom-set-variables
  '(evil-default-state 'emacs)
  '(evil-insert-state-modes nil)
  '(evil-motion-state-modes nil)
  '(evil-mode-line-format 'after))
 
-;; toggle
-(defun vi ()
-  (interactive)
-  (evil-exit-emacs-state))
+;; undo-tree
+(custom-set-variables
+ '(undo-tree-mode-lighter " UT"))
+(with-eval-after-load 'undo-tree
+  (global-undo-tree-mode 0))
 
-(with-eval-after-load 'evil-common
+
+
+;;; mode-line
+
+(defface evil-normal-state-tag
+  '((t))
+  "Face for evil-normal-state-tag."
+  :group 'user)
+
+(defface evil-insert-state-tag
+  '((t))
+  "Face for evil-insert-state-tag."
+  :group 'user)
+
+(defface evil-replace-state-tag
+  '((t))
+  "Face for evil-replace-state-tag."
+  :group 'user)
+
+(defface evil-operator-state-tag
+  '((t))
+  "Face for evil-operator-state-tag."
+  :group 'user)
+
+(defface evil-visual-state-tag
+  '((t))
+  "Face for evil-visual-state-tag."
+  :group 'user)
+
+(defface evil-motion-state-tag
+  '((t))
+  "Face for evil-motion-state-tag."
+  :group 'user)
+
+(defun evil-with-mode-line-format-raw (evil-refresh-mode-line &rest args)
+  "Advising `evil-refresh-mode-line' to work with custom mode-line.
+Call `evil-refresh-mode-line' with local `mode-line-format'
+as `mode-line-format-raw'.
+After `evil-refresh-mode-line', set default value of
+`mode-line-format' by local value with
+`mode-line-format-auto-truncate'."
+  (let ((mode-line-format mode-line-format-raw))
+    (apply evil-refresh-mode-line args)))
+
+(with-eval-after-load 'evil
+  (setq evil-emacs-state-tag "")
+
+  (mapc
+   (lambda (state)
+     (let* ((toggle (intern (format "evil-%s-state" state)))
+            (tag (intern (format "%s-tag" toggle))))
+       (set tag (concat "V:"
+                        (propertize (replace-regexp-in-string
+                                     "^ <\\(.\\)> $" "\\1" (symbol-value tag))
+                                    'face tag)
+                        " "))))
+   '(normal insert replace operator motion))
+
+  (mapc
+   (lambda (selection)
+     (let ((tag (intern (format "evil-visual-%s-tag" selection))))
+       (set tag (concat "V:"
+                        (propertize (replace-regexp-in-string
+                                     "^ <\\(.+\\)> $" "\\1" (symbol-value tag))
+                                    'face 'evil-visual-state-tag)
+                        " "))))
+   '(char line screen-line block))
+
+  (advice-add 'evil-refresh-mode-line :around #'evil-with-mode-line-format-raw))
+
+
+
+;;; cursor
+
+(defconst evil-refresh-cursor-interrupt-conditions nil
+  "List of condition forms to interrupt `evil-refresh-cursor'.")
+
+(defun evil-interrupt-refresh-cursor (evil-refresh-cursor &rest args)
+  "Advising `evil-refresh-cursor' to interrupt on specific condition.
+Conditions are specified by `evil-refresh-cursor-interrupt-conditions'."
+  (letrec ((any (lambda (l)
+                  (cond ((null l) l)
+                        ((eval (car l)) (car l))
+                        (t (funcall any (cdr l)))))))
+    (unless (funcall any evil-refresh-cursor-interrupt-conditions)
+      (apply evil-refresh-cursor args ))))
+
+(with-eval-after-load 'evil
+  (advice-add 'evil-refresh-cursor :around #'evil-interrupt-refresh-cursor)
+  (eval-after-load 'auto-complete
+    '(add-to-list 'evil-refresh-cursor-interrupt-conditions
+                  '(and (memq evil-state '(emacs insert))
+                        (ac-menu-live-p)))))
+
+
+
+;;; bindings
+
+(with-eval-after-load 'evil-states
+  (define-key evil-normal-state-map (kbd "C-.") nil))
+
+
+
+;;; entry and exit
+
+(with-eval-after-load 'evil
+  (defalias 'vi #'evil-exit-emacs-state "Enter evil.")
+
   (evil-define-command evil-save-and-emacs-state (file &optional bang)
     "Saves the current buffer and toggle to emacs state."
     :repeat nil
     (interactive "<f><!>")
     (evil-write nil nil nil file bang)
-    (evil-emacs-state)))
+    (evil-emacs-state))
 
-(with-eval-after-load 'evil-ex
-  (evil-ex-define-cmd "q[uit]" 'evil-emacs-state)
-  (evil-ex-define-cmd "wq" 'evil-save-and-emacs-state))
+  (evil-ex-define-cmd "q[uit]" #'evil-emacs-state)
+  (evil-ex-define-cmd "wq" #'evil-save-and-emacs-state)
 
-(with-eval-after-load 'evil-states
   (define-key evil-motion-state-map (kbd "H-e") #'evil-emacs-state)
   (define-key evil-insert-state-map (kbd "H-e") #'evil-emacs-state)
-  (define-key evil-emacs-state-map (kbd "H-e") #'evil-exit-emacs-state))
+  (define-key evil-emacs-state-map (kbd "H-e") #'evil-exit-emacs-state)
 
-(with-eval-after-load 'evil-vars
-    (evil-set-toggle-key "C-c DEL"))
+  (evil-set-toggle-key "C-c DEL"))
 
-;; leader
-(defun evil-leader (command)
-  (interactive (list (read-from-minibuffer
-                      "\\"
-                      nil
-                      evil-ex-completion-map)))
-  (cond ((equal command "q") (evil-quit))
-        (t nil)))
-
-(with-eval-after-load 'evil-vars
-  (define-key evil-motion-state-map (kbd "\\") #'evil-leader))
-
-
-;;; tag
-
-;; face for tag
-(defface evil-mode-line-tag-face '((t))
-  "Face for evil-mode-line-tag."
-  :group 'evil)
-
-;; tag string
-
-(with-eval-after-load 'evil-states
-  (setq evil-emacs-state-tag ""))
-
-(mapc
- (lambda (state)
-   (let* ((toggle (intern (format "evil-%s-state" state)))
-          (tag (intern (format "%s-tag" toggle)))
-          (face (intern (format "%s-face" tag))))
-     (eval `(defface ,face '((t :inherit evil-mode-line-tag-face))
-              (format "Face for %s." tag)
-              :group 'evil))
-     (set tag (concat (propertize "V:" 'face 'evil-mode-line-tag-face)
-                      (eval `(propertize (replace-regexp-in-string
-                                          "^ <\\(.\\)> $" "\\1" ,tag)
-                                         'face ',face))
-                      (propertize " " 'face 'evil-mode-line-tag-face)))))
- '(normal insert replace operator motion))
-(defface evil-visual-state-tag-face
-  '((t :inherit evil-mode-line-tag-face))
-  (format "Face for evil-visual-state-tag.")
-  :group 'evil)
-(mapc
- (lambda (selection)
-   (let ((tag (intern (format "evil-visual-%s-tag" selection))))
-     (set tag (concat (propertize "V:" 'face 'evil-mode-line-tag-face)
-                      (propertize (replace-regexp-in-string
-                                   "^ <\\(.+\\)> $" "\\1" (symbol-value tag))
-                                  'face 'evil-visual-state-tag-face)
-                      (propertize " " 'face 'evil-mode-line-tag-face)))))
- '(char line screen-line block))
-
-;; patch for mouse
-(defadvice evil-generate-mode-line-tag (after evil-generate-dry-mode-line-tag)
-  (setq ad-return-value (evil-state-property state :tag t)))
-
-(ad-activate 'evil-generate-mode-line-tag)
-
-
-;;; cursor
-
-
-;; prohibit refresh on some condition
-(defcustom evil-reasons-for-interruption-of-reflesh-cursor nil
-  ""
-  :type '(repeat sexp)
-  :group 'evil
-  :set '(lambda (symbol value)
-          (set-default symbol
-                       (apply 'append (mapcar (lambda (l) (eval (car (cdr l))))
-                                              (get symbol 'theme-value))))))
-(defadvice evil-refresh-cursor (around interrupt-refresh-cursor)
-  (letrec ((any (lambda (l)
-                  (cond ((null l) l)
-                        ((eval (car l)) (eval (car l)))
-                        (t (funcall any (cdr l)))))))
-    (unless (funcall any evil-reasons-for-interruption-of-reflesh-cursor)
-      ad-do-it)))
-
-(ad-activate 'evil-refresh-cursor)
-
-;; generate cursor before refresh-cursor
-(defcustom evil-emacs-state-cursor-adjuster nil ""
-  :type 'function :group 'evil)
-(defcustom evil-normal-state-cursor-adjuster nil ""
-  :type 'function :group 'evil)
-(defcustom evil-insert-state-cursor-adjuster nil ""
-  :type 'function :group 'evil)
-(defcustom evil-visual-state-cursor-adjuster nil ""
-  :type 'function :group 'evil)
-(defcustom evil-replace-state-cursor-adjuster nil ""
-  :type 'function :group 'evil)
-(defcustom evil-operator-state-cursor-adjuster nil ""
-  :type 'function :group 'evil)
-(defcustom evil-motion-state-cursor-adjuster nil ""
-  :type 'function :group 'evil)
-(call-with-runtime-bindings
- ((evil-emacs-state-cursor evil-emacs-state-cursor-adjuster)
-  (evil-normal-state-cursor evil-normal-state-cursor-adjuster)
-  (evil-insert-state-cursor evil-insert-state-cursor-adjuster)
-  (evil-visual-state-cursor evil-visual-state-cursor-adjuster)
-  (evil-replace-state-cursor evil-replace-state-cursor-adjuster)
-  (evil-operator-state-cursor evil-operator-state-cursor-adjuster)
-  (evil-motion-state-cursor evil-motion-state-cursor-adjuster))
- evil-refresh-cursor bind-cursor-variables)
-
-
-;;; retrieve key
-
-(eval-after-load 'evil
-  '(progn
-     (define-key evil-normal-state-map (kbd "C-.") 'nil)))
-
+
 
 ;;; start
 
 (add-hook 'emacs-startup-hook #'evil-mode)
-
-
-;; undo-tree
-(eval-after-load 'undo-tree
-  '(progn
-     (custom-set-variables '(undo-tree-mode-lighter " UT"))
-     (global-undo-tree-mode -1)))
 
 
 (resolve init-evil)

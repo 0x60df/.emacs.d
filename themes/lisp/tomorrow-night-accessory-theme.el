@@ -369,54 +369,29 @@
 
 ;;; evil
 
-(custom-theme-set-variables
- 'tomorrow-night-accessory
+(color-theme-tomorrow--with-colors
+ 'night
+ (custom-theme-set-variables
+  'tomorrow-night-accessory
 
- '(evil-emacs-state-cursor-adjuster
-   (lambda () (if window-system
-                  (color-theme-tomorrow--with-colors 'night red)
-                nil)))
- '(evil-normal-state-cursor-adjuster
-   (lambda () (if window-system
-                  (color-theme-tomorrow--with-colors 'night green)
-                nil)))
- '(evil-insert-state-cursor-adjuster
-   (lambda ()
-     (let ((painter
-            (if window-system
-                (lambda (cursor)
-                  (list (color-theme-tomorrow--with-colors 'night orange)
-                        cursor))
-              (symbol-function 'identity))))
-       (funcall painter 'bar))))
- '(evil-visual-state-cursor-adjuster
-   (lambda () (if window-system
-                  (color-theme-tomorrow--with-colors 'night blue)
-                nil)))
- '(evil-replace-state-cursor-adjuster
-   (lambda ()
-     (let ((painter
-            (if window-system
-                (lambda (cursor)
-                  (list (color-theme-tomorrow--with-colors 'night orange)
-                        cursor))
-              (symbol-function 'identity))))
-       (funcall painter 'hbar))))
- '(evil-operator-state-cursor-adjuster
-   (lambda () (if window-system
-                  (color-theme-tomorrow--with-colors 'night yellow)
-                nil)))
- '(evil-motion-state-cursor-adjuster
-   (lambda () (if window-system
-                  (color-theme-tomorrow--with-colors 'night aqua)
-                nil)))
+  `(evil-emacs-state-cursor ,red)
+  `(evil-normal-state-cursor ,green)
+  `(evil-insert-state-cursor '(bar ,green))
+  `(evil-replace-state-cursor '(hbar ,green))
+  `(evil-operator-state-cursor ,green)
+  `(evil-visual-state-cursor ,green)
+  `(evil-motion-state-cursor ,blue))
 
- ;; prohibit changing cursor while ac-menu is live
- '(evil-reasons-for-interruption-of-reflesh-cursor
-   '((and (or (eq evil-state 'emacs)
-              (eq evil-state 'insert)
-              (eq evil-state 'replace))
-          (ac-menu-live-p)))))
+ (custom-theme-set-faces
+  'tomorrow-night-accessory
+  `(evil-ex-info ((t :foreground ,red :slant italic)))
+  `(evil-ex-substitute-matches ((t :foreground ,red :underline t)))
+  `(evil-normal-state-tag ((t :foreground ,green :weight bold)))
+  `(evil-insert-state-tag ((t :foreground ,green :weight bold)))
+  `(evil-replace-state-tag ((t :foreground ,green :weight bold)))
+  `(evil-operator-state-tag ((t :foreground ,green :weight bold)))
+  `(evil-visual-state-tag ((t :foreground ,green :weight bold)))
+  `(evil-motion-state-tag ((t :foreground ,blue :weight bold)))))
 
 
 ;;; smartrep
