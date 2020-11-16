@@ -43,7 +43,9 @@
       (setcar head ""))
     (setq mode-line-format (mode-line-format-auto-truncate mode-line-format))))
 
-(advice-add 'helm-display-mode-line :after #'modify-helm-mode-line)
+(with-eval-after-load 'helm
+  (add-to-list 'mode-line-boundary-faces 'helm-candidate-number)
+  (advice-add 'helm-display-mode-line :after #'modify-helm-mode-line))
 
 
 

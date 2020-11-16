@@ -207,6 +207,60 @@ When non-nil, `'mode-line-modes is shrinked.")
 (setq mode-line-end-spaces
       '(:eval (unless (display-graphic-p) "-%-")))
 
+(defvar mode-line-boundary-faces
+  '(mode-line-buffer-id
+    mode-line-vc-mode
+    mode-line-mode-name
+    mode-line-which-func-mode
+    mode-line-separator)
+  "Faces which determine boundary of elements of mode-line.")
+
+(defun mode-line--face-list (position object)
+  "Return list of face or face spec on the POSITION of the OBJECT."
+  (let ((face (get-text-property position 'face object)))
+    (cond ((symbolp face) (list face))
+          ((stringp face) (list (intern face)))
+          ((eq (car face) :filtered) (list face))
+          ((keywordp (car face)) (list face))
+          ((memq (car face) '(foreground-color background-color)) (list face))
+          ((listp face) face)
+          (t '()))))
+
+(defun mode-line--next-boundary (position object limit)
+  "Return next bounday of mode line elments by integer.
+Search `next-single-property-change' for the face from
+POSITION in OBJECT. If difference contains
+`mode-line-boundary-faces', return that position.
+If no boundary is detected until LIMIT, retun nil."
+  (let ((candidate (next-single-property-change position 'face object limit)))
+    (cond ((eql candidate limit) candidate)
+          ((let* ((face-1 (mode-line--face-list candidate object))
+                  (face-2 (mode-line--face-list (- candidate 1) object))
+                  (diff-1 (seq-difference face-1 face-2))
+                  (diff-2 (seq-difference face-2 face-1)))
+             (seq-some (lambda (face) (member face mode-line-boundary-faces))
+                       (append diff-1 diff-2)))
+           candidate)
+          (t (mode-line--next-boundary candidate object limit)))))
+
+(defun mode-line--previous-boundary (position object limit)
+  "Return previous bounday of mode line elments by integer.
+Search `previous-single-property-change' for the face from
+POSITION in OBJECT. If difference contains
+`mode-line-boundary-faces', return that position.
+If no boundary is detected until LIMIT, retun nil."
+  (let ((candidate (previous-single-property-change position 'face
+                                                    object limit)))
+    (cond ((eql candidate limit) candidate)
+          ((let* ((face-1 (mode-line--face-list candidate object))
+                  (face-2 (mode-line--face-list (- candidate 1) object))
+                  (diff-1 (seq-difference face-1 face-2))
+                  (diff-2 (seq-difference face-2 face-1)))
+             (seq-some (lambda (face) (member face mode-line-boundary-faces))
+                       (append diff-1 diff-2)))
+           candidate)
+          (t (mode-line--previous-boundary (- candidate 1) object limit)))))
+
 (defvar mode-line-format-raw
   (mapcar (lambda (e)
             (if (stringp e)
@@ -234,11 +288,11 @@ mode-line string by window-width."
                        (last-non-space
                         (- max-width 1 (string-match "[^ ]" r-subtext)))
                        (last-element-end
-                        (next-single-property-change
-                         last-non-space 'face subtext max-width))
+                        (mode-line--next-boundary
+                         last-non-space subtext max-width))
                        (original-last-element-end
-                        (next-single-property-change
-                         last-non-space 'face text text-width)))
+                        (mode-line--next-boundary
+                         last-non-space text text-width)))
                   (if (and (< last-element-end original-last-element-end)
                            (string-match
                             "[^ ]"
@@ -246,16 +300,13 @@ mode-line string by window-width."
                                        last-element-end
                                        original-last-element-end)))
                       (let ((last-element-start
-                             (previous-single-property-change
-                              (+ last-non-space 1) 'face subtext 0))
+                             (mode-line--previous-boundary
+                              (+ last-non-space 1) subtext 0))
                             (property (get-text-property
                                        last-non-space 'face subtext)))
-                        (add-text-properties
-                         last-element-start max-width
-                         (list 'face (if (atom property)
-                                         (list 'mode-line-transform property)
-                                       (cons 'mode-line-transform property)))
-                         subtext)))
+                        (add-face-text-property
+                         last-element-start max-width 'mode-line-transform
+                         nil subtext)))
                   subtext)
               text)))
       (letrec ((duplicate-percent

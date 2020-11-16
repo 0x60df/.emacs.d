@@ -47,6 +47,8 @@
             (force-mode-line-update)))))))
 
 (with-eval-after-load 'eldoc
+  (add-to-list 'mode-line-boundary-faces 'font-lock-keyword-face)
+  (add-to-list 'mode-line-boundary-faces 'font-lock-function-name-face)
   (advice-add 'eldoc-minibuffer-message
               :around #'eldoc-modify-mode-line-message))
 
