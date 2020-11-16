@@ -6,9 +6,6 @@
 (premise custom)
 (premise bindings)
 (premise mode-line)
-(premise init-multiple-cursors)
-(premise init-git-gutter-fringe)
-(premise init-dired-hacks)
 (premise inst-smartrep)
 
 (eval-when-compile
@@ -104,43 +101,50 @@
         ("n" . smerge-next)
         ("o" . smerge-keep-other)
         ("p" . smerge-prev)
-        ("r" . smerge-resolve))))
+        ("r" . smerge-resolve)))))
 
-  ;; multiple-cursors
-  (let ((key "C-c @"))
-      (smartrep-define-key (overriding-map-for (kbd key)) key
-        '(("p" . mc/mark-previous-like-this)
-          ("n" . mc/mark-next-like-this)
-          ("P". mc/unmark-next-like-this)
-          ("N". mc/unmark-previous-like-this)
-          ("C-v" . mc/cycle-forward)
-          ("M-v" . mc/cycle-backward))))
+(add-hook 'after-init-hook
+          (lambda ()
+            (with-eval-after-load 'smartrep
 
-  ;; git-gutter
-  (with-eval-after-load 'git-gutter
-    (let ((key "C-c v"))
-      (smartrep-define-key (overriding-map-for (kbd key)) key
-        '(("<" . git-gutter:previous-hunk)
-          (">" . git-gutter:next-hunk)
-          ("p" . git-gutter:previous-hunk)
-          ("n" . git-gutter:next-hunk)
-          ("d" . git-gutter:popup-hunk)
-          ("r" . git-gutter:revert-hunk)
-          ("s" . git-gutter:stage-hunk)
-          ("q" . git-gutter:close-popup)))))
+              ;; multiple-cursors
+              (if (init-unit-p inst-multiple-cursors)
+                  (let ((key "C-c @"))
+                    (smartrep-define-key (overriding-map-for (kbd key)) key
+                      '(("p" . mc/mark-previous-like-this)
+                        ("n" . mc/mark-next-like-this)
+                        ("P". mc/unmark-next-like-this)
+                        ("N". mc/unmark-previous-like-this)
+                        ("C-v" . mc/cycle-forward)
+                        ("M-v" . mc/cycle-backward)))))
 
-  ;; dired-backs
-  (smartrep-define-key dired-mode-map ";"
-    '(("b" . dired-subtree-up)
-      ("f" . dired-subtree-down)
-      ("n" . dired-subtree-next-sibling)
-      ("p" . dired-subtree-previous-sibling)
-      ("M-<" . dired-subtree-beginning)
-      ("M->" . dired-subtree-end)
-      ("m" . dired-subtree-mark-subtree)
-      ("u" . dired-subtree-unmark-subtree)
-      ("o f" . dired-subtree-only-this-file)
-      ("o d" . dired-subtree-only-this-directory))))
+              ;; git-gutter
+              (if (init-unit-p inst-git-gutter-fringe)
+                  (with-eval-after-load 'git-gutter
+                    (let ((key "C-c v"))
+                      (smartrep-define-key (overriding-map-for (kbd key)) key
+                        '(("<" . git-gutter:previous-hunk)
+                          (">" . git-gutter:next-hunk)
+                          ("p" . git-gutter:previous-hunk)
+                          ("n" . git-gutter:next-hunk)
+                          ("d" . git-gutter:popup-hunk)
+                          ("r" . git-gutter:revert-hunk)
+                          ("s" . git-gutter:stage-hunk)
+                          ("q" . git-gutter:close-popup))))))
+
+              ;; dired-backs
+              (if (init-unit-p inst-dired-hacks)
+                  (smartrep-define-key dired-mode-map ";"
+                    '(("b" . dired-subtree-up)
+                      ("f" . dired-subtree-down)
+                      ("n" . dired-subtree-next-sibling)
+                      ("p" . dired-subtree-previous-sibling)
+                      ("M-<" . dired-subtree-beginning)
+                      ("M->" . dired-subtree-end)
+                      ("m" . dired-subtree-mark-subtree)
+                      ("u" . dired-subtree-unmark-subtree)
+                      ("o f" . dired-subtree-only-this-file)
+                      ("o d" . dired-subtree-only-this-directory)))))))
 
 
 (resolve init-smartrep)

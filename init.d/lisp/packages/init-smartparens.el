@@ -5,10 +5,11 @@
 (premise init)
 (premise custom)
 (premise bindings)
+(premise feature)
 (premise inst-smartparens)
 
-(declare-function sp-splice-sexp "smartparens")
-(declare-function sp-rewrap-sexp "smartparens")
+(lazy-autoload 'sp-splice-sexp "smartparens")
+(lazy-autoload 'sp-rewrap-sexp "smartparens")
 (declare-function sp-local-pair "smartparens")
 
 (custom-set-variables

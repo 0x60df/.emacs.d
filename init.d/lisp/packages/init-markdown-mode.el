@@ -3,7 +3,6 @@
 
 
 (premise init)
-(premise whitespace)
 (premise inst-markdown-mode)
 
 (defun markdown-show-trailing-whitespace ()

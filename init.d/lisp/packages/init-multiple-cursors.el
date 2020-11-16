@@ -27,8 +27,8 @@
 
 (with-eval-after-load 'multiple-cursors
   (add-to-list 'mc/unsupported-minor-modes 'show-paren-mode)
-  (eval-after-load 'visible-mark
-    '(add-to-list 'mc/unsupported-minor-modes 'visible-mark-mode)))
+  (with-eval-after-load 'visible-mark
+    (add-to-list 'mc/unsupported-minor-modes 'visible-mark-mode)))
 
 
 (resolve init-multiple-cursors)

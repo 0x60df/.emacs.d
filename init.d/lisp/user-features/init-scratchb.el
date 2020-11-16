@@ -5,15 +5,16 @@
 (premise init)
 (premise user-feature)
 
-(require 'scratchb)
+(eval-when-compile (require 'scratchb))
 
-(scratchb-auto-revert-mode)
-(scratchb-auto-snapshot-mode)
-
+(add-hook 'emacs-startup-hook #'scratchb-auto-revert-mode)
+(add-hook 'emacs-startup-hook #'scratchb-auto-snapshot-mode)
 (add-hook 'emacs-startup-hook #'scratchb-mode-buffer-sticky)
-(add-hook 'scratchb-after-revert-hook #'scratchb-mode-buffer-sticky)
 
-(define-key scratchb-mode-map (kbd "C-c k") #'scratchb-flush)
+(with-eval-after-load 'scratchb
+  (add-hook 'scratchb-after-revert-hook #'scratchb-mode-buffer-sticky)
+
+  (define-key scratchb-mode-map (kbd "C-c k") #'scratchb-flush))
 
 
 (resolve init-scratchb)

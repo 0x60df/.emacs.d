@@ -3,7 +3,6 @@
 
 
 (premise init)
-(premise bindings)
 (premise init-helm)
 (premise init-ag)
 (premise inst-helm-ag)

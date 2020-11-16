@@ -6,10 +6,7 @@
 (premise custom)
 (premise mode-line)
 (premise bindings)
-(premise init-icomplete)
 (premise init-ido)
-(premise init-dired)
-(premise init-sdired)
 (premise inst-helm)
 
 
@@ -28,8 +25,13 @@
           (switch-to-buffer . ido-completing-read)
           (kill-buffer . ido-completing-read)
           (load-file . ido-read-file-name)
-          (dired . ido-read-file-name)
-          (sdired-sort-by . ido-completing-read))))
+          (sdired-sort-by . ido-completing-read)))
+  (with-eval-after-load 'dired
+    (add-to-list 'helm-completing-read-handlers-alist
+                  '(dired . ido-read-file-name)))
+  (with-eval-after-load 'sdired
+    (add-to-list 'helm-completing-read-handlers-alist
+                  '(dired . ido-read-file-name))))
 
 
 

@@ -4,7 +4,6 @@
 
 (premise init)
 (premise bindings)
-(premise whitespace)
 
 (defun eshell/ediff (file-A file-B)
   "ediff for eshell command."

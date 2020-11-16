@@ -114,8 +114,8 @@ Conditions are specified by `evil-refresh-cursor-interrupt-conditions'."
 
 (with-eval-after-load 'evil
   (advice-add 'evil-refresh-cursor :around #'evil-interrupt-refresh-cursor)
-  (eval-after-load 'auto-complete
-    '(add-to-list 'evil-refresh-cursor-interrupt-conditions
+  (with-eval-after-load 'auto-complete
+    (add-to-list 'evil-refresh-cursor-interrupt-conditions
                   '(and (memq evil-state '(emacs insert))
                         (ac-menu-live-p)))))
 

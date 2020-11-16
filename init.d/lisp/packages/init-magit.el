@@ -4,8 +4,6 @@
 
 (premise init)
 (premise bindings)
-(premise whitespace)
-(premise init-flyspell)
 (premise inst-magit)
 
 (declare-function git-commit-turn-on-flyspell "git-commit")

@@ -4,7 +4,6 @@
 
 (premise init)
 (premise user-feature)
-(premise custom)
 
 (declare-function fmmm-update-major-mode-on-autoload-list "fmmm")
 (declare-function fmmm-update-minor-mode-on-autoload-list "fmmm")

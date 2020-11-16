@@ -42,7 +42,8 @@ and prepare clean setup."
          (push-mark beg nil t)))
   (add-hook 'pre-command-hook #'vhl/revert-transient-mark-mode))
 
-(advice-add 'vhl/add-range :after #'vhl/volatile-active-mark)
+(with-eval-after-load 'volatile-highlights
+  (advice-add 'vhl/add-range :after #'vhl/volatile-active-mark))
 
 (add-hook 'emacs-startup-hook #'volatile-highlights-mode)
 

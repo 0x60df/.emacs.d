@@ -5,11 +5,12 @@
 (premise init)
 (premise custom)
 (premise bindings)
+(premise feature)
 (premise inst-yasnippet)
 
 (eval-when-compile (require 'yasnippet))
 
-(declare-function yas-reload-all "yasnippet")
+(lazy-autoload 'yas-reload-all "yasnippet")
 (declare-function yas-expand "yasnippet")
 
 (custom-set-variables

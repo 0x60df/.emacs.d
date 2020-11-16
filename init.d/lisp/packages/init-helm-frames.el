@@ -3,7 +3,6 @@
 
 
 (premise init)
-(premise user-feature)
 (premise init-helm)
 
 (with-eval-after-load 'helm-config

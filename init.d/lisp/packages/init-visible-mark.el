@@ -4,11 +4,12 @@
 
 (premise init)
 (premise custom)
+(premise feature)
 (premise inst-visible-mark)
 
 (eval-when-compile (require 'visible-mark))
 
-(declare-function global-visible-mark-mode "visible-mark")
+(lazy-autoload 'global-visible-mark-mode "visible-mark")
 
 (custom-set-variables
  '(visible-mark-max 1)
@@ -35,10 +36,7 @@ If `overlay-start' of any `visible-mark-overlay' equal to
 (advice-add 'visible-mark-move-overlays
             :after #'visible-mark-revert-face-on-cursor-after-move-overlays)
 
-(add-hook 'emacs-startup-hook
-          (lambda ()
-            (require 'visible-mark)
-            (global-visible-mark-mode)))
+(add-hook 'emacs-startup-hook #'global-visible-mark-mode)
 
 
 (resolve init-visible-mark)

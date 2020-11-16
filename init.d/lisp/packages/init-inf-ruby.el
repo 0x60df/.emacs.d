@@ -3,14 +3,12 @@
 
 
 (premise init)
-(premise init-ido)
-(premise init-ruby-mode)
-(premise init-helm)
 (premise inst-inf-ruby)
 
 (eval-when-compile (require 'ruby-mode))
 
-(add-hook 'ruby-mode-hook #'inf-ruby-minor-mode)
+(with-eval-after-load 'ruby-mode
+  (add-hook 'ruby-mode-hook #'inf-ruby-minor-mode))
 
 (defun inf-ruby-other-window ()
   (interactive)
@@ -23,9 +21,10 @@
 
 ;;; helm support
 
-(with-eval-after-load 'helm-mode
-  (add-to-list 'helm-completing-read-handlers-alist
-               '(ruby-load-file . ido-read-file-name)))
+(with-eval-after-load 'inf-ruby
+  (with-eval-after-load 'helm-mode
+    (add-to-list 'helm-completing-read-handlers-alist
+                 '(ruby-load-file . ido-read-file-name))))
 
 
 (resolve init-inf-ruby)

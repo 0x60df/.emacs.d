@@ -3,9 +3,7 @@
 
 
 (premise init)
-(premise bindings)
 (premise feature)
-(premise init-ruby-mode)
 (premise init-auto-complete)
 (premise init-inf-ruby)
 (premise inst-robe)

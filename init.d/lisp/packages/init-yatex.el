@@ -3,7 +3,6 @@
 
 
 (premise init)
-(premise custom)
 (premise feature)
 (premise inst-yatex)
 

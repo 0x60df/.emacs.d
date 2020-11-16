@@ -3,7 +3,6 @@
 
 
 (premise init)
-(premise whitespace)
 
 (with-eval-after-load 'calendar
   (add-hook 'calendar-mode-hook

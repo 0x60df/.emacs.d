@@ -5,7 +5,6 @@
 (premise init)
 (premise custom)
 (premise bindings)
-(premise whitespace)
 
 (custom-set-variables
  '(eww-search-prefix "https://www.google.co.jp/search?q="))
