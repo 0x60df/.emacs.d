@@ -261,6 +261,19 @@ If no boundary is detected until LIMIT, retun nil."
            candidate)
           (t (mode-line--previous-boundary (- candidate 1) object limit)))))
 
+(defun mode-line--duplicate-percent-with-text-properties (string)
+  "Duplicate percent in STRING with text properties."
+  (letrec ((duplicate-next-percent
+            (lambda (index)
+              (let ((next (string-match "%" string index)))
+                (cond ((null next) (substring string index (length string)))
+                      (t (concat
+                          (substring string index next)
+                          (substring string next (+ next 1))
+                          (substring string next (+ next 1))
+                          (funcall duplicate-next-percent (+ next 1)))))))))
+    (funcall duplicate-next-percent 0)))
+
 (defvar mode-line-format-raw
   (mapcar (lambda (e)
             (if (stringp e)
@@ -309,17 +322,7 @@ mode-line string by window-width."
                          nil subtext)))
                   subtext)
               text)))
-      (letrec ((duplicate-percent
-                (lambda (string start)
-                  (let ((end (string-match "%" string start)))
-                    (cond
-                     ((null end) (substring string start (length string)))
-                     (t (concat
-                         (substring string start end)
-                         (substring string end (+ end 1))
-                         (substring string end (+ end 1))
-                         (funcall duplicate-percent string (+ end 1)))))))))
-        (funcall duplicate-percent shrinked 0)))))
+      (mode-line--duplicate-percent-with-text-properties shrinked))))
 
 (setq-default mode-line-format
               (mode-line-format-auto-truncate mode-line-format-raw))
