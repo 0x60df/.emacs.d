@@ -6,6 +6,7 @@
 (premise custom)
 (premise bindings)
 (premise mode-line)
+(premise init-flyspell)
 (premise inst-smartrep)
 
 (eval-when-compile

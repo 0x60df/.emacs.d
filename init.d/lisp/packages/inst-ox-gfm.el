@@ -3,6 +3,7 @@
 
 
 (premise init)
+(premise init-el-get)
 
 (el-get-bundle ox-gfm)
 

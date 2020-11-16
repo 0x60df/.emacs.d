@@ -8,6 +8,7 @@
 (premise feature)
 (premise inst-color-moccur)
 
+(eval-when-compile (require 'ibuffer))
 (lazy-autoload 'moccur "color-moccur")
 
 (custom-set-variables
