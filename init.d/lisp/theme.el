@@ -16,6 +16,17 @@
 
 
 
+(defun catch-up-theme-value (symbol)
+  "Set SYMBOL which is defined by `defvar' as theme value.
+If SYMBOL has not been defined or is custom variable, this
+function do nothing."
+  (if (and (boundp symbol) (not (custom-variable-p symbol)))
+      (let ((saved-value (car (get symbol 'saved-value)))
+            (saved-symbol-value (get symbol 'saved-symbol-value)))
+        (when (and saved-value (not saved-symbol-value))
+          (put symbol 'saved-symbol-value (list (symbol-value symbol)))
+          (set symbol saved-value)))))
+
 (defun put-on (theme)
   "Load THEME if not loaded and enable that one.
 If theme-settings contains theme-value for
@@ -42,7 +53,7 @@ symbol property saved-symbol-value."
                    (not spec-list)
                    (not (plist-member
                          (symbol-plist symbol) 'saved-symbol-value)))
-              (put symbol 'saved-symbol-value (symbol-value symbol)))))))
+              (put symbol 'saved-symbol-value (list (symbol-value symbol))))))))
   (enable-theme theme))
 
 (defun take-off (theme)
@@ -68,7 +79,7 @@ the symbol property saved-symbol-value."
                  (not (custom-variable-p symbol))
                  (not val)
                  (plist-member (symbol-plist symbol) 'saved-symbol-value))
-            (set symbol (get symbol 'saved-symbol-value)))))))
+            (set symbol (car (get symbol 'saved-symbol-value))))))))
 
 
 (resolve theme)
