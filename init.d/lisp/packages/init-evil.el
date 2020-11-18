@@ -5,7 +5,20 @@
 (premise init)
 (premise custom)
 (premise mode-line)
+(premise theme)
+(premise bindings)
 (premise inst-evil)
+
+(eval-when-compile (require 'evil))
+
+(declare-function evil-exit-emacs-state "evil-commands" t t)
+(declare-function evil-emacs-state "evil-states" t t)
+(declare-function evil-set-toggle-key "evil-vars")
+(declare-function evil-ex-p "evil-ex")
+(declare-function evil-ex-file-arg "evil-ex")
+(declare-function evil-write "evil-commands" t t)
+(declare-function evil-set-command-properties "evil-common")
+(declare-function evil-ex-define-cmd "evil-ex")
 
 (declare-function evil-save-and-emacs-state load-file-name t t)
 
@@ -121,6 +134,16 @@ Conditions are specified by `evil-refresh-cursor-interrupt-conditions'."
 
 
 
+;;; theme support
+
+(with-eval-after-load 'evil-states
+  (mapc (lambda (state)
+          (let ((cursor (intern (format "evil-%s-state-cursor" state))))
+            (catch-up-theme-value cursor)))
+        '(emacs normal insert replace operator visual motion)))
+
+
+
 ;;; bindings
 
 (with-eval-after-load 'evil-states
@@ -130,8 +153,29 @@ Conditions are specified by `evil-refresh-cursor-interrupt-conditions'."
 
 ;;; entry and exit
 
+(defun evil-mode-and-exit-emacs-state ()
+  "Enable `evil-mode' and `evil-exit-emacs-state'."
+  (interactive)
+  (evil-mode)
+  (evil-exit-emacs-state))
+
+(defalias 'vi 'evil-mode-and-exit-emacs-state "Enter-evil.")
+
+(overriding-set-key (kbd "H-e") #'evil-mode-and-exit-emacs-state)
+(overriding-set-key (kbd "C-c DEL") #'evil-mode-and-exit-emacs-state)
+
 (with-eval-after-load 'evil
-  (defalias 'vi #'evil-exit-emacs-state "Enter evil.")
+  (add-hook 'evil-mode-hook
+            (lambda ()
+              (if evil-mode
+                  (fset 'vi 'evil-exit-emacs-state)
+                (fset 'vi 'evil-mode-and-exit-emacs-state))))
+
+  (define-key evil-motion-state-map (kbd "H-e") #'evil-emacs-state)
+  (define-key evil-insert-state-map (kbd "H-e") #'evil-emacs-state)
+  (define-key evil-emacs-state-map (kbd "H-e") #'evil-exit-emacs-state)
+
+  (evil-set-toggle-key "C-c DEL")
 
   (evil-define-command evil-save-and-emacs-state (file &optional bang)
     "Saves the current buffer and toggle to emacs state."
@@ -143,17 +187,7 @@ Conditions are specified by `evil-refresh-cursor-interrupt-conditions'."
   (evil-ex-define-cmd "q[uit]" #'evil-emacs-state)
   (evil-ex-define-cmd "wq" #'evil-save-and-emacs-state)
 
-  (define-key evil-motion-state-map (kbd "H-e") #'evil-emacs-state)
-  (define-key evil-insert-state-map (kbd "H-e") #'evil-emacs-state)
-  (define-key evil-emacs-state-map (kbd "H-e") #'evil-exit-emacs-state)
-
-  (evil-set-toggle-key "C-c DEL"))
-
-
-
-;;; start
-
-(add-hook 'emacs-startup-hook #'evil-mode)
+  (evil-mode))
 
 
 (resolve init-evil)
