@@ -42,14 +42,8 @@ current frame.
 If current frame is not a client, return nil."
   (let* ((proc (or client (frame-parameter nil 'client))))
     (if proc
-        (letrec ((filter (lambda (p l)
-                           (cond ((null l) l)
-                                 ((funcall p (car l))
-                                  (cons (car l) (funcall filter p (cdr l))))
-                                 (t (funcall filter p (cdr l)))))))
-          (funcall filter
-                   (lambda (f) (eq proc (frame-parameter f 'client)))
-                   (frame-list))))))
+        (seq-filter (lambda (f) (eq proc (frame-parameter f 'client)))
+                    (frame-list)))))
 
 
 
@@ -76,14 +70,9 @@ for current frame."
                       1)))
          (n (% (+ (% (+ arg offset) length) length) length))
          (client (nth n client-list)))
-    (letrec ((find (lambda (p l)
-                     (cond ((null l) l)
-                           ((funcall p (car l)) (car l))
-                           (t (funcall find p (cdr l)))))))
-      (select-frame-set-input-focus
-       (funcall find
-                (lambda (frame) (eq (frame-parameter frame 'client) client))
-                (frame-list))))))
+    (select-frame-set-input-focus
+     (seq-find (lambda (frame) (eq (frame-parameter frame 'client) client))
+               (frame-list)))))
 
 (defun other-client-frame-reverse (arg)
   "`other-client-frame' by reverse order."
@@ -235,14 +224,8 @@ Filter FRAME-LIST and return list of frames which belongs
 to the client of current frame."
   (let* ((proc (frame-parameter nil 'client)))
     (if proc
-        (letrec ((filter (lambda (p l)
-                           (cond ((null l) l)
-                                 ((funcall p (car l))
-                                  (cons (car l) (funcall filter p (cdr l))))
-                                 (t (funcall filter p (cdr l)))))))
-          (funcall filter
-                   (lambda (f) (eq proc (frame-parameter f 'client)))
-                   frame-list)))))
+        (seq-filter (lambda (f) (eq proc (frame-parameter f 'client)))
+                    frame-list))))
 
 (defun seek-nearest-frame-on-selected-frame
     (next-or-previous-frame &optional frame miniframe args)
