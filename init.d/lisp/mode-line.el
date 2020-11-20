@@ -207,13 +207,15 @@ When non-nil, `'mode-line-modes is shrinked.")
 (setq mode-line-end-spaces
       '(:eval (unless (display-graphic-p) "-%-")))
 
-(defvar mode-line-boundary-faces
+(defcustom mode-line-boundary-faces
   '(mode-line-buffer-id
     mode-line-vc-mode
     mode-line-mode-name
     mode-line-which-func-mode
     mode-line-separator)
-  "Faces which determine boundary of elements of mode-line.")
+  "Faces which determine boundary of elements of mode-line."
+  :type '(repeat face)
+  :group 'user)
 
 (defun mode-line--face-list (position object)
   "Return list of face or face spec on the POSITION of the OBJECT."

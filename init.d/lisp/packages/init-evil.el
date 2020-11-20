@@ -112,8 +112,10 @@ After `evil-refresh-mode-line', set default value of
 
 ;;; cursor
 
-(defconst evil-refresh-cursor-interrupt-conditions nil
-  "List of condition forms to interrupt `evil-refresh-cursor'.")
+(defcustom evil-refresh-cursor-interrupt-conditions nil
+  "List of condition forms to interrupt `evil-refresh-cursor'."
+  :type '(repeat sexp)
+  :group 'user)
 
 (defun evil-interrupt-refresh-cursor (evil-refresh-cursor &rest args)
   "Advising `evil-refresh-cursor' to interrupt on specific condition.
