@@ -23,24 +23,25 @@ Keep `ac-prefix' after last `ac-expand'.")
 If inline completion is followed by `ac-expand', this
 function pullbacks `ac-prefix' which exists before the
 inline candidate is completed."
-  (cond ((null ac-last-prefix)
-         (cond ((ac-inline-live-p)
+  (cond ((and (null ac-last-prefix)
+              (null ac-latest-prefix))
+         (cond ((ac-inline-live-p)                     ; entry with inline
                 (setq ac-last-prefix ac-prefix)
                 (apply ac-expand args)
                 (setq ac-latest-prefix ac-prefix))
-               (t (apply ac-expand args))))
+               (t (apply ac-expand args))))            ; entry without inline
         ((and (stringp ac-last-prefix)
               (stringp ac-latest-prefix))
-         (cond ((equal ac-prefix ac-latest-prefix)
+         (cond ((equal ac-prefix ac-latest-prefix)     ; exit
                 (ac-expand-string ac-last-prefix t)
                 (apply ac-expand '(nil))
                 (apply ac-expand args)
-                (setq ac-last-prefix nil)
-                (setq ac-latest-prefix nil))
-               (t (setq ac-last-prefix ac-prefix)
+                (setq ac-last-prefix 'pullpacked)
+                (setq ac-latest-prefix 'pullbacked))
+               (t (setq ac-last-prefix ac-prefix)      ; hold
                   (apply ac-expand args)
                   (setq ac-latest-prefix ac-prefix))))
-        (t (apply ac-expand args))))
+        (t (apply ac-expand args))))                   ; go
 
 (defun ac-cleanup-last-prefix ()
   "Advising function for `ac-cleanup' to set `ac-last-prefix' as nil."
