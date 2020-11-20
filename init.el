@@ -41,14 +41,13 @@ compile and load are performed recursively."
                          (funcall load-unit)))))
              (funcall load-unit)))))))
 
-(defmacro init-by (file &optional noerror nomessage)
+(defsubst init-by (file &optional noerror nomessage)
   "`init' unit by FILE.
 FILE is any lisp form which returns a name of unit file.
 NOERROR and NOMESSAGE suppress errors and messages."
-  `(let ((unit (intern (replace-regexp-in-string
-                        "\\.elc?$" ""
-                        (expand-file-name ,file)))))
-     (eval `(init ,unit ,',noerror ,',nomessage))))
+  (let ((unit (intern (replace-regexp-in-string
+                       "\\.elc?$" "" (expand-file-name file)))))
+    (eval `(init ,unit ',noerror ',nomessage))))
 
 (defmacro init-feature (feature &optional noerror nomessage)
   "`init' FEATURE.
