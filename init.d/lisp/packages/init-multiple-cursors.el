@@ -4,6 +4,7 @@
 
 (premise init)
 (premise custom)
+(premise mode-line)
 (premise bindings)
 (premise feature)
 (premise inst-multiple-cursors)
@@ -14,7 +15,12 @@
 (lazy-autoload 'mc/cycle-backward "mc-cycle-cursors")
 
 (custom-set-variables
- '(mc/always-run-for-all t))
+ '(mc/always-run-for-all t)
+ `(mc/mode-line
+   '(" MD:" (:eval (format ,(propertize "%d" 'face '(bold mode-line-warning))
+                           (mc/num-cursors))))))
+
+(push '(multiple-cursors-mode . 23) mode-line-minor-mode-priority-alist)
 
 (overriding-set-key (kbd "C-@") #'mc/mark-all-dwim)
 (overriding-set-key (kbd "C-c @ e") #'mc/edit-lines)

@@ -3,8 +3,11 @@
 
 
 (premise init)
+(premise mode-line)
 (premise bindings)
 (premise inst-ace-jump-mode)
+
+(push '(ace-jump-mode . 22) mode-line-minor-mode-priority-alist)
 
 (overriding-set-key (kbd "M-g M-j") #'ace-jump-mode)
 (overriding-set-key (kbd "H-g") #'ace-jump-mode)

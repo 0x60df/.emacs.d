@@ -4,8 +4,11 @@
 
 (premise init)
 (premise custom)
+(premise mode-line)
 (premise bindings)
 (premise inst-loophole)
+
+(push '(loophole-mode . 20) mode-line-minor-mode-priority-alist)
 
 (require 'loophole)
 

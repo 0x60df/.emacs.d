@@ -3,6 +3,7 @@
 
 
 (premise init)
+(premise mode-line)
 (premise bindings)
 
 (eval-when-compile (require 'flyspell))
@@ -11,6 +12,10 @@
 (declare-function flyspell-auto-correct-word "flyspell")
 (declare-function flyspell-auto-correct-previous-word "flyspell")
 
+(custom-set-variables
+ '(flyspell-mode-line-string " FlyS"))
+
+(push '(flyspell-mode . 40) mode-line-minor-mode-priority-alist)
 
 (overriding-set-key (kbd "C-c $") #'flyspell-mode)
 

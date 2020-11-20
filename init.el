@@ -209,6 +209,7 @@ UNIT is a literal symbol."
 
 (init-feature icomplete)
 (init-feature ido)
+(init-feature isearch)
 (init-feature recentf)
 (init-feature eldoc)
 (init-feature autorevert)

@@ -35,7 +35,9 @@
 
 
 
-;;; patches
+;;; mode-line
+
+(push '(helm-mode . 10) mode-line-minor-mode-priority-alist)
 
 (defun modify-helm-mode-line (&rest args)
   "Advising function to modify mode-line-format for helm."

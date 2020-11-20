@@ -4,6 +4,7 @@
 
 (premise init)
 (premise custom)
+(premise mode-line)
 (premise bindings)
 (premise inst-auto-complete)
 
@@ -139,6 +140,12 @@ inline candidate is completed."
                '(candidate-face . ac-functions-candidate-face))
   (add-to-list 'ac-source-functions
                '(selection-face . ac-functions-selection-face)))
+
+
+
+;;; mode-line
+
+(push '(auto-complete-mode . 11) mode-line-minor-mode-priority-alist)
 
 
 

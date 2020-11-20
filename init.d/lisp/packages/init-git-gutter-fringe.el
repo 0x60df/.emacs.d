@@ -4,6 +4,7 @@
 
 (premise init)
 (premise custom)
+(premise mode-line)
 (premise bindings)
 (premise inst-git-gutter-fringe)
 
@@ -16,7 +17,9 @@
 (declare-function git-gutter:mark-hunk "git-gutter")
 
 (custom-set-variables
- '(git-gutter:lighter " GG"))
+ '(git-gutter:lighter " GGt"))
+
+(push '(git-gutter-mode . 31) mode-line-minor-mode-priority-alist)
 
 (defun git-gutter:close-popup ()
   "Close git gutter popup window."

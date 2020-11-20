@@ -3,8 +3,11 @@
 
 
 (premise init)
+(premise mode-line)
 (premise bindings)
 (premise inst-flycheck)
+
+(push '(flycheck-mode . 41) mode-line-minor-mode-priority-alist)
 
 (overriding-set-key (kbd "C-c !") #'flycheck-mode)
 

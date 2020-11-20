@@ -7,10 +7,13 @@
 
 (premise init)
 (premise frame)
+(premise mode-line)
 (premise inst-ddskk)
 
 (require 'skk-autoloads)
 (require 'skk-vars)
+
+(push '(skk-mode . 0) mode-line-minor-mode-priority-alist)
 
 
 ;;; bindings

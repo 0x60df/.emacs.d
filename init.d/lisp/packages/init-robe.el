@@ -3,6 +3,7 @@
 
 
 (premise init)
+(premise mode-line)
 (premise feature)
 (premise init-auto-complete)
 (premise init-inf-ruby)
@@ -31,6 +32,7 @@
   (add-to-list 'ac-source-robe
                '(selection-face . ac-robe-selection-face)))
 
+(push '(robe-mode . 2) mode-line-minor-mode-priority-alist)
 (with-eval-after-load 'robe
   (setcdr (assq 'robe-mode minor-mode-alist)
           '((" ro" (:eval (if (robe-running-p) "+" "-"))))))
@@ -45,12 +47,6 @@
 
 (with-eval-after-load 'ruby-mode
   (define-key ruby-mode-map (kbd "C-c c a") #'robe-boot))
-
-(add-hook 'robe-mode-hook
-          (lambda ()
-            (let ((entry (assq 'robe-mode minor-mode-alist)))
-              (setq minor-mode-alist
-                    (cons entry (delq entry minor-mode-alist))))))
 
 
 (resolve init-robe)

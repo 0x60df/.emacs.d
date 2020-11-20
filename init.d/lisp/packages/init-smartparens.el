@@ -4,6 +4,7 @@
 
 (premise init)
 (premise custom)
+(premise mode-line)
 (premise bindings)
 (premise feature)
 (premise inst-smartparens)
@@ -16,6 +17,8 @@
  '(sp-highlight-pair-overlay nil)
  '(sp-highlight-wrap-overlay nil)
  '(sp-highlight-wrap-tag-overlay nil))
+
+(push '(smartparens-mode . 13) mode-line-minor-mode-priority-alist)
 
 (overriding-set-key (kbd "C-(") #'sp-splice-sexp)
 (overriding-set-key (kbd "C-)") #'sp-rewrap-sexp)

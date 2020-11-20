@@ -10,6 +10,8 @@
  '(eldoc-idle-delay 0.4)
  '(eldoc-minor-mode-string " ElD"))
 
+(push '(eldoc-mode . 30) mode-line-minor-mode-priority-alist)
+
 (defun eldoc-modify-mode-line-message (eldoc-minibuffer-message &rest args)
   "Advising `eldoc-minibuffer-message' to modify `mode-line-format'."
   (apply eldoc-minibuffer-message args)

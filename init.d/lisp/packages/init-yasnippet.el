@@ -4,6 +4,7 @@
 
 (premise init)
 (premise custom)
+(premise mode-line)
 (premise bindings)
 (premise feature)
 (premise inst-yasnippet)
@@ -16,6 +17,8 @@
 (custom-set-variables
  '(yas-prompt-functions nil)
  '(yas-use-menu nil))
+
+(push '(yas-minor-mode . 12) mode-line-minor-mode-priority-alist)
 
 (with-eval-after-load 'yasnippet
   (define-key yas-minor-mode-map (kbd "<tab>") nil)

@@ -194,6 +194,63 @@ When non-nil, `'mode-line-modes is shrinked.")
           "%]"
           (:propertize " " face mode-line-separator))))
 
+(defcustom mode-line-minor-mode-priority-alist nil
+  "Alist of minor mode and its priority for mode line display.
+Each element looks like (mode-variable . priority)
+0:      Input method
+1--9:   Associated with specific major mode.
+10--19: Almost always enabled.
+20--29: Transiently enabled.
+30--39: Occasionally enabled.
+40--49: Almost manually enabled."
+  :type '(repeat sexp)
+  :group 'user)
+
+(defun mode-line-sort-alist (alist-by-symbol priority-alist)
+  "Return sorted ALIST-BY-SYMBOL according to PRIORITY-ALIST.
+
+Keys of ALIST-BY-SYMBOL must be symbol.
+PRIORITY-ALIST looks like
+(key-for-ALIST-BY-SYMBOL . priority).
+
+ALIST-BY-SYMBOL is sorted destructively.
+
+Cells are compared by specified priorities.
+If some entries have same priority, they are compared by
+`symbol-name'. Entries to which no pritority is spceified are
+regarded as having lower priority than specified one.
+They also compared by `symbol-name'."
+  (sort alist-by-symbol
+        (lambda (cell1 cell2)
+          (let* ((symbol1 (car cell1))
+                 (symbol2 (car cell2))
+                 (priority1 (cdr (assq symbol1 priority-alist)))
+                 (priority2 (cdr (assq symbol2 priority-alist)))
+                 (name1 (symbol-name symbol1))
+                 (name2 (symbol-name symbol2)))
+            (cond ((and priority1 priority2)
+                   (if (eql priority1 priority2)
+                       (string-lessp name1 name2)
+                     (< priority1 priority2)))
+                  (priority1 t)
+                  (priority2 nil)
+                  (t (string-lessp name1 name2)))))))
+
+(add-hook 'emacs-startup-hook
+          (lambda ()
+            (setq minor-mode-alist (mode-line-sort-alist
+                                    (copy-tree minor-mode-alist)
+                                    mode-line-minor-mode-priority-alist))
+          (add-variable-watcher
+           'minor-mode-alist
+           (lambda (symbol newval operation where)
+             (when (consp newval)
+               (let ((sorted (mode-line-sort-alist
+                              (copy-tree newval)
+                              mode-line-minor-mode-priority-alist)))
+                 (setcar newval (car sorted))
+                 (setcdr newval (cdr sorted))))))))
+
 (custom-set-variables
  '(which-func-format
    '(:propertize which-func-current face mode-line-which-func-mode)))
