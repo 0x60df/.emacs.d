@@ -4,6 +4,10 @@
 
 (premise init)
 (premise custom)
+(premise feature)
+
+(lazy-autoload 'seq-every-p "seq")
+(lazy-autoload 'seq-contains-p "seq")
 
 
 ;;; redirect event
