@@ -8,7 +8,7 @@
 
 (declare-function git-commit-turn-on-flyspell "git-commit")
 
-(overriding-set-key "\C-cvm" #'magit-status)
+(overriding-set-key (kbd "C-c v m") #'magit-status)
 
 (with-eval-after-load 'magit-mode
   (add-hook 'magit-mode-hook (lambda ()

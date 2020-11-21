@@ -23,7 +23,7 @@
 (define-minor-mode risky-yes-or-no-p-transient-mode
   "Minor mode which is transiently turned on during `yes-or-no-p'."
   :global t
-  :keymap `(("\C-j" . ,#'risky-yes-or-no-p-yes)))
+  :keymap `((,(kbd "C-j") . ,#'risky-yes-or-no-p-yes)))
 
 (defun with-risky-yes-or-no-p-transient-mode (yes-or-no-p prompt &rest args)
   "Function for advising `yes-or-no-p'.

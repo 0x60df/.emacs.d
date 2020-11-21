@@ -7,7 +7,7 @@
 (eval-when-compile (require 'scheme))
 
 (with-eval-after-load 'scheme
-  (define-key scheme-mode-map "\C-ccr" #'run-scheme))
+  (define-key scheme-mode-map (kbd "C-c c r") #'run-scheme))
 
 
 (resolve init-scheme)
