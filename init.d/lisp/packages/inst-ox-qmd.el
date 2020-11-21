@@ -3,6 +3,7 @@
 
 
 (premise init)
+(premise inst-el-get)
 
 (el-get-bundle ox-qmd)
 
