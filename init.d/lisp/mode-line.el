@@ -5,6 +5,9 @@
 (premise init)
 (premise custom)
 (premise client)
+(premise feature)
+
+(lazy-autoload 'seq-difference "seq")
 
 (require 'which-func)
 
