@@ -4,6 +4,8 @@
 
 (premise init)
 
+(require 'seq)
+
 (mapc (lambda (e) (add-to-list 'load-path e))
       (reverse
        (letrec ((list-directories-recursively
