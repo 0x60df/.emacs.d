@@ -5,8 +5,8 @@
 (premise init)
 (premise init-el-get)
 
-(el-get-bundle robe-mode)
-(remove-hook 'ruby-mode-hook #'robe-mode)
+(el-get-bundle robe-mode
+  :post-init nil)
 
 
 (resolve inst-robe)
