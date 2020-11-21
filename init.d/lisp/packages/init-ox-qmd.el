@@ -4,6 +4,8 @@
 
 (premise init)
 
+(eval-when-compile (require 'ox-qmd))
+
 (with-eval-after-load 'ox
   (require 'ox-qmd))
 
