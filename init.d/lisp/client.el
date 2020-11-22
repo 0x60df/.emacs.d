@@ -55,24 +55,27 @@ Typical frame of each client is arranged in a cyclic order.
 If multiple terminals exist, this cycles on same terminal
 for current frame."
   (interactive "p")
-  (let* ((client-list (terminal-client-list))
-         (length (length client-list))
-         (offset (letrec ((find-cdr
-                           (lambda (p l)
-                             (cond ((null l) l)
-                                   ((funcall p (car l)) l)
-                                   (t (funcall find-cdr p (cdr l)))))))
-                   (- (length (funcall find-cdr
-                                       (lambda (client)
-                                         (eq client
-                                             (frame-parameter nil 'client)))
-                                       (reverse client-list)))
-                      1)))
-         (n (% (+ (% (+ arg offset) length) length) length))
-         (client (nth n client-list)))
-    (select-frame-set-input-focus
-     (seq-find (lambda (frame) (eq (frame-parameter frame 'client) client))
-               (frame-list)))))
+  (let ((client-list (terminal-client-list)))
+    (if (memq (frame-parameter nil 'client) client-list)
+        (let* ((length (length client-list))
+               (offset (letrec ((find-cdr
+                                 (lambda (p l)
+                                   (cond ((null l) l)
+                                         ((funcall p (car l)) l)
+                                         (t (funcall find-cdr p (cdr l)))))))
+                         (- (length (funcall
+                                     find-cdr
+                                     (lambda (client)
+                                       (eq client
+                                           (frame-parameter nil 'client)))
+                                     (reverse client-list)))
+                            1)))
+               (n (% (+ (% (+ arg offset) length) length) length))
+               (client (nth n client-list)))
+          (select-frame-set-input-focus
+           (seq-find (lambda (frame)
+                       (eq (frame-parameter frame 'client) client))
+                     (frame-list)))))))
 
 (defun other-client-frame-reverse (arg)
   "`other-client-frame' by reverse order."
@@ -82,21 +85,22 @@ for current frame."
 (defun other-frame-on-selected-client (arg)
   "Select ARG-th other frame which belongs to same client."
   (interactive "p")
-  (let* ((frame-list (client-frame-list))
-         (length (length frame-list))
-         (offset (letrec ((find-cdr
-                           (lambda (p l)
-                             (cond ((null l) l)
-                                   ((funcall p (car l)) l)
-                                   (t (funcall find-cdr p (cdr l)))))))
-                   (- (length (funcall find-cdr
-                                       (lambda (frame)
-                                         (eq frame (selected-frame)))
-                                       (reverse frame-list)))
-                      1)))
-         (n (% (+ (% (+ arg offset) length) length) length))
-         (frame (nth n frame-list)))
-    (select-frame-set-input-focus frame)))
+  (let ((frame-list (client-frame-list)))
+    (if (memq (selected-frame) frame-list)
+        (let* ((length (length frame-list))
+               (offset (letrec ((find-cdr
+                                 (lambda (p l)
+                                   (cond ((null l) l)
+                                         ((funcall p (car l)) l)
+                                         (t (funcall find-cdr p (cdr l)))))))
+                         (- (length (funcall find-cdr
+                                             (lambda (frame)
+                                               (eq frame (selected-frame)))
+                                             (reverse frame-list)))
+                            1)))
+               (n (% (+ (% (+ arg offset) length) length) length))
+               (frame (nth n frame-list)))
+          (select-frame-set-input-focus frame)))))
 
 (defun other-frame-on-selected-client-reverse (arg)
   "`other-frame-on-selected-client' by reverse order."
