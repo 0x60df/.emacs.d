@@ -25,7 +25,7 @@ function do nothing."
             (saved-symbol-value (get symbol 'saved-symbol-value)))
         (when (and saved-value (not saved-symbol-value))
           (put symbol 'saved-symbol-value (list (symbol-value symbol)))
-          (set symbol saved-value)))))
+          (set symbol (eval saved-value))))))
 
 (defun put-on (theme)
   "Load THEME if not loaded and enable that one.
