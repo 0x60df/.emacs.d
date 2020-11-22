@@ -1,4 +1,10 @@
-;;; helm-frames.el --- helm support for frames
+;;; helm-frames.el --- helm interface for frames
+
+;; Copyright (C) 2020 0x60DF
+
+;;; Commentary:
+
+;; Helm interface for selecting frames.
 
 ;;; code:
 
