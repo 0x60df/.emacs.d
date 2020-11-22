@@ -24,8 +24,8 @@
         (plist-put (plist-put definition :features nil) :info nil))
     return))
 
-(advice-add 'el-get-read-recipe :filter-return
-            #'el-get-suppress-recipe-for-evil)
+(advice-add 'el-get-read-recipe
+            :filter-return #'el-get-suppress-recipe-for-evil)
 
 (el-get-bundle evil)
 
