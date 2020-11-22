@@ -192,6 +192,7 @@ UNIT is a literal symbol."
 (init mode-line)
 (init theme)
 (init bindings)
+(init keyboard)
 (init mouse)
 
 
