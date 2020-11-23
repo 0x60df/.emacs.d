@@ -380,7 +380,7 @@
   `(evil-replace-state-cursor '(hbar ,green))
   `(evil-operator-state-cursor ,green)
   `(evil-visual-state-cursor ,green)
-  `(evil-motion-state-cursor ,blue))
+  `(evil-motion-state-cursor ,purple))
 
  (custom-theme-set-faces
   'tomorrow-night-accessory
