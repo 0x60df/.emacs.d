@@ -2,182 +2,106 @@
 ;;;; init-ddskk.el
 
 
-
-;;; base
-
 (premise init)
-(premise frame)
 (premise mode-line)
+(premise bindings)
+(premise feature)
 (premise inst-ddskk)
 
-(require 'skk-autoloads)
-(require 'skk-vars)
+(declare-function skk-henkan-inactivate "skk")
+(declare-function skk-henkan-off-by-quit "skk")
+(declare-function skk-erase-prefix "skk-macs")
+(declare-function skk-remove-minibuffer-setup-hook "skk")
+(declare-function skk-kakutei "skk")
+(declare-function ccc-setup "ccc")
+
+(lazy-autoload 'skk-mode "skk")
+
+(declare-function ccc-update-buffer-local-cursor-color-suppressor
+                  load-file-name t t)
+(declare-function evil-refresh-cursor-suppressor load-file-name t t)
+
+
+;;; setup
+
+(with-eval-after-load 'skk
+  (require 'skk-autoloads)
+  (ccc-setup))
+
+
+
+;;; settings
+
+(custom-set-variables
+ '(skk-isearch-mode-enable nil)
+ '(skk-byte-compile-init-file t)
+ '(skk-user-directory (concat user-emacs-directory "ddskk"))
+ '(skk-bayesian-history-file (expand-file-name "bayesian" skk-user-directory))
+ '(skk-bayesian-corpus-file (expand-file-name "corpus" skk-user-directory))
+ '(skk-init-file (expand-file-name "init" skk-user-directory))
+ '(skk-jisyo (expand-file-name "jisyo" skk-user-directory))
+ '(skk-backup-jisyo (expand-file-name "jisyo.bak" skk-user-directory))
+ '(skk-emacs-id-file (expand-file-name "emacs-id" skk-user-directory))
+ '(skk-record-file (expand-file-name "record" skk-user-directory))
+ '(skk-study-file (expand-file-name "study" skk-user-directory))
+ '(skk-study-backup-file (expand-file-name "study.bak" skk-user-directory))
+ '(skk-previous-completion-use-backtab t)
+ '(skk-egg-like-newline t)
+ '(skk-sticky-key (kbd "<henkan>"))
+ '(skk-kakutei-key (kbd "<muhenkan>"))
+ '(skk-status-indicator 'minor-mode)
+ '(skk-compare-jisyo-size-when-saving nil))
+
+
+
+;;; mode-line
 
 (push '(skk-mode . 0) mode-line-minor-mode-priority-alist)
 
+
 
 ;;; bindings
 
-(global-set-key "\C-x\C-j" 'skk-mode)
-(global-set-key (kbd "s-\\") 'skk-mode)
-(global-set-key (kbd "C-<zenkaku-hankaku>") 'skk-mode)
-(global-set-key (kbd "C-<hiragana-katakana>") 'skk-mode)
-(eval-after-load 'skk-vars
-  '(custom-set-variables '(skk-isearch-mode-enable nil)
-                         '(skk-byte-compile-init-file t)
-                         '(skk-user-directory
-                           (concat user-emacs-directory "ddskk"))
-                         '(skk-bayesian-history-file
-                           (expand-file-name "bayesian" skk-user-directory))
-                         '(skk-bayesian-corpus-file
-                           (expand-file-name "corpus" skk-user-directory))
-                         '(skk-init-file
-                           (expand-file-name "init" skk-user-directory))
-                         '(skk-jisyo
-                           (expand-file-name "jisyo" skk-user-directory))
-                         '(skk-backup-jisyo
-                           (expand-file-name "jisyo.bak" skk-user-directory))
-                         '(skk-emacs-id-file
-                           (expand-file-name "emacs-id" skk-user-directory))
-                         '(skk-record-file
-                           (expand-file-name "record" skk-user-directory))
-                         '(skk-study-file
-                           (expand-file-name "study" skk-user-directory))
-                         '(skk-study-backup-file
-                           (expand-file-name "study.bak" skk-user-directory))))
+(overriding-set-key (kbd "s-\\") #'skk-mode)
+(overriding-set-key (kbd "C-<zenkaku-hankaku>") #'skk-mode)
+(overriding-set-key (kbd "C-<hiragana-katakana>") #'skk-mode)
 
+
 
-;;; multiple terminal enviroment
+;;; work with evil
 
-(defadvice skk-cursor-set-1 (around get-terminal-cursor-color)
-  (let ((ccc-default-cursor-color
-         (terminal-parameter nil 'ccc-terminal-cursor-color)))
-    ad-do-it))
-(defadvice skk-cursor-off-1 (around get-terminal-cursor-color)
-  (let ((ccc-default-cursor-color
-         (terminal-parameter nil 'ccc-terminal-cursor-color)))
-    ad-do-it))
-(defadvice ccc-default-cursor-color (around get-terminal-cursor-color)
-  (let ((ccc-default-cursor-color
-         (terminal-parameter nil 'ccc-terminal-cursor-color)))
-    ad-do-it))
-(defadvice ccc-setup-new-frame (around get-terminal-cursor-color)
-  (let ((ccc-default-cursor-color
-          (terminal-parameter frame 'ccc-terminal-cursor-color)))
-    ad-do-it))
-(defadvice ccc-setup (around get-terminal-cursor-color)
-  (setq ccc-default-cursor-color
-        (let ((ccc-default-cursor-color
-                (terminal-parameter nil 'ccc-terminal-cursor-color)))
-          ad-do-it
-          ccc-default-cursor-color)))
+(defconst skk-evil-concession-utility-form
+  '(progn
+     (defun ccc-update-buffer-local-cursor-color-suppressor
+        (ccc-update-buffer-local-cursor-color &rest args)
+      "Advising `ccc-update-buffer-local-cursor-color' to suppress ccc.
 
-(defadvice ccc-setup (after set-terminal-cursor-color)
-  (set-terminal-parameter
-   nil 'ccc-terminal-cursor-color ccc-default-cursor-color))
-(defadvice ccc-setup-current-colors (after set-terminal-cursor-color)
-  (set-terminal-parameter
-   nil 'ccc-terminal-cursor-color ccc-default-cursor-color))
-(defadvice custom-theme-checkbox-toggle (after set-terminal-cursor-color)
-  (set-terminal-parameter
-   nil 'ccc-terminal-cursor-color ccc-default-cursor-color))
+Cursor color update is suppressed if `evil-state' is not
+emacs or `skk-mode' is off."
+      (if (and (eq evil-state 'emacs) skk-mode)
+          (apply ccc-update-buffer-local-cursor-color args)))
+     (defun evil-refresh-cursor-suppressor (evil-refresh-cursor &rest args)
+       "Advising `evil-refresh-cursor' to suppress `evil-refresh-cursor'
 
-(defadvice ccc-default-foreground-color (around get-terminal-foreground-color)
-  (let ((ccc-default-foreground-color
-         (terminal-parameter nil 'ccc-terminal-foreground-color)))
-    ad-do-it))
-(defadvice ccc-setup-new-frame (around get-terminal-foreground-color)
-  (let ((ccc-default-foreground-color
-          (terminal-parameter frame 'ccc-terminal-foreground-color)))
-    ad-do-it))
-(defadvice ccc-setup (around get-terminal-foreground-color)
-  (setq ccc-default-foreground-color
-        (let ((ccc-default-foreground-color
-               (terminal-parameter nil 'ccc-terminal-foreground-color)))
-          ad-do-it
-          ccc-default-foreground-color)))
+Cursor refresh is suppressed if `evil-state' is emacs and
+`skk-mode' is on."
+       (if (not (and (eq evil-state 'emacs) skk-mode))
+           (apply evil-refresh-cursor args))))
+  "Form to define utilities for concession between skk and evil.
+This form will be evaluated after loading skk and evil.
+These defun are separated to this form in order to
+eliminate compiler warnings.")
 
-(defadvice ccc-setup (after set-terminal-foreground-color)
-  (set-terminal-parameter
-   nil 'ccc-terminal-foreground-color ccc-default-foreground-color))
-(defadvice ccc-setup-current-colors (after set-terminal-foreground-color)
-  (set-terminal-parameter
-   nil 'ccc-terminal-foreground-color ccc-default-foreground-color))
-(defadvice custom-theme-checkbox-toggle (after set-terminal-foreground-color)
-  (set-terminal-parameter
-   nil 'ccc-terminal-foreground-color ccc-default-foreground-color))
+(with-eval-after-load 'ccc
+  (with-eval-after-load 'evil
+    (require 'skk)
 
-(defadvice ccc-default-background-color (around get-terminal-background-color)
-  (let ((ccc-default-background-color
-         (terminal-parameter nil 'ccc-terminal-background-color)))
-    ad-do-it))
-(defadvice ccc-setup-new-frame (around get-terminal-background-color)
-  (let ((ccc-default-background-color
-         (terminal-parameter frame 'ccc-terminal-background-color)))
-    ad-do-it))
-(defadvice ccc-setup (around get-terminal-background-color)
-  (setq ccc-default-background-color
-        (let ((ccc-default-background-color
-                (terminal-parameter nil 'ccc-terminal-background-color)))
-          ad-do-it
-          ccc-default-background-color)))
+    (eval skk-evil-concession-utility-form)
 
-(defadvice ccc-setup (after set-terminal-background-color)
-  (set-terminal-parameter
-   nil 'ccc-terminal-background-color ccc-default-background-color))
-(defadvice ccc-setup-current-colors (after set-terminal-background-color)
-  (set-terminal-parameter
-   nil 'ccc-terminal-background-color ccc-default-background-color))
-(defadvice custom-theme-checkbox-toggle (after set-terminal-background-color)
-  (set-terminal-parameter
-   nil 'ccc-terminal-background-color ccc-default-background-color))
-
-(mapc (lambda (f) (ad-activate f))
-      '(skk-cursor-set-1
-        skk-cursor-off-1
-        ccc-default-cursor-color
-        ccc-setup-new-frame
-        ccc-setup
-        ccc-setup-current-colors
-        custom-theme-checkbox-toggle
-        ccc-default-foreground-color
-        ccc-default-background-color))
-
-(autoload 'ccc-setup-current-colors "ccc")
-(autoload 'ccc-setup-new-frame "ccc")
-
-(defun ccc-setup-new-terminal-function ()
-  (ccc-setup)
-  (remove-hook 'pre-command-hook #'ccc-setup-new-terminal-function))
-(add-hook 'after-make-terminal-functions
-          (lambda (terminal)
-            (add-hook 'pre-command-hook #'ccc-setup-new-terminal-function)))
-
-
-;;; server
-
-(defadvice server-create-window-system-frame
-    (after ccc-update-buffer-local-frame-params)
-  (if (not (memq (frame-terminal (selected-frame))
-                 (mapcar 'frame-terminal (remq (selected-frame) (frame-list)))))
-      (ccc-setup-current-colors)))
-(ad-activate 'server-create-window-system-frame)
-
-
-;;; evil
-
-(eval-after-load 'skk
-  '(eval-after-load 'evil
-     '(progn
-        (defadvice ccc-update-buffer-local-cursor-color (around
-                                                         suppress-on-evil)
-          (if (and (eq evil-state 'emacs) skk-mode)
-              ad-do-it))
-        (defadvice evil-refresh-cursor (around suppress-on-skk)
-          (if (not (and (eq evil-state 'emacs) skk-mode))
-              ad-do-it))
-        (ad-activate 'ccc-update-buffer-local-cursor-color)
-        (ad-activate 'evil-refresh-cursor))))
+    (advice-add 'ccc-update-buffer-local-cursor-color
+                :around #'ccc-update-buffer-local-cursor-color-suppressor)
+    (advice-add 'evil-refresh-cursor
+                :around #'evil-refresh-cursor-suppressor)))
 
 
 (resolve init-ddskk)
