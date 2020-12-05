@@ -7,6 +7,10 @@
 (premise mode-line)
 (premise bindings)
 
+(eval-when-compile (require 'org))
+(declare-function org-time-stamp "org")
+(declare-function org-time-stamp-inactive "org")
+
 (custom-set-variables
  '(org-use-speed-commands t))
 
