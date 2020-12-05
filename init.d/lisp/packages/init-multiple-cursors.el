@@ -17,7 +17,7 @@
 (custom-set-variables
  '(mc/always-run-for-all t)
  `(mc/mode-line
-   '(" MD:" (:eval (format ,(propertize "%d" 'face '(bold mode-line-warning))
+   '(" MC:" (:eval (format ,(propertize "%d" 'face '(bold mode-line-warning))
                            (mc/num-cursors))))))
 
 (push '(multiple-cursors-mode . 23) mode-line-minor-mode-priority-alist)
@@ -31,7 +31,7 @@
 (overriding-set-key (kbd "C-c @ C-v") #'mc/cycle-forward)
 (overriding-set-key (kbd "C-c @ M-v") #'mc/cycle-backward)
 
-(with-eval-after-load 'multiple-cursors
+(with-eval-after-load 'multiple-cursors-core
   (add-to-list 'mc/unsupported-minor-modes 'show-paren-mode)
   (with-eval-after-load 'visible-mark
     (add-to-list 'mc/unsupported-minor-modes 'visible-mark-mode)))
