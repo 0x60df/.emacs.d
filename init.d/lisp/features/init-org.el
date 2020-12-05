@@ -18,5 +18,9 @@
 (overriding-set-key (kbd "C-c o a") #'org-agenda)
 (overriding-set-key (kbd "C-c o c") #'org-capture)
 
+(with-eval-after-load 'org
+  (define-key org-mode-map (kbd "C-c C-.") #'org-time-stamp)
+  (define-key org-mode-map (kbd "C-c C-!") #'org-time-stamp-inactive))
+
 
 (resolve init-org)
