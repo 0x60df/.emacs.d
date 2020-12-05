@@ -37,6 +37,7 @@ inline candidate is completed."
                 (ac-expand-string ac-last-prefix t)
                 (apply ac-expand '(nil))
                 (apply ac-expand args)
+                (ac-activate-completing-map)
                 (setq ac-last-prefix 'pullpacked)
                 (setq ac-latest-prefix 'pullbacked))
                (t (setq ac-last-prefix ac-prefix)      ; hold
