@@ -22,6 +22,14 @@
 
 (push '(multiple-cursors-mode . 23) mode-line-minor-mode-priority-alist)
 
+(defun disable-mc-before-make-frame (&rest args)
+  "Advising `make-frame' to disable mc."
+  (if multiple-cursors-mode
+      (multiple-cursors-mode 0)))
+
+(with-eval-after-load 'multiple-cursors-core
+  (advice-add 'make-frame :before #'disable-mc-before-make-frame))
+
 (overriding-set-key (kbd "C-@") #'mc/mark-all-dwim)
 (overriding-set-key (kbd "C-c @ e") #'mc/edit-lines)
 (overriding-set-key (kbd "C-c @ n") #'mc/mark-next-like-this)
