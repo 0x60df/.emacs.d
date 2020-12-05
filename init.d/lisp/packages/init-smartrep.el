@@ -11,7 +11,8 @@
 
 (eval-when-compile
   (require 'org)
-  (require 'smerge-mode))
+  (require 'smerge-mode)
+  (require 'flyspell))
 
 (declare-function smartrep-define-key "smartrep")
 
