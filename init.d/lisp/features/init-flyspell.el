@@ -18,6 +18,7 @@
 (push '(flyspell-mode . 40) mode-line-minor-mode-priority-alist)
 
 (overriding-set-key (kbd "C-c $") #'flyspell-mode)
+(overriding-set-key (kbd "H-4") #'flyspell-mode)
 
 (with-eval-after-load 'flyspell
   (defvar overriding-flyspell-mode-map

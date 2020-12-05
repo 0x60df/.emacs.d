@@ -10,6 +10,7 @@
 (push '(flycheck-mode . 41) mode-line-minor-mode-priority-alist)
 
 (overriding-set-key (kbd "C-c !") #'flycheck-mode)
+(overriding-set-key (kbd "H-1") #'flycheck-mode)
 
 (with-eval-after-load 'flycheck
   (defvar overriding-flycheck-mode-map
