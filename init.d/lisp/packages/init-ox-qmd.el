@@ -3,6 +3,7 @@
 
 
 (premise init)
+(premise inst-ox-qmd)
 
 (eval-when-compile (require 'ox-qmd))
 
@@ -10,9 +11,10 @@
   (require 'ox-qmd))
 
 (with-eval-after-load 'ox-qmd
-  (setq ox-qmd-language-keyword-alist (append ox-qmd-language-keyword-alist
-                                              '(("shell-script" . "bash")
-                                                ("yatex" . "latex")))))
+  (mapc (lambda (cell)
+          (add-to-list 'ox-qmd-language-keyword-alist cell))
+        '(("shell-script" . "bash")
+                 ("yatex" . "latex"))))
 
 
 (resolve init-ox-qmd)
