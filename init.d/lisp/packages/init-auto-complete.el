@@ -59,6 +59,7 @@ inline candidate is completed."
 ;;; settings
 
 (custom-set-variables
+ `(ac-delay 0.05)
  '(ac-auto-show-menu nil)
  '(ac-ignore-case nil)
  '(ac-quick-help-delay 1.8)
