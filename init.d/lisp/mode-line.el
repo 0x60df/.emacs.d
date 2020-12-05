@@ -26,6 +26,10 @@
                '((t (:weight bold)))
                'face-defface-spec)
 
+(face-spec-set 'which-func
+               '((t (:slant italic)))
+               'face-defface-spec)
+
 (defface mode-line-vc-mode
   '((t :slant italic))
   "Face used for vc-mode part of the mode line."
@@ -34,11 +38,6 @@
 (defface mode-line-mode-name
   '((t :weight bold))
   "Face used for mode-name part of the mode line."
-  :group 'user)
-
-(defface mode-line-which-func-mode
-  '((t :slant italic))
-  "Face used for which-func-mode part of the mode line."
   :group 'user)
 
 (defface mode-line-warning
@@ -256,7 +255,7 @@ They also compared by `symbol-name'."
 
 (custom-set-variables
  '(which-func-format
-   '(:propertize which-func-current face mode-line-which-func-mode)))
+   '(:propertize which-func-current face which-func)))
 
 (setq mode-line-misc-info
       '((which-function-mode
@@ -271,7 +270,7 @@ They also compared by `symbol-name'."
   '(mode-line-buffer-id
     mode-line-vc-mode
     mode-line-mode-name
-    mode-line-which-func-mode
+    which-func
     mode-line-separator)
   "Faces which determine boundary of elements of mode-line."
   :type '(repeat face)

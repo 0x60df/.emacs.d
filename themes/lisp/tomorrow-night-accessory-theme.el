@@ -31,7 +31,7 @@
                           :foreground nil)))
  '(mode-line-vc-mode ((t :inherit font-lock-variable-name-face)))
  '(mode-line-mode-name ((t :inherit font-lock-type-face)))
- '(mode-line-which-func-mode ((t :inherit font-lock-function-name-face)))
+ '(which-func ((t :weight normal)))
  '(mode-line-warning ((t :inherit font-lock-warning-face
                          :weight normal)))
  '(mode-line-transform ((t :slant italic))))
