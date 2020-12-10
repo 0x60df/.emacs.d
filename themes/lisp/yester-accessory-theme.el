@@ -28,6 +28,12 @@
    `(risky-yes-or-no-p-prefix
      (,@(yester-whole-face-spec class `(:foreground ,red))))
 
+   ;; Sdired
+   `(sdired-group
+     (,@(yester-whole-face-spec class `(:foreground ,comment))))
+   `(sdired-key
+     (,@(yester-whole-face-spec class `(:foreground ,aqua))))
+
    ;; Auto-complete
    `(ac-dictionary-candidate-face
      ((,class :inherit (font-lock-keyword-face ac-candidate-face))))
