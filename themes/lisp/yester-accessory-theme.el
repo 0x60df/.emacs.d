@@ -20,7 +20,10 @@
    `(mode-line-vc-mode
      (,@(yester-whole-face-spec class `(:foreground ,orange))))
    `(mode-line-mode-name
-     (,@(yester-whole-face-spec class `(:foreground ,yellow))))
+     (((,@class (background dark))
+       ,@(yester-let-colors night (list :foreground yellow)))
+      ((,@class (background light))
+       ,@(yester-let-colors day (list :foreground blue :weight 'bold)))))
    `(mode-line-warning (,@(yester-whole-face-spec class `(:foreground ,red))))
    `(mode-line-transform ((,class (:slant italic))))
 
@@ -29,10 +32,8 @@
      (,@(yester-whole-face-spec class `(:foreground ,red))))
 
    ;; Sdired
-   `(sdired-group
-     (,@(yester-whole-face-spec class `(:foreground ,comment))))
-   `(sdired-key
-     (,@(yester-whole-face-spec class `(:foreground ,aqua))))
+   `(sdired-group (,@(yester-whole-face-spec class `(:foreground ,comment))))
+   `(sdired-key (,@(yester-whole-face-spec class `(:foreground ,aqua))))
 
    ;; Auto-complete
    `(ac-dictionary-candidate-face
@@ -64,7 +65,7 @@
    `(evil-visual-state-tag
      (,@(yester-whole-face-spec class :foreground green :weight 'bold)))
    `(evil-motion-state-tag
-     (,@(yester-whole-face-spec class :foreground blue :weight 'bold)))))
+     (,@(yester-whole-face-spec class :foreground purple :weight 'bold)))))
 
 
 (provide-theme 'yester-accessory)

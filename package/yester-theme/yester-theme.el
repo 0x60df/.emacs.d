@@ -31,8 +31,9 @@
    `(link (,@(yester-whole-face-spec class :foreground blue)))
    `(link-visited (,@(yester-whole-face-spec class :foreground purple)))
    `(highlight (,@(yester-whole-face-spec class
-                    :distant-foreground background :background green)))
-
+                    :foreground green
+                    :background background
+                    :inverse-video t)))
    `(match (,@(yester-whole-face-spec class
                 :foreground blue :background background :inverse-video t)))
    `(isearch (,@(yester-whole-face-spec class
@@ -127,7 +128,7 @@
    ;; Complementary Faces for Basic and Standard Faces
    `(hl-line (,@(yester-whole-face-spec class :background current-line)))
    `(border (,@(yester-whole-face-spec class :background current-line)))
-   `(linum (,@(yester-whole-face-spec class :background current-line)))
+   `(linum ((,class :inherit (shadow default))))
    `(isearch-fail (,@(yester-whole-face-spec class
                        :foreground red
                        :background background
@@ -146,13 +147,15 @@
    `(which-func (,@(yester-whole-face-spec class :foreground blue)))
    `(tab-line-tab ((,class :inherit 'tab-line)))
    `(tab-line-tab-current (,@(yester-whole-face-spec class
-                               :background selection
+                               :weight 'bold
+                               :background background
                                :inherit 'tab-line-tab)))
    `(tab-line-tab-inactive ((,class :inherit tab-line-tab)))
-   `(tab-bar-tab
-     (,@(yester-whole-face-spec class :background selection :inherit 'tab-bar)))
-   `(tab-bar-tab-inactive (,@(yester-whole-face-spec class
-                               :background current-line :inherit 'tab-bar-tab)))
+   `(tab-bar-tab (,@(yester-whole-face-spec class
+                      :weight 'bold
+                      :background background
+                      :inherit 'tab-bar)))
+   `(tab-bar-tab-inactive ((,class :inherit 'tab-bar)))
 
 
 
@@ -161,7 +164,10 @@
    `(completions-common-part
      (,@(yester-whole-face-spec class :foreground aqua)))
    `(completions-first-difference
-     (,@(yester-whole-face-spec class :foreground emboss)))
+     (((,@class (background dark))
+       ,@(yester-let-colors night (list :foreground emboss)))
+      ((,@class (background light))
+       ,@(yester-let-colors day (list :weight 'bold :foreground emboss)))))
 
 
 
@@ -289,29 +295,21 @@
        ,@(yester-let-colors day (list :foreground diff-accent-cyan
                                       :background diff-variant-cyan)))))
    `(ediff-even-diff-A
-     ((,class :foreground nil :background nil :inverse-video t)))
+     (,@(yester-whole-face-spec class :background current-line)))
    `(ediff-even-diff-B
-     ((,class :foreground nil :background nil :inverse-video t)))
+     (,@(yester-whole-face-spec class :background current-line)))
    `(ediff-even-diff-C
-     ((,class :foreground nil :background nil :inverse-video t)))
+     (,@(yester-whole-face-spec class :background current-line)))
    `(ediff-even-diff-Ancestor
-     ((,class :foreground nil :background nil :inverse-video t)))
-   `(ediff-odd-diff-A (,@(yester-whole-face-spec class
-                           :foreground comment
-                           :background nil
-                           :inverse-video t)))
-   `(ediff-odd-diff-B (,@(yester-whole-face-spec class
-                           :foreground comment
-                           :background nil
-                           :inverse-video t)))
-   `(ediff-odd-diff-C (,@(yester-whole-face-spec class
-                           :foreground comment
-                           :background nil
-                           :inverse-video t)))
-   `(ediff-odd-diff-Ancestor (,@(yester-whole-face-spec class
-                                  :foreground comment
-                                  :background nil
-                                  :inverse-video t)))
+     (,@(yester-whole-face-spec class :background current-line)))
+   `(ediff-odd-diff-A
+     (,@(yester-whole-face-spec class :background selection)))
+   `(ediff-odd-diff-B
+     (,@(yester-whole-face-spec class :background selection)))
+   `(ediff-odd-diff-C
+     (,@(yester-whole-face-spec class :background selection)))
+   `(ediff-odd-diff-Ancestor
+     (,@(yester-whole-face-spec class :background selection)))
 
 
 
@@ -432,7 +430,7 @@
    `(hi-green-b
      (,@(yester-whole-face-spec class :foreground green :weight 'bold)))
    `(hi-pink
-     (,@(yester-whole-face-spec class :foreground red :inverse-video)))
+     (,@(yester-whole-face-spec class :foreground red :inverse-video t)))
    `(hi-red-b
      (,@(yester-whole-face-spec class :foreground red :weight 'bold)))
    `(hi-yellow
@@ -445,18 +443,25 @@
 
 
    ;; Popup
-   `(popup-face ((,class)))
-   `(popup-isearch-match ((,class :inherit lazy-highlight)))
+   `(popup-face ((,class :inherit default)))
+   `(popup-isearch-match ((,class :inherit (lazy-highlight default))))
    `(popup-menu-mouse-face ((,class :inherit popup-menu-selection-face)))
    `(popup-menu-selection-face
-     (,@(yester-whole-face-spec class :background selection)))
+     (,@(yester-whole-face-spec class :background selection :inherit 'default)))
    `(popup-scroll-bar-background-face
      (,@(yester-whole-face-spec class :background current-line)))
    `(popup-scroll-bar-foreground-face
      (,@(yester-whole-face-spec class :background selection)))
-   `(popup-summary-face ((,class :inherit shadow)))
-   `(popup-tip-face (,@(yester-whole-face-spec class
-                         :background selection :foreground foreground)))
+   `(popup-summary-face ((,class :inherit (shadow popup-face))))
+   `(popup-tip-face
+     (((,@class (background dark))
+       ,@(yester-let-colors night (list :foreground foreground
+                                        :background selection
+                                        :inherit 'popup-face)))
+      ((,@class (background light))
+       ,@(yester-let-colors day (list :foreground foreground
+                                      :background current-line
+                                      :inherit 'popup-face)))))
 
 
 
@@ -480,7 +485,10 @@
 
    ;; Ace-jump-mode
    `(ace-jump-face-foreground
-     (,@(yester-whole-face-spec class :foreground emboss)))
+     (((,@class (background dark))
+       ,@(yester-let-colors night (list :foreground emboss)))
+      ((,@class (background light))
+       ,@(yester-let-colors day (list :weight 'bold :foreground emboss)))))
    `(ace-jump-face-background ((,class :inherit shadow)))
 
 
@@ -498,7 +506,11 @@
    `(anzu-mode-line-no-match
      (,@(yester-whole-face-spec class :foreground aqua)))
    `(anzu-replace-highlight ((,class :inherit lazy-highlight)))
-   `(anzu-replace-to (,@(yester-whole-face-spec class :foreground emboss)))
+   `(anzu-replace-to
+     (((,@class (background dark))
+       ,@(yester-let-colors night (list :foreground emboss)))
+      ((,@class (background light))
+       ,@(yester-let-colors day (list :weight 'bold :foreground emboss)))))
 
 
 
@@ -512,14 +524,20 @@
                                :background current-line
                                :inherit 'variable-pitch)))
    `(helm-candidate-number
-     (,@(yester-whole-face-spec class :foreground yellow)))
+     (((,@class (background dark))
+       ,@(yester-let-colors night (list :foreground yellow)))
+      ((,@class (background light))
+       ,@(yester-let-colors day (list :foreground blue :weight 'bold)))))
    `(helm-header-line-left-margin
      (,@(yester-whole-face-spec class :foreground yellow :inverse-video t)))
    `(helm-selection (,@(yester-whole-face-spec class :background selection)))
    `(helm-selection-line ((,class :weight bold)))
    `(helm-separator ((,class :inherit error)))
    `(helm-visible-mark
-     (,@(yester-whole-face-spec class :underline yellow)))
+     (((,@class (background dark))
+       ,@(yester-let-colors night (list :underline yellow)))
+      ((,@class (background light))
+       ,@(yester-let-colors day (list :underline blue)))))
    `(helm-buffer-directory ((,class :inherit dired-directory)))
    `(helm-buffer-file ((,class)))
    `(helm-buffer-not-saved ((,class :inherit warning)))
@@ -541,7 +559,10 @@
    `(helm-ff-invalid-symlink ((,class :inherit dired-warning)))
    `(helm-ff-pipe ((,class :inherit dired-special)))
    `(helm-ff-prefix
-     (,@(yester-whole-face-spec class :weight 'bold :foreground yellow)))
+     (((,@class (background dark))
+       ,@(yester-let-colors night (list :foreground yellow :weight 'bold)))
+      ((,@class (background light))
+       ,@(yester-let-colors day (list :foreground blue :weight 'bold)))))
    `(helm-ff-socket ((,class :slant italic :inherit dired-special)))
    `(helm-ff-suid ((,class :inherit dired-set-id)))
    `(helm-ff-symlink ((,class :inherit dired-symlink)))
@@ -550,7 +571,11 @@
    `(helm-grep-lineno ((,class :inherit compilation-line-number)))
    `(helm-grep-match ((,class :inherit helm-match :inverse-video t)))
    `(helm-locate-finish ((,class :inherit success)))
-   `(helm-match (,@(yester-whole-face-spec class :foreground emboss)))
+   `(helm-match
+     (((,@class (background dark))
+       ,@(yester-let-colors night (list :foreground emboss)))
+      ((,@class (background light))
+       ,@(yester-let-colors day (list :weight 'bold :foreground emboss)))))
    `(helm-moccur-buffer (,@(yester-whole-face-spec class :foreground aqua)))
    `(helm-mode-prefix
      (,@(yester-whole-face-spec class :foreground yellow :inverse-video t)))
@@ -609,6 +634,7 @@
    `(magit-branch-remote
      (,@(yester-whole-face-spec class :foreground blue)))
    `(magit-hash (,@(yester-whole-face-spec class :foreground comment)))
+   `(magit-header-line (,@(yester-whole-face-spec class :foreground purple)))
    `(magit-log-author (,@(yester-whole-face-spec class :foreground orange)))
    `(magit-log-graph (,@(yester-whole-face-spec class :foreground comment)))
    `(magit-section-heading
