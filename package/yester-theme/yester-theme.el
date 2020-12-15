@@ -162,7 +162,12 @@
    ;; Completion
    `(completions-annotations ((,class :inherit shadow)))
    `(completions-common-part
-     (,@(yester-whole-face-spec class :foreground aqua)))
+     (((,@class (background dark))
+       ,@(yester-let-colors night (list :foreground aqua)))
+      ((,@class (background light))
+       ,@(cond ((eq (cdr (assq 'day yester-scene)) 'morning)
+                (yester-let-colors day (list :foreground orange)))
+               (t (yester-let-colors day (list :foreground aqua)))))))
    `(completions-first-difference
      (((,@class (background dark))
        ,@(yester-let-colors night (list :foreground emboss)))
@@ -459,9 +464,13 @@
                                         :background selection
                                         :inherit 'popup-face)))
       ((,@class (background light))
-       ,@(yester-let-colors day (list :foreground foreground
-                                      :background current-line
-                                      :inherit 'popup-face)))))
+       ,@(cond ((eq (cdr (assq 'day yester-scene)) 'morning)
+                (yester-let-colors day (list :foreground foreground
+                                             :background selection
+                                             :inherit 'popup-face)))
+               (t (yester-let-colors day (list :foreground foreground
+                                               :background current-line
+                                               :inherit 'popup-face)))))))
 
 
 
@@ -527,7 +536,10 @@
      (((,@class (background dark))
        ,@(yester-let-colors night (list :foreground yellow)))
       ((,@class (background light))
-       ,@(yester-let-colors day (list :foreground blue :weight 'bold)))))
+       ,@(cond ((eq (cdr (assq 'day yester-scene)) 'morning)
+                (yester-let-colors day (list :foreground red)))
+               (t (yester-let-colors day
+                    (list :foreground blue :weight 'bold)))))))
    `(helm-header-line-left-margin
      (,@(yester-whole-face-spec class :foreground yellow :inverse-video t)))
    `(helm-selection (,@(yester-whole-face-spec class :background selection)))
@@ -537,7 +549,9 @@
      (((,@class (background dark))
        ,@(yester-let-colors night (list :underline yellow)))
       ((,@class (background light))
-       ,@(yester-let-colors day (list :underline blue)))))
+       ,@(cond ((eq (cdr (assq 'day yester-scene)) 'morning)
+                (yester-let-colors day (list :underline red)))
+               (t (yester-let-colors day (list :underline blue)))))))
    `(helm-buffer-directory ((,class :inherit dired-directory)))
    `(helm-buffer-file ((,class)))
    `(helm-buffer-not-saved ((,class :inherit warning)))
@@ -562,7 +576,10 @@
      (((,@class (background dark))
        ,@(yester-let-colors night (list :foreground yellow :weight 'bold)))
       ((,@class (background light))
-       ,@(yester-let-colors day (list :foreground blue :weight 'bold)))))
+       ,@(cond ((eq (cdr (assq 'day yester-scene)) 'morning)
+                (yester-let-colors day (list :foreground red :weight 'bold)))
+               (t (yester-let-colors day
+                    (list :foreground blue :weight 'bold)))))))
    `(helm-ff-socket ((,class :slant italic :inherit dired-special)))
    `(helm-ff-suid ((,class :inherit dired-set-id)))
    `(helm-ff-symlink ((,class :inherit dired-symlink)))

@@ -23,8 +23,17 @@
      (((,@class (background dark))
        ,@(yester-let-colors night (list :foreground yellow)))
       ((,@class (background light))
-       ,@(yester-let-colors day (list :foreground blue :weight 'bold)))))
-   `(mode-line-warning (,@(yester-whole-face-spec class `(:foreground ,red))))
+       ,@(cond ((eq (cdr (assq 'day yester-scene)) 'morning)
+                (yester-let-colors day (list :foreground red)))
+               (t (yester-let-colors day
+                    (list :foreground blue :weight 'bold)))))))
+   `(mode-line-warning
+     (((,@class (background dark))
+       ,@(yester-let-colors night (list :foreground red)))
+      ((,@class (background light))
+       ,@(cond ((eq (cdr (assq 'day yester-scene)) 'morning)
+                (yester-let-colors day (list :foreground red :weight 'bold)))
+               (t (yester-let-colors day (list :foreground red)))))))
    `(mode-line-transform ((,class (:slant italic))))
 
    ;; Risky

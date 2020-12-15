@@ -11,7 +11,7 @@
 
 ;;; Code:
 
-(defgroup yester nil "Yester theme" :group 'faces)
+(defgroup yester nil "Yester theme." :group 'faces)
 
 (defconst yester-colors
   '((night . ((background . "#1d1f21")
@@ -38,7 +38,7 @@
             (aqua . "#3e999f")
             (blue . "#4271ae")
             (purple . "#8959a8"))))
-  "Colors for `yester-theme'")
+  "Colors for `yester-theme'.")
 
 (defconst yester-extended-colors
   '((night . ((emboss . "#ffd700")
@@ -67,7 +67,28 @@
             (diff-accent-red . "#e63535")
             (diff-accent-yellow . "#f5c000")
             (diff-accent-cyan . "#46bac2"))))
-  "Colors for extended use for `yester-theme'")
+  "Colors for extended use for `yester-theme'.")
+
+(defconst yester-scene-colors
+  '((night . nil)
+    (day . ((morning . ((background . "#fefefd")
+                        (current-line . "#f6f6f5")
+                        (selection . "#ededeb")
+                        (emboss . "#e34234"))))))
+  "Colors for specific scene for `yester-theme'.")
+
+(defcustom yester-scene nil
+  "Scene specifier for night and day phase of `yester-theme'.
+Value of this user option is alist, and looks like
+(('night . scene) ('day . scene)).
+If either night or day cell is omitted, or specified scene
+does not exist, no scene is applied for that phase.
+Furthermore, multiple cells can be added to this variable.
+They are dealt with in the standard manner for alist.
+Therefore, the first cell for each phase is employed.
+If scene is applied, scene colors shadow phase colors."
+  :type '(alist :key-type (choice (const night) (const day)) :key-value symbol)
+  :group 'yester)
 
 (defmacro yester-let-colors (phase &rest body)
   "Eval BODY with let of color name with hex code for yester theme.
@@ -75,13 +96,20 @@ PHASE must be either night or day, which specifies
 which set of colors is referred."
   (declare (indent 1))
   (let ((colors (if (memq phase '(night day))
-                    (append (cdr (assq phase yester-colors))
+                    (append (cdr (assq (cdr (assq phase yester-scene))
+                                       (cdr (assq phase yester-scene-colors))))
+                            (cdr (assq phase yester-colors))
                             (cdr (assq phase yester-extended-colors)))
-                  (error "Invalid phase `%s' for yester theme" phase))))
-    `(let ,(mapcar
-            (lambda (name-hex)
-              `(,(car name-hex) ,(cdr name-hex)))
-            colors)
+                  (error "Invalid phase `%s' for yester theme" phase)))
+        (varlist nil))
+    (mapc
+     (lambda (name-hex)
+       (let ((name (car name-hex))
+             (hex (cdr name-hex)))
+         (unless (assq name varlist)
+           (setq varlist (cons `(,name ,hex) varlist)))))
+     colors)
+    `(let ,varlist
        ,@body)))
 
 (defmacro yester-whole-face-spec (display &rest plist)
