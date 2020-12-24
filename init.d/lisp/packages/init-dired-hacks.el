@@ -5,6 +5,9 @@
 (premise init)
 (premise inst-dired-hacks)
 
+(with-eval-after-load 'dired-filter
+  (setcdr (assq 'dired-filter-mode minor-mode-alist) '("")))
+
 (with-eval-after-load 'dired
   (define-key dired-mode-map (kbd "/") dired-filter-map)
 
