@@ -71,10 +71,22 @@
 
 (defconst yester-scene-colors
   '((night . nil)
-    (day . ((morning . ((background . "#fefefd")
-                        (current-line . "#f6f6f5")
-                        (selection . "#ededeb")
-                        (emboss . "#e34234"))))))
+    (day . ((morning . ((background . "#f5f3f1")
+                        (current-line . "#edece8")
+                        (selection . "#e0dedb")
+                        (emboss . "#e34234")
+                        (diff-green . "#e1f2e1")
+                        (diff-red . "#f7e6e6")
+                        (diff-yellow . "#f5f0dc")
+                        (diff-cyan . "#dcf2f2")
+                        (diff-variant-green . "#c5edc5")
+                        (diff-variant-red . "#f7cdcf")
+                        (diff-variant-yellow . "#f7e9cd")
+                        (diff-variant-cyan . "#c7ebeb")
+                        (diff-accent-green . "#009600")
+                        (diff-accent-red . "#d62d2d")
+                        (diff-accent-yellow . "#f2be00")
+                        (diff-accent-cyan . "#44b5bd"))))))
   "Colors for specific scene for `yester-theme'.")
 
 (defcustom yester-scene nil
