@@ -4,9 +4,12 @@
 
 (premise init)
 (premise custom)
+(premise advice)
 (premise mode-line)
 (premise bindings)
 (premise inst-git-gutter-fringe)
+
+(declare-function git-gutter:close-popup load-file-name t t)
 
 (declare-function git-gutter:popup-buffer-window "git-gutter")
 (declare-function git-gutter:previous-hunk "git-gutter")
@@ -21,25 +24,29 @@
 
 (push '(git-gutter-mode . 31) mode-line-minor-mode-priority-alist)
 
-(defun git-gutter:close-popup ()
-  "Close git gutter popup window."
-  (interactive)
-  (delete-window (git-gutter:popup-buffer-window)))
+(with-eval-after-load 'git-gutter
 
-(overriding-set-key (kbd "C-c v q") #'git-gutter:close-popup)
-(overriding-set-key (kbd "C-c v <") #'git-gutter:previous-hunk)
-(overriding-set-key (kbd "C-c v >") #'git-gutter:next-hunk)
-(overriding-set-key (kbd "C-c v p") #'git-gutter:previous-hunk)
-(overriding-set-key (kbd "C-c v n") #'git-gutter:next-hunk)
-(overriding-set-key (kbd "C-c v d") #'git-gutter:popup-hunk)
-(overriding-set-key (kbd "C-c v r") #'git-gutter:revert-hunk)
-(overriding-set-key (kbd "C-c v s") #'git-gutter:stage-hunk)
-(overriding-set-key (kbd "C-c v SPC") #'git-gutter:mark-hunk)
+  (defun git-gutter:close-popup ()
+    "Close git gutter popup window."
+    (interactive)
+    (delete-window (git-gutter:popup-buffer-window)))
 
-(add-hook 'emacs-startup-hook
-          (lambda ()
-            (require 'git-gutter-fringe)
-            (global-git-gutter-mode)))
+  (overriding-set-key (kbd "C-c v q") #'git-gutter:close-popup)
+  (overriding-set-key (kbd "C-c v <") #'git-gutter:previous-hunk)
+  (overriding-set-key (kbd "C-c v >") #'git-gutter:next-hunk)
+  (overriding-set-key (kbd "C-c v p") #'git-gutter:previous-hunk)
+  (overriding-set-key (kbd "C-c v n") #'git-gutter:next-hunk)
+  (overriding-set-key (kbd "C-c v d") #'git-gutter:popup-hunk)
+  (overriding-set-key (kbd "C-c v r") #'git-gutter:revert-hunk)
+  (overriding-set-key (kbd "C-c v s") #'git-gutter:stage-hunk)
+  (overriding-set-key (kbd "C-c v SPC") #'git-gutter:mark-hunk))
+
+(advice-add-for-once 'git-gutter-mode
+                     :before (lambda (&rest args) (require 'git-gutter-fringe)))
+
+(add-hook 'find-file-hook (lambda ()
+                            (if (vc-backend (buffer-file-name))
+                                (git-gutter-mode))))
 
 
 (resolve init-git-gutter-fringe)
