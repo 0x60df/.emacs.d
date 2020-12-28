@@ -176,6 +176,7 @@ UNIT is a literal symbol."
 (init subr)
 (init simple)
 (init risky)
+(init advice)
 (init cursor)
 (init mark)
 (init region)
