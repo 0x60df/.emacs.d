@@ -4,6 +4,7 @@
 
 (premise init)
 (premise custom)
+(premise advice)
 (premise bindings)
 (premise inst-flex-isearch)
 
@@ -19,7 +20,8 @@
 (overriding-set-key (kbd "C-S-s") #'flex-isearch-forward)
 (overriding-set-key (kbd "C-S-r") #'flex-isearch-backward)
 
-(add-hook 'emacs-startup-hook #'global-flex-isearch-mode)
+(advice-add-for-once 'isearch-mode
+                     :before (lambda (&rest args) (global-flex-isearch-mode)))
 
 
 (resolve init-flex-isearch)
