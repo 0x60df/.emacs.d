@@ -4,14 +4,14 @@
 
 (premise init)
 (premise custom)
+(premise subr)
 (premise mode-line)
 (premise bindings)
-(premise feature)
 (premise inst-yasnippet)
 
 (eval-when-compile (require 'yasnippet))
 
-(lazy-autoload 'yas-reload-all "yasnippet")
+(declare-function yas-reload-all "yasnippet")
 (declare-function yas-expand "yasnippet")
 
 (declare-function yas--field-probably-deleted-p "yasnippet")
@@ -63,8 +63,40 @@ Otherwise, return original one."
   (push `(yas-minor-mode . ,overriding-yas-minor-mode-map)
         overriding-reserved-key-map-alist))
 
-(add-hook 'emacs-startup-hook #'yas-reload-all)
-(add-hook 'prog-mode-hook #'yas-minor-mode)
+(add-hook 'emacs-startup-hook
+          (lambda ()
+            (add-hook 'prog-mode-hook #'yas-minor-mode)
+
+            (let ((first-change-hook-form
+                   (lambda ()
+                     (when (derived-mode-p 'prog-mode)
+                       (message "[yas] Loading the snippet tables.")
+                       (require 'yasnippet)
+                       (yas-reload-all)
+                       (yas-minor-mode))))
+                  (prog-mode-hook-form
+                   (lambda ()
+                     (require 'yasnippet)
+                     (yas-reload-all)
+                     (with-current-buffer "*scratch*"
+                       (yas-minor-mode)))))
+              (add-hook-for-once
+               'prog-mode-hook
+               `(lambda ()
+                  (with-current-buffer "*scratch*"
+                    (remove-hook-for-once 'first-change-hook
+                                          ,first-change-hook-form))))
+              (add-hook-for-once 'prog-mode-hook `,prog-mode-hook-form)
+
+              (with-current-buffer "*scratch*"
+                (let ((hook (make-local-variable 'first-change-hook)))
+                  (add-hook-for-once
+                   hook
+                   `(lambda ()
+                      (if (derived-mode-p 'prog-mode)
+                          (remove-hook-for-once 'prog-mode-hook
+                                                ,prog-mode-hook-form))))
+                  (add-hook-for-once hook `,first-change-hook-form))))))
 
 
 (resolve init-yasnippet)
