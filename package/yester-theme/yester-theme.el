@@ -328,7 +328,7 @@
    `(org-agenda-structure
      (,@(yester-whole-face-spec class :foreground purple)))
    `(org-agenda-date (,@(yester-whole-face-spec class :foreground blue)))
-   `(org-agenda-done (,@(yester-whole-face-spec class :foreground purple)))
+   `(org-agenda-done (,@(yester-whole-face-spec class :foreground green)))
    `(org-agenda-dimmed-todo-face ((,class :inherit shadow)))
    `(org-block (,@(yester-whole-face-spec class :foreground orange)))
    `(org-code (,@(yester-whole-face-spec class :foreground yellow)))
@@ -349,11 +349,11 @@
    `(org-formula (,@(yester-whole-face-spec class :foreground red)))
    `(org-hide (,@(yester-whole-face-spec class :foreground current-line)))
    `(org-link ((,class :inherit link)))
-   `(org-scheduled (,@(yester-whole-face-spec class :foreground green)))
+   `(org-scheduled (,@(yester-whole-face-spec class :foreground foreground)))
    `(org-scheduled-previously
      (,@(yester-whole-face-spec class :foreground orange)))
    `(org-scheduled-today
-     (,@(yester-whole-face-spec class :foreground green)))
+     (,@(yester-whole-face-spec class :foreground yellow)))
    `(org-special-keyword
      (,@(yester-whole-face-spec class :foreground purple)))
    `(org-table (,@(yester-whole-face-spec class :foreground green)))
@@ -363,6 +363,8 @@
      (,@(yester-whole-face-spec class :weight 'bold :foreground red)))
    `(org-drawer (,@(yester-whole-face-spec class :foreground aqua)))
    `(org-time-grid (,@(yester-whole-face-spec class :foreground yellow)))
+   `(org-date-selected
+     (,@(yester-whole-face-spec class :foreground foreground :inverse-video t)))
 
 
 
