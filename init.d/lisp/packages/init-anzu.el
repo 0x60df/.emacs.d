@@ -4,6 +4,7 @@
 
 (premise init)
 (premise custom)
+(premise advice)
 (premise bindings)
 (premise mode-line)
 (premise inst-anzu)
@@ -27,7 +28,8 @@
   (add-to-list 'mode-line-boundary-faces 'anzu-mode-line)
   (add-to-list 'mode-line-boundary-faces 'anzu-mode-line-no-match))
 
-(add-hook 'emacs-startup-hook #'global-anzu-mode)
+(advice-add-for-once 'isearch-mode
+                     :before (lambda (&rest args) (global-anzu-mode)))
 
 
 (resolve init-anzu)
