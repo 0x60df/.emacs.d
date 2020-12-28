@@ -1,6 +1,6 @@
 # .emacs.d
 
-My user emacs initialization codes.
+The emacs initialization files.
 
 ## Requirements
 
