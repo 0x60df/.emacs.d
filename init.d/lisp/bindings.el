@@ -154,12 +154,13 @@ Keymap is determined by `overriding-map-for'"
 (overriding-set-key (kbd "s-+") #'toggle-all-frames-opacity)
 
 (with-eval-after-load 'server
-  (overriding-set-key (kbd "C-.") #'other-frame-on-selected-client)
-  (overriding-set-key (kbd "C-M-.") #'other-frame-on-selected-client-reverse)
-  (overriding-set-key (kbd "s-.") #'other-client-frame)
-  (overriding-set-key (kbd "s-M-.") #'other-client-frame-reverse)
-  (overriding-set-key (kbd "C-c .") #'pick-frame-on-selected-client)
-  (overriding-set-key (kbd "s-c .") #'pick-typical-frame-of-each-client))
+  (overriding-set-key (kbd "C-.") #'other-frame-with-server)
+  (overriding-set-key (kbd "C-M-.") #'other-frame-with-server-reverse)
+  (overriding-set-key (kbd "s-.") #'other-client-frame-with-server)
+  (overriding-set-key (kbd "s-M-.") #'other-client-frame-with-server-reverse)
+  (overriding-set-key (kbd "C-c .") #'pick-frame-with-server)
+  (overriding-set-key (kbd "s-c .")
+                      #'pick-typical-frame-of-each-client-with-server))
 
 (overriding-set-key (kbd "C-c l m") #'mode-line-modes-toggle-shrinked)
 (overriding-set-key (kbd "C-c l b")

@@ -274,6 +274,45 @@ belongs the other client than originally selected frame."
                       (set-frame-parameter frame 'alpha (or alpha 100)))))
               frame-alpha-alist)))))
 
+(defun other-frame-with-server (arg)
+  "`other-frame' or `other-frame-on-selected-client'."
+  (interactive "p")
+  (if (frame-parameter nil 'client)
+      (other-frame-on-selected-client arg)
+    (other-frame arg)))
+
+(defun other-frame-with-server-reverse (arg)
+  "`other-frame-reverse' or `other-frame-on-selected-client-reverse'."
+  (interactive "p")
+  (if (frame-parameter nil 'client)
+      (other-frame-on-selected-client-reverse arg)
+    (other-frame-reverse arg)))
+
+(defun other-client-frame-with-server (arg)
+  "`other-client-frame' or do nothing."
+  (interactive "p")
+  (if (frame-parameter nil 'client)
+      (other-client-frame arg)))
+
+(defun other-client-frame-with-server-reverse (arg)
+  "`other-client-frame-reverse' or do nothing."
+  (interactive "p")
+  (if (frame-parameter nil 'client)
+      (other-client-frame-reverse arg)))
+
+(defun pick-frame-with-server ()
+  "`pick-frame' or `pick-frame-on-selected-client'."
+  (interactive)
+  (if (frame-parameter nil 'client)
+      (call-interactively #'pick-frame-on-selected-client)
+    (call-interactively #'pick-frame)))
+
+(defun pick-typical-frame-of-each-client-with-server ()
+  "`pick-typical-frame-of-each-client' or do nothing."
+  (interactive)
+  (if (frame-parameter nil 'client)
+      (call-interactively #'pick-typical-frame-of-each-client)))
+
 
 
 ;;; session
