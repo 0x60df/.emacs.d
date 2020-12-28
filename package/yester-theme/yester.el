@@ -102,6 +102,11 @@ If scene is applied, scene colors shadow phase colors."
   :type '(alist :key-type (choice (const night) (const day)) :key-value symbol)
   :group 'yester)
 
+(defcustom yester-recalc '(yester)
+  "List of themes which will be recalculated when phase is shifted."
+  :type '(repeat symbol)
+  :group 'yester)
+
 (defmacro yester-let-colors (phase &rest body)
   "Eval BODY with let of color name with hex code for yester theme.
 PHASE must be either night or day, which specifies
@@ -154,12 +159,15 @@ PLIST must be specified as rest arguments."
 
 (defun yester-recalc (&optional theme)
   "Recalc faces and variables for THEME."
-  (let ((settings (get (or theme 'yester) 'theme-settings)))
-    (dolist (s settings)
-      (let ((prop (car s))
-            (symbol (cadr s)))
-        (cond ((eq prop 'theme-face) (custom-theme-recalc-face symbol))
-              ((eq prop 'theme-face) (custom-theme-recalc-variable symbol)))))))
+  (mapc (lambda (theme)
+          (dolist (setting (get theme 'theme-settings))
+            (let ((prop (car setting))
+                  (symbol (cadr setting)))
+              (cond ((eq prop 'theme-face)
+                     (custom-theme-recalc-face symbol))
+                    ((eq prop 'theme-face)
+                     (custom-theme-recalc-variable symbol))))))
+        yester-recalc))
 
 (defun yester--recalc-once-on-post-command ()
   "Recalc once and `remove-hook' `post-command-hook'."
