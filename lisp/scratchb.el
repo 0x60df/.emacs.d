@@ -49,7 +49,7 @@
   (if (not (member (get-buffer "*scratch*") (buffer-list)))
       (with-current-buffer (get-buffer-create "*scratch*")
         (cd scratchb-default-directory)
-        (lisp-interaction-mode)
+        (funcall initial-major-mode)
         (run-hook-with-args 'scratchb-after-revert-hook))))
 
 ;;;###autoload
