@@ -282,6 +282,12 @@
 
 
 
+   ;; Xref
+   `(xref-file-header
+     (,@(yester-whole-face-spec class :foreground comment :extend t)))
+
+
+
    ;; Ediff
    `(ediff-current-diff-A ((,class :inherit diff-removed)))
    `(ediff-current-diff-B ((,class :inherit diff-added)))
