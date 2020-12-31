@@ -157,7 +157,7 @@ PLIST must be specified as rest arguments."
                   (list '(eq (frame-parameter nil 'background-mode) 'light)
                         (list 'quote (yester-let-colors day ,form)))))))
 
-(defun yester-recalc (&optional theme)
+(defun yester-recalc ()
   "Recalc faces and variables for THEME."
   (mapc (lambda (theme)
           (dolist (setting (get theme 'theme-settings))
@@ -165,7 +165,7 @@ PLIST must be specified as rest arguments."
                   (symbol (cadr setting)))
               (cond ((eq prop 'theme-face)
                      (custom-theme-recalc-face symbol))
-                    ((eq prop 'theme-face)
+                    ((eq prop 'theme-value)
                      (custom-theme-recalc-variable symbol))))))
         yester-recalc))
 
