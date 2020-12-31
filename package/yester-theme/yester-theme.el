@@ -340,8 +340,7 @@
    `(org-date
      (,@(yester-whole-face-spec class :foreground purple :underline t)))
    `(org-document-info (,@(yester-whole-face-spec class :foreground aqua)))
-   `(org-document-info-keyword
-     (,@(yester-whole-face-spec class :foreground comment)))
+   `(org-document-info-keyword ((,class :inherit shadow)))
    `(org-document-title
      (,@(yester-whole-face-spec class :weight 'bold :foreground purple)))
    `(org-meta-line ((,class :inherit shadow)))
@@ -349,7 +348,7 @@
    `(org-ellipsis (,@(yester-whole-face-spec class :foreground comment)))
    `(org-footnote (,@(yester-whole-face-spec class :foreground aqua)))
    `(org-formula (,@(yester-whole-face-spec class :foreground red)))
-   `(org-hide (,@(yester-whole-face-spec class :foreground current-line)))
+   `(org-hide (,@(yester-whole-face-spec class :foreground background)))
    `(org-link ((,class :inherit link)))
    `(org-scheduled (,@(yester-whole-face-spec class :foreground foreground)))
    `(org-scheduled-previously
