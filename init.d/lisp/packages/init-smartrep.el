@@ -19,8 +19,7 @@
 ;;; settings
 
 (custom-set-variables
- '(smartrep-mode-line-string-activated " SRe")
- '(smartrep-mode-line-active-bg (face-background 'mode-line)))
+ '(smartrep-mode-line-string-activated " SRe"))
 
 (with-eval-after-load 'smartrep
   (letrec ((insert-before-recursive-edit-close
