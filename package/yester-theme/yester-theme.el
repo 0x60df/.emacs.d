@@ -144,6 +144,8 @@
                               :background current-line
                               :foreground orange
                               :inverse-video t))) ;inverse is for visible-mark
+   `(show-paren-match-expression
+     (,@(yester-whole-face-spec class :background current-line)))
    `(which-func (,@(yester-whole-face-spec class :foreground blue)))
    `(tab-line-tab ((,class :inherit 'tab-line)))
    `(tab-line-tab-current (,@(yester-whole-face-spec class
