@@ -29,7 +29,7 @@ Rest optional arguments for autoload will be generated."
     `(autoload ,function ,file
        ,(if (fboundp expand-quote) (documentation  expand-quote))
        ,(commandp expand-quote)
-       ,(cond ((keymapp expand-quote) 'keymap)
+       ',(cond ((keymapp expand-quote) 'keymap)
               ((macrop expand-quote) 'macro)))))
 
 
