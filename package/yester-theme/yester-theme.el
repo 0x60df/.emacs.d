@@ -738,6 +738,16 @@
 
 
 
+   ;; Dired-hacks
+   `(dired-subtree-depth-1-face ((,class)))
+   `(dired-subtree-depth-2-face ((,class)))
+   `(dired-subtree-depth-3-face ((,class)))
+   `(dired-subtree-depth-4-face ((,class)))
+   `(dired-subtree-depth-5-face ((,class)))
+   `(dired-subtree-depth-6-face ((,class)))
+
+
+
    ;; Evil
    `(evil-ex-info
      (,@(yester-whole-face-spec class :foreground red :slant 'italic)))

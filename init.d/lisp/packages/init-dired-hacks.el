@@ -5,8 +5,20 @@
 (premise init)
 (premise inst-dired-hacks)
 
+(declare-function dired-subtree-overlays-put-priority t t)
+
 (with-eval-after-load 'dired-filter
   (setcdr (assq 'dired-filter-mode minor-mode-alist) '("")))
+
+(with-eval-after-load 'dired-subtree
+  (defun dired-subtree-overlays-put-priority (symbol newval operation where)
+    "Watching `dired-subtree-overlays' to put priority as zero."
+    (if (eq operation 'set)
+        (mapc (lambda (overlay)
+                (overlay-put overlay 'priority -51))
+              newval)))
+  (add-variable-watcher 'dired-subtree-overlays
+                        #'dired-subtree-overlays-put-priority))
 
 (with-eval-after-load 'dired
   (define-key dired-mode-map (kbd "/") dired-filter-map)
