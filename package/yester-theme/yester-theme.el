@@ -137,11 +137,11 @@
    `(mode-line-emphasis (,@(yester-whole-face-spec class
                              :foreground foreground :slant 'italic)))
    `(show-paren-match (,@(yester-whole-face-spec class
-                           :background current-line
+                           :background background
                            :foreground blue
                            :inverse-video t))) ;inverse is for visible-mark
    `(show-paren-mismatch (,@(yester-whole-face-spec class
-                              :background current-line
+                              :background background
                               :foreground orange
                               :inverse-video t))) ;inverse is for visible-mark
    `(show-paren-match-expression
