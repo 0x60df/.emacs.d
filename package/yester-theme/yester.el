@@ -41,7 +41,8 @@
   "Colors for `yester-theme'.")
 
 (defconst yester-extended-colors
-  '((night . ((emboss . "#ffd700")
+  '((night . ((block . "#222427")
+              (emboss . "#ffd700")
               (diff-green . "#335533")
               (diff-red . "#553333")
               (diff-yellow . "#524a32")
@@ -54,7 +55,8 @@
               (diff-accent-red . "#c82829")
               (diff-accent-yellow . "#d6a400")
               (diff-accent-cyan . "#3d999e")))
-    (day . ((emboss . "#0f52ba")
+    (day . ((block ."#f7f7f7")
+            (emboss . "#0f52ba")
             (diff-green . "#eeffee")
             (diff-red . "#ffeeee")
             (diff-yellow . "#fcf9eb")
@@ -74,6 +76,7 @@
     (day . ((morning . ((background . "#f7f5ed")
                         (current-line . "#eceae0")
                         (selection . "#e2dfd4")
+                        (block . "#f2f0e7")
                         (emboss . "#e34234")
                         (diff-green . "#e1f2e1")
                         (diff-red . "#f7e6e6")

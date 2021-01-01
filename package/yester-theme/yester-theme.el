@@ -332,7 +332,7 @@
    `(org-agenda-date (,@(yester-whole-face-spec class :foreground blue)))
    `(org-agenda-done (,@(yester-whole-face-spec class :foreground green)))
    `(org-agenda-dimmed-todo-face ((,class :inherit shadow)))
-   `(org-block (,@(yester-whole-face-spec class :foreground orange)))
+   `(org-block (,@(yester-whole-face-spec class :background block :extend t)))
    `(org-code (,@(yester-whole-face-spec class :foreground yellow)))
    `(org-column (,@(yester-whole-face-spec class :background current-line)))
    `(org-column-title
