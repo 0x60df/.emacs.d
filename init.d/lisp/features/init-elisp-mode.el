@@ -22,11 +22,14 @@
     (let ((definitions (funcall function symbol))
           (definitions-for-unit nil))
       (mapc (lambda (prefix)
-              (let* ((s (intern (concat prefix (symbol-name symbol))))
-                     (unit (assq s init-units)))
-                (if unit
-                    (push (elisp--xref-make-xref 'unit (car unit) (cdr unit))
-                          definitions-for-unit))))
+              (let* ((name (concat prefix (symbol-name symbol)))
+                     (unit (intern name))
+                     (elc (cdr (assq unit init-units))))
+                (if elc
+                    (let ((el (locate-file
+                               name `(,(file-name-directory elc)) '(".el"))))
+                      (push (elisp--xref-make-xref 'unit unit (if el el elc))
+                            definitions-for-unit)))))
             '("" "init-" "inst-"))
       (append definitions definitions-for-unit)))
   (advice-add 'elisp--xref-find-definitions
