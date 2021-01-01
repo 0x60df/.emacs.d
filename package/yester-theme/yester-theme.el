@@ -397,6 +397,14 @@
 
 
 
+   ;; Sh-script
+   `(sh-escaped-newline ((,class :inherit 'font-lock-builtin-face)))
+   `(sh-heredoc ((,class :inherit 'font-lock-string-face)))
+   `(sh-quoted-exec
+     (,@(yester-whole-face-spec class :foreground green :weight 'bold)))
+
+
+
    ;; Eww
    `(eww-invalid-certificate ((,class :inherit error)))
    `(eww-valid-certificate ((,class :inherit success)))
