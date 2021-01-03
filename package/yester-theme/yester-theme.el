@@ -197,7 +197,9 @@
    `(diff-header (,@(yester-whole-face-spec class :background current-line)))
    `(diff-file-header (,@(yester-whole-face-spec class :background selection)))
    `(diff-hunk-header (,@(yester-whole-face-spec class
-                           :background current-line :foreground purple)))
+                           :background current-line
+                           :foreground purple
+                           :extend t)))
    `(diff-changed ((,class)))
    `(diff-added (,@(yester-whole-face-spec class
                      :inherit 'diff-changed :background diff-green)))
@@ -674,29 +676,25 @@
    `(magit-section-heading
      (,@(yester-whole-face-spec class :foreground yellow :weight 'bold)))
    `(magit-section-heading-selection
-     (,@(yester-whole-face-spec class :foreground purple)))
+     (,@(yester-whole-face-spec class :background selection)))
    `(magit-section-highlight (,@(yester-whole-face-spec class
                                   :background current-line)))
    `(magit-process-ng (,@(yester-whole-face-spec class
                            :foreground red :inherit 'magit-section-heading)))
    `(magit-process-ok (,@(yester-whole-face-spec class
                            :foreground green :inherit 'magit-section-heading)))
+   `(magit-diff-revision-summary
+     (,@(yester-whole-face-spec class :weight 'bold :foreground yellow)))
    `(magit-diff-context ((,class :inherit diff-context)))
-   `(magit-diff-context-highlight (,@(yester-whole-face-spec class
-                                       :inherit 'magit-diff-context
-                                       :background current-line)))
+   `(magit-diff-context-highlight
+     (,@(yester-whole-face-spec class :background block)))
    `(magit-diff-file-heading-selection
-     (,@(yester-whole-face-spec class
-          :inherit 'magit-diff-file-heading-highlight
-          :foreground purple)))
+     (,@(yester-whole-face-spec class :background selection)))
    `(magit-diff-hunk-heading ((,class :inherit 'diff-hunk-header)))
-   `(magit-diff-hunk-heading-highlight (,@(yester-whole-face-spec class
-                                            :inherit 'magit-diff-hunk-heading
-                                            :background current-line)))
+   `(magit-diff-hunk-heading-highlight
+     (,@(yester-whole-face-spec class :background current-line)))
    `(magit-diff-hunk-heading-selection
-     (,@(yester-whole-face-spec class
-          :inherit 'magit-diff-hunk-heading-highlight
-          :foreground purple)))
+     (,@(yester-whole-face-spec class :background selection)))
    `(magit-diff-lines-heading
      (,@(yester-whole-face-spec class
           :background selection
