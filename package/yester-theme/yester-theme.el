@@ -699,7 +699,7 @@
           :foreground purple)))
    `(magit-diff-lines-heading
      (,@(yester-whole-face-spec class
-          :inverse-video t
+          :background selection
           :inherit 'magit-diff-hunk-heading-highlight)))
    `(magit-diff-lines-boundary (,@(yester-whole-face-spec class
                                     :foreground background
