@@ -975,7 +975,12 @@
    `(evil-ex-info
      (,@(yester-whole-face-spec class :foreground red :slant 'italic)))
    `(evil-ex-substitute-matches
-     (,@(yester-whole-face-spec class :foreground red :underline t)))
+     ((,class :inherit evil-ex-lazy-highlight)))
+   `(evil-ex-substitute-replacement
+     (((,@class (background dark))
+       ,@(yester-let-colors night (list :foreground emboss)))
+      ((,@class (background light))
+       ,@(yester-let-colors day (list :weight 'bold :foreground emboss)))))
 
 
 
