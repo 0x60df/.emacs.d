@@ -593,6 +593,13 @@
 
 
 
+   ;; Diary
+   `(diary (,@(yester-whole-face-spec class :foreground yellow)))
+   `(diary-anniversary (,@(yester-whole-face-spec class :foreground purple)))
+   `(diary-time (,@(yester-whole-face-spec class :foreground blue)))
+
+
+
    ;; Popup
    `(popup-face ((,class :inherit default)))
    `(popup-isearch-match ((,class :inherit (lazy-highlight default))))
