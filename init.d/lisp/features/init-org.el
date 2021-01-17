@@ -26,7 +26,7 @@
             :before #'org-hide-trailing-whitespace-for-export-dispatcher)
 
 (with-eval-after-load 'org-indent
-  (setcar (cdr (assq 'org-indent-mode minor-mode-alist)) " in"))
+  (setcar (cdr (assq 'org-indent-mode minor-mode-alist)) " ind"))
 
 (overriding-set-key (kbd "C-c o a") #'org-agenda)
 (overriding-set-key (kbd "C-c o c") #'org-capture)
