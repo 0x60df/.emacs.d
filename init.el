@@ -313,6 +313,7 @@ UNIT is a literal symbol."
 (init-package color-theme-solarized)
 (init-package base16)
 (init-package ddskk)
+(init-package japanese-holidays)
 
 
 
