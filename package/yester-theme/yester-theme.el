@@ -588,6 +588,11 @@
 
 
 
+   ;; Shr
+   `(shr-selected-link ((,class :inherit link-visited)))
+
+
+
    ;; Popup
    `(popup-face ((,class :inherit default)))
    `(popup-isearch-match ((,class :inherit (lazy-highlight default))))
