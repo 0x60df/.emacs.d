@@ -610,6 +610,11 @@
 
 
 
+   ;; Ibuffer
+   `(ibuffer-locked-buffer (,@(yester-whole-face-spec class :foreground red)))
+
+
+
    ;; Popup
    `(popup-face ((,class :inherit default)))
    `(popup-isearch-match ((,class :inherit (lazy-highlight default))))
