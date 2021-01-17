@@ -469,22 +469,36 @@
 
 
    ;; Customize
-   `(custom-button (,@(yester-whole-face-spec class
-                        :foreground foreground
-                        :background current-line
-                        :box selection)))
-   `(custom-button-pressed (,@(yester-whole-face-spec class
-                                :foreground foreground
-                                :background current-line
-                                :box selection)))
+   `(custom-button ((,class :inherit widget-button)))
+   `(custom-button-mouse ((,class :inherit custom-button)))
+   `(custom-button-pressed ((,class :inherit widget-button-pressed)))
+   `(custom-button-pressed-unraised
+     (,@(yester-whole-face-spec class
+          :foreground purple :inherit 'custom-button-unraised)))
    `(custom-variable-tag
-     (,@(yester-whole-face-spec class :foreground aqua :weight 'bold)))
+     (,@(yester-whole-face-spec class :foreground blue :weight 'bold)))
+   `(custom-variable-obsolete
+     (,@(yester-whole-face-spec class :foreground comment :weight 'bold)))
+   `(custom-variable-button
+     ((,class :weight bold :underline t :inherit custom-variable-tag)))
+   `(custom-comment-tag
+     (,@(yester-whole-face-spec class :foreground comment :slant 'italic)))
+   `(custom-comment ((,class :inherit (custom-comment-tag widget-field))))
    `(custom-group-tag (,@(yester-whole-face-spec class
                            :height 1.2
                            :weight 'bold
-                           :foreground aqua
                            :inherit 'variable-pitch)))
-   `(custom-state (,@(yester-whole-face-spec class :foreground green)))
+   `(custom-group-tag-1 ((,class :height 1.2 :inherit custom-group-tag)))
+   `(custom-state (,@(yester-whole-face-spec class :foreground comment)))
+   `(custom-documentation ((,class)))
+   `(custom-invalid (,@(yester-whole-face-spec class :foreground red)))
+   `(custom-modified (,@(yester-whole-face-spec class :foreground orange)))
+   `(custom-set (,@(yester-whole-face-spec class :foreground yellow)))
+   `(custom-changed (,@(yester-whole-face-spec class :foreground aqua)))
+   `(custom-saved (,@(yester-whole-face-spec class :foreground green)))
+   `(custom-rogue
+     (,@(yester-whole-face-spec class :foreground red :inverse-video t)))
+   `(custom-themed (,@(yester-whole-face-spec class :foreground purple)))
 
 
 
