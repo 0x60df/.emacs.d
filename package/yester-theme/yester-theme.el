@@ -469,6 +469,24 @@
 
 
 
+   ;; Widget
+   `(widget-button (,@(yester-whole-face-spec class
+                        :foreground foreground
+                        :background current-line
+                        :box selection)))
+   `(widget-button-pressed (,@(yester-whole-face-spec class
+                                :weight 'bold
+                                :foreground foreground
+                                :background selection
+                                :box selection)))
+   `(widget-documentation
+     (,@(yester-whole-face-spec class :foreground comment)))
+   `(widget-field (,@(yester-whole-face-spec class :background selection)))
+   `(widget-single-line-field
+     (,@(yester-whole-face-spec class :background selection)))
+
+
+
    ;; Smerge
    `(smerge-base (,@(yester-whole-face-spec class :background diff-yellow)))
    `(smerge-lower ((,class :inherit diff-added)))
