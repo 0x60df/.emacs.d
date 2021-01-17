@@ -120,12 +120,9 @@ After `evil-refresh-mode-line', set default value of
 (defun evil-interrupt-refresh-cursor (evil-refresh-cursor &rest args)
   "Advising `evil-refresh-cursor' to interrupt on specific condition.
 Conditions are specified by `evil-refresh-cursor-interrupt-conditions'."
-  (letrec ((any (lambda (l)
-                  (cond ((null l) l)
-                        ((eval (car l)) (car l))
-                        (t (funcall any (cdr l)))))))
-    (unless (funcall any evil-refresh-cursor-interrupt-conditions)
-      (apply evil-refresh-cursor args ))))
+  (unless (seq-some (lambda (condition) (eval condition))
+                    evil-refresh-cursor-interrupt-conditions)
+    (apply evil-refresh-cursor args)))
 
 (with-eval-after-load 'evil
   (advice-add 'evil-refresh-cursor :around #'evil-interrupt-refresh-cursor)
