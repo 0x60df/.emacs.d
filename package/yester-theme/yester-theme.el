@@ -336,6 +336,7 @@
    `(org-agenda-dimmed-todo-face ((,class :inherit shadow)))
    `(org-block (,@(yester-whole-face-spec class :background block :extend t)))
    `(org-code (,@(yester-whole-face-spec class :foreground yellow)))
+   `(org-verbatim (,@(yester-whole-face-spec class :foreground yellow)))
    `(org-column (,@(yester-whole-face-spec class :background current-line)))
    `(org-column-title
      ((,class :inherit org-column :weight bold :underline t)))
@@ -349,7 +350,8 @@
    `(org-done (,@(yester-whole-face-spec class :foreground green)))
    `(org-ellipsis (,@(yester-whole-face-spec class :foreground comment)))
    `(org-footnote (,@(yester-whole-face-spec class :foreground aqua)))
-   `(org-formula (,@(yester-whole-face-spec class :foreground red)))
+   `(org-formula
+     (,@(yester-whole-face-spec class :foreground green :inherit 'org-table)))
    `(org-hide (,@(yester-whole-face-spec class :foreground background)))
    `(org-link ((,class :inherit link)))
    `(org-scheduled (,@(yester-whole-face-spec class :foreground foreground)))
@@ -359,7 +361,7 @@
      (,@(yester-whole-face-spec class :foreground yellow)))
    `(org-special-keyword
      (,@(yester-whole-face-spec class :foreground purple)))
-   `(org-table (,@(yester-whole-face-spec class :foreground green)))
+   `(org-table (,@(yester-whole-face-spec class :background block)))
    `(org-todo (,@(yester-whole-face-spec class :foreground red)))
    `(org-upcoming-deadline ((,class :inherit warning)))
    `(org-warning
@@ -368,6 +370,14 @@
    `(org-time-grid (,@(yester-whole-face-spec class :foreground yellow)))
    `(org-date-selected
      (,@(yester-whole-face-spec class :foreground foreground :inverse-video t)))
+   `(org-clock-overlay (,@(yester-whole-face-spec class :background selection)))
+   `(org-mode-line-clock (,@(yester-whole-face-spec class :foreground comment)))
+   `(org-mode-line-clock-overrun
+     (,@(yester-whole-face-spec class :foreground red)))
+   `(org-latex-and-related
+     (,@(yester-whole-face-spec class :foreground orange)))
+   `(org-macro (,@(yester-whole-face-spec class :foreground yellow)))
+   `(org-sexp-date (,@(yester-whole-face-spec class :foreground purple)))
 
 
 
