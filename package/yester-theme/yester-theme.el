@@ -779,6 +779,57 @@
 
 
 
+   ;; YaTeX
+   `(delimiter (,@(yester-whole-face-spec class :foreground comment)))
+   `(YaTeX-font-lock-crossref-face
+     (,@(yester-whole-face-spec class :foreground blue)))
+   `(YaTeX-font-lock-declaration-face
+     (,@(yester-whole-face-spec class :foreground purple)))
+   `(YaTeX-font-lock-delimiter-face
+     (,@(yester-whole-face-spec class :foreground orange)))
+   `(YaTeX-font-lock-formula-face
+     (,@(yester-whole-face-spec class :foreground yellow)))
+   `(YaTeX-font-lock-include-face
+     (,@(yester-whole-face-spec class :foreground aqua)))
+   `(YaTeX-font-lock-label-face
+     (,@(yester-whole-face-spec class :foreground green)))
+   `(YaTeX-font-lock-math-sub-face
+     (,@(yester-whole-face-spec class :foreground yellow :underline t)))
+   `(YaTeX-font-lock-math-sup-face
+     (,@(yester-whole-face-spec class :foreground yellow :overline t)))
+   `(YaTeX-on-the-fly-activated-face
+     (,@(yester-whole-face-spec class :background current-line)))
+   `(YaTeX-sectioning-0 (,@(yester-whole-face-spec class
+                             :weight 'bold
+                             :inverse-video t
+                             :foreground green)))
+   `(YaTeX-sectioning-1 (,@(yester-whole-face-spec class
+                             :weight 'bold
+                             :inverse-video t
+                             :foreground blue)))
+   `(YaTeX-sectioning-2 (,@(yester-whole-face-spec class
+                             :weight 'bold
+                             :inverse-video t
+                             :foreground orange)))
+   `(YaTeX-sectioning-3 (,@(yester-whole-face-spec class
+                             :weight 'bold
+                             :inverse-video t
+                             :foreground purple)))
+   `(YaTeX-sectioning-4 (,@(yester-whole-face-spec class
+                             :weight 'bold
+                             :inverse-video t
+                             :foreground comment)))
+   `(YaTeX-sectioning-5 (,@(yester-whole-face-spec class
+                             :weight 'bold
+                             :inverse-video t
+                             :foreground yellow)))
+   `(YaTeX-sectioning-6 (,@(yester-whole-face-spec class
+                             :weight 'bold
+                             :inverse-video t
+                             :foreground aqua)))
+
+
+
    ;; Skk
    `(skk-henkan-face-default
      (,@(yester-whole-face-spec class :foreground background :background aqua)))
