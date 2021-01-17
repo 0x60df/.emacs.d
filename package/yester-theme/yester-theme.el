@@ -531,6 +531,19 @@
 
 
 
+   ;; Epa
+   `(epa-mark
+     (,@(yester-whole-face-spec class :weight 'bold :foreground orange)))
+   `(epa-field-name (,@(yester-whole-face-spec class :foreground aqua)))
+   `(epa-field-body (,@(yester-whole-face-spec class :foreground comment)))
+   `(epa-string ((,class :inherit font-lock-string-face)))
+   `(epa-validity-disabled (,@(yester-whole-face-spec class :foreground red)))
+   `(epa-validity-high (,@(yester-whole-face-spec class :foreground aqua)))
+   `(epa-validity-low ((,class :slant italic)))
+   `(epa-validity-medium ((,class)))
+
+
+
    ;; Popup
    `(popup-face ((,class :inherit default)))
    `(popup-isearch-match ((,class :inherit (lazy-highlight default))))
