@@ -12,7 +12,8 @@
 (declare-function org-time-stamp-inactive "org")
 
 (custom-set-variables
- '(org-use-speed-commands t))
+ '(org-use-speed-commands t)
+ '(org-highlight-latex-and-related '(latex script entities)))
 
 (push '(org-indent-mode . 1) mode-line-minor-mode-priority-alist)
 
