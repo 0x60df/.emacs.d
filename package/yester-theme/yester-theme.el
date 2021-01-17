@@ -402,8 +402,7 @@
      (,@(yester-whole-face-spec class :weight 'bold :foreground red)))
    `(org-drawer (,@(yester-whole-face-spec class :foreground aqua)))
    `(org-time-grid (,@(yester-whole-face-spec class :foreground yellow)))
-   `(org-date-selected
-     (,@(yester-whole-face-spec class :foreground foreground :inverse-video t)))
+   `(org-date-selected (,@(yester-whole-face-spec class :inverse-video t)))
    `(org-clock-overlay (,@(yester-whole-face-spec class :background selection)))
    `(org-mode-line-clock (,@(yester-whole-face-spec class :foreground comment)))
    `(org-mode-line-clock-overrun
@@ -454,6 +453,19 @@
    ;; Eww
    `(eww-invalid-certificate ((,class :inherit error)))
    `(eww-valid-certificate ((,class :inherit success)))
+
+
+
+   ;; Calendar
+   `(calendar-today
+     (,@(yester-whole-face-spec class :weight 'bold :foreground yellow)))
+   `(calendar-month-header (,@(yester-whole-face-spec class :foreground blue)))
+   `(calendar-weekday-header
+     (,@(yester-whole-face-spec class :foreground aqua)))
+   `(calendar-weekend-header
+     (,@(yester-whole-face-spec class :foreground comment)))
+   `(holiday
+     (,@(yester-whole-face-spec class :slant 'italic :foreground purple)))
 
 
 
