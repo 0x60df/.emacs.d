@@ -701,6 +701,26 @@
 
 
 
+   ;; Transient
+   `(transient-amaranth (,@(yester-whole-face-spec class :foreground purple)))
+   `(transient-blue (,@(yester-whole-face-spec class :foreground blue)))
+   `(transient-pink (,@(yester-whole-face-spec class :foreground orange)))
+   `(transient-red (,@(yester-whole-face-spec class :foreground red)))
+   `(transient-teal (,@(yester-whole-face-spec class :foreground aqua)))
+   `(transient-argument (,@(yester-whole-face-spec class :foreground orange)))
+   `(transient-separator ((,class :inherit mode-line)))
+   `(transient-nonstandard-key ((,class :slant italic)))
+   `(transient-enabled-suffix (,@(yester-whole-face-spec class
+                                   :weight 'bold
+                                   :foreground background
+                                   :background green)))
+   `(transient-disabled-suffix (,@(yester-whole-face-spec class
+                                    :weight 'bold
+                                    :foreground background
+                                    :background red)))
+
+
+
    ;; Magit
    `(magit-branch-local (,@(yester-whole-face-spec class :foreground aqua)))
    `(magit-branch-remote
