@@ -30,10 +30,9 @@
                '((t (:slant italic)))
                'face-defface-spec)
 
-(defface mode-line-vc-mode
-  '((t :slant italic))
-  "Face used for vc-mode part of the mode line."
-  :group 'user)
+(face-spec-set 'vc-state-base
+               '((t :slant italic))
+               'face-defface-spec)
 
 (defface mode-line-mode-name
   '((t :weight bold))
@@ -153,11 +152,11 @@ When non-nil, `mode-line-buffer-identification' is shrinked.")
 
 (setcdr (assq 'vc-mode mode-line-format)
         '(((:propertize " " face mode-line-separator)
-           (:propertize
-            (:eval (replace-regexp-in-string
-                    "^\\s-+\\|\\s-+$" ""
-                    (substring-no-properties vc-mode)))
-            face mode-line-vc-mode))))
+           (:eval (let ((string (replace-regexp-in-string
+                                 "^\\s-+\\|\\s-+$" "" vc-mode)))
+                    (remove-list-of-text-properties
+                     0 (length string) '(mouse-face local-map help-echo) string)
+                    string)))))
 
 (defvar mode-line-modes-shrinked-flag nil
   "State of `mode-line-modes' replesentation.
@@ -268,9 +267,18 @@ They also compared by `symbol-name'."
 
 (defcustom mode-line-boundary-faces
   '(mode-line-buffer-id
-    mode-line-vc-mode
-    mode-line-mode-name
     which-func
+    vc-base
+    vc-conflict-state
+    vc-edited-state
+    vc-locally-added-state
+    vc-locked-state
+    vc-missing-state
+    vc-needs-update-state
+    vc-removed-state
+    vc-state-base
+    vc-up-to-date-state
+    mode-line-mode-name
     mode-line-separator)
   "Faces which determine boundary of elements of mode-line."
   :type '(repeat face)

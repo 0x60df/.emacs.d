@@ -161,6 +161,26 @@
 
 
 
+   ;; VC
+   `(vc-conflict-state (,@(yester-whole-face-spec class
+                            :foreground red :inherit 'vc-state-base)))
+   `(vc-edited-state (,@(yester-whole-face-spec class
+                          :foreground yellow :inherit 'vc-state-base)))
+   `(vc-locally-added-state (,@(yester-whole-face-spec class
+                                 :foreground yellow :inherit 'vc-state-base)))
+   `(vc-locked-state (,@(yester-whole-face-spec class
+                          :foreground orange :inherit 'vc-state-base)))
+   `(vc-missing-state (,@(yester-whole-face-spec class
+                           :foreground orange :inherit 'vc-state-base)))
+   `(vc-needs-update-state (,@(yester-whole-face-spec class
+                                :foreground aqua :inherit 'vc-state-base)))
+   `(vc-removed-state (,@(yester-whole-face-spec class
+                           :foreground orange :inherit 'vc-state-base)))
+   `(vc-up-to-date-state (,@(yester-whole-face-spec class
+                              :foreground green :inherit 'vc-state-base)))
+
+
+
    ;; Completion
    `(completions-annotations ((,class :inherit shadow)))
    `(completions-common-part

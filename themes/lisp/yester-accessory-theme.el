@@ -17,8 +17,6 @@
                             class `(:foreground ,green
                                                 :weight bold
                                                 :slant normal))))
-   `(mode-line-vc-mode
-     (,@(yester-whole-face-spec class `(:foreground ,orange))))
    `(mode-line-mode-name
      (((,@class (background dark))
        ,@(yester-let-colors night (list :foreground yellow)))
@@ -35,6 +33,19 @@
                 (yester-let-colors day (list :foreground red :weight 'bold)))
                (t (yester-let-colors day (list :foreground red)))))))
    `(mode-line-transform ((,class (:slant italic))))
+
+   ;; VC
+   `(vc-state-base (,@(yester-whole-face-spec class :foreground orange)))
+   `(vc-conflict-state (,@(yester-whole-face-spec class :foreground red)))
+   `(vc-edited-state (,@(yester-whole-face-spec class :foreground orange)))
+   `(vc-locally-added-state
+     (,@(yester-whole-face-spec class :foreground orange)))
+   `(vc-locked-state (,@(yester-whole-face-spec class :foreground orange)))
+   `(vc-missing-state (,@(yester-whole-face-spec class :foreground orange)))
+   `(vc-needs-update-state
+     (,@(yester-whole-face-spec class :foreground orange)))
+   `(vc-removed-state (,@(yester-whole-face-spec class :foreground orange)))
+   `(vc-up-to-date-state (,@(yester-whole-face-spec class :foreground green)))
 
    ;; Risky
    `(risky-yes-or-no-p-prefix
