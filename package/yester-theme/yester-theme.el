@@ -544,6 +544,20 @@
 
 
 
+   ;; Speedbar
+   `(speedbar-directory-face ((,class :inherit dired-directory)))
+   `(speedbar-file-face ((,class)))
+   `(speedbar-highlight-face ((,class :inherit highlight  :extend t)))
+   `(speedbar-selected-face
+     (,@(yester-whole-face-spec class :foreground orange)))
+   `(speedbar-tag-face (,@(yester-whole-face-spec class :foreground green)))
+   `(speedbar-separator-face
+     (,@(yester-whole-face-spec class :foreground purple)))
+   `(speedbar-button-face
+     (,@(yester-whole-face-spec class :foreground yellow)))
+
+
+
    ;; Popup
    `(popup-face ((,class :inherit default)))
    `(popup-isearch-match ((,class :inherit (lazy-highlight default))))
