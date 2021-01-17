@@ -229,6 +229,7 @@ UNIT is a literal symbol."
 (init-feature hippie-exp)
 (init-feature doc-view)
 (init-feature info)
+(init-feature hi-lock)
 (init-feature epa)
 (init-feature speedbar)
 (init-feature elisp-mode)
