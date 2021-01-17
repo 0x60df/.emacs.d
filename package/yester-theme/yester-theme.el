@@ -839,6 +839,20 @@
 
 
 
+   ;; Git-gutter
+   `(git-gutter:modified
+     (,@(yester-whole-face-spec class :foreground diff-accent-yellow)))
+   `(git-gutter:added
+     (,@(yester-whole-face-spec class :foreground diff-accent-green)))
+   `(git-gutter:deleted
+     (,@(yester-whole-face-spec class :foreground diff-accent-red)))
+   `(git-gutter:separator
+     (,@(yester-whole-face-spec class :foreground comment)))
+   `(git-gutter:unchanged
+     (,@(yester-whole-face-spec class :background selection)))
+
+
+
    ;; Git-gutter-fringe
    `(git-gutter-fr:modified
      (,@(yester-whole-face-spec class :foreground diff-accent-yellow)))
