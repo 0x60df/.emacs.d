@@ -127,7 +127,9 @@
 
    ;; Complementary Faces for Basic and Standard Faces
    `(hl-line (,@(yester-whole-face-spec class :background current-line)))
-   `(border (,@(yester-whole-face-spec class :background current-line)))
+   `(border (,@(yester-whole-face-spec class :background background)))
+   `(internal-border (,@(yester-whole-face-spec class :background background)))
+   `(vertical-border (,@(yester-whole-face-spec class :foreground selection)))
    `(linum ((,class :inherit (shadow default))))
    `(isearch-fail (,@(yester-whole-face-spec class
                        :foreground red
@@ -158,6 +160,18 @@
                       :background background
                       :inherit 'tab-bar)))
    `(tab-bar-tab-inactive ((,class :inherit 'tab-bar)))
+   `(line-number-major-tick (,@(yester-whole-face-spec class
+                                 :weight 'bold
+                                 :background selection
+                                 :inherit 'line-number)))
+   `(line-number-minor-tick (,@(yester-whole-face-spec class
+                                 :background current-line
+                                 :inherit 'line-number)))
+   `(window-divider (,@(yester-whole-face-spec class :foreground selection)))
+   `(window-divider-first-pixel
+     (,@(yester-whole-face-spec class :foreground selection)))
+   `(window-divider-last-pixel
+     (,@(yester-whole-face-spec class :foreground selection)))
 
 
 
