@@ -227,13 +227,13 @@
 
 
 
-   ;; diff
-   `(diff-header (,@(yester-whole-face-spec class :background current-line)))
-   `(diff-file-header (,@(yester-whole-face-spec class :background selection)))
-   `(diff-hunk-header (,@(yester-whole-face-spec class
-                           :background current-line
-                           :foreground purple
-                           :extend t)))
+   ;; Diff
+   `(diff-header (,@(yester-whole-face-spec class
+                      :foreground comment :background block)))
+   `(diff-file-header
+     (,@(yester-whole-face-spec class :weight 'bold :foreground comment)))
+   `(diff-hunk-header
+     (,@(yester-whole-face-spec class :weight 'bold :foreground purple)))
    `(diff-changed ((,class)))
    `(diff-added (,@(yester-whole-face-spec class
                      :inherit 'diff-changed :background diff-green)))
