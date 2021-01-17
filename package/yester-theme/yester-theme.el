@@ -830,6 +830,18 @@
 
 
 
+   ;; Smartparens
+   `(sp-pair-overlay-face
+     (,@(yester-whole-face-spec class :background selection)))
+   `(sp-wrap-overlay-closing-pair
+     (,@(yester-whole-face-spec class
+          :foreground red :inherit 'sp-wrap-overlay-face)))
+   `(sp-wrap-overlay-opening-pair
+     (,@(yester-whole-face-spec class
+          :foreground green :inherit 'sp-wrap-overlay-face)))
+
+
+
    ;; Color-moccur
    `(moccur-face ((,class :inherit match)))
 
