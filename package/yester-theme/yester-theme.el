@@ -1076,7 +1076,13 @@
    `(skk-prefix-jisx0201-face
      (,@(yester-whole-face-spec class :foreground comment)))
    `(skk-prefix-katakana-face
-     (,@(yester-whole-face-spec class :foreground aqua)))))
+     (,@(yester-whole-face-spec class :foreground aqua)))
+
+
+
+   ;; Japanese-holidays
+   `(japanese-holiday-saturday
+     (,@(yester-whole-face-spec class :foreground comment)))))
 
 
 
