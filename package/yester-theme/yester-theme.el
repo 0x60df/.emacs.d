@@ -502,6 +502,13 @@
 
 
 
+   ;; Info
+   `(info-node ((,class :weight bold)))
+   `(info-menu-star
+     (,@(yester-whole-face-spec class :foreground yellow :weight 'bold)))
+
+
+
    ;; Hi-lock
    `(hi-blue
      (,@(yester-whole-face-spec class :foreground blue :inverse-video t)))
