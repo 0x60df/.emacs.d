@@ -61,15 +61,18 @@
                 (cond ((null f) nil)
                       ((autoloadp f) nil)
                       ((byte-code-function-p f)
-                       (memq 'run-mode-hooks (append (aref f 2) nil)))
+                       (let ((l (append (aref f 2) nil)))
+                         (or (memq 'kill-all-local-variables l)
+                             (memq 'run-mode-hooks l))))
                       ((symbolp f) (funcall inspect f))
                       ((functionp f)
                        (or (get s 'derived-mode-parent)
                            (and (listp f)
-                                (memq 'run-mode-hooks
-                                      (mapcar
-                                       (lambda (e) (if (listp e) (car e) nil))
-                                       f)))))
+                                (let ((l (mapcar
+                                          (lambda (e) (if (listp e) (car e)))
+                                          f)))
+                                  (or (memq 'kill-all-local-variables l)
+                                      (memq 'run-mode-hooks l))))))
                       (t nil))))))
     (funcall inspect symbol)))
 
