@@ -4,6 +4,7 @@
 
 (premise init)
 (premise feature)
+(premise mode-line)
 (premise inst-yatex)
 
 (eval-and-compile
@@ -22,6 +23,8 @@
                 ("\\.bbl$" . yatex-mode))
               auto-mode-alist))
 
+(push '(reftex-mode . 1) mode-line-minor-mode-priority-alist)
+
 (with-eval-after-load 'yatex
   (setq YaTeX-close-paren-always 'never
         YaTeX-kanji-code nil
@@ -31,6 +34,9 @@
   (add-hook 'yatex-mode-hook (lambda ()
                                (auto-fill-mode 0)
                                (reftex-mode))))
+
+(with-eval-after-load 'reftex
+  (setcar (cdr (assq 'reftex-mode minor-mode-alist)) " ref"))
 
 
 (resolve init-yatex)
