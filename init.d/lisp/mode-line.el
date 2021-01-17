@@ -393,6 +393,19 @@ mode-line string by window-width."
               text)))
       (mode-line--duplicate-percent-with-text-properties shrinked))))
 
+(defun enhance-mode-line-format (function &rest args)
+  "Around advice to make `mode-line-format' enhanced.
+Specifically, add front space and setup auto truncate.
+This advice only can work with simple function which does
+not modify inner structure of `mode-line-format' but just
+set `mode-line-format'"
+  (setq mode-line-format mode-line-format-raw)
+  (apply function args)
+  (setq mode-line-format-raw mode-line-format)
+  (setq mode-line-format
+        (mode-line-format-auto-truncate
+         (list mode-line-front-space mode-line-format-raw))))
+
 (setq-default mode-line-format
               (mode-line-format-auto-truncate mode-line-format-raw))
 

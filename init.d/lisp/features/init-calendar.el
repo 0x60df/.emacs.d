@@ -3,6 +3,7 @@
 
 
 (premise init)
+(premise mode-line)
 
 (declare-function calendar-mark-today "calendar")
 
@@ -10,10 +11,11 @@
  '(calendar-mark-holidays-flag t))
 
 (with-eval-after-load 'calendar
-  (add-hook 'calendar-mode-hook
-            (lambda () (setq show-trailing-whitespace nil))))
+  (add-hook 'calendar-mode-hook (lambda () (setq show-trailing-whitespace nil)))
 
-(with-eval-after-load 'calendar
+  (advice-add 'calendar-set-mode-line :around #'enhance-mode-line-format)
+  (advice-add 'calendar-update-mode-line :around #'enhance-mode-line-format)
+
   (add-hook 'calendar-today-visible-hook #'calendar-mark-today))
 
 
