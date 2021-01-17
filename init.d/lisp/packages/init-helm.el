@@ -68,7 +68,8 @@
   (define-key helm-command-map (kbd "M-x") #'helm-M-x)
   (define-key helm-command-map (kbd "C-o") #'helm-occur)
   (define-key helm-command-map (kbd "C-r") #'helm-register)
-  (define-key helm-command-map (kbd "C-b") #'helm-bookmarks)
+  (define-key helm-command-map (kbd "C-b") #'helm-filtered-bookmarks)
+  (define-key helm-command-map (kbd "C-x r b") #'helm-bookmarks)
   (define-key helm-command-map (kbd "C-y") #'helm-show-kill-ring))
 
 (with-eval-after-load 'helm
