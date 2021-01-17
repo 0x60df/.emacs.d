@@ -221,16 +221,14 @@ side of the monitor. Otherwise, margin is regarded as 0."
           (funcall place-frame frame left-edge top-edge))
         (let* ((key-sequence (read-key-sequence-vector
                               (format
-                               (concat "position[%04d,%04d]" " "
-                                       "size[%04dx%04d]" " "
-                                       "display[%04dx%04d]" " "
-                                       "step[%02d]")
-                               (cadr (assq 'outer-position (frame-geometry)))
-                               (cddr (assq 'outer-position (frame-geometry)))
-                               (frame-outer-width) (frame-outer-height)
-                               (caddr (frame-monitor-workarea))
-                               (cadddr (frame-monitor-workarea))
-                               factor)))
+                               (concat "#<"
+                                       (propertize "frame" 'face 'shadow)
+                                       " "
+                                       "width[%03d]" " "
+                                       "height[%03d]" " "
+                                       "step[%02d]"
+                                       ">")
+                               (frame-width) (frame-height) factor)))
                (key-description (key-description key-sequence))
                (key-binding (key-binding key-sequence))
                (workarea (frame-monitor-workarea))
@@ -329,6 +327,18 @@ side of the monitor. Otherwise, margin is regarded as 0."
                  (set-frame-height frame (+ (frame-height) factor)))
                 ((equal key-description "C-p")
                  (set-frame-height frame (- (frame-height) factor)))
+                ((equal key-description "w")
+                 (let ((read (read-from-minibuffer
+                              (format "Width[%d]: " (frame-width))
+                              nil nil t nil (number-to-string (frame-width)))))
+                   (if (integerp read)
+                       (set-frame-width frame read))))
+                ((equal key-description "h")
+                 (let ((read (read-from-minibuffer
+                              (format "Height[%d]: " (frame-height))
+                              nil nil t nil (number-to-string (frame-height)))))
+                   (if (integerp read)
+                       (set-frame-height frame read))))
                 ((equal key-description ".")
                  (letrec
                      ((dig
