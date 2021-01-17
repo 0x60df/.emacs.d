@@ -573,7 +573,14 @@
      (,@(yester-whole-face-spec class :foreground yellow :inverse-video t)))
    `(helm-selection (,@(yester-whole-face-spec class :background selection)))
    `(helm-selection-line ((,class :weight bold)))
-   `(helm-separator ((,class :inherit error)))
+   `(helm-separator
+     (((,@class (background dark))
+       ,@(yester-let-colors night (list :foreground yellow)))
+      ((,@class (background light))
+       ,@(cond ((eq (cdr (assq 'day yester-scene)) 'morning)
+                (yester-let-colors day (list :foreground red)))
+               (t (yester-let-colors day
+                    (list :foreground blue :weight 'bold)))))))
    `(helm-visible-mark
      (((,@class (background dark))
        ,@(yester-let-colors night (list :underline yellow)))
@@ -581,6 +588,7 @@
        ,@(cond ((eq (cdr (assq 'day yester-scene)) 'morning)
                 (yester-let-colors day (list :underline red)))
                (t (yester-let-colors day (list :underline blue)))))))
+   `(helm-buffer-archive ((,class :slant italic)))
    `(helm-buffer-directory ((,class :inherit dired-directory)))
    `(helm-buffer-file ((,class)))
    `(helm-buffer-not-saved ((,class :inherit warning)))
@@ -588,6 +596,7 @@
    `(helm-buffer-modified (,@(yester-whole-face-spec class :foreground yellow)))
    `(helm-buffer-size ((,class :slant italic :inherit shadow)))
    `(helm-buffer-process (,@(yester-whole-face-spec class :foreground aqua)))
+   `(helm-ff-backup-file ((,class :inherit shadow)))
    `(helm-ff-denied ((,class :slant italic :inherit dired-warning)))
    `(helm-ff-directory ((,class :inherit dired-directory)))
    `(helm-ff-dirs ((,class :inherit dired-directory :inverse-video t)))
@@ -612,19 +621,36 @@
    `(helm-ff-socket ((,class :slant italic :inherit dired-special)))
    `(helm-ff-suid ((,class :inherit dired-set-id)))
    `(helm-ff-symlink ((,class :inherit dired-symlink)))
+   `(helm-bookmark-addressbook
+     (,@(yester-whole-face-spec class :foreground orange)))
+   `(helm-bookmark-file ((,class)))
+   `(helm-bookmark-file-not-found ((,class :inherit shadow)))
+   `(helm-bookmark-gnus (,@(yester-whole-face-spec class :foreground aqua)))
+   `(helm-bookmark-info (,@(yester-whole-face-spec class :foreground purple)))
+   `(helm-bookmark-man (,@(yester-whole-face-spec class :foreground yellow)))
+   `(helm-bookmark-w3m (,@(yester-whole-face-spec class :foreground green)))
+   `(helm-delete-async-message
+     (,@(yester-whole-face-spec class :foreground red)))
+   `(helm-etags-file (,@(yester-whole-face-spec class
+                          :foreground green :underline t)))
    `(helm-grep-file ((,class :inherit compilation-info)))
    `(helm-grep-finish ((,class :inherit compilation-mode-line-exit)))
    `(helm-grep-lineno ((,class :inherit compilation-line-number)))
-   `(helm-grep-match ((,class :inherit helm-match :inverse-video t)))
+   `(helm-grep-match ((,class :inherit helm-match)))
    `(helm-locate-finish ((,class :inherit success)))
    `(helm-match
      (((,@class (background dark))
        ,@(yester-let-colors night (list :foreground emboss)))
       ((,@class (background light))
        ,@(yester-let-colors day (list :weight 'bold :foreground emboss)))))
-   `(helm-moccur-buffer (,@(yester-whole-face-spec class :foreground aqua)))
+   `(helm-moccur-buffer (,@(yester-whole-face-spec class :foreground green)))
+   `(helm-resume-need-update (,@(yester-whole-face-spec class
+                                  :weight 'bold
+                                  :foreground background
+                                  :background red)))
    `(helm-mode-prefix
      (,@(yester-whole-face-spec class :foreground yellow :inverse-video t)))
+   `(helm-prefarg (,@(yester-whole-face-spec class :foreground green)))
 
 
 
