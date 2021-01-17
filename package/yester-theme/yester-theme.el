@@ -615,6 +615,15 @@
 
 
 
+   ;; Cua-mode
+   `(cua-global-mark
+     (,@(yester-whole-face-spec class :foreground orange :inverse-video t)))
+   `(cua-rectangle (,@(yester-whole-face-spec class :background selection)))
+   `(cua-rectangle-noselect
+     (,@(yester-whole-face-spec class :background current-line)))
+
+
+
    ;; Popup
    `(popup-face ((,class :inherit default)))
    `(popup-isearch-match ((,class :inherit (lazy-highlight default))))
