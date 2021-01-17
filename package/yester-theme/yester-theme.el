@@ -986,9 +986,12 @@
 
 
    ;; Wgrep
-   `(wgrep-face
-     (,@(yester-whole-face-spec class :foreground aqua :inverse-video t)))
-   `(wgrep-done-face (,@(yester-whole-face-spec class :foreground blue)))
+   `(wgrep-face (,@(yester-whole-face-spec class :background selection)))
+   `(wgrep-done-face ((,class :inherit italic)))
+   `(wgrep-reject-face (,@(yester-whole-face-spec class
+                            :weight 'bold :foreground red)))
+   `(wgrep-delete-face ((,class :strike-through t)))
+   `(wgrep-file-face (,@(yester-whole-face-spec class :background selection)))
 
 
 
