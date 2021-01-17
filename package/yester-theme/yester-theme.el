@@ -600,6 +600,16 @@
 
 
 
+   ;; Flymake
+   `(flymake-note (,@(yester-whole-face-spec class
+                       :underline `(:style wave :color ,green))))
+   `(flymake-warning (,@(yester-whole-face-spec class
+                          :underline `(:style wave :color ,orange))))
+   `(flymake-error (,@(yester-whole-face-spec class
+                        :underline `(:style wave :color ,red))))
+
+
+
    ;; Popup
    `(popup-face ((,class :inherit default)))
    `(popup-isearch-match ((,class :inherit (lazy-highlight default))))
