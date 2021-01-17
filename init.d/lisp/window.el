@@ -61,14 +61,14 @@
                (top-edge (nth 1 (window-edges)))
                (key-sequence (read-key-sequence-vector
                               (format
-                               (concat "position[%02d,%02d]" " "
-                                       "size[%02dx%02d]" " "
-                                       "frame[%02dx%02d]" " "
-                                       "step[%02d]")
-                               left-edge top-edge
-                               (window-width) (window-height)
-                               (frame-width) (frame-height)
-                               factor)))
+                               (concat "#<"
+                                       (propertize "window" 'face 'shadow)
+                                       " "
+                                       "width[%03d]" " "
+                                       "height[%03d]" " "
+                                       "step[%02d]"
+                                       ">")
+                               (window-width) (window-height) factor)))
                (key-description (key-description key-sequence))
                (key-binding (key-binding key-sequence)))
           (cond ((equal key-description "f")
@@ -95,6 +95,25 @@
                  (enlarge-window (* initial-height direction-y)))
                 ((equal key-description "M-v")
                  (shrink-window (* initial-height direction-y)))
+                ((equal key-description "w")
+                 (let ((read (read-from-minibuffer
+                              (format "Width[%d]: " (window-width))
+                              nil nil t nil
+                              (number-to-string (window-width)))))
+                   (if (integerp read)
+                       (enlarge-window-horizontally (- read (window-width))))))
+                ((equal key-description "h")
+                 (let ((read (read-from-minibuffer
+                              (format "Height[%d]: " (window-height))
+                              nil nil t nil
+                              (number-to-string (window-height)))))
+                   (if (integerp read)
+                       (enlarge-window (- read (window-height))))))
+                ((equal key-description "s")
+                 (let ((read (read-from-minibuffer
+                              (format "Step[%d]: " factor)
+                              nil nil t nil (number-to-string factor))))
+                   (if (integerp read) (setq factor read))))
                 ((or (equal key-description "q")
                      (equal key-description "RET")
                      (equal key-description "C-j"))
