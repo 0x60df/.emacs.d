@@ -228,6 +228,7 @@ UNIT is a literal symbol."
 (init-feature abbrev)
 (init-feature hippie-exp)
 (init-feature doc-view)
+(init-feature info)
 (init-feature elisp-mode)
 (init-feature cc-mode)
 (init-feature ruby-mode)
