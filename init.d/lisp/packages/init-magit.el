@@ -3,11 +3,15 @@
 
 
 (premise init)
+(premise custom)
 (premise bindings)
 (premise init-ediff)
 (premise inst-magit)
 
 (declare-function git-commit-turn-on-flyspell "git-commit")
+
+(custom-set-variables
+ '(transient-highlight-mismatched-keys t))
 
 (overriding-set-key (kbd "C-c v m") #'magit-status)
 
