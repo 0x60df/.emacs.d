@@ -8,15 +8,50 @@
   "Duplicate region and comment out them."
   (interactive)
   (if (region-active-p)
-      (let* ((p (point))
-             (rb (region-beginning))
-             (re (region-end)))
+      (let ((p (point))
+            (rb (region-beginning))
+            (re (region-end)))
         (goto-char rb)
         (kill-ring-save rb re)
         (comment-region rb re)
         (yank)
         (newline-and-indent)
         (goto-char p))))
+
+(defun comment-switch ()
+  "Scan region, then uncomment whole comment lines and comment others."
+  (interactive)
+  (if (region-active-p)
+      (save-excursion
+        (let ((beg (region-beginning))
+              (end (region-end)))
+          (goto-char end)
+          (catch 'done
+            (while t
+              (save-excursion
+                (goto-char beg)
+                (comment-forward (- end beg))
+                (if (< beg (point))
+                    (if (< (point) end)
+                        (uncomment-region beg (point))
+                      (uncomment-region beg end)
+                      (throw 'done t))
+                  (let ((med (comment-search-forward end 'noerror))
+                        (test (lambda (point)
+                                (save-excursion
+                                  (beginning-of-line)
+                                  (comment-forward)
+                                  (< (point) point)))))
+                    (while (and med (funcall test med))
+                      (setq med (comment-search-forward end 'noerror)))
+                    (if med
+                        (progn
+                          (goto-char med)
+                          (comment-region beg med))
+                      (comment-region beg end)
+                      (throw 'done t))))
+                (setq beg (point)))
+              (setq end (point))))))))
 
 (defun yank-pop-reverse (&optional n)
   "Yank pop by reverse direction.

@@ -128,6 +128,8 @@ Keymap is determined by `overriding-map-for'"
 
 
 (overriding-set-key (kbd "M-+") #'duplicate-and-comment)
+(overriding-set-key (kbd "C-M-;") #'comment-switch)
+(overriding-set-key (kbd "H-;") #'comment-switch)
 (overriding-set-key (kbd "H-y") #'yank-pop-reverse)
 (overriding-set-key (kbd "C-S-n") #'next-line-scroll-up)
 (overriding-set-key (kbd "C-S-p") #'previous-line-scroll-down)
