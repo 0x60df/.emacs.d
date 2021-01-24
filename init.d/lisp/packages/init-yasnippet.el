@@ -13,6 +13,8 @@
 
 (declare-function yas-reload-all "yasnippet")
 (declare-function yas-expand "yasnippet")
+(declare-function yas-insert-snippet "yasnippet")
+(declare-function yas-describe-tables "yasnippet")
 
 (declare-function yas--field-probably-deleted-p "yasnippet")
 (declare-function yas-exit-snippet "yasnippet")
@@ -20,11 +22,16 @@
 
 (custom-set-variables
  '(yas-prompt-functions nil)
- '(yas-use-menu nil))
+ '(yas-use-menu nil)
+ '(yas-prompt-functions '(yas-completing-prompt
+                          yas-maybe-ido-prompt
+                          yas-no-prompt)))
 
 (push '(yas-minor-mode . 12) mode-line-minor-mode-priority-alist)
 
 (with-eval-after-load 'yasnippet
+  (yas-reload-all)
+
   (setcar (cdr (assq 'yas-minor-mode minor-mode-alist)) " YS")
 
   (defun yas--find-next-field-boundary-guard
@@ -57,6 +64,8 @@ Otherwise, return original one."
   (defvar overriding-yas-minor-mode-map
     (let ((map (make-sparse-keymap)))
       (define-key map (kbd "C-'") #'yas-expand)
+      (define-key map (kbd "C-c y") #'yas-insert-snippet)
+      (define-key map (kbd "C-c Y") #'yas-describe-tables)
       map)
     "Keymap for `yas-minor-mode' which overrides global overriding maps.")
 
@@ -65,38 +74,23 @@ Otherwise, return original one."
 
 (add-hook 'emacs-startup-hook
           (lambda ()
-            (add-hook 'prog-mode-hook #'yas-minor-mode)
+            (mapc (lambda (hook)
+                    (add-hook hook #'yas-minor-mode))
+                  '(prog-mode-hook
+                    html-mode-hook))
 
-            (let ((first-change-hook-form
-                   (lambda ()
-                     (when (derived-mode-p 'prog-mode)
-                       (message "[yas] Loading the snippet tables.")
-                       (require 'yasnippet)
-                       (yas-reload-all)
-                       (yas-minor-mode))))
-                  (prog-mode-hook-form
-                   (lambda ()
-                     (require 'yasnippet)
-                     (yas-reload-all)
-                     (with-current-buffer "*scratch*"
-                       (yas-minor-mode)))))
-              (add-hook-for-once
-               'prog-mode-hook
-               `(lambda ()
-                  (with-current-buffer "*scratch*"
-                    (remove-hook-for-once 'first-change-hook
-                                          ,first-change-hook-form))))
-              (add-hook-for-once 'prog-mode-hook `,prog-mode-hook-form)
-
-              (with-current-buffer "*scratch*"
-                (let ((hook (make-local-variable 'first-change-hook)))
-                  (add-hook-for-once
-                   hook
-                   `(lambda ()
-                      (if (derived-mode-p 'prog-mode)
-                          (remove-hook-for-once 'prog-mode-hook
-                                                ,prog-mode-hook-form))))
-                  (add-hook-for-once hook `,first-change-hook-form))))))
+            (with-current-buffer "*scratch*"
+              (let ((hook (make-local-variable 'first-change-hook)))
+                (add-hook-for-once
+                 hook
+                 (lambda ()
+                   (when (seq-some #'derived-mode-p
+                                   '(prog-mode
+                                     org-mode
+                                     html-mode))
+                     (unless (featurep 'yasnippet)
+                       (message "[yas] Loading the snippet tables."))
+                     (yas-minor-mode))))))))
 
 
 (resolve init-yasnippet)
