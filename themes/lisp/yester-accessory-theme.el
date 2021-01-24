@@ -34,6 +34,8 @@
                (t (yester-let-colors day (list :foreground red)))))))
    `(mode-line-transform ((,class (:slant italic))))
 
+
+
    ;; VC
    `(vc-state-base (,@(yester-whole-face-spec class :foreground orange)))
    `(vc-conflict-state (,@(yester-whole-face-spec class :foreground red)))
@@ -47,13 +49,19 @@
    `(vc-removed-state (,@(yester-whole-face-spec class :foreground orange)))
    `(vc-up-to-date-state (,@(yester-whole-face-spec class :foreground green)))
 
+
+
    ;; Risky
    `(risky-yes-or-no-p-prefix
      (,@(yester-whole-face-spec class `(:foreground ,red))))
 
+
+
    ;; Sdired
    `(sdired-group (,@(yester-whole-face-spec class `(:foreground ,comment))))
    `(sdired-key (,@(yester-whole-face-spec class `(:foreground ,aqua))))
+
+
 
    ;; Auto-complete
    `(ac-dictionary-candidate-face
@@ -72,6 +80,8 @@
      ((,class :inherit (font-lock-function-name-face ac-candidate-face))))
    `(ac-functions-selection-face
      ((,class :inherit (font-lock-function-name-face ac-selection-face))))
+
+
 
    ;; Evil
    `(evil-normal-state-tag
