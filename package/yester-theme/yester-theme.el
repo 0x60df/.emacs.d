@@ -1113,7 +1113,7 @@
  `(evil-replace-state-cursor ,(yester-whole-symbol-exp `(hbar ,green)))
  `(evil-operator-state-cursor ,(yester-whole-symbol-exp green))
  `(evil-visual-state-cursor ,(yester-whole-symbol-exp green))
- `(evil-motion-state-cursor ,(yester-whole-symbol-exp purple))
+ `(evil-motion-state-cursor ,(yester-whole-symbol-exp comment))
 
 
 

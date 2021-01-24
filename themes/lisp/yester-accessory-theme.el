@@ -95,7 +95,7 @@
    `(evil-visual-state-tag
      (,@(yester-whole-face-spec class :foreground green :weight 'bold)))
    `(evil-motion-state-tag
-     (,@(yester-whole-face-spec class :foreground purple :weight 'bold)))))
+     (,@(yester-whole-face-spec class :foreground comment :weight 'bold)))))
 
 
 (provide-theme 'yester-accessory)
