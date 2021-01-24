@@ -9,12 +9,19 @@
 (with-eval-after-load 'volatile-highlights
   (setcdr (assq 'volatile-highlights-mode minor-mode-alist) '("")))
 
-(defvar vhl/volatize-active-mark-flag t
-  "Flag to determine wheather volatize volatile active mark.")
+(defcustom vhl/commands-requring-volatilizing-active-mark
+  '(undo)
+  "List of commands who require volatilizing active mark.
+Mmark will be volatilized before the commands are callded."
+  :type '(repeat function)
+  :group 'user)
 
-(defun vhl/cancel-volatize-active-mark (&rest args)
-  "Cancel volatize volatile active mark."
-  (setq vhl/volatize-active-mark-flag nil))
+(defvar vhl/volatilize-active-mark-flag t
+  "Flag to determine wheather volatilize volatile active mark.")
+
+(defun vhl/cancel-volatilize-active-mark (&rest args)
+  "Cancel volatilize volatile active mark."
+  (setq vhl/volatilize-active-mark-flag nil))
 
 (defun vhl/volatile-active-mark (beg end)
   "Advising function for `vhl/add-range'.
@@ -31,14 +38,16 @@ unless the command is `activate-mark'."
    'pre-command-hook
    (lambda ()
      (transient-mark-mode)
+     (when (memq this-command vhl/commands-requring-volatilizing-active-mark)
+       (deactivate-mark))
      (add-hook-for-once
       'post-command-hook
       (lambda ()
         (unwind-protect
-            (if vhl/volatize-active-mark-flag (deactivate-mark))
-          (advice-remove 'activate-mark #'vhl/cancel-volatize-active-mark)
-          (setq vhl/volatize-active-mark-flag t))))
-     (advice-add 'activate-mark :after #'vhl/cancel-volatize-active-mark))))
+            (if vhl/volatilize-active-mark-flag (deactivate-mark))
+          (advice-remove 'activate-mark #'vhl/cancel-volatilize-active-mark)
+          (setq vhl/volatilize-active-mark-flag t))))
+     (advice-add 'activate-mark :after #'vhl/cancel-volatilize-active-mark))))
 
 (with-eval-after-load 'volatile-highlights
   (advice-add 'vhl/add-range :after #'vhl/volatile-active-mark))
