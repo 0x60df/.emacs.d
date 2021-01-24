@@ -3,6 +3,7 @@
 
 
 (premise init)
+(premise subr)
 (premise custom)
 (premise frame)
 
@@ -166,71 +167,96 @@ window to use."
                                (split-window-above)
                              (setq original-window (selected-window)))))))
           (if (windowp window)
-              (catch 'quit
-                (while t
-                  (let* ((key-sequence (read-key-sequence-vector
-                                        "View other window:"))
-                         (key-description (key-description key-sequence))
-                         (key-binding (key-binding key-sequence)))
-                    (with-selected-window window
-                      (condition-case nil
-                          (cond ((equal key-description ",")
-                                 (let ((next-window (next-window window)))
-                                   (setq window
-                                         (if (eq next-window original-window)
-                                             (next-window next-window)
-                                           next-window))))
-                                ((or (equal key-description "M-,")
-                                     (equal key-description "."))
-                                 (let ((previous-window
-                                        (previous-window window)))
-                                   (setq window
-                                         (if (eq previous-window
-                                                 original-window)
-                                             (previous-window previous-window)
-                                           previous-window))))
-                                ((equal key-description "n") (scroll-up-line))
-                                ((equal key-description "p") (scroll-down-line))
-                                ((equal key-description "v") (scroll-up))
-                                ((equal key-description "M-v") (scroll-down))
-                                ((equal key-description "<")
-                                 (goto-char (point-min)))
-                                ((equal key-description ">")
-                                 (goto-char (point-max)))
-                                ((or (equal key-description "C-f")
-                                     (equal key-description "f"))
-                                 (unwind-protect
-                                     (progn
-                                       (redirect-frame-focus
-                                        original-frame frame)
-                                       (call-interactively #'find-file))
-                                   (redirect-frame-focus original-frame nil)))
-                                ((equal key-description "b")
-                                 (unwind-protect
-                                     (progn
-                                       (redirect-frame-focus
-                                        original-frame frame)
-                                       (call-interactively #'switch-to-buffer))
-                                   (redirect-frame-focus original-frame nil)))
-                                ( (equal key-description "q")
-                                 (throw 'quit t))
-                                ((eq key-binding 'self-insert-command)
-                                 (if (< 0 (length key-sequence))
-                                     (let ((character (aref key-sequence 0)))
-                                       (if (characterp character)
-                                           (with-selected-window original-window
-                                             (let ((current-prefix-arg nil))
-                                               (self-insert-command
-                                                1 character))))))
-                                 (throw 'quit t))
-                                ((commandp key-binding)
-                                 (with-selected-window original-window
-                                   (let ((current-prefix-arg nil))
-                                     (call-interactively key-binding)))
-                                 (throw 'quit t))
-                                (t (throw 'quit t)))
-                        (beginning-of-buffer nil)
-                        (end-of-buffer nil))))))))
+              (let ((post
+                     (catch 'quit
+                       (while t
+                         (let* ((key-sequence (read-key-sequence-vector
+                                               "View other window:"))
+                                (key-description (key-description key-sequence))
+                                (key-binding (key-binding key-sequence)))
+                           (with-selected-window window
+                             (condition-case nil
+                                 (cond ((equal key-description ",")
+                                        (let ((next-window
+                                               (next-window window)))
+                                          (setq window
+                                                (if (eq next-window
+                                                        original-window)
+                                                    (next-window next-window)
+                                                  next-window))))
+                                       ((or (equal key-description "M-,")
+                                            (equal key-description "."))
+                                        (let ((previous-window
+                                               (previous-window window)))
+                                          (setq window
+                                                (if (eq previous-window
+                                                        original-window)
+                                                    (previous-window
+                                                     previous-window)
+                                                  previous-window))))
+                                       ((equal key-description "n")
+                                        (scroll-up-line))
+                                       ((equal key-description "p")
+                                        (scroll-down-line))
+                                       ((equal key-description "v") (scroll-up))
+                                       ((equal key-description "M-v")
+                                        (scroll-down))
+                                       ((equal key-description "<")
+                                        (goto-char (point-min)))
+                                       ((equal key-description ">")
+                                        (goto-char (point-max)))
+                                       ((or (equal key-description "C-f")
+                                            (equal key-description "f"))
+                                        (unwind-protect
+                                            (progn
+                                              (redirect-frame-focus
+                                               original-frame frame)
+                                              (call-interactively #'find-file))
+                                          (redirect-frame-focus
+                                           original-frame nil)))
+                                       ((equal key-description "b")
+                                        (unwind-protect
+                                            (progn
+                                              (redirect-frame-focus
+                                               original-frame frame)
+                                              (call-interactively
+                                               #'switch-to-buffer))
+                                          (redirect-frame-focus
+                                           original-frame nil)))
+                                       ((equal key-description "s")
+                                        (throw 'quit 'isearch-forward))
+                                       ((equal key-description "r")
+                                        (throw 'quit 'isearch-backward))
+                                       ((equal key-description "q")
+                                        (throw 'quit t))
+                                       ((eq key-binding 'self-insert-command)
+                                        (if (< 0 (length key-sequence))
+                                            (let ((character
+                                                   (aref key-sequence 0)))
+                                              (if (characterp character)
+                                                  (with-selected-window
+                                                      original-window
+                                                    (let ((current-prefix-arg
+                                                           nil))
+                                                      (self-insert-command
+                                                       1 character))))))
+                                        (throw 'quit t))
+                                       ((commandp key-binding)
+                                        (with-selected-window original-window
+                                          (let ((current-prefix-arg nil))
+                                            (call-interactively key-binding)))
+                                        (throw 'quit t))
+                                       (t (throw 'quit t)))
+                               (beginning-of-buffer nil)
+                               (end-of-buffer nil))))))))
+                (cond ((memq post '(isearch-forward isearch-backward))
+                       (add-hook-for-once
+                        'isearch-mode-end-hook
+                        `(lambda ()
+                           (select-window ,original-window)
+                           (call-interactively #'view-other-window)))
+                       (select-window window)
+                       (call-interactively post))))))
       (if arg (raise-frame original-frame)))))
 
 
