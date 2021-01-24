@@ -1019,6 +1019,21 @@
 
    ;; Color-moccur
    `(moccur-face ((,class :inherit match)))
+   `(moccur-current-line-face
+     (,@(yester-whole-face-spec class :background current-line :extend t)))
+   `(moccur-edit-face
+     (,@(yester-whole-face-spec class :background selection)))
+   `(moccur-edit-done-face
+     (,@(yester-whole-face-spec class :underline t)))
+   `(moccur-edit-reject-face
+     (,@(yester-whole-face-spec class :weight 'bold :foreground red)))
+   `(moccur-edit-file-face
+     (,@(yester-whole-face-spec class :background selection)))
+   `(search-buffers-face ((,class :inherit match)))
+   `(search-buffers-header-face (,@(yester-whole-face-spec class
+                                     :weight 'bold
+                                     :foreground purple
+                                     :inverse-video t)))
 
 
 
