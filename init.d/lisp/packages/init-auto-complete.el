@@ -79,6 +79,10 @@ inline candidate is completed."
   (add-hook 'python-mode-hook
             (lambda () (add-to-list 'ac-sources 'ac-source-yasnippet)))
   (add-hook 'js-mode-hook
+            (lambda () (add-to-list 'ac-sources 'ac-source-yasnippet)))
+  (add-hook 'org-mode-hook
+            (lambda () (setq ac-sources '(ac-source-yasnippet))))
+  (add-hook 'html-mode-hook
             (lambda () (add-to-list 'ac-sources 'ac-source-yasnippet))))
 
 
