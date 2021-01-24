@@ -1,6 +1,6 @@
 ;;; yester-theme.el --- Custom theme for faces derived from tomorrow theme
 
-;; Copyright (C) 2020 0x60DF
+;; Copyright (C) 2020, 2021 0x60DF
 
 ;;; Commentary:
 
