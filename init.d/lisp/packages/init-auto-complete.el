@@ -149,6 +149,19 @@ inline candidate is completed."
 
 
 
+;; utilities
+
+(defun ac-decide ()
+  "`ac-complete' without `ac-fallback-command'."
+  (interactive)
+
+  (prog2
+      (advice-add 'ac-fallback-command :override #'ignore)
+      (call-interactively #'ac-complete)
+    (advice-remove 'ac-fallback-command #'ignore)))
+
+
+
 ;;; mode-line
 
 (push '(auto-complete-mode . 11) mode-line-minor-mode-priority-alist)
@@ -170,7 +183,10 @@ inline candidate is completed."
   (define-key ac-completing-map (kbd "<backtab>") #'ac-expand-previous)
   (define-key ac-completing-map (kbd "C-<tab>") #'ac-isearch)
   (define-key ac-completing-map (kbd "C-S-<iso-lefttab>") #'ac-quick-help)
-  (define-key ac-completing-map (kbd "H-<tab>") #'ac-fuzzy-complete))
+  (define-key ac-completing-map (kbd "H-<tab>") #'ac-fuzzy-complete)
+  (define-key ac-completing-map (kbd "RET") #'ac-decide)
+
+  (define-key ac-menu-map (kbd "RET") #'ac-decide))
 
 
 (resolve init-auto-complete)
