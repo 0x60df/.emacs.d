@@ -21,7 +21,8 @@
 
   (defvar overriding-loophole-mode-map
     (let ((map (make-sparse-keymap)))
-      (define-key map (kbd "C-c \\") #'loophole-disable-last-map)
+      (define-key map (kbd "C-}") #'loophole-disable-last-map)
+      (define-key map (kbd "C-{") #'loophole-quit)
       (define-key map (kbd "C-c ] q") #'loophole-quit)
       (define-key map (kbd "C-c ] e") #'loophole-start-edit)
       (define-key map (kbd "C-c ] c") #'loophole-stop-edit)
