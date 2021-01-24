@@ -192,6 +192,7 @@ UNIT is a literal symbol."
 (init vc)
 (init register)
 (init mode-line)
+(init font)
 (init theme)
 (init bindings)
 (init keyboard)
