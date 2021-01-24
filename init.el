@@ -308,6 +308,7 @@ UNIT is a literal symbol."
 (init-package yatex)
 (init-package ox-gfm)
 (init-package ox-qmd)
+(init-package calfw)
 (init-package smartrep)
 (init-package page-break-lines)
 (init-package tomorrow-theme)
