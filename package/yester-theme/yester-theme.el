@@ -593,6 +593,11 @@
 
 
 
+   ;; Table
+   `(table-cell (,@(yester-whole-face-spec class :background block)))
+
+
+
    ;; Diary
    `(diary (,@(yester-whole-face-spec class :foreground yellow)))
    `(diary-anniversary (,@(yester-whole-face-spec class :foreground purple)))
