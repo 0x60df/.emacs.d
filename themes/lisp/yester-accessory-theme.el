@@ -97,5 +97,13 @@
    `(evil-motion-state-tag
      (,@(yester-whole-face-spec class :foreground comment :weight 'bold)))))
 
+
+
+(custom-theme-set-variables
+ 'yester-accessory
+
+ ;; Calfw
+ `(calfw-org-source-period-bgcolor ,(yester-whole-symbol-exp background))
+ `(calfw-org-source-period-fgcolor ,(yester-whole-symbol-exp foreground)))
 
 (provide-theme 'yester-accessory)

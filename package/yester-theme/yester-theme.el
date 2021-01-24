@@ -1068,6 +1068,48 @@
 
 
 
+   ;; Calfw
+   `(cfw:face-title (,@(yester-whole-face-spec class
+                             :weight 'bold
+                             :height (* 1.2 1.2 1.2)
+                             :foreground foreground
+                             :inherit 'variable-pitch)))
+   `(cfw:face-toolbar (,@(yester-whole-face-spec class
+                           :foreground block
+                           :background block)))
+   `(cfw:face-toolbar-button-on (,@(yester-whole-face-spec class
+                                     :foreground orange
+                                     :background block)))
+   `(cfw:face-toolbar-button-off (,@(yester-whole-face-spec class
+                                      :foreground comment
+                                      :background block)))
+   `(cfw:face-disable (,@(yester-whole-face-spec class :foreground selection)))
+   `(cfw:face-grid
+     (,@(yester-whole-face-spec class :foreground selection)))
+   `(cfw:face-sunday
+     (,@(yester-whole-face-spec class :weight 'bold :foreground comment)))
+   `(cfw:face-saturday
+     (,@(yester-whole-face-spec class :weight 'bold :foreground comment)))
+   `(cfw:face-header
+     (,@(yester-whole-face-spec class :weight 'bold :foreground aqua)))
+   `(cfw:face-day-title
+     (,@(yester-whole-face-spec class :foreground foreground)))
+   `(cfw:face-holiday (,@(yester-whole-face-spec class :foreground purple)))
+   `(cfw:face-annotation (,@(yester-whole-face-spec class :foreground comment)))
+   `(cfw:face-today-title (,@(yester-whole-face-spec class
+                               :weight 'bold
+                               :foreground yellow
+                               :background background
+                               :inverse-video t)))
+   `(cfw:face-select (,@(yester-whole-face-spec class :background selection)))
+   `(cfw:face-default-content (,@(yester-whole-face-spec class
+                                   :foreground foreground)))
+   `(cfw:face-today (,@(yester-whole-face-spec class :foreground yellow)))
+   `(cfw:face-periods (,@(yester-whole-face-spec class
+                           :weight 'bold :foreground blue)))
+
+
+
    ;; Skk
    `(skk-henkan-face-default
      (,@(yester-whole-face-spec class :foreground background :background aqua)))
@@ -1114,6 +1156,13 @@
  `(evil-operator-state-cursor ,(yester-whole-symbol-exp green))
  `(evil-visual-state-cursor ,(yester-whole-symbol-exp green))
  `(evil-motion-state-cursor ,(yester-whole-symbol-exp comment))
+ 
+
+
+ ;; Calfw
+ `(cfw:face-item-separator-color ,(yester-whole-symbol-exp selection))
+ `(cfw:org-face-agenda-item-foreground-color
+   ,(yester-whole-symbol-exp foreground))
 
 
 
