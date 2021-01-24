@@ -5,6 +5,7 @@
 (premise init)
 (premise frame)
 (premise feature)
+(premise advice)
 
 (lazy-autoload 'frameset-name "frameset")
 (lazy-autoload 'frameset-description "frameset")
@@ -390,6 +391,24 @@ When interactively, ask SESSION from `client-session-list'."
 
 (advice-add 'save-buffers-kill-terminal
             :before #' client-save-session-when-kill-terminal)
+
+
+
+;; Startup
+
+(add-hook
+ 'server-after-make-frame-hook
+ (lambda ()
+   (advice-add-for-once
+    'substitute-command-keys
+    :filter-args
+    (lambda (args)
+      (let ((arg (car args)))
+        (if (and (stringp arg)
+                 (string-prefix-p "When done with this frame, type " arg))
+            `(,(concat "Welcome back to GNU Emacs,"
+                       " one component of the GNU operating system."))
+          args))))))
 
 
 (resolve client)
