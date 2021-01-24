@@ -216,6 +216,7 @@ UNIT is a literal symbol."
 (init-feature recentf)
 (init-feature eldoc)
 (init-feature autorevert)
+(init-feature ispell)
 (init-feature flyspell)
 (init-feature dired)
 (init-feature dired-x)
