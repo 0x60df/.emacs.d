@@ -1037,6 +1037,52 @@
 
 
 
+   ;; Web-mode
+   `(web-mode-error-face ((,class :weight bold :inherit error)))
+   `(web-mode-current-column-highlight-face
+     (,@(yester-whole-face-spec class :background current-line)))
+   `(web-mode-current-element-highlight-face
+     (,@(yester-whole-face-spec class :weight 'bold :background current-line)))
+   `(web-mode-folded-face
+     (,@(yester-whole-face-spec class :underline foreground)))
+   `(web-mode-param-name-face ((,class)))
+   `(web-mode-symbol-face (,@(yester-whole-face-spec class :foreground aqua)))
+   `(web-mode-whitespace-face (,@(yester-whole-face-spec class
+                                   :foreground red
+                                   :background background
+                                   :inverse-video t)))
+   `(web-mode-doctype-face ((,class :inherit shadow)))
+   `(web-mode-block-face ((,class)))
+   `(web-mode-block-attr-name-face
+     ((,class :slant italic :inherit web-mode-html-attr-name-face)))
+   `(web-mode-block-attr-value-face
+     ((,class :slant italic :inherit web-mode-html-attr-value-face)))
+   `(web-mode-css-color-face ((,class)))
+   `(web-mode-html-attr-name-face ((,class)))
+   `(web-mode-html-tag-bracket-face ((,class)))
+   `(web-mode-html-tag-face ((,class :inherit shadow)))
+   `(web-mode-annotation-face
+     ((,class :slant normal :inherit web-mode-comment-face)))
+   `(web-mode-comment-keyword-face ((,class :weight bold :underline t)))
+   `(web-mode-inlay-face
+     (,@(yester-whole-face-spec class :foreground yellow)))
+   `(web-mode-json-context-face
+     (,@(yester-whole-face-spec class :slant 'italic :foreground purple)))
+   `(web-mode-json-key-face
+     (,@(yester-whole-face-spec class :foreground purple)))
+   `(web-mode-jsx-depth-1-face
+     (,@(yester-whole-face-spec class :background background)))
+   `(web-mode-jsx-depth-2-face
+     (,@(yester-whole-face-spec class :background block)))
+   `(web-mode-jsx-depth-3-face
+     (,@(yester-whole-face-spec class :background current-line)))
+   `(web-mode-jsx-depth-4-face
+     (,@(yester-whole-face-spec class :background selection)))
+   `(web-mode-jsx-depth-5-face
+     (,@(yester-whole-face-spec class :weight 'bold :background selection)))
+
+
+
    ;; YaTeX
    `(delimiter (,@(yester-whole-face-spec class :foreground comment)))
    `(YaTeX-font-lock-crossref-face
