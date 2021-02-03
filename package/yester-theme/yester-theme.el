@@ -596,6 +596,11 @@
 
 
 
+   `(pulse-highlight-start-face
+     (,@(yester-whole-face-spec class :background selection)))
+
+
+
    ;; Epa
    `(epa-mark
      (,@(yester-whole-face-spec class :weight 'bold :foreground orange)))
