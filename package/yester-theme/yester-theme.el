@@ -889,12 +889,15 @@
 
 
    ;; Magit
+   `(magit-dimmed ((,class :inherit shadow)))
    `(magit-branch-local (,@(yester-whole-face-spec class :foreground aqua)))
    `(magit-branch-remote
      (,@(yester-whole-face-spec class :foreground blue)))
+   `(magit-tag (,@(yester-whole-face-spec class :foreground yellow)))
    `(magit-hash (,@(yester-whole-face-spec class :foreground comment)))
    `(magit-header-line (,@(yester-whole-face-spec class :foreground purple)))
    `(magit-log-author (,@(yester-whole-face-spec class :foreground orange)))
+   `(magit-log-date (,@(yester-whole-face-spec class :foreground foreground)))
    `(magit-log-graph (,@(yester-whole-face-spec class :foreground comment)))
    `(magit-section-heading
      (,@(yester-whole-face-spec class :foreground yellow :weight 'bold)))
@@ -906,6 +909,24 @@
                            :foreground red :inherit 'magit-section-heading)))
    `(magit-process-ok (,@(yester-whole-face-spec class
                            :foreground green :inherit 'magit-section-heading)))
+   `(magit-sequence-done
+     (,@(yester-whole-face-spec class :foreground comment)))
+   `(magit-sequence-drop
+     (,@(yester-whole-face-spec class :foreground red)))
+   `(magit-sequence-exec
+     (,@(yester-whole-face-spec class :foreground comment)))
+   `(magit-sequence-head
+     (,@(yester-whole-face-spec class :foreground aqua)))
+   `(magit-sequence-onto
+     (,@(yester-whole-face-spec class :foreground comment)))
+   `(magit-sequence-part
+     (,@(yester-whole-face-spec class :foreground yellow)))
+   `(magit-sequence-pick
+     (,@(yester-whole-face-spec class :foreground foreground)))
+   `(magit-sequence-stop
+     (,@(yester-whole-face-spec class :foreground blue)))
+   `(magit-refname
+     (,@(yester-whole-face-spec class :foreground foreground)))
    `(magit-diff-revision-summary
      (,@(yester-whole-face-spec class :weight 'bold :foreground yellow)))
    `(magit-diff-context ((,class :inherit diff-context)))
@@ -953,6 +974,67 @@
      (,@(yester-whole-face-spec class :foreground diff-accent-green)))
    `(magit-diffstat-removed
      (,@(yester-whole-face-spec class :foreground diff-accent-red)))
+   `(magit-cherry-equivalent
+     (,@(yester-whole-face-spec class :foreground diff-accent-cyan)))
+   `(magit-cherry-unmatched
+     (,@(yester-whole-face-spec class :foreground diff-accent-yellow)))
+   `(magit-reflog-amend
+     (,@(yester-whole-face-spec class :foreground yellow)))
+   `(magit-reflog-checkout
+     (,@(yester-whole-face-spec class :foreground blue)))
+   `(magit-reflog-cherry-pick
+     (,@(yester-whole-face-spec class :foreground purple)))
+   `(magit-reflog-commit
+     (,@(yester-whole-face-spec class :foreground green)))
+   `(magit-reflog-merge
+     (,@(yester-whole-face-spec class :foreground purple)))
+   `(magit-reflog-other
+     (,@(yester-whole-face-spec class :foreground orange)))
+   `(magit-reflog-rebase
+     (,@(yester-whole-face-spec class :foreground yellow)))
+   `(magit-reflog-remote
+     (,@(yester-whole-face-spec class :foreground aqua)))
+   `(magit-reflog-reset
+     (,@(yester-whole-face-spec class :foreground red)))
+   `(magit-blame-highlight (,@(yester-whole-face-spec class
+                                :weight 'bold
+                                :slant 'italic
+                                :background block)))
+   `(magit-blame-heading (,@(yester-whole-face-spec class
+                              :weight 'normal
+                              :slant 'italic
+                              :foreground foreground
+                              :background selection)))
+   `(magit-blame-margin (,@(yester-whole-face-spec class
+                             :weight 'normal
+                             :slant 'normal
+                             :foreground foreground
+                             :background current-line
+                             :underline nil
+                             :inverse-video nil)))
+   `(magit-blame-dimmed (,@(yester-whole-face-spec class
+                             :weight 'normal
+                             :slant 'normal
+                             :foreground comment
+                             :underline nil
+                             :inverse-video nil)))
+   `(magit-bisect-bad (,@(yester-whole-face-spec class :foreground red)))
+   `(magit-bisect-good (,@(yester-whole-face-spec class :foreground green)))
+   `(magit-bisect-skip (,@(yester-whole-face-spec class :foreground orange)))
+   `(magit-signature-bad
+     (,@(yester-whole-face-spec class :weight 'bold :foreground red)))
+   `(magit-signature-error
+     (,@(yester-whole-face-spec class :foreground red)))
+   `(magit-signature-expired
+     (,@(yester-whole-face-spec class :foreground orange)))
+   `(magit-signature-expired-key
+     (,@(yester-whole-face-spec class :foreground orange)))
+   `(magit-signature-good
+     (,@(yester-whole-face-spec class :foreground green)))
+   `(magit-signature-revoked
+     (,@(yester-whole-face-spec class :weight 'bold :foreground orange)))
+   `(magit-signature-untrusted
+     (,@(yester-whole-face-spec class :foreground purple)))
 
 
 
