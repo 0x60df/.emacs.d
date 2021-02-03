@@ -83,6 +83,17 @@
 
 
 
+   ;; Magit
+   `(magit-blame-margin-body (,@(yester-whole-face-spec class
+                                  :weight 'normal
+                                  :slant 'italic
+                                  :foreground comment
+                                  :background background
+                                  :underline nil
+                                  :inverse-video nil)))
+
+
+
    ;; Evil
    `(evil-normal-state-tag
      (,@(yester-whole-face-spec class :foreground green :weight 'bold)))
