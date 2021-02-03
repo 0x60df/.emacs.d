@@ -1344,7 +1344,7 @@
  `(evil-operator-state-cursor ,(yester-whole-symbol-exp green))
  `(evil-visual-state-cursor ,(yester-whole-symbol-exp green))
  `(evil-motion-state-cursor ,(yester-whole-symbol-exp comment))
- 
+
 
 
  ;; Calfw
@@ -1356,11 +1356,11 @@
 
  ;; Skk
  `(skk-use-color-cursor t)
- `(skk-cursor-abbrev-color ,(yester-whole-symbol-exp comment))
- `(skk-cursor-jisx0208-latin-color ,(yester-whole-symbol-exp comment))
+ `(skk-cursor-abbrev-color ,(yester-whole-symbol-exp blue))
+ `(skk-cursor-jisx0208-latin-color ,(yester-whole-symbol-exp blue))
  `(skk-cursor-katakana-color ,(yester-whole-symbol-exp aqua))
  `(skk-cursor-hiragana-color ,(yester-whole-symbol-exp blue))
- `(skk-cursor-jisx0201-color ,(yester-whole-symbol-exp comment))
+ `(skk-cursor-jisx0201-color ,(yester-whole-symbol-exp aqua))
  `(skk-cursor-latin-color ,(yester-whole-symbol-exp red)))
 
 (provide-theme 'yester)
