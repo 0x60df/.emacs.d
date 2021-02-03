@@ -6,6 +6,7 @@
 (premise custom)
 (premise subr)
 (premise advice)
+(premise frame)
 (premise inst-calfw)
 
 (eval-when-compile (require 'calfw))
@@ -14,9 +15,6 @@
 (declare-function cfw:refresh-calendar-buffer "calfw")
 
 (declare-function calfw-toggle-frame-alist load-file-name t t)
-
-(custom-set-variables
- '(x-frame-normalize-before-maximize t))
 
 (defcustom calfw-contents-sources nil "Contents sources to be used by `calfw'."
   :type '(repeat sexp)
@@ -69,7 +67,7 @@ If non-nil, override slot by this value."
               (setq show-trailing-whitespace nil)))
 
   (defun calfw-toggle-frame-alist (&optional n)
-    "Toggle frame maximized and refresh calfw buffer."
+    "Toggle frame alist."
     (interactive "p")
     (if calfw-frame-alists
         (let* ((parameters (frame-parameters))

@@ -10,6 +10,13 @@
 (lazy-autoload 'seq-contains-p "seq")
 
 
+;;; settings
+
+(custom-set-variables
+ '(x-frame-normalize-before-maximize t))
+
+
+
 ;;; redirect event
 
 (defcustom keeping-time-for-frame-focus-redirection-on-make-frame 0.3
