@@ -450,6 +450,23 @@
 
 
 
+   ;; Eshell
+   `(eshell-prompt (,@(yester-whole-face-spec class :foreground purple)))
+   `(eshell-ls-archive ((,class :slant italic)))
+   `(eshell-ls-backup ((,class :inherit shadow)))
+   `(eshell-ls-clutter
+     (,@(yester-whole-face-spec class :slant 'italic :foreground orange)))
+   `(eshell-ls-directory ((,class :inherit dired-directory)))
+   `(eshell-ls-executable (,@(yester-whole-face-spec class :foreground green)))
+   `(eshell-ls-missing (,@(yester-whole-face-spec class :foreground red)))
+   `(eshell-ls-product (,@(yester-whole-face-spec class :foreground orange)))
+   `(eshell-ls-readonly ((,class :weight bold)))
+   `(eshell-ls-special ((,class :inherit dired-special)))
+   `(eshell-ls-symlink ((,class :inherit dired-symlink)))
+   `(eshell-ls-unreadable ((,class :weight bold :inherit shadow)))
+
+
+
    ;; Eww
    `(eww-invalid-certificate ((,class :inherit error)))
    `(eww-valid-certificate ((,class :inherit success)))
