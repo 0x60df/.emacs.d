@@ -470,6 +470,24 @@
    ;; Eww
    `(eww-invalid-certificate ((,class :inherit error)))
    `(eww-valid-certificate ((,class :inherit success)))
+   `(eww-form-checkbox (,@(yester-whole-face-spec class
+                            :foreground foreground
+                            :background current-line
+                            :box selection)))
+   `(eww-form-file (,@(yester-whole-face-spec class
+                        :foreground foreground
+                        :background current-line
+                        :box selection)))
+   `(eww-form-select (,@(yester-whole-face-spec class
+                          :foreground foreground
+                          :background current-line
+                          :box selection)))
+   `(eww-form-submit (,@(yester-whole-face-spec class
+                          :foreground foreground
+                          :background current-line
+                          :box selection)))
+   `(eww-form-text (,@(yester-whole-face-spec class :background selection)))
+   `(eww-form-textarea (,@(yester-whole-face-spec class :background selection)))
 
 
 
