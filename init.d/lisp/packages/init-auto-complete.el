@@ -155,9 +155,12 @@ inline candidate is completed."
   "`ac-complete' without `ac-fallback-command'."
   (interactive)
 
-  (prog2
-      (advice-add 'ac-fallback-command :override #'ignore)
+  (if (and (stringp ac-prefix)
+           (stringp ac-latest-prefix)
+           (equal ac-prefix ac-latest-prefix))
       (call-interactively #'ac-complete)
+    (advice-add 'ac-fallback-command :override #'ignore)
+    (call-interactively #'ac-complete)
     (advice-remove 'ac-fallback-command #'ignore)))
 
 
