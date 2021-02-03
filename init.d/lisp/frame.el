@@ -160,6 +160,13 @@ Otherwise, set 100."
       (modify-all-frames-parameters '((alpha . 0)))
     (modify-all-frames-parameters '((alpha . 100)))))
 
+(defvar default-frame-size `(,(frame-width) . ,(frame-height))
+  "Defaul value of frame width and height.")
+
+(add-hook 'after-make-terminal-functions
+          (lambda (terminal)
+            (setq default-frame-size `(,(frame-width) . ,(frame-height)))))
+
 (defcustom monitor-margin-alist nil
   "Monitor margin list.
 This looks like '(pattern . (left top righ bottom)).
@@ -396,6 +403,11 @@ side of the monitor. Otherwise, margin is regarded as 0."
                               (format "Step[%d]: " factor)
                               nil nil t nil (number-to-string factor))))
                    (if (integerp read) (setq factor read))))
+                ((equal key-description ";")
+                 (modify-frame-parameters
+                  frame
+                  `((width . ,(car default-frame-size))
+                    (height . ,(cdr default-frame-size)))))
                 ((or (equal key-description "q")
                      (equal key-description "RET")
                      (equal key-description "C-j"))
