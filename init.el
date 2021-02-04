@@ -240,6 +240,7 @@ UNIT is a literal symbol."
 (init-feature scheme)
 (init-feature cmuscheme)
 (init-feature python)
+(init-feature auth-source)
 
 
 
