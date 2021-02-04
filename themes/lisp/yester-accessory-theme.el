@@ -115,6 +115,9 @@
 
  ;; Calfw
  `(calfw-org-source-period-bgcolor ,(yester-whole-symbol-exp background))
- `(calfw-org-source-period-fgcolor ,(yester-whole-symbol-exp foreground)))
+ `(calfw-org-source-period-fgcolor ,(yester-whole-symbol-exp foreground))
+
+ ;; Gnus
+ `(gnus-mode-line-image-color ,(yester-whole-symbol-exp purple)))
 
 (provide-theme 'yester-accessory)
