@@ -1298,6 +1298,123 @@
 
 
 
+   ;; Gnus
+   `(gnus-splash (,@(yester-whole-face-spec class :foreground selection)))
+   `(gnus-button ((,class :underline t)))
+   `(gnus-header-content
+     (,@(yester-whole-face-spec class :slant 'italic :foreground comment)))
+   `(gnus-header-from (,@(yester-whole-face-spec class :foreground aqua)))
+   `(gnus-header-name (,@(yester-whole-face-spec class :foreground comment)))
+   `(gnus-header-newsgroups
+     (,@(yester-whole-face-spec class :slant 'italic :foreground comment)))
+   `(gnus-header-subject
+     (,@(yester-whole-face-spec class :weight 'bold :foreground purple)))
+   `(gnus-signature ((,class :slant italic)))
+   `(gnus-emphasis-highlight-words
+     (,@(yester-whole-face-spec class :foreground yellow)))
+   `(gnus-group-mail-1
+     (,@(yester-whole-face-spec class :weight 'bold :foreground aqua)))
+   `(gnus-group-mail-1-empty
+     ((,class :slant italic :inherit gnus-group-mail-1)))
+   `(gnus-group-mail-2
+     (,@(yester-whole-face-spec class :foreground aqua)))
+   `(gnus-group-mail-2-empty
+     ((,class :slant italic :inherit gnus-group-mail-2)))
+   `(gnus-group-mail-3 ((,class)))
+   `(gnus-group-mail-3-empty
+     ((,class :slant italic :inherit gnus-group-mail-3)))
+   `(gnus-group-mail-low (,@(yester-whole-face-spec class :foreground comment)))
+   `(gnus-group-mail-low-empty
+     ((,class :slant italic :inherit gnus-group-mail-low)))
+   `(gnus-group-news-1
+     (,@(yester-whole-face-spec class :weight 'bold :foreground aqua)))
+   `(gnus-group-news-1-empty
+     ((,class :slant italic :inherit gnus-group-news-1)))
+   `(gnus-group-news-2 (,@(yester-whole-face-spec class :foreground aqua)))
+   `(gnus-group-news-2-empty
+     ((,class :slant italic :inherit gnus-group-news-2)))
+   `(gnus-group-news-3 ((,class)))
+   `(gnus-group-news-3-empty
+     ((,class :slant italic :inherit gnus-group-news-3)))
+   `(gnus-group-news-4 ((,class)))
+   `(gnus-group-news-4-empty
+     ((,class :slant italic :inherit gnus-group-news-4)))
+   `(gnus-group-news-5 ((,class)))
+   `(gnus-group-news-5-empty
+     ((,class :slant italic :inherit gnus-group-news-5)))
+   `(gnus-group-news-6 (,@(yester-whole-face-spec class :foreground comment)))
+   `(gnus-group-news-6-empty
+     ((,class :slant italic :inherit gnus-group-news-6)))
+   `(gnus-group-news-low (,@(yester-whole-face-spec class :foreground comment)))
+   `(gnus-group-news-low-empty
+     ((,class :slant italic :inherit gnus-group-news-low)))
+   `(gnus-summary-selected
+     (,@(yester-whole-face-spec class :background selection)))
+   `(gnus-summary-normal-ancient
+     (,@(yester-whole-face-spec class :foreground blue)))
+   `(gnus-summary-normal-read
+     (,@(yester-whole-face-spec class :foreground green)))
+   `(gnus-summary-normal-ticked
+     (,@(yester-whole-face-spec class :foreground orange)))
+   `(gnus-summary-normal-undownloaded
+     (,@(yester-whole-face-spec class :foreground comment)))
+   `(gnus-summary-cancelled
+     (,@(yester-whole-face-spec class :foreground yellow)))
+   `(gnus-server-denied
+     (,@(yester-whole-face-spec class :weight 'bold :foreground red)))
+   `(gnus-server-offline
+     (,@(yester-whole-face-spec class :weight 'bold :foreground orange)))
+   `(gnus-server-opened
+     (,@(yester-whole-face-spec class :weight 'bold :foreground green)))
+   `(gnus-server-closed
+     (,@(yester-whole-face-spec class :foreground comment)))
+   `(gnus-server-agent
+     (,@(yester-whole-face-spec class :weight 'bold :foreground blue)))
+   `(gnus-server-cloud
+     (,@(yester-whole-face-spec class :weight 'bold :foreground aqua)))
+   `(gnus-server-cloud-host (,@(yester-whole-face-spec class
+                                 :weight 'bold
+                                 :foreground aqua
+                                 :inverse-video t)))
+   `(gnus-cite-1 (,@(yester-whole-face-spec class :foreground purple)))
+   `(gnus-cite-2 (,@(yester-whole-face-spec class :foreground blue)))
+   `(gnus-cite-3 (,@(yester-whole-face-spec class :foreground aqua)))
+   `(gnus-cite-4 (,@(yester-whole-face-spec class :foreground green)))
+   `(gnus-cite-5 (,@(yester-whole-face-spec class :foreground yellow)))
+   `(gnus-cite-6 (,@(yester-whole-face-spec class :foreground orange)))
+   `(gnus-cite-7 (,@(yester-whole-face-spec class :foreground red)))
+   `(gnus-cite-8 (,@(yester-whole-face-spec class :foreground comment)))
+   `(gnus-cite-9 (,@(yester-whole-face-spec class :foreground comment)))
+   `(gnus-cite-10 (,@(yester-whole-face-spec class :foreground comment)))
+   `(gnus-cite-11 (,@(yester-whole-face-spec class :foreground comment)))
+   ;; Message
+   `(message-cited-text-1 (,@(yester-whole-face-spec class :foreground purple)))
+   `(message-cited-text-2 (,@(yester-whole-face-spec class :foreground blue)))
+   `(message-cited-text-3 (,@(yester-whole-face-spec class :foreground aqua)))
+   `(message-cited-text-4 (,@(yester-whole-face-spec class :foreground green)))
+   `(message-header-cc
+     (,@(yester-whole-face-spec class :slant 'italic :foreground aqua)))
+   `(message-header-name (,@(yester-whole-face-spec class :foreground comment)))
+   `(message-header-newsgroups
+     (,@(yester-whole-face-spec class :foreground blue)))
+   `(message-header-other
+     (,@(yester-whole-face-spec class :slant 'italic :foreground comment)))
+   `(message-header-subject
+     (,@(yester-whole-face-spec class :weight 'bold :foreground purple)))
+   `(message-header-to (,@(yester-whole-face-spec class :foreground aqua)))
+   `(message-header-xheader
+     (,@(yester-whole-face-spec class :foreground green)))
+   `(message-mml (,@(yester-whole-face-spec class :foreground yellow)))
+   `(message-separator
+     (,@(yester-whole-face-spec class :slant 'italic :foreground comment)))
+   ;; Mm-decode
+   `(mm-command-output (,@(yester-whole-face-spec class :foreground green)))
+   ;; Mm-uu
+   `(mm-uu-extract
+     (,@(yester-whole-face-spec class :foreground green :inverse-video t)))
+
+
+
    ;; Skk
    `(skk-henkan-face-default
      (,@(yester-whole-face-spec class :foreground background :background aqua)))
@@ -1351,6 +1468,11 @@
  `(cfw:face-item-separator-color ,(yester-whole-symbol-exp selection))
  `(cfw:org-face-agenda-item-foreground-color
    ,(yester-whole-symbol-exp foreground))
+
+
+
+ ;; Gnus
+ `(gnus-logo-colors ,(yester-whole-symbol-exp (list selection current-line)))
 
 
 
