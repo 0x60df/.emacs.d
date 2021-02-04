@@ -313,6 +313,7 @@ UNIT is a literal symbol."
 (init-package calfw)
 (init-package smartrep)
 (init-package page-break-lines)
+(init-package pinentry)
 (init-package tomorrow-theme)
 (init-package yester-theme)
 (init-package color-theme-solarized)
