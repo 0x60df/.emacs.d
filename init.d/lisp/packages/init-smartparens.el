@@ -33,9 +33,10 @@
     ("P" . sp-show-enclosing-pair-dwim-reverse)
     ("(" . sp-show-enclosing-pair-jump-backward)
     (")" . sp-show-enclosing-pair-jump-forward)
-    ([?\C-b] . sp-show-enclosing-pair-jump-backward)
-    ([?\C-f] . sp-show-enclosing-pair-jump-forward)
-    ("m" . sp-show-set-region)))
+    ("b" . sp-show-enclosing-pair-jump-backward)
+    ("f" . sp-show-enclosing-pair-jump-forward)
+    ("@" . sp-show-set-region)
+    ([?\s] . sp-show-set-region)))
 
 (defun sp-show-enclosing-pair-dwim (&optional arg)
   "`sp-show-enclosing-pair' with auto upgrading the level."
