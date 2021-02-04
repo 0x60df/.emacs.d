@@ -241,6 +241,7 @@ UNIT is a literal symbol."
 (init-feature cmuscheme)
 (init-feature python)
 (init-feature auth-source)
+(init-feature gnus)
 
 
 
