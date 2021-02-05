@@ -27,7 +27,7 @@
             :before #'org-hide-trailing-whitespace-for-export-dispatcher)
 
 (with-eval-after-load 'org-indent
-  (setcar (cdr (assq 'org-indent-mode minor-mode-alist)) " ind"))
+  (modify-minor-mode-lighter 'org-indent-mode " ind"))
 
 (defun enhance-org-capture-header-line-format (&rest args)
   "Advising `org-capture-mode' to make `header-line-format' enhanced.

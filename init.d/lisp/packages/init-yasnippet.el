@@ -32,7 +32,7 @@
 (with-eval-after-load 'yasnippet
   (yas-reload-all)
 
-  (setcar (cdr (assq 'yas-minor-mode minor-mode-alist)) " YS")
+  (modify-minor-mode-lighter 'yas-minor-mode " YS")
 
   (defun yas--find-next-field-boundary-guard
       (yas--find-next-field n snippet active &rest args)

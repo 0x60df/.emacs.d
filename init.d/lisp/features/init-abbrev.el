@@ -13,7 +13,7 @@
 (push '(abbrev-mode . 43) mode-line-minor-mode-priority-alist)
 
 (with-eval-after-load 'abbrev
-  (setcar (cdr (assq 'abbrev-mode minor-mode-alist)) " Abrv")
+  (modify-minor-mode-lighter 'abbrev-mode " Abrv")
 
   (if (file-readable-p abbrev-file-name) (quietly-read-abbrev-file)))
 

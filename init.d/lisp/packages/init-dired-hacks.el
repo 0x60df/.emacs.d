@@ -3,12 +3,13 @@
 
 
 (premise init)
+(premise mode-line)
 (premise inst-dired-hacks)
 
 (declare-function dired-subtree-overlays-put-priority t t)
 
 (with-eval-after-load 'dired-filter
-  (setcdr (assq 'dired-filter-mode minor-mode-alist) '("")))
+  (modify-minor-mode-lighter 'dired-filter-mode ""))
 
 (with-eval-after-load 'dired-subtree
   (defun dired-subtree-overlays-put-priority (symbol newval operation where)

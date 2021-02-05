@@ -131,14 +131,14 @@
               :after #'gnus-agent-shrink-mode-line-string))
 
 (with-eval-after-load 'gnus-topic
-  (setcar (cdr (assq 'gnus-topic-mode minor-mode-alist)) " tpc"))
+  (modify-minor-mode-lighter 'gnus-topic-mode " tpc"))
 
 (with-eval-after-load 'gnus-sum
-  (setcar (cdr (assq 'gnus-dead-summary-mode minor-mode-alist))
-          (propertize " dead" 'face 'mode-line-warning)))
+  (modify-minor-mode-lighter
+   'gnus-dead-summary-mode (propertize " dead" 'face 'mode-line-warning)))
 
 (with-eval-after-load 'gnus-ml
-  (setcar (cdr (assq 'gnus-mailing-list-mode minor-mode-alist)) " m-l"))
+  (modify-minor-mode-lighter 'gnus-mailing-list-mode " m-l"))
 
 
 

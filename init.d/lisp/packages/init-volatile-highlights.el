@@ -4,10 +4,11 @@
 
 (premise init)
 (premise subr)
+(premise mode-line)
 (premise inst-volatile-highlights)
 
 (with-eval-after-load 'volatile-highlights
-  (setcdr (assq 'volatile-highlights-mode minor-mode-alist) '("")))
+  (modify-minor-mode-lighter 'volatile-highlights-mode ""))
 
 (defcustom vhl/commands-requring-volatilizing-active-mark
   '(undo)

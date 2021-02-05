@@ -34,8 +34,8 @@
 
 (push '(robe-mode . 2) mode-line-minor-mode-priority-alist)
 (with-eval-after-load 'robe
-  (setcdr (assq 'robe-mode minor-mode-alist)
-          '((" ro" (:eval (if (robe-running-p) "+" "-"))))))
+  (modify-minor-mode-lighter
+   'robe-mode '((" ro" (:eval (if (robe-running-p) "+" "-"))))))
 
 (defun robe-boot ()
   "Setup robe and start."

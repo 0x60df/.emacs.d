@@ -36,7 +36,7 @@
                                (reftex-mode))))
 
 (with-eval-after-load 'reftex
-  (setcar (cdr (assq 'reftex-mode minor-mode-alist)) " ref"))
+  (modify-minor-mode-lighter 'reftex-mode " ref"))
 
 
 (resolve init-yatex)
