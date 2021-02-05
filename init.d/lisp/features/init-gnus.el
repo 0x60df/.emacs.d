@@ -6,6 +6,7 @@
 (premise custom)
 (premise frame)
 (premise mode-line)
+(premise font)
 (premise init-auth-source)
 (premise init-flyspell)
 
@@ -27,7 +28,6 @@
 
 (declare-function gnus-update-mode-line-image-cache load-file-name t t)
 (declare-function gnus-update-mode-lines load-file-name t t)
-(declare-function gnus-toggle-fontset load-file-name t t)
 (declare-function gnus-agent-store-mode load-file-name t t)
 (declare-function gnus-agent-shrink-mode-line-string load-file-name t t)
 
@@ -209,46 +209,23 @@ This can also work as after advice."
 
 
 
-;;; utilities
-
-(defcustom gnus-fontset-list nil "List of fontset for `gnus' frame."
-  :type '(repeat string)
-  :group 'user)
-
-(with-eval-after-load 'gnus
-  (defun gnus-toggle-fontset (&optional n)
-    "Toggle frame fontset."
-    (interactive "p")
-    (if gnus-fontset-list
-        (let* ((fontset (frame-parameter nil 'font-parameter))
-               (rest (seq-drop-while
-                      (lambda (f) (not (equal f fontset)))
-                      gnus-fontset-list))
-               (length (length gnus-fontset-list))
-               (offset (- length (length rest))))
-          (set-frame-parameter
-           nil 'font
-           (nth (if rest (% (+ n offset) length) 1) gnus-fontset-list))))))
-
-
-
 ;;; bindings
 
 (with-eval-after-load 'gnus-group
   (define-key gnus-group-mode-map ";" #'switch-frame-alist)
   (define-key gnus-group-mode-map "+" #'switch-frame-alist-reverse)
-  (define-key gnus-group-mode-map "\\" #'gnus-toggle-fontset))
+  (define-key gnus-group-mode-map "\\" #'switch-frame-fontset))
 
 (with-eval-after-load 'gnus-sum
   (define-key gnus-summary-mode-map ":" #'gnus-summary-expand-window)
   (define-key gnus-summary-mode-map ";" #'switch-frame-alist)
   (define-key gnus-summary-mode-map "+" #'switch-frame-alist-reverse)
-  (define-key gnus-summary-mode-map "\\" #'gnus-toggle-fontset))
+  (define-key gnus-summary-mode-map "\\" #'switch-frame-fontset))
 
 (with-eval-after-load 'gnus-art
   (define-key gnus-article-mode-map ";" #'switch-frame-alist)
   (define-key gnus-article-mode-map "+" #'switch-frame-alist-reverse)
-  (define-key gnus-article-mode-map "\\" #'gnus-toggle-fontset))
+  (define-key gnus-article-mode-map "\\" #'switch-frame-fontset))
 
 (with-eval-after-load 'gnus-srvr
   (define-key gnus-server-mode-map ";" #'switch-frame-alist)
