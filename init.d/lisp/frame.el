@@ -821,5 +821,38 @@ and raise frame with prefix arguments."
                       (set-frame-parameter frame 'alpha (or alpha 100)))))
               frame-alpha-alist)))))
 
+(defvar switch-frame-alists nil "List of frame alist for switching.")
+(make-variable-buffer-local 'switch-frame-alists)
+
+(defun switch-frame-alist (&optional n)
+  "Switch frame alist among `switch-frame-alists'."
+  (interactive "p")
+  (if switch-frame-alists
+      (let* ((parameters (frame-parameters))
+             (rest (seq-drop-while
+                    (lambda (alist)
+                      (not (seq-every-p
+                            (lambda (key-value)
+                              (equal (cdr
+                                      (assq
+                                       (let ((key (car key-value)))
+                                         (cond ((eq key 'font) 'font-parameter)
+                                               (t key)))
+                                       parameters))
+                                     (cdr key-value)))
+                            alist)))
+                    switch-frame-alists))
+             (length (length switch-frame-alists))
+             (offset (- length (length rest))))
+        (modify-frame-parameters
+         nil
+         (nth (if rest (% (+ (% (+ n offset) length) length) length) 1)
+              switch-frame-alists)))))
+
+(defun switch-frame-alist-reverse (&optional n)
+  "`switch-frame-alist' by reverse direction."
+    (interactive "p")
+    (switch-frame-alist (- n)))
+
 
 (resolve frame)

@@ -14,8 +14,6 @@
 (declare-function cfw:open-calendar-buffer "calfw")
 (declare-function cfw:refresh-calendar-buffer "calfw")
 
-(declare-function calfw-toggle-frame-alist load-file-name t t)
-
 (defcustom calfw-contents-sources nil "Contents sources to be used by `calfw'."
   :type '(repeat sexp)
   :group 'user)
@@ -66,30 +64,7 @@ If non-nil, override slot by this value."
             (lambda ()
               (setq show-trailing-whitespace nil)))
 
-  (defun calfw-toggle-frame-alist (&optional n)
-    "Toggle frame alist."
-    (interactive "p")
-    (if calfw-frame-alists
-        (let* ((parameters (frame-parameters))
-               (rest (seq-drop-while
-                      (lambda (alist)
-                        (not (seq-every-p
-                              (lambda (key-value)
-                                (equal (cdr (assq (let ((key (car key-value)))
-                                                    (if (eq key 'font)
-                                                        'font-parameter
-                                                      key))
-                                                  parameters))
-                                       (cdr key-value)))
-                              alist)))
-                      calfw-frame-alists))
-               (length (length calfw-frame-alists))
-               (offset (- length (length rest))))
-          (modify-frame-parameters
-           nil
-           (nth (if rest (% (+ n offset) length) 1) calfw-frame-alists)))))
-
-  (define-key cfw:calendar-mode-map ";" #'calfw-toggle-frame-alist)
+  (define-key cfw:calendar-mode-map ";" #'switch-frame-alist)
 
   (when (init-unit-p bindings)
     (define-key cfw:calendar-mode-map (kbd "<home>") nil)

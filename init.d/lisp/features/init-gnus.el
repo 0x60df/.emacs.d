@@ -27,8 +27,6 @@
 
 (declare-function gnus-update-mode-line-image-cache load-file-name t t)
 (declare-function gnus-update-mode-lines load-file-name t t)
-(declare-function gnus-toggle-frame-alist load-file-name t t)
-(declare-function gnus-toggle-frame-alist-reverse load-file-name t t)
 (declare-function gnus-toggle-fontset load-file-name t t)
 (declare-function gnus-agent-store-mode load-file-name t t)
 (declare-function gnus-agent-shrink-mode-line-string load-file-name t t)
@@ -213,43 +211,11 @@ This can also work as after advice."
 
 ;;; utilities
 
-(defcustom gnus-frame-alists nil "List of frame alist for `gnus' frame."
-  :type '(repeat (alist :key-type 'symbol :value-type 'sexp))
-  :group 'user)
-
 (defcustom gnus-fontset-list nil "List of fontset for `gnus' frame."
   :type '(repeat string)
   :group 'user)
 
 (with-eval-after-load 'gnus
-  (defun gnus-toggle-frame-alist (&optional n)
-    "Toggle frame alist."
-    (interactive "p")
-    (if gnus-frame-alists
-        (let* ((parameters (frame-parameters))
-               (rest (seq-drop-while
-                      (lambda (alist)
-                        (not (seq-every-p
-                              (lambda (key-value)
-                                (equal (cdr (assq (let ((key (car key-value)))
-                                                    (if (eq key 'font)
-                                                        'font-parameter
-                                                      key))
-                                                  parameters))
-                                       (cdr key-value)))
-                              alist)))
-                      gnus-frame-alists))
-               (length (length gnus-frame-alists))
-               (offset (- length (length rest))))
-          (modify-frame-parameters
-           nil
-           (nth (if rest (% (+ n offset) length) 1) gnus-frame-alists)))))
-
-  (defun gnus-toggle-frame-alist-reverse (&optional n)
-    "Toggle frame alist reverse direction."
-    (interactive "p")
-    (gnus-toggle-frame-alist (- n)))
-
   (defun gnus-toggle-fontset (&optional n)
     "Toggle frame fontset."
     (interactive "p")
@@ -269,24 +235,24 @@ This can also work as after advice."
 ;;; bindings
 
 (with-eval-after-load 'gnus-group
-  (define-key gnus-group-mode-map ";" #'gnus-toggle-frame-alist)
-  (define-key gnus-group-mode-map "+" #'gnus-toggle-frame-alist-reverse)
+  (define-key gnus-group-mode-map ";" #'switch-frame-alist)
+  (define-key gnus-group-mode-map "+" #'switch-frame-alist-reverse)
   (define-key gnus-group-mode-map "\\" #'gnus-toggle-fontset))
 
 (with-eval-after-load 'gnus-sum
   (define-key gnus-summary-mode-map ":" #'gnus-summary-expand-window)
-  (define-key gnus-summary-mode-map ";" #'gnus-toggle-frame-alist)
-  (define-key gnus-summary-mode-map "+" #'gnus-toggle-frame-alist-reverse)
+  (define-key gnus-summary-mode-map ";" #'switch-frame-alist)
+  (define-key gnus-summary-mode-map "+" #'switch-frame-alist-reverse)
   (define-key gnus-summary-mode-map "\\" #'gnus-toggle-fontset))
 
 (with-eval-after-load 'gnus-art
-  (define-key gnus-article-mode-map ";" #'gnus-toggle-frame-alist)
-  (define-key gnus-article-mode-map "+" #'gnus-toggle-frame-alist-reverse)
+  (define-key gnus-article-mode-map ";" #'switch-frame-alist)
+  (define-key gnus-article-mode-map "+" #'switch-frame-alist-reverse)
   (define-key gnus-article-mode-map "\\" #'gnus-toggle-fontset))
 
 (with-eval-after-load 'gnus-srvr
-  (define-key gnus-server-mode-map ";" #'gnus-toggle-frame-alist)
-  (define-key gnus-server-mode-map "+" #'gnus-toggle-frame-alist-reverse))
+  (define-key gnus-server-mode-map ";" #'switch-frame-alist)
+  (define-key gnus-server-mode-map "+" #'switch-frame-alist-reverse))
 
 
 (resolve init-gnus)
