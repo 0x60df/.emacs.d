@@ -200,9 +200,9 @@ UNIT is a literal symbol."
 
 
 
-;;; site-init
+;;; site-early-init
 
-(init-by (concat user-emacs-directory "site-init.el") 'noerror)
+(init-by (concat user-emacs-directory "site-early-init.el") 'noerror)
 
 
 
@@ -323,6 +323,6 @@ UNIT is a literal symbol."
 
 
 
-;;; site-start
+;;; site-init
 
-(init-by (concat user-emacs-directory "site-start.el") 'noerror)
+(init-by (concat user-emacs-directory "site-init.el") 'noerror)
