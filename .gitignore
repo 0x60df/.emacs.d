@@ -8,6 +8,7 @@
 !/backup/
 !/ddskk/
 !/ddskk/init
+!/early-init.el
 !/el-get-user/
 !/el-get-user/recipes/
 !/el-get-user/recipes/*
