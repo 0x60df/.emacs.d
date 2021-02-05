@@ -50,7 +50,13 @@
  '(skk-sticky-key (kbd "<henkan>"))
  '(skk-kakutei-key (kbd "<muhenkan>"))
  '(skk-status-indicator 'minor-mode)
- '(skk-compare-jisyo-size-when-saving nil))
+ '(skk-compare-jisyo-size-when-saving nil)
+ '(skk-latin-mode-string (propertize "SKK" 'face 'mode-line-emphasis))
+ '(skk-hiragana-mode-string (propertize "かな" 'face 'mode-line-emphasis))
+ '(skk-katakana-mode-string (propertize "カナ" 'face 'mode-line-emphasis))
+ '(skk-jisx0208-latin-mode-string (propertize "全英" 'face 'mode-line-emphasis))
+ '(skk-abbrev-mode-string (propertize "aあ" 'face 'mode-line-emphasis))
+ '(skk-jisx0201-mode-string (propertize "ｶﾀｶﾅ" 'face 'mode-line-emphasis)))
 
 
 
