@@ -10,7 +10,7 @@
  '(abbrev-file-name (concat user-emacs-directory "abbrev_defs"))
  '(save-abbrevs 'silently))
 
-(push '(abbrev-mode . 43) mode-line-minor-mode-priority-alist)
+(push '(abbrev-mode . 41) mode-line-minor-mode-priority-alist)
 
 (with-eval-after-load 'abbrev
   (modify-minor-mode-lighter 'abbrev-mode " Abrv")

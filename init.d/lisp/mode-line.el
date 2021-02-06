@@ -209,6 +209,8 @@ Each element looks like (mode-variable . priority)
   :type '(repeat sexp)
   :group 'user)
 
+(push '(auto-fill-function . 40) mode-line-minor-mode-priority-alist)
+
 (defun mode-line-sort-alist (alist-by-symbol priority-alist)
   "Return sorted ALIST-BY-SYMBOL according to PRIORITY-ALIST.
 
