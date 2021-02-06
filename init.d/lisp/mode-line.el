@@ -122,10 +122,11 @@ When non-nil, `mode-line-buffer-identification' is shrinked.")
                    (let* ((text (format-mode-line ,format))
                           (canonicalized
                            (replace-regexp-in-string
-                            "%" "%%" (substring text 0 ,max-width))))
+                            "%" "%%"
+                            (truncate-string-to-width text ,max-width))))
                      (propertize
                       canonicalized
-                      'face (if (< ,max-width (length text))
+                      'face (if (< ,max-width (string-width text))
                                 '(mode-line-buffer-id
                                   mode-line-transform)
                               'mode-line-buffer-id))))
@@ -181,13 +182,14 @@ When non-nil, `'mode-line-modes is shrinked.")
                    (canonicalized
                     (replace-regexp-in-string
                      "%" "%%"
-                     (if (< ,max-width (length text))
-                         (substring text 0
-                                    (if (= (aref text (- ,max-width 1)) 32)
-                                        (- ,max-width 1)
-                                      ,max-width))
+                     (if (< ,max-width (string-width text))
+                         (let ((truncated (truncate-string-to-width
+                                           text ,max-width)))
+                           (if (string-suffix-p " " truncated)
+                               (substring truncated 0 (- (length truncated) 1))
+                             truncated))
                        text))))
-              (if (< ,max-width (length text))
+              (if (< ,max-width (string-width text))
                   (propertize canonicalized 'face 'mode-line-transform)
                 canonicalized)))
            minor-mode-alist)
@@ -242,15 +244,15 @@ They also compared by `symbol-name'."
             (setq minor-mode-alist (mode-line-sort-alist
                                     (copy-tree minor-mode-alist)
                                     mode-line-minor-mode-priority-alist))
-          (add-variable-watcher
-           'minor-mode-alist
-           (lambda (symbol newval operation where)
-             (when (consp newval)
-               (let ((sorted (mode-line-sort-alist
-                              (copy-tree newval)
-                              mode-line-minor-mode-priority-alist)))
-                 (setcar newval (car sorted))
-                 (setcdr newval (cdr sorted))))))))
+            (add-variable-watcher
+             'minor-mode-alist
+             (lambda (symbol newval operation where)
+               (when (consp newval)
+                 (let ((sorted (mode-line-sort-alist
+                                (copy-tree newval)
+                                mode-line-minor-mode-priority-alist)))
+                   (setcar newval (car sorted))
+                   (setcdr newval (cdr sorted))))))))
 
 (custom-set-variables
  '(which-func-format
@@ -361,20 +363,21 @@ Constructed form wrap FORM by :eval form which truncate
 mode-line string by window-width."
   `(:eval
     (let* ((text (format-mode-line ',form))
-           (text-width (length text))
+           (text-width (string-width text))
            (max-width (+ (window-body-width) 1))
            (shrinked
             (if (< max-width text-width)
-                (let* ((subtext (substring text 0 max-width))
+                (let* ((subtext (truncate-string-to-width text max-width))
+                       (length (length subtext))
                        (r-subtext (string-reverse subtext))
                        (last-non-space
-                        (- max-width 1 (string-match "[^ ]" r-subtext)))
+                        (- length 1 (string-match "[^ ]" r-subtext)))
                        (last-element-end
                         (mode-line--next-boundary
-                         last-non-space subtext max-width))
+                         last-non-space subtext length))
                        (original-last-element-end
                         (mode-line--next-boundary
-                         last-non-space text text-width)))
+                         last-non-space text (length text))))
                   (if (and (< last-element-end original-last-element-end)
                            (string-match
                             "[^ ]"
@@ -387,7 +390,7 @@ mode-line string by window-width."
                             (property (get-text-property
                                        last-non-space 'face subtext)))
                         (add-face-text-property
-                         last-element-start max-width 'mode-line-transform
+                         last-element-start length 'mode-line-transform
                          nil subtext)))
                   subtext)
               text)))
