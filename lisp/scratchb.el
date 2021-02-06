@@ -65,10 +65,14 @@
                               "/"
                               (format-time-string "%Y%m%d%H%M%S.el"
                                                   (current-time))))))
-    (mapc #'delete-file (nthcdr scratchb-snapshot-limit
-                                (reverse (sort (file-expand-wildcards
-                                                "~/.emacs.d/scratchb/*.el")
-                                               #'string<))))))
+    (mapc (lambda (file)
+            (if (and (stringp file)
+                     (file-exists-p file))
+                (delete-file file)))
+          (nthcdr scratchb-snapshot-limit
+                  (reverse (sort (file-expand-wildcards
+                                  "~/.emacs.d/scratchb/*.el")
+                                 #'string<))))))
 
 (defun scratchb--snapshot-when-scratchb ()
   "Snapshot scratchb when current-frame is *scratch* buffer."
