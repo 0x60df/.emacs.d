@@ -4,6 +4,7 @@
 
 (premise init)
 (premise custom)
+(premise mode-line)
 (premise bindings)
 (premise init-ediff)
 (premise inst-magit)
@@ -24,7 +25,10 @@
   :group 'user)
 
 (custom-set-variables
- '(transient-highlight-mismatched-keys t))
+ '(transient-highlight-mismatched-keys t)
+ '(with-editor-mode-lighter " WtE"))
+
+(push '(with-editor-mode . 33) mode-line-minor-mode-priority-alist)
 
 (with-eval-after-load 'magit-blame
   (let ((margin-style (cdr (assq 'margin magit-blame-styles))))
