@@ -4,6 +4,14 @@
 
 (require 'skk-hint)
 
+(with-eval-after-load 'skk-vars
+  (setq skk-inline-show-vertically-decor
+      #'skk-inline-show-vertically-decor-func)
+  (setq skk-tooltip-show-at-point-decor
+      #'skk-tooltip-show-at-point-decor-func)
+  (setq skk-henkan-show-candidates-buffer-decor
+        #'skk-henkan-show-candidates-buffer-decor-func))
+
 (let ((site-init (locate-file "site-init" `(,skk-user-directory)))
       (elc (locate-file "site-init.elc" `(,skk-user-directory))))
   (when site-init

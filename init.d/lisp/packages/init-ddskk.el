@@ -35,7 +35,7 @@
 (custom-set-variables
  '(skk-isearch-mode-enable nil)
  '(skk-byte-compile-init-file t)
- '(skk-user-directory (concat user-emacs-directory "ddskk"))
+ '(skk-user-directory (concat user-emacs-directory "ddskk/"))
  '(skk-bayesian-history-file (expand-file-name "bayesian" skk-user-directory))
  '(skk-bayesian-corpus-file (expand-file-name "corpus" skk-user-directory))
  '(skk-init-file (expand-file-name "init" skk-user-directory))
@@ -56,7 +56,12 @@
  '(skk-katakana-mode-string (propertize "カナ" 'face 'mode-line-emphasis))
  '(skk-jisx0208-latin-mode-string (propertize "全英" 'face 'mode-line-emphasis))
  '(skk-abbrev-mode-string (propertize "aあ" 'face 'mode-line-emphasis))
- '(skk-jisx0201-mode-string (propertize "ｶﾀｶﾅ" 'face 'mode-line-emphasis)))
+ '(skk-jisx0201-mode-string (propertize "ｶﾀｶﾅ" 'face 'mode-line-emphasis))
+ '(skk-dcomp-activate t)
+ '(skk-show-annotation t)
+ '(skk-show-inline nil)
+ '(skk-inline-show-face nil)
+ '(skk-show-candidates-always-pop-to-buffer t))
 
 
 
