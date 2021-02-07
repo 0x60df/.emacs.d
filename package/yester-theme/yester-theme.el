@@ -1416,6 +1416,8 @@
 
 
    ;; Skk
+   `(skk-treat-default
+     (,@(yester-whole-face-spec class :foreground foreground)))
    `(skk-henkan-face-default
      (,@(yester-whole-face-spec class :foreground background :background aqua)))
    `(skk-prefix-hiragana-face
@@ -1424,6 +1426,55 @@
      (,@(yester-whole-face-spec class :foreground comment)))
    `(skk-prefix-katakana-face
      (,@(yester-whole-face-spec class :foreground aqua)))
+   `(skk-dcomp-face
+     (,@(yester-whole-face-spec class :foreground comment :underline t)))
+   `(skk-dcomp-multiple-face
+     (,@(yester-whole-face-spec class :foreground foreground)))
+   `(skk-dcomp-multiple-selected-face (,@(yester-whole-face-spec class
+                                           :foreground foreground
+                                           :background selection)))
+   `(skk-dcomp-multiple-trailing-face
+     (,@(yester-whole-face-spec class :foreground comment)))
+   `(skk-display-code-char-face
+     (,@(yester-whole-face-spec class :weight 'bold :foreground blue)))
+   `(skk-display-code-prompt-face
+     (,@(yester-whole-face-spec class :foreground aqua)))
+   `(skk-henkan-show-candidates-buffer-anno-face
+     (,@(yester-whole-face-spec class :foreground comment)))
+   `(skk-henkan-show-candidates-buffer-cand-face
+     (,@(yester-whole-face-spec class :foreground foreground)))
+   `(skk-henkan-show-candidates-keys-face
+     (,@(yester-whole-face-spec class :foreground aqua)))
+   `(skk-inline-show-vertically-anno-face
+     (,@(yester-whole-face-spec class :foreground comment)))
+   `(skk-inline-show-vertically-cand-face
+     (,@(yester-whole-face-spec class :foreground foreground)))
+   `(skk-tooltip-show-at-point-anno-face
+     (,@(yester-whole-face-spec class :foreground comment)))
+   `(skk-tooltip-show-at-point-cand-face
+     (,@(yester-whole-face-spec class :foreground foreground)))
+   `(skk-jisyo-registration-badge-face
+     (,@(yester-whole-face-spec class :foreground background :background blue)))
+   `(skk-list-chars-table-header-face
+     (,@(yester-whole-face-spec class :foreground comment)))
+   `(skk-show-mode-inline-face
+     (,@(yester-whole-face-spec class :background selection :box t)))
+   `(skk-tankan-radical-name-face
+     (,@(yester-whole-face-spec class :foreground comment)))
+   `(skk-verbose-intention-face
+     (,@(yester-whole-face-spec class :foreground comment)))
+   `(skk-verbose-kbd-face (,@(yester-whole-face-spec class :foreground aqua)))
+   `(skk-tut-do-it-face
+     (,@(yester-whole-face-spec class :foreground yellow)))
+   `(skk-tut-hint-face
+     (,@(yester-whole-face-spec class :foreground aqua)))
+   `(skk-tut-key-bind-face
+     (,@(yester-whole-face-spec class :foreground comment)))
+   `(skk-tut-question-face
+     (,@(yester-whole-face-spec class :foreground green)))
+   `(skk-tut-section-face (,@(yester-whole-face-spec class
+                               :foreground purple
+                               :inverse-video t)))
 
 
 
@@ -1483,7 +1534,10 @@
  `(skk-cursor-katakana-color ,(yester-whole-symbol-exp aqua))
  `(skk-cursor-hiragana-color ,(yester-whole-symbol-exp blue))
  `(skk-cursor-jisx0201-color ,(yester-whole-symbol-exp aqua))
- `(skk-cursor-latin-color ,(yester-whole-symbol-exp red)))
+ `(skk-cursor-latin-color ,(yester-whole-symbol-exp red))
+ `(skk-inline-show-background-color ,(yester-whole-symbol-exp current-line))
+ `(skk-inline-show-background-color-odd
+   ,(yester-whole-symbol-exp current-line)))
 
 (provide-theme 'yester)
 
