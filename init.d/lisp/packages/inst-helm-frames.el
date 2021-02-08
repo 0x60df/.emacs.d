@@ -3,6 +3,7 @@
 
 
 (premise init)
+(premise inst-helm)
 
 (let* ((name "helm-frames")
        (directory (concat user-emacs-directory "package/" name)))
