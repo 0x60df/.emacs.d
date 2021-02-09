@@ -12,6 +12,8 @@
 
 (define-key key-translation-map [?\C-h] [?\C-?])
 (define-key key-translation-map (kbd "ESC M-DEL") [?\C-h])
+(custom-set-variables
+ '(help-char ?\^z))
 
 (define-key key-translation-map (kbd "ESC M-S") #'event-apply-shift-modifier)
 (define-key key-translation-map (kbd "ESC M-a") #'event-apply-alt-modifier)
@@ -107,6 +109,7 @@ Keymap is determined by `overriding-map-for'"
 
 
 
+(overriding-set-key (kbd "C-z") #'help-command)
 (overriding-set-key (kbd "C-c h") #'help-command)
 (overriding-set-key (kbd "C->") #'next-error)
 (overriding-set-key (kbd "C-<") #'previous-error)
