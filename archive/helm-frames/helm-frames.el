@@ -2,6 +2,8 @@
 
 ;; Copyright (C) 2020 0x60DF
 
+;; Package-Requires: (helm)
+
 ;;; Commentary:
 
 ;; Helm interface for selecting frames.

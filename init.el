@@ -279,7 +279,6 @@ UNIT is a literal symbol."
 (init-package helm-swoop)
 (init-package helm-descbinds)
 (init-package helm-projectile)
-(init-package helm-frames)
 (init-package which-key)
 (init-package volatile-highlights)
 (init-package flycheck)
@@ -316,11 +315,19 @@ UNIT is a literal symbol."
 (init-package page-break-lines)
 (init-package pinentry)
 (init-package tomorrow-theme)
-(init-package yester-theme)
 (init-package color-theme-solarized)
 (init-package base16)
 (init-package ddskk)
 (init-package japanese-holidays)
+
+
+
+;;; user-packages
+
+(init user-package)
+
+(init-package helm-frames)
+(init-package yester-theme)
 
 
 
