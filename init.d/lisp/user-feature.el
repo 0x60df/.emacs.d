@@ -3,70 +3,87 @@
 
 
 (premise init)
+(premise files)
 
 (require 'seq)
 
-(mapc (lambda (e) (add-to-list 'load-path e))
-      (reverse
-       (letrec ((list-directories-recursively
-                 (lambda (l)
-                   (cond ((null l) l)
-                         ((file-directory-p (car l))
-                          (append
-                           (cons (car l)
-                                 (funcall
-                                  list-directories-recursively
-                                  (directory-files
-                                   (car l) t "[^.]$\\|[^./]\\.$\\|[^/]\\.\\.")))
-                           (funcall list-directories-recursively (cdr l))))
-                         (t (funcall list-directories-recursively (cdr l)))))))
-         (apply 'append
-                (mapcar
-                 (lambda (directory-relative-name)
-                   (let ((directory-absolute-name
-                          (expand-file-name (concat user-emacs-directory
-                                                    directory-relative-name))))
-                     (cons directory-absolute-name
-                           (funcall list-directories-recursively
-                                    (directory-files
-                                     directory-absolute-name
-                                     t "[^.]$\\|[^./]\\.$\\|[^/]\\.\\.")))))
-                 '("site-lisp" "lisp"))))))
+(defconst user-feature-directory (concat user-emacs-directory "lisp/")
+  "Directory which contains user features.")
+
+(defconst site-user-feature-directory (concat user-emacs-directory "site-lisp/")
+  "Directory which contains site user features.")
+
+(defun user-feature-catch-byte-code-up (file)
+  "Byte compile FILE if byte code file is not up to date."
+  (let ((byte-code-file (byte-compile-dest-file file)))
+    (unless (and (file-exists-p byte-code-file)
+                 (file-newer-than-file-p byte-code-file file))
+      (if byte-code-file
+          (and (delete-file byte-code-file) (setq byte-code-file nil)))
+      (and (byte-compile-file file)
+           (setq byte-code-file (byte-compile-dest-file file))))
+    (if (null byte-code-file)
+        (error "Byte compile for `%s' failed" file))))
+
+(defun user-feature-catch-loaddefs-up (directory &optional name)
+  "Generate loaddfes for DIRECTORY if loaddefs is not up to date.
+If optional argument NAME is a string, use it for file name
+of loaddefs. Otherwise, basename of DIRECTORY suffixed with
+-loaddefs.el is used."
+  (let ((files (seq-filter (lambda (file) (not (file-directory-p file)))
+                           (directory-files directory t "\\.el$")))
+        (generated-autoload-file
+         (or name (let ((basename (file-name-nondirectory
+                                   (replace-regexp-in-string
+                                    "/$" "" directory))))
+                    (concat directory
+                            (if (string-suffix-p "/" directory) "" "/")
+                            basename
+                            "-loaddefs.el")))))
+    (unless (or (null files)
+                (and (file-exists-p generated-autoload-file)
+                     (seq-every-p (lambda (file)
+                                    (or (file-newer-than-file-p
+                                         generated-autoload-file file)
+                                        (file-equal-p
+                                         generated-autoload-file file)))
+                                  files)))
+      (if (file-exists-p generated-autoload-file)
+          (delete-file generated-autoload-file))
+      (update-directory-autoloads directory))))
 
 (mapc
- (lambda (prefix)
-   (let* ((directory (concat user-emacs-directory prefix "lisp"))
-          (files (directory-files-recursively directory "\\.el$"))
-          (generated-autoload-file
-           (concat directory "/" prefix "user-feature-loaddefs.el")))
-     (unless (or (null files)
-                 (and (file-exists-p generated-autoload-file)
-                      (seq-every-p (lambda (file)
-                                     (or (file-newer-than-file-p
-                                          generated-autoload-file file)
-                                         (file-equal-p
-                                          generated-autoload-file file)))
-                                   files)))
-       (if (file-exists-p generated-autoload-file)
-           (delete-file generated-autoload-file))
-       (update-directory-autoloads directory))))
- '("site-" ""))
+ (lambda (raw)
+   (let* ((path (expand-file-name raw))
+          (subdirs (directory-directories-recursively path "")))
+     (setq load-path `(,@subdirs ,path ,@load-path))
 
-(require 'user-feature-loaddefs nil 'noerror)
-(require 'site-user-feature-loaddefs nil 'noerror)
+     (mapc (lambda (dir)
+             (let ((loaddefs
+                    (concat
+                     dir
+                     (if (string-match "/$" dir) "" "/")
+                     (replace-regexp-in-string
+                      "lisp" "user-feature"
+                      (file-name-nondirectory
+                       (replace-regexp-in-string "/$" "" path)))
+                     (replace-regexp-in-string
+                      "/" "-"
+                      (let ((rest (replace-regexp-in-string
+                                   (concat "^" (regexp-quote path)) "" dir)))
+                        (if (string-empty-p rest)
+                            "-"
+                          (concat (if (string-prefix-p "/" rest)  "" "/")
+                                  rest
+                                  (if (string-suffix-p "/" rest)  "" "/")))))
+                     "loaddefs.el")))
+               (user-feature-catch-loaddefs-up dir loaddefs)
+               (load loaddefs 'noerror 'nomessage)))
+           `(,@subdirs ,path))
 
-(mapc
- (lambda (el)
-   (let ((elc (concat el "c")))
-     (unless (and (file-exists-p elc) (file-newer-than-file-p elc el))
-       (byte-compile-file el))))
- (apply 'append
-        (mapcar
-         (lambda (d)
-           (directory-files-recursively
-            (expand-file-name (concat user-emacs-directory d))
-            "\\.el$"))
-         '("site-lisp" "lisp"))))
+     (mapc #'user-feature-catch-byte-code-up
+           (directory-files-recursively path "\\.el$"))))
+ `(,user-feature-directory ,site-user-feature-directory))
 
 
 (resolve user-feature)

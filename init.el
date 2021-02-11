@@ -191,6 +191,7 @@ UNIT is a literal symbol."
 (init client)
 (init vc)
 (init register)
+(init files)
 (init mode-line)
 (init font)
 (init theme)
