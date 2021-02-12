@@ -1111,6 +1111,12 @@
 
 
 
+   ;; Page-break-lines
+   `(page-break-lines
+     (,@(yester-whole-face-spec class :foreground selection)))
+
+
+
    ;; Flex-isearch
    `(flex-isearch-message-prefix
      (,@(yester-whole-face-spec class :foreground aqua)))
