@@ -136,10 +136,8 @@ UNIT is a literal symbol."
 (defvar init-units nil "Alist of initialized units and their file paths.")
 
 (defmacro init-unit-p (unit)
-  "Return t if UNIT is initialized."
-  `(if (assq ',unit init-units)
-       t
-     nil))
+  "Return cons cell which describes UNIT if UNIT is initialized."
+  `(assq ',unit init-units))
 
 (define-error 'init-error "Init error" 'error)
 
