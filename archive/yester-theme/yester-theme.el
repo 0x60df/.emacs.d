@@ -486,8 +486,16 @@
                           :foreground foreground
                           :background current-line
                           :box selection)))
-   `(eww-form-text (,@(yester-whole-face-spec class :background selection)))
-   `(eww-form-textarea (,@(yester-whole-face-spec class :background selection)))
+   `(eww-form-text (,@(yester-whole-face-spec class
+                        :foreground selection
+                        :background foreground
+                        :inverse-video t
+                        :distant-foreground comment)))
+   `(eww-form-textarea (,@(yester-whole-face-spec class
+                        :foreground selection
+                        :background foreground
+                        :inverse-video t
+                        :distant-foreground comment)))
 
 
 
@@ -1498,7 +1506,19 @@
  'yester
 
  ;; Distant-foreground
- '(face-near-same-color-threshold 1000)
+ '(face-near-same-color-threshold
+   (let ((night 5000)
+         (day 10000)
+         (morning 3000))
+     (cond ((eq frame-background-mode 'dark) night)
+           ((eq frame-background-mode 'light)
+            (cond ((eq (cdr (assq 'day yester-scene)) 'morning) morning)
+                  (t day)))
+           (t (cond ((eq (frame-parameter nil 'background-mode) 'dark) night)
+                    ((eq (frame-parameter nil 'background-mode) 'light)
+                     (cond ((eq (cdr (assq 'day yester-scene)) 'morning)
+                            morning)
+                           (t day))))))))
 
 
 
