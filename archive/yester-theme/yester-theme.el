@@ -1112,8 +1112,9 @@
 
 
    ;; Page-break-lines
-   `(page-break-lines
-     (,@(yester-whole-face-spec class :foreground selection)))
+   `(page-break-lines (,@(yester-whole-face-spec class
+                           :foreground selection
+                           :distant-foreground background)))
 
 
 
@@ -1277,9 +1278,12 @@
    `(cfw:face-toolbar-button-off (,@(yester-whole-face-spec class
                                       :foreground comment
                                       :background block)))
-   `(cfw:face-disable (,@(yester-whole-face-spec class :foreground selection)))
-   `(cfw:face-grid
-     (,@(yester-whole-face-spec class :foreground selection)))
+   `(cfw:face-disable (,@(yester-whole-face-spec class
+                           :foreground selection
+                           :distant-foreground background)))
+   `(cfw:face-grid (,@(yester-whole-face-spec class
+                        :foreground selection
+                        :distant-foreground background)))
    `(cfw:face-sunday
      (,@(yester-whole-face-spec class :weight 'bold :foreground comment)))
    `(cfw:face-saturday
@@ -1492,6 +1496,11 @@
 
 (custom-theme-set-variables
  'yester
+
+ ;; Distant-foreground
+ '(face-near-same-color-threshold 1000)
+
+
 
  ;; Popup
  `(popup-isearch-cursor-color
