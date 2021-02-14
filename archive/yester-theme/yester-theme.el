@@ -1126,6 +1126,46 @@
 
 
 
+   ;; Markdown-mode
+   `(markdown-markup-face ((,class :inherit shadow)))
+   `(markdown-footnote-text-face ((,class)))
+   `(markdown-gfm-checkbox-face ((,class :weight bold)))
+   `(markdown-header-face-1 ((,class :weight bold :inherit outline-1)))
+   `(markdown-header-face-2 ((,class :weight bold :inherit outline-2)))
+   `(markdown-header-face-3 ((,class :weight bold :inherit outline-3)))
+   `(markdown-header-face-4 ((,class :weight bold :inherit outline-4)))
+   `(markdown-header-face-5 ((,class :weight bold :inherit outline-5)))
+   `(markdown-header-face-6 ((,class :weight bold :inherit outline-6)))
+   `(markdown-inline-code-face (,@(yester-whole-face-spec class
+                                    :foreground yellow
+                                    :inherit 'markdown-code-face)))
+   `(markdown-language-info-face ((,class :inherit markdown-markup-face)))
+   `(markdown-language-keyword-face
+     ((,class :weight bold :inherit markdown-markup-face)))
+   `(markdown-url-face ((,class :inherit shadow)))
+   `(markdown-reference-face ((,class :weight bold :inherit shadow)))
+   `(markdown-list-face ((,class :weight bold)))
+   `(markdown-math-face
+     (,@(yester-whole-face-spec class :foreground orange)))
+   `(markdown-pre-face (,@(yester-whole-face-spec class
+                            :foreground yellow
+                            :inherit 'markdown-code-face)))
+   `(markdown-table-face
+     (,@(yester-whole-face-spec class :background block)))
+   `(markdown-html-attr-name-face
+     (,@(yester-whole-face-spec class :foreground comment)))
+   `(markdown-html-attr-value-face
+     (,@(yester-whole-face-spec class :foreground green)))
+   `(markdown-html-entity-face
+     (,@(yester-whole-face-spec class :foreground orange)))
+   `(markdown-html-tag-name-face
+     (,@(yester-whole-face-spec class :weight 'bold :foreground comment)))
+   `(markdown-metadata-key-face ((,class :inherit shadow)))
+   `(markdown-metadata-value-face
+     (,@(yester-whole-face-spec class :foreground aqua)))
+
+
+
    ;; Flex-isearch
    `(flex-isearch-message-prefix
      (,@(yester-whole-face-spec class :foreground aqua)))
