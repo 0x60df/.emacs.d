@@ -13,12 +13,17 @@
  '(which-key-lighter ""))
 
 (defun patch-which-key--next-page-hint (return)
-  "Advising function for `which-key--next-page-hint'.
-Replace C-h by ^H/?."
-  (replace-regexp-in-string
-   "C-h"
-   (which-key--propertize "^H/?" 'face 'which-key-note-face)
-   return))
+  "Advising `which-key--next-page-hint' to modify hint text.
+Replace `key-description' of `help-char' by
+`text-char-description' of `help-char' suffixed with /?,
+e.g. C-h by ^H/?."
+  (if (stringp return)
+      (replace-regexp-in-string
+       (key-description (char-to-string help-char))
+       (which-key--propertize (concat (text-char-description help-char) "/?")
+                              'face 'which-key-note-face)
+       return)
+    return))
 
 (with-eval-after-load 'which-key
   (advice-add 'which-key--next-page-hint
