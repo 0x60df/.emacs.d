@@ -3,7 +3,13 @@
 
 
 (premise init)
+(premise custom)
 (premise inst-markdown-mode)
+
+(eval-when-compile (require 'markdown-mode))
+
+(with-eval-after-load 'markdown-mode
+  (add-to-list 'markdown-code-lang-modes '("el" . emacs-lisp-mode)))
 
 (defun markdown-show-trailing-whitespace ()
   "Show trailing whitespace."
