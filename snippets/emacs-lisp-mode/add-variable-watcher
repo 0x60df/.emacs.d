@@ -1,0 +1,7 @@
+# name: add-variable-watcher
+# key: add-variable-watcher
+# --
+(add-variable-watcher
+ '$1
+ (lambda (symbol newval operation where)
+   $0))
