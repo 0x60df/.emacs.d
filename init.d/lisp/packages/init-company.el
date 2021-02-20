@@ -23,6 +23,7 @@
 (declare-function company-call-backend "company")
 (declare-function company-complete-selection "company")
 (declare-function company-filter-candidates "company")
+(declare-function company-grab-symbol "company")
 
 (declare-function company-append-backends load-file-name t t)
 (declare-function company-expand-selection-or-cycle load-file-name t t)
@@ -30,6 +31,9 @@
 (declare-function company-expand-selection-or-cycle-reverse load-file-name t t)
 (declare-function company-pseudo-tooltip-set-width load-file-name t t)
 (declare-function company-pseudo-tooltip-decorate-candidate load-file-name t t)
+(declare-function company-complete-inside-clean-up load-file-name t t)
+(declare-function company-complete-inside-setup load-file-name t t)
+(declare-function company-complete-inside-delete-suffix load-file-name t t)
 
 
 
@@ -228,6 +232,53 @@ keyword :with."
             (setcar candidates first-candidate-other-than-yasnippet))
           candidates)
       candidates))
+
+
+
+  ;;; complete-inside
+  
+  (defvar company-completing-inside nil
+    "Flag if inside completing is going on.")
+
+  (defun company-complete-inside-setup (&rest args)
+    "Setup company complete inside."
+    (when (and (eq (car args) 'prefix)
+               (not (company-grab-symbol)))
+      (save-excursion (insert-char ?\s))
+      (put-text-property (point) (+ (point) 1) 'display '(space :width 0))
+      (setq company-completing-inside t)
+      (add-hook-for-once 'pre-command-hook
+                         (lambda ()
+                           (when (null company-candidates)
+                             (company-complete-inside-clean-up))))))
+
+  (defun company-complete-inside-clean-up (&rest args)
+    "Clean up company complete inside."
+    (when company-completing-inside
+      (delete-char 1)
+      (setq company-completing-inside nil)))
+
+  (defun company-complete-inside-delete-suffix (&rest args)
+    "Delete duplicated suffix around point during complete inside."
+    (when company-completing-inside
+      (let* ((mid (save-excursion
+                    (forward-char)
+                    (point)))
+             (end (save-excursion
+                    (forward-char)
+                    (skip-syntax-forward "w_")
+                    (point)))
+             (suffix (buffer-substring mid end)))
+        (save-excursion
+          (backward-char (length suffix))
+          (when (looking-at (regexp-quote suffix))
+            (delete-region mid end))))))
+
+  (advice-add
+   'company-call-backend :before #'company-complete-inside-setup)
+  (add-hook 'company-completion-finished-hook
+            #'company-complete-inside-delete-suffix)
+  (add-hook 'company-after-completion-hook #'company-complete-inside-clean-up)
 
 
 
