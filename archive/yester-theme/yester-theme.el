@@ -1119,6 +1119,14 @@
 
 
 
+   ;; Git-commit
+   `(git-commit-comment-branch-local
+     (,@(yester-whole-face-spec class :foreground aqua)))
+   `(git-commit-comment-branch-remote
+     (,@(yester-whole-face-spec class :foreground blue)))
+
+
+
    ;; Flycheck
    `(flycheck-info (,@(yester-whole-face-spec class
                         :underline `(:style wave :color ,green))))
