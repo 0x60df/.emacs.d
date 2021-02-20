@@ -63,6 +63,14 @@
 
 
 
+   ;; Company
+   `(company-tooltip-yasnippet
+     (,@(yester-whole-face-spec class :foreground red)))
+   `(company-tooltip-dabbrev-code
+     (,@(yester-whole-face-spec class :foreground purple)))
+
+
+
    ;; Auto-complete
    `(ac-dictionary-candidate-face
      ((,class :inherit (font-lock-keyword-face ac-candidate-face))))

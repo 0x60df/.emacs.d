@@ -677,6 +677,39 @@
 
 
 
+   ;; Company
+
+   `(company-echo-common (,@(yester-whole-face-spec class :foreground emboss)))
+   `(company-preview
+     (,@(yester-whole-face-spec class :foreground comment :underline comment)))
+   `(company-preview-common ((,class :inherit 'company-preview)))
+   `(company-preview-search ((,class :inherit 'company-preview)))
+   `(company-scrollbar-bg
+     (,@(yester-whole-face-spec class :background current-line)))
+   `(company-scrollbar-fg
+     (,@(yester-whole-face-spec class :background selection)))
+   `(company-template-field
+     (,@(yester-whole-face-spec class :background current-line)))
+   `(company-tooltip
+     (,@(yester-whole-face-spec class :background block)))
+   `(company-tooltip-annotation
+     (,@(yester-whole-face-spec class :slant 'italic :foreground comment)))
+   `(company-tooltip-annotation-selection
+     (,@(yester-whole-face-spec class :slant 'italic :foreground comment)))
+   `(company-tooltip-common ((,class)))
+   `(company-tooltip-common-selection ((,class)))
+   `(company-tooltip-mouse ((,class :inherit highlight)))
+   `(company-tooltip-search (,@(yester-whole-face-spec class
+                                 :foreground background
+                                 :background aqua)))
+   `(company-tooltip-search-selection (,@(yester-whole-face-spec class
+                                           :foreground background
+                                           :background aqua)))
+   `(company-tooltip-selection
+     (,@(yester-whole-face-spec class :background selection)))
+
+
+
    ;; Popup
    `(popup-face ((,class :inherit default)))
    `(popup-isearch-match ((,class :inherit (lazy-highlight default))))
