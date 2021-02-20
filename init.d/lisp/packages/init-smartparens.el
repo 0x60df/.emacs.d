@@ -21,7 +21,7 @@
  '(sp-highlight-wrap-overlay t)
  '(sp-highlight-wrap-tag-overlay t))
 
-(push '(smartparens-mode . 13) mode-line-minor-mode-priority-alist)
+(push '(smartparens-mode . 14) mode-line-minor-mode-priority-alist)
 
 (defvar sp-show-enclosing-pair-level 0 "Level for highlighting enclosing pair.")
 

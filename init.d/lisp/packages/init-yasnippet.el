@@ -27,7 +27,7 @@
                           yas-maybe-ido-prompt
                           yas-no-prompt)))
 
-(push '(yas-minor-mode . 12) mode-line-minor-mode-priority-alist)
+(push '(yas-minor-mode . 13) mode-line-minor-mode-priority-alist)
 
 (with-eval-after-load 'yasnippet
   (yas-reload-all)

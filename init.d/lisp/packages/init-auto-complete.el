@@ -8,6 +8,23 @@
 (premise bindings)
 (premise inst-auto-complete)
 
+(eval-when-compile (require 'auto-complete))
+
+(declare-function ac-expand-string "auto-complete")
+(declare-function ac-activate-completing-map "auto-complete")
+(declare-function ac-complete "auto-complete")
+(declare-function ac-expand-previous "auto-complete")
+(declare-function ac-isearch "auto-complete")
+(declare-function ac-quick-help "auto-complete")
+(declare-function ac-fuzzy-complete "auto-complete")
+
+
+;;; setup
+
+(with-eval-after-load 'auto-complete
+  (ac-config-default)
+  (global-auto-complete-mode 0))
+
 
 ;;; patches
 
@@ -21,7 +38,8 @@ Keep `ac-prefix' after last `ac-expand'.")
 (defun ac-pullback-last-prefix (ac-expand &rest args)
   "Advising `ac-expand' to pullback last prefix.
 
-If inline completion is followed by `ac-expand', this
+If inline completion is followed by `ac-expand'
+ this
 function pullbacks `ac-prefix' which exists before the
 inline candidate is completed."
   (cond ((and (null ac-last-prefix)
@@ -167,7 +185,7 @@ inline candidate is completed."
 
 ;;; mode-line
 
-(push '(auto-complete-mode . 11) mode-line-minor-mode-priority-alist)
+(push '(auto-complete-mode . 19) mode-line-minor-mode-priority-alist)
 
 
 
@@ -180,7 +198,8 @@ inline candidate is completed."
       map)
     "Keymap for `auto-complete-mode' which overrides global overriding maps.")
 
-  (push `(auto-complete-mode . ,overriding-ac-mode-map)
+  (push `(auto-complete-mode . 
+                             overriding-ac-mode-map)
         overriding-reserved-key-map-alist)
 
   (define-key ac-completing-map (kbd "<backtab>") #'ac-expand-previous)

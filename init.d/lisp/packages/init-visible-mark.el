@@ -36,6 +36,22 @@ If `overlay-start' of any `visible-mark-overlay' equal to
 (advice-add 'visible-mark-move-overlays
             :after #'visible-mark-revert-face-on-cursor-after-move-overlays)
 
+(with-eval-after-load 'company
+  (with-eval-after-load 'visible-mark
+    (defvar visible-mark-status-when-company-started nil
+      "Status of `global-visible-mark-mode' when company is started.")
+
+    (add-hook 'company-completion-started-hook
+              (lambda (&rest args)
+                (when global-visible-mark-mode
+                  (setq visible-mark-status-when-company-started t)
+                  (global-visible-mark-mode 0))))
+    (add-hook 'company-after-completion-hook
+              (lambda (&rest args)
+                (when visible-mark-status-when-company-started
+                  (setq visible-mark-status-when-company-started nil)
+                  (global-visible-mark-mode))))))
+
 (add-hook 'emacs-startup-hook #'global-visible-mark-mode)
 
 
