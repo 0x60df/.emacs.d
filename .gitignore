@@ -16,6 +16,7 @@
 !/el-get-user/init-files/*
 !/eshell/
 !/eshell/alias
+!/gnus/
 !/init.d/
 !/init.d/lisp/
 !/init.d/lisp/*.el
