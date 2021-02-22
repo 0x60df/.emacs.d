@@ -20,10 +20,10 @@ DEPTH and LOCAL are passed to `add-hook' and `remove-hook'.
 When TRIGGER is non-nil, running FUNCTION and `remove-hook'
 is delayed until funcall TRIGGER returns non-nil."
   (let ((symbol (make-symbol "transient-hook-function")))
-    (fset symbol `(lambda ()
+    (fset symbol `(lambda (&rest args)
                     (if (or ,(null trigger) (funcall ',trigger))
                         (unwind-protect
-                            (funcall ',function)
+                            (apply ',function args)
                           (remove-hook ',hook ',symbol ',local)))))
     (add-hook hook symbol depth local)))
 
