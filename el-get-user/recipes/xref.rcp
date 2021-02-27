@@ -1,0 +1,4 @@
+(:name xref
+       :description "Cross-referencing commands"
+       :website "https://elpa.gnu.org/packages/xref.html"
+       :type elpa)

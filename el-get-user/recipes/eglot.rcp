@@ -1,0 +1,6 @@
+(:name eglot
+       :description "Client for Language Server Protocol (LSP) servers"
+       :website "https://github.com/joaotavora/eglot"
+       :type git
+       :url "https://github.com/joaotavora/eglot.git"
+       :depends (project xref eldoc))

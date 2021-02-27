@@ -301,6 +301,7 @@ UNIT is a literal symbol."
 (init-package quickrun)
 (init-package rainbow-delimiters)
 (init-package rainbow-mode)
+(init-package eglot)
 (init-package web-mode)
 (init-package markdown-mode)
 (init-package ruby-end)
