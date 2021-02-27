@@ -1,4 +1,4 @@
 (:name frame-dealer
-       :description "set frame position according to any dealing rule."
-       :type git
-       :url "https://github.com/0x60df/frame-dealer")
+       :description "set frame position according to any dealing rule"
+       :type github
+       :pkgname "0x60df/frame-dealer")

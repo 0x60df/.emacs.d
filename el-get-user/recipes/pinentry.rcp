@@ -1,4 +1,4 @@
 (:name pinentry
-       :description "GnuPG Pinentry server implementation."
+       :description "GnuPG Pinentry server implementation"
        :website "https://elpa.gnu.org/packages/pinentry.html"
        :type elpa)

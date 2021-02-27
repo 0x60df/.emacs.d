@@ -1,5 +1,5 @@
 (:name smart-compile-
        :website "https://www.emacswiki.org/emacs/SmartCompile"
-       :description "Alternative to the 'M-x compile' command."
+       :description "an interface to compile"
        :type git
-       :url "https://github.com/zenitani/elisp")
+       :url "https://github.com/zenitani/elisp.git")
