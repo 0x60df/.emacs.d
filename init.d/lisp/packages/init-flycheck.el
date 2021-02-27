@@ -9,14 +9,17 @@
 
 (push '(flycheck-mode . 44) mode-line-minor-mode-priority-alist)
 
-(overriding-set-key (kbd "C-c !") #'flycheck-mode)
-(overriding-set-key (kbd "H-1") #'flycheck-mode)
+(overriding-set-key (kbd "C-c \"") #'flycheck-mode)
+(overriding-set-key (kbd "C-l 2") #'flycheck-mode)
 
 (with-eval-after-load 'flycheck
   (defvar overriding-flycheck-mode-map
     (let ((map (make-sparse-keymap)))
-      (define-key map (kbd "C-c !") (make-sparse-keymap))
-      (define-key map (kbd "C-c ! !") #'flycheck-mode)
+      (define-key map (kbd "C-c \"") (make-sparse-keymap))
+      (define-key map (kbd "C-c \" \"") #'flycheck-mode)
+
+      (define-key map (kbd "C-l 2") (make-sparse-keymap))
+      (define-key map (kbd "C-l 2 2") #'flycheck-mode)
       map)
     "Keymap for `flycheck-mode' which overrides global overriding maps.")
 

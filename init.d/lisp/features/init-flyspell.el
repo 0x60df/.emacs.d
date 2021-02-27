@@ -18,7 +18,7 @@
 (push '(flyspell-mode . 43) mode-line-minor-mode-priority-alist)
 
 (overriding-set-key (kbd "C-c $") #'flyspell-mode)
-(overriding-set-key (kbd "H-4") #'flyspell-mode)
+(overriding-set-key (kbd "C-l 4") #'flyspell-mode)
 
 (with-eval-after-load 'flyspell
   (defvar overriding-flyspell-mode-map
@@ -30,6 +30,14 @@
       (define-key map (kbd "C-c $ .") #'flyspell-auto-correct-word)
       (define-key map (kbd "C-c $ ,") #'flyspell-goto-next-error)
       (define-key map (kbd "C-c $ ;") #'flyspell-auto-correct-previous-word)
+
+      (define-key map (kbd "C-l 4") (make-sparse-keymap))
+      (define-key map (kbd "C-l 4 4") #'flyspell-mode)
+
+      (define-key map (kbd "C-l 4 >") #'flyspell-goto-next-error)
+      (define-key map (kbd "C-l 4 .") #'flyspell-auto-correct-word)
+      (define-key map (kbd "C-l 4 ,") #'flyspell-goto-next-error)
+      (define-key map (kbd "C-l 4 ;") #'flyspell-auto-correct-previous-word)
       map)
     "Keymap for `flyspell-mode' which overrides global overriding maps.")
 

@@ -128,15 +128,27 @@ Keymap is determined by `overriding-map-for'"
 (overriding-set-key (kbd "M-s r") #'rgrep)
 (overriding-set-key (kbd "M-s f") #'grep-find)
 
+(overriding-set-key (kbd "H-1") #'shell-command)
+(overriding-set-key (kbd "H-4") #'ispell-word)
+(overriding-set-key (kbd "H-5") #'query-replace)
+(overriding-set-key (kbd "C-H-5") #'query-replace-regexp)
+(overriding-set-key (kbd "H-6") #'async-shell-command)
+(overriding-set-key (kbd "H-7") #'abbrev-prefix-mark)
+(overriding-set-key (kbd "H-8") #'insert-parentheses)
+(overriding-set-key (kbd "H-9") #'move-past-close-and-reindent)
+
 
 
 (overriding-set-key (kbd "M-+") #'duplicate-and-comment)
 (overriding-set-key (kbd "C-M-;") #'comment-switch)
 (overriding-set-key (kbd "H-;") #'comment-switch)
+(overriding-set-key (kbd "C-M-y") #'yank-pop-reverse)
 (overriding-set-key (kbd "H-y") #'yank-pop-reverse)
 (overriding-set-key (kbd "C-S-n") #'next-line-scroll-up)
 (overriding-set-key (kbd "C-S-p") #'previous-line-scroll-down)
+(overriding-set-key (kbd "M-g M-f") #'search-forward-char-in-line)
 (overriding-set-key (kbd "H-f") #'search-forward-char-in-line)
+(overriding-set-key (kbd "M-g M-b") #'search-backward-char-in-line)
 (overriding-set-key (kbd "H-b") #'search-backward-char-in-line)
 (overriding-set-key (kbd "C-c r y") #'risky-yes-or-no-p-mode)
 
@@ -155,15 +167,21 @@ Keymap is determined by `overriding-map-for'"
 (overriding-set-key (kbd "C-M-.") #'other-frame-reverse)
 (overriding-set-key (kbd "C-c ;") #'manipulate-frame)
 (overriding-set-key (kbd "C-c .") #'pick-frame)
+(overriding-set-key (kbd "C-l ;") #'toggle-frame-opacity)
 (overriding-set-key (kbd "s-;") #'toggle-frame-opacity)
+(overriding-set-key (kbd "C-l +") #'toggle-all-frames-opacity)
 (overriding-set-key (kbd "s-+") #'toggle-all-frames-opacity)
 
 (with-eval-after-load 'server
   (overriding-set-key (kbd "C-.") #'other-frame-with-server)
   (overriding-set-key (kbd "C-M-.") #'other-frame-with-server-reverse)
+  (overriding-set-key (kbd "C-l .") #'other-client-frame-with-server)
   (overriding-set-key (kbd "s-.") #'other-client-frame-with-server)
+  (overriding-set-key (kbd "C-l M-.") #'other-client-frame-with-server-reverse)
   (overriding-set-key (kbd "s-M-.") #'other-client-frame-with-server-reverse)
   (overriding-set-key (kbd "C-c .") #'pick-frame-with-server)
+  (overriding-set-key (kbd "C-l C-.")
+                      #'pick-typical-frame-of-each-client-with-server)
   (overriding-set-key (kbd "s-c .")
                       #'pick-typical-frame-of-each-client-with-server))
 
