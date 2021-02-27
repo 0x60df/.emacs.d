@@ -36,10 +36,6 @@
 !/lisp/**/
 !/lisp/**/*.el
 /lisp/**/*-loaddefs.el
-!/archive/
-!/archive/**/
-!/archive/**/*.el
-/archive/**/*-loaddefs.el
 !/scratchb/
 !/site-lisp/
 !/snippets/
@@ -48,3 +44,7 @@
 !/themes/lisp/
 !/themes/lisp/*.el
 !/themes/site-lisp/
+!/uelpa/
+!/uelpa/**/
+!/uelpa/**/*.el
+/uelpa/**/*-loaddefs.el

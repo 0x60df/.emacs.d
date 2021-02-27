@@ -5,7 +5,7 @@
 (premise init)
 (premise init-el-get)
 
-(defconst user-package-directory (concat user-emacs-directory "archive/")
+(defconst user-package-directory (concat user-emacs-directory "uelpa/")
   "Directory which contains user packages.")
 
 (defun user-package-resolve-requires (file)
