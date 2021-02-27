@@ -6,6 +6,7 @@
 (premise custom)
 (premise subr)
 (premise advice)
+(premise bindings)
 (premise mode-line)
 (premise inst-company)
 
@@ -37,6 +38,8 @@
 (declare-function company-complete-inside-setup load-file-name t t)
 (declare-function company-complete-inside-set-pre-context load-file-name t t)
 (declare-function company-complete-inside-delete-suffix-or-aux-space
+                  load-file-name t t)
+(declare-function company-pseudo-tooltip-set-maximum-width-ratio
                   load-file-name t t)
 
 
@@ -357,27 +360,48 @@ If suffix does not match, delete aux apace."
   ;;; appearance
 
   ;; tooltip width
+  (defvar company-pseudo-tooltip-maximum-width-ratio 0.6
+    "Ratio of maximum width of company tooltip against frame width.
+If width of candidate plus annotation exceeds this value,
+annotation section is truncated as this ratio.
+Candidates are never truncated, thus final width of tooltip
+can be more than this value.")
+
   (defun company-pseudo-tooltip-set-width (&rest args)
     "Advising `company-pseudo-tooltip-frontend' to fix width."
     (if company-candidates
-        (let ((width 0))
+        (let ((maximum (round (* company-pseudo-tooltip-maximum-width-ratio
+                                 (frame-width))))
+              (width 0))
           (mapc
            (lambda (candidate)
-             (let* ((annotation (company-call-backend 'annotation candidate))
-                    (w (+ (string-width candidate)
-                          (if annotation
-                              (+ (length annotation)
-                                 (if company-tooltip-align-annotations
-                                     1
-                                   0))
-                            0))))
-               (if (< width w) (setq width w))))
+             (if (< width maximum)
+                 (let* ((annotation (company-call-backend
+                                     'annotation candidate))
+                        (w (+ (string-width candidate)
+                              (if annotation
+                                  (+ (string-width annotation)
+                                     (if company-tooltip-align-annotations
+                                         1
+                                       0))
+                                0))))
+                   (cond ((< maximum w) (setq width maximum))
+                         ((< width w) (setq width w))))
+               (let ((w (string-width candidate)))
+                 (if (< width w) (setq width w)))))
            company-candidates)
           (setq company-tooltip-minimum-width width)
           (setq company-tooltip-maximum-width width))))
 
   (advice-add 'company-pseudo-tooltip-frontend
               :before #'company-pseudo-tooltip-set-width)
+
+  (defun company-pseudo-tooltip-set-maximum-width-ratio (ratio)
+    "Read RATIO and set `company-tooltip-maximum-width-ratio'."
+    (interactive (list (read-number
+                        "Ratio: "
+                        company-pseudo-tooltip-maximum-width-ratio)))
+    (setq company-pseudo-tooltip-maximum-width-ratio ratio))
 
   ;; tng text properties
   (defun company-tng-remove-text-properties (args)
@@ -436,6 +460,9 @@ If suffix does not match, delete aux apace."
   (define-key company-active-map (kbd "C-<tab>") #'company-filter-candidates)
   (define-key company-active-map (kbd "C-v") #'company-next-page)
   (define-key company-active-map (kbd "M-v") #'company-previous-page)
+
+  (overriding-set-key (kbd "C-c <tab>")
+                      #'company-pseudo-tooltip-set-maximum-width-ratio)
 
   (define-key company-search-map (kbd "C-n") #'company-select-next)
   (define-key company-search-map (kbd "C-p") #'company-select-previous)
