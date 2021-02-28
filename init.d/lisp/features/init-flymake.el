@@ -36,7 +36,8 @@
     "Advising `flymake--mode-line-format' to modify return."
     (if (listp return)
         (mapcar (lambda (element)
-                  (if (not (eq (car element) :propertize))
+                  (if (not (and (consp element)
+                                (eq (car element) :propertize)))
                       element
                     (if (equal " Flymake" (cadr element))
                         (setcar (cdr element) " FlyM"))
