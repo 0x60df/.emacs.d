@@ -84,8 +84,6 @@
 (advice-add-for-once 'company-split-mode :before (lambda (&rest args)
                                                    (require 'company)))
 
-(add-hook 'emacs-lisp-mode-hook #'company-split-mode)
-
 
 
 ;; initialization
@@ -377,6 +375,8 @@ If suffix does not match, delete aux space."
               (delete-char 1))))))
 
   (add-hook 'pre-command-hook #'company-complete-inside-setup)
+
+  (add-hook 'emacs-lisp-mode-hook #'company-split-mode)
 
 
 
