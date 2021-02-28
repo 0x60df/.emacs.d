@@ -68,7 +68,8 @@
                        company-echo-metadata-unless-initial-inline-frontend))
  '(company-transformers '(company-sort-by-length
                           company-sort-by-occurrence
-                          company-replace-yasnippet-candidate-on-first)))
+                          company-replace-yasnippet-candidate-on-first))
+ '(company-search-regexp-function #'company-search-words-in-any-order-regexp))
 
 (push '(company-mode . 11) mode-line-minor-mode-priority-alist)
 (push '(company-search-mode . 12) mode-line-minor-mode-priority-alist)
