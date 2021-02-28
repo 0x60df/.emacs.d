@@ -27,6 +27,11 @@
 (declare-function company-filter-candidates "company")
 (declare-function company-grab-symbol "company")
 (declare-function company--active-p "company")
+(declare-function company--maybe-init-backend "company")
+(declare-function company--multi-backend-adapter "company")
+(declare-function company--good-prefix-p "company")
+(declare-function company--prefix-str "company")
+(declare-function company-calculate-candidates "company")
 
 (declare-function company-append-backends load-file-name t t)
 (declare-function company-expand-selection-or-cycle load-file-name t t)
@@ -35,6 +40,7 @@
 (declare-function company-pseudo-tooltip-set-width load-file-name t t)
 (declare-function company-pseudo-tooltip-decorate-candidate load-file-name t t)
 (declare-function company-complete-inside-clean-up load-file-name t t)
+(declare-function company-complete-inside-check-candidates load-file-name t t)
 (declare-function company-complete-inside-setup load-file-name t t)
 (declare-function company-complete-inside-test-context load-file-name t t)
 (declare-function company-complete-inside-delete-aux-space load-file-name t t)
@@ -262,7 +268,7 @@ keyword :with."
 
   ;;; complete-inside
 
-    (defvar company-complete-inside-context nil
+  (defvar company-complete-inside-context nil
     "Context information for company-complete-inside.
 This alist contains line number, prefix and suffix after
 complete-inside is started.")
@@ -287,14 +293,14 @@ complete-inside is started.")
       (add-hook-for-once
        'post-command-hook
        (lambda ()
+         (unless (company-complete-inside-check-candidates)
+           (company-complete-inside-delete-aux-space)
+           (company-complete-inside-clean-up))
          (add-hook-for-once
           'pre-command-hook
           (lambda ()
             (if (not (company--active-p))
-                (progn
-                  (unless (eq this-command 'delete-char)
-                    (company-complete-inside-delete-aux-space))
-                  (company-complete-inside-clean-up))
+                (company-complete-inside-clean-up)
               (add-hook-for-once
                'company-completion-finished-hook
                #'company-complete-inside-delete-suffix-or-aux-space)
@@ -308,6 +314,28 @@ complete-inside is started.")
   (defun company-complete-inside-clean-up (&rest args)
     "Clean up complete inside."
     (setq company-complete-inside-context nil))
+
+  (defun company-complete-inside-check-candidates ()
+    "Check and return candidates without modifying company state."
+    (let (prefix c company-prefix company-backend)
+      (cl-dolist (backend (if company-backend
+                              (list company-backend)
+                            company-backends))
+        (setq prefix
+              (if (or (symbolp backend)
+                      (functionp backend))
+                  (when (company--maybe-init-backend backend)
+                    (let ((company-backend backend))
+                      (company-call-backend 'prefix)))
+                (company--multi-backend-adapter backend 'prefix)))
+        (when prefix
+          (when (company--good-prefix-p prefix)
+            (let ((ignore-case (company-call-backend 'ignore-case)))
+              (setq company-prefix (company--prefix-str prefix)
+                    company-backend backend
+                    c (company-calculate-candidates
+                       company-prefix ignore-case))))
+          (cl-return c)))))
 
   (defun company-complete-inside-test-context ()
     "Test if current context is same as saved one."
