@@ -41,6 +41,8 @@
 
 (with-eval-after-load 'multiple-cursors-core
   (add-to-list 'mc/unsupported-minor-modes 'show-paren-mode)
+  (with-eval-after-load 'company
+      (add-to-list 'mc/unsupported-minor-modes 'company-split-mode))
   (with-eval-after-load 'visible-mark
     (add-to-list 'mc/unsupported-minor-modes 'visible-mark-mode)))
 
