@@ -216,6 +216,7 @@ UNIT is a literal symbol."
 (init-feature eldoc)
 (init-feature autorevert)
 (init-feature flyspell)
+(init-feature flymake)
 (init-feature dired)
 (init-feature dired-x)
 (init-feature wdired)

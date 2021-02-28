@@ -7,7 +7,7 @@
 (premise bindings)
 (premise inst-flycheck)
 
-(push '(flycheck-mode . 44) mode-line-minor-mode-priority-alist)
+(push '(flycheck-mode . 45) mode-line-minor-mode-priority-alist)
 
 (overriding-set-key (kbd "C-c \"") #'flycheck-mode)
 (overriding-set-key (kbd "C-l 2") #'flycheck-mode)
