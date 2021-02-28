@@ -1167,6 +1167,11 @@
 
 
 
+   ;; Eglot
+   `(eglot-mode-line (,@(yester-whole-face-spec class :foreground aqua)))
+
+
+
    ;; Markdown-mode
    `(markdown-markup-face ((,class :inherit shadow)))
    `(markdown-footnote-text-face ((,class)))
