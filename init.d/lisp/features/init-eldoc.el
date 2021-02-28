@@ -4,11 +4,22 @@
 
 (premise init)
 (premise custom)
+(premise subr)
+(premise window)
+(premise bindings)
 (premise mode-line)
+
+(defvar eldoc--doc-buffer)              ; for using elpa
+
+(declare-function eldoc-doc-buffer "eldoc")
+
+(declare-function eldoc-doc-buffer-transiently load-file-name t t)
 
 (custom-set-variables
  '(eldoc-idle-delay 0.4)
- '(eldoc-minor-mode-string " ElD"))
+ '(eldoc-minor-mode-string " ElD")
+ '(eldoc-echo-area-display-truncation-message nil)
+ '(eldoc-echo-area-use-multiline-p nil))
 
 (push '(eldoc-mode . 30) mode-line-minor-mode-priority-alist)
 
@@ -52,7 +63,26 @@
   (add-to-list 'mode-line-boundary-faces 'font-lock-keyword-face)
   (add-to-list 'mode-line-boundary-faces 'font-lock-function-name-face)
   (advice-add 'eldoc-minibuffer-message
-              :around #'eldoc-modify-mode-line-message))
+              :around #'eldoc-modify-mode-line-message)
+
+  (defvar eldoc-keep-buffer-functions '(other-window
+                                        other-window-reverse
+                                        view-other-window)
+    "Commands to keep transient eldoc buffer.")
+
+  (defun eldoc-doc-buffer-transiently ()
+    "Do `eldoc-doc-buffer' and setup clean up for eldoc window."
+    (interactive)
+    (add-hook-for-once 'pre-command-hook
+                       (lambda ()
+                         (when (and (not (memq this-command
+                                               eldoc-keep-buffer-functions))
+                                    (buffer-live-p eldoc--doc-buffer))
+                           (delete-window
+                            (get-buffer-window eldoc--doc-buffer)))))
+    (call-interactively #'eldoc-doc-buffer))
+
+  (overriding-set-key (kbd "C-l d") #'eldoc-doc-buffer-transiently))
 
 
 (resolve init-eldoc)
