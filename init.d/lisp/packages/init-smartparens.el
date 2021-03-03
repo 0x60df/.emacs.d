@@ -19,7 +19,9 @@
 (custom-set-variables
  '(sp-highlight-pair-overlay nil)
  '(sp-highlight-wrap-overlay t)
- '(sp-highlight-wrap-tag-overlay t))
+ '(sp-highlight-wrap-tag-overlay t)
+ '(sp-autodelete-pair nil)
+ '(sp-autodelete-wrap nil))
 
 (push '(smartparens-mode . 14) mode-line-minor-mode-priority-alist)
 
