@@ -128,8 +128,12 @@ Conditions are specified by `evil-refresh-cursor-interrupt-conditions'."
   (advice-add 'evil-refresh-cursor :around #'evil-interrupt-refresh-cursor)
   (with-eval-after-load 'auto-complete
     (add-to-list 'evil-refresh-cursor-interrupt-conditions
-                  '(and (memq evil-state '(emacs insert))
-                        (ac-menu-live-p)))))
+                 '(and (memq evil-state '(emacs insert))
+                       (ac-menu-live-p))))
+  (with-eval-after-load 'company
+    (add-to-list 'evil-refresh-cursor-interrupt-conditions
+                 '(and (memq evil-state '(emacs insert))
+                       company-search-mode))))
 
 
 

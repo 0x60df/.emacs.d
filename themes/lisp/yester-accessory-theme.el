@@ -126,6 +126,10 @@
  `(calfw-org-source-period-fgcolor ,(yester-whole-symbol-exp foreground))
 
  ;; Gnus
- `(gnus-mode-line-image-color ,(yester-whole-symbol-exp purple)))
+ `(gnus-mode-line-image-color ,(yester-whole-symbol-exp purple))
+
+ ;; Company
+ `(company-search-cursor-color ,(yester-whole-symbol-exp yellow))
+ `(company-search-fail-cursor-color ,(yester-whole-symbol-exp orange)))
 
 (provide-theme 'yester-accessory)

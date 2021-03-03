@@ -48,6 +48,7 @@
                   load-file-name t t)
 (declare-function company-pseudo-tooltip-set-maximum-width-ratio
                   load-file-name t t)
+(declare-function company-search-recover-fail load-file-name t t)
 
 
 
@@ -106,6 +107,10 @@
     :group 'user)
 
   (setq company-echo-delay 0.5)
+  (setq company-search-lighter '("~"
+                                 (company-search-filtering "\"" "'")
+                                 company-search-string
+                                 (company-search-filtering "\"" "'")))
 
 
 
@@ -470,6 +475,80 @@ can be more than this value.")
 
   (advice-add 'company-fill-propertize
               :around #'company-pseudo-tooltip-decorate-candidate)
+
+  ;; cursor color for search mode
+  (defvar company-search-failed nil
+    "State if company search is failed.")
+
+  (defvar company-search-failed-map
+    (let ((map (make-sparse-keymap)))
+      (define-key map (kbd "DEL") #'company-search-recover-fail)
+      map)
+    "Keymap for company search is failed.")
+
+  (defvar company-user-emulation-alist
+    `((company-search-failed . ,company-search-failed-map))
+    "Alist of emulation map for company user customization.")
+
+  (defvar company-standard-cursor-color nil
+    "Temporary store for standard cursor color.")
+
+  (defcustom company-search-cursor-color (face-attribute 'cursor :background)
+    "Cursor color for `company-search-mode'."
+    :group 'user
+    :type 'color)
+  (defvar company-search-cursor-color)
+
+  (defcustom company-search-fail-cursor-color
+    (face-attribute 'cursor :background)
+    "Cursor color for `company-search-mode' is failed to match."
+    :group 'user
+    :type 'color)
+  (defvar company-search-fail-cursor-color)
+
+  (defun company-search-recover-fail ()
+    "Recover from failed state of company search."
+    (interactive)
+    (when company-search-mode
+      (setq company-search-failed nil)
+      (set-frame-parameter nil 'cursor-color
+                                          company-search-cursor-color)))
+
+  (add-hook 'company-search-mode-hook
+            (lambda ()
+              (if (not company-search-mode)
+                  (when company-standard-cursor-color
+                    (set-frame-parameter nil 'cursor-color
+                                         company-standard-cursor-color))
+                (setq company-standard-cursor-color
+                      (frame-parameter nil 'cursor-color))
+                (set-frame-parameter nil 'cursor-color
+                                     company-search-cursor-color))))
+
+  (advice-add
+   'company--search-update-predicate
+   :around (lambda (company--search-update-predicate &rest args)
+             (let ((error t))
+               (unwind-protect
+                   (prog1 (apply company--search-update-predicate args)
+                     (setq error nil))
+                 (if (not error)
+                     (progn
+                       (set-frame-parameter nil 'cursor-color
+                                          company-search-cursor-color))
+                   (set-frame-parameter nil 'cursor-color
+                                        company-search-fail-cursor-color)
+                   (setq company-search-failed t)
+                   (setq emulation-mode-map-alists
+                         (cons 'company-user-emulation-alist
+                               (delq 'company-user-emulation-alist
+                                     emulation-mode-map-alists))))))))
+
+  (advice-add
+   'company-search-printing-char
+   :around (lambda (company-search-printing-char &rest args)
+             (unless company-search-failed
+               (apply company-search-printing-char args))))
 
 
 
