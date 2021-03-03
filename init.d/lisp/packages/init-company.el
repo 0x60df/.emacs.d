@@ -513,6 +513,8 @@ can be more than this value.")
   (advice-add 'company-fill-propertize
               :around #'company-pseudo-tooltip-decorate-candidate)
 
+
+
   ;; cursor color for search mode
   (defvar company-search-failed nil
     "State if company search is failed.")
@@ -546,10 +548,14 @@ can be more than this value.")
   (defun company-search-recover-fail ()
     "Recover from failed state of company search."
     (interactive)
-    (when company-search-mode
-      (setq company-search-failed nil)
-      (set-frame-parameter nil 'cursor-color
-                                          company-search-cursor-color)))
+    (setq company-search-failed nil)
+    (if company-search-mode
+        (set-frame-parameter nil 'cursor-color company-search-cursor-color)
+      (when company-standard-cursor-color
+        (set-frame-parameter nil 'cursor-color company-standard-cursor-color))))
+
+  (add-hook 'company-after-completion-hook (lambda (&rest args)
+                                             (company-search-recover-fail)))
 
   (add-hook 'company-search-mode-hook
             (lambda ()
@@ -570,9 +576,8 @@ can be more than this value.")
                    (prog1 (apply company--search-update-predicate args)
                      (setq error nil))
                  (if (not error)
-                     (progn
-                       (set-frame-parameter nil 'cursor-color
-                                          company-search-cursor-color))
+                     (set-frame-parameter nil 'cursor-color
+                                          company-search-cursor-color)
                    (set-frame-parameter nil 'cursor-color
                                         company-search-fail-cursor-color)
                    (setq company-search-failed t)
