@@ -282,6 +282,7 @@ complete-inside is started.")
     (when (and company-split-mode
                (null company-complete-inside-context)
                (memq this-command company-begin-commands)
+               (not (equal (this-command-keys) " "))
                (not (company-grab-symbol)))
       (setq company-complete-inside-context
             `((line . ,(line-number-at-pos))
