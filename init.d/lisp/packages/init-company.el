@@ -386,6 +386,42 @@ If suffix does not match, delete aux space."
 
 
 
+  ;;; mode-line lighter
+  (defconst company-lighter-transform-alist
+    '(("yasnippet" . "yas")
+      ("dabbrev-code" . "dabrv-c"))
+    "Alist of transforming company lighter backend.")
+
+  (advice-add
+   'company--group-lighter
+   :filter-return (lambda (return)
+                    (mapc
+                     (lambda (a)
+                       (setq return
+                             (replace-regexp-in-string (car a) (cdr a) return)))
+                     (mapcar (lambda (a)
+                               `(,(regexp-quote (format "<%s>" (car a)))
+                                 . ,(format "<%s>" (cdr a))))
+                             company-lighter-transform-alist))
+                    return))
+
+  (defun company--sole-lighter (backend)
+    "Return lighter string for company BACKEND."
+    (let ((name (replace-regexp-in-string "company-\\|-company" ""
+                                          (symbol-name backend))))
+      (mapc
+       (lambda (a)
+         (setq name
+               (replace-regexp-in-string (regexp-quote (car a)) (cdr a) name)))
+       company-lighter-transform-alist)
+      (format "%s-{%s}" company-lighter-base name)))
+
+  (let ((cell (cdddr (cadr (cadr (cadr company-lighter))))))
+    (when (equal (car cell) '(symbol-name company-backend))
+      (setcar cell '(company--sole-lighter company-backend))))
+
+
+
   ;;; appearance
 
   ;; tooltip width
