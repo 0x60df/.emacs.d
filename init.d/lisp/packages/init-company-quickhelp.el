@@ -28,7 +28,7 @@
   (advice-add 'company-quickhelp-frontend :around #'company-quickhelp-auto-hide)
 
   (company-quickhelp-mode)
-  (define-key company-active-map (kbd "C-M-<tab>")
+  (define-key company-active-map (kbd "C-<iso-lefttab>")
     #'company-quickhelp-manual-begin))
 
 
