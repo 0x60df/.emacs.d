@@ -32,6 +32,25 @@
            (funcall (overlay-get target 'help-echo)
                     (selected-window) target (overlay-start target))))))
 
+  (defvar flymake-last-help nil "Last help message for flymake auto show help.")
+  (add-hook 'pre-command-hook
+            (lambda ()
+              (when (and (eldoc--message-command-p this-command)
+                         (null eldoc-last-message)
+                         flymake-last-help)
+                (message flymake-last-help))))
+  (add-hook 'post-command-hook
+            (lambda ()
+              (run-with-idle-timer
+               0.5 nil (lambda ()
+                         (if (null eldoc-last-message)
+                             (if (flymake--overlays :beg (point))
+                                 (setq flymake-last-help (flymake-show-help))
+                               (if (eldoc--message-command-p last-command)
+                                   (message nil))
+                               (setq flymake-last-help nil))
+                           (setq flymake-last-help nil))))))
+
   (defun flymake--modify-mode-line-format (return)
     "Advising `flymake--mode-line-format' to modify return."
     (if (listp return)
