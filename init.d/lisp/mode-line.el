@@ -398,6 +398,32 @@ mode-line string by window-width."
               text)))
       (mode-line--duplicate-percent-with-text-properties shrinked))))
 
+(defun mode-line-show-truncated ()
+  "Show truncated section of mode-line in echo area."
+  (interactive)
+  (let* ((text (format-mode-line mode-line-format-raw))
+         (text-width (string-width text))
+         (max-width (+ (window-body-width) 1)))
+    (when (< max-width text-width)
+      (let* ((subtext (truncate-string-to-width text max-width))
+             (truncated (substring text (length subtext) (length text))))
+        (message "%s" truncated)))))
+
+(defun mode-line-set-showing-timer ()
+  "Set timer for `mode-line-show-truncated'"
+  (run-with-idle-timer 0.8 nil (lambda ()
+                                 (unless (current-message)
+                                   (mode-line-show-truncated)))))
+
+(define-minor-mode mode-line-auto-show-truncated-mode
+  "Minor mode to show truncated section automatically."
+  nil
+  nil
+  nil
+  (if mode-line-auto-show-truncated-mode
+      (add-hook 'post-command-hook #'mode-line-set-showing-timer nil t)
+    (remove-hook 'post-command-hook #'mode-line-set-showing-timer t)))
+
 (setq-default mode-line-format
               (mode-line-format-auto-truncate mode-line-format-raw))
 

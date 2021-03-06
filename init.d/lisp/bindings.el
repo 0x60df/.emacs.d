@@ -191,6 +191,8 @@ Keymap is determined by `overriding-map-for'"
 (overriding-set-key (kbd "C-c l i")
                     #'mode-line-mule-info-toggle-showing-input-method)
 (overriding-set-key (kbd "C-c l f") #'show-which-function)
+(overriding-set-key (kbd "C-c l c") #'mode-line-show-truncated)
+(overriding-set-key (kbd "C-c l l") #'mode-line-auto-show-truncated-mode)
 (overriding-set-key (kbd "C-c i f") #'show-which-function)
 
 
