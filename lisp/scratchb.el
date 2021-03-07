@@ -1,5 +1,7 @@
 ;;; scratchb.el --- *scratch* buffer utilities
 
+;;; Commentary:
+
 ;;; code:
 
 (defgroup scratchb nil
@@ -7,7 +9,7 @@
   :group 'emacs)
 
 (defcustom scratchb-snapshot-directory (concat user-emacs-directory "scratchb")
-  "Directory in which snapshots of scratch buffer is saved."
+  "Directory in which snapshots of scratch buffer are saved."
   :type 'directory
   :group 'scratchb)
 
@@ -54,7 +56,7 @@
 
 ;;;###autoload
 (defun scratchb-snapshot ()
-  "Write *scratch* buffer content to `scratchb-snapshot-directory'"
+  "Write *scratch* buffer content to `scratchb-snapshot-directory'."
   (interactive)
   (when (file-writable-p scratchb-snapshot-directory)
     (with-current-buffer "*scratch*"
@@ -75,11 +77,11 @@
                                  #'string<))))))
 
 (defun scratchb--snapshot-when-scratchb ()
-  "Snapshot scratchb when current-frame is *scratch* buffer."
+  "Snapshot scratchb when current buffer is *scratch* buffer."
   (if (equal "*scratch*" (buffer-name)) (scratchb-snapshot)))
 
 (define-minor-mode scratchb-mode
-  "Toggle `scratchb-mode'."
+  "Minor mode to hold utilities for *scratch* buffer."
   :group 'scratchb
   :keymap 'scratchb-mode-map)
 
@@ -98,7 +100,7 @@ Reservation is restricted on current buffer."
 
 ;;;###autoload
 (define-minor-mode scratchb-auto-revert-mode
-  "Toggle `scratchb-auto-revert-mode'."
+  "Minor mode to revert *scratch* buffer automatically."
   :group 'scratchb
   :global t
   (if scratchb-auto-revert-mode
@@ -109,7 +111,7 @@ Reservation is restricted on current buffer."
 
 ;;;###autoload
 (define-minor-mode scratchb-auto-snapshot-mode
-  "Toggle `scratchb-auto-snapshot-mode'."
+  "Minor mode to take snapshot of *scratch* buffer automatically."
   :group 'scratchb
   :global t
   (if scratchb-auto-snapshot-mode
