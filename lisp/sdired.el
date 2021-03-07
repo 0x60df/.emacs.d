@@ -1,54 +1,56 @@
-;;; sdired.el --- dired sorting utilities
+;;; sdired.el --- Sorting utilities for dired
 
-;;; code:
+;;; Commentary:
+
+;;; Code:
 
 (require 'dired)
 (require 'isearch)
 
 (defgroup sdired nil
-  "dired sorting utilities"
+  "Sorting utilities for dired ."
   :group 'emacs)
 
 (defcustom sdired-switches-for-name "-al"
-  "Switches for sort by name"
+  "Switches for sort by name."
   :type 'string
   :group 'sdired)
 
 (defcustom sdired-switches-for-date "-alt"
-  "Switches for sort by date"
+  "Switches for sort by date."
   :type 'string
   :group 'sdired)
 
 (defcustom sdired-switches-for-size "-alS"
-  "Switches for sort by size"
+  "Switches for sort by size."
   :type 'string
   :group 'sdired)
 
 (defcustom sdired-switches-for-type "-alX"
-  "Switches for sort by type"
+  "Switches for sort by type."
   :type 'string
   :group 'sdired)
 
 (defcustom sdired-switches-for-vnum "-alv"
-  "Switch for natural sort"
+  "Switches for sort natural order."
   :type 'string
   :group 'sdired)
 
 (defcustom sdired-switch-for-reverse "-r"
-  "Switch for reversal sort"
+  "Switch for reversal sort."
   :type 'string
   :group 'sdired)
 
 (defcustom sdired-switch-for-directory-first "--group-directories-first"
-  "Switch for sort where directories are listed first"
+  "Switch for sort where directories are listed first."
   :type 'string
   :group 'sdired)
 
-(defvar sdired-base-switches sdired-switches-for-name "Base switches for sort")
+(defvar sdired-base-switches sdired-switches-for-name "Base switches for sort.")
 (make-variable-buffer-local 'sdired-base-switches)
-(defvar sdired-other-base-switches "" "Base switches other than builtin")
+(defvar sdired-other-base-switches "" "Base switches other than builtin.")
 (make-variable-buffer-local 'sdired-other-base-switches)
-(defvar sdired-optional-switches '() "Optional switches for sort")
+(defvar sdired-optional-switches '() "Optional switches for sort.")
 (make-variable-buffer-local 'sdired-optional-switches)
 
 (defface sdired-group '((t :inherit dired-header))
@@ -70,8 +72,9 @@
 
 ;;;###autoload
 (defun sdired-sort (&optional arg)
-  "Interface for sort. Basically toggle key.
- if called with prefix argument, offer other features."
+  "Interface for sorting dired buffer.  Basically toggle key.
+If called with prefix argument ARG, offer other features
+and interactive interface."
   (interactive "P")
   (when dired-sort-inhibit
     (error "Cannot sort this Dired buffer"))
@@ -172,12 +175,12 @@
     (sdired-toggle-key)))
 
 (defun sdired--start-isearch ()
-  "Start isearch while interactive sdired sort interface is active."
+  "Start isearch while sdired interactive interface is active."
   (add-hook 'isearch-mode-end-hook #'sdired--end-isearch)
   (recursive-edit))
 
 (defun sdired--end-isearch ()
-  "End isearch while and return back to sdired interface."
+  "End isearch and return back to sdired interface."
   (remove-hook 'isearch-mode-end-hook #'sdired--end-isearch)
   (exit-recursive-edit))
 
@@ -202,7 +205,8 @@
   (sdired-refresh))
 
 (defun sdired-edit-switches (arg)
-  "Edit directory switches for sort."
+  "Edit directory switches for sort.
+If ARG is non-nil, reset switches."
   (interactive "P")
   (if arg
       (setq sdired-other-base-switches ""
@@ -219,8 +223,7 @@
   (sdired-refresh))
 
 (defun sdired-sort-by (&optional key)
-  "Sort dired by KEY.
-If called with prefix argument, sort switches can be edit manually"
+  "Sort dired by KEY."
   (interactive (list
                 (completing-read "Key: "
                                  '("name" "date" "size" "type" "vnum"))))
@@ -235,7 +238,7 @@ If called with prefix argument, sort switches can be edit manually"
   (sdired-refresh))
 
 (defun sdired-toggle-reverse ()
-  "Sort dired with reverse option"
+  "Sort dired with reverse option."
   (interactive)
   (if (member sdired-switch-for-reverse sdired-optional-switches)
       (setq sdired-optional-switches
@@ -244,7 +247,7 @@ If called with prefix argument, sort switches can be edit manually"
   (sdired-refresh))
 
 (defun sdired-toggle-directory-first ()
-  "Sort dired with directory first option"
+  "Sort dired with directory first option."
   (interactive)
   (if (member sdired-switch-for-directory-first sdired-optional-switches)
       (setq sdired-optional-switches
@@ -253,7 +256,7 @@ If called with prefix argument, sort switches can be edit manually"
   (sdired-refresh))
 
 (defun sdired-reset ()
-  "Reset sort configurations"
+  "Reset sort configurations."
   (interactive)
   (setq sdired-base-switches sdired-switches-for-name
         sdired-other-base-switches ""
@@ -263,8 +266,8 @@ If called with prefix argument, sort switches can be edit manually"
 (defun sdired-set-mode-line ()
   "Set mode line display according to `sdired-base-switches'.
 Mode line displays \"by name\", \"by date\", \"by size\",
-or \"by type\". If switches are other than builtin,
-switches are shown literally."
+\"by type\" or \"by vnum\". If switches are other than
+builtin, switches are shown literally."
   (when (eq major-mode 'dired-mode)
     (setq mode-name
           (cond ((string-equal sdired-base-switches sdired-switches-for-name)
