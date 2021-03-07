@@ -25,12 +25,6 @@
 
 (defvar scratchb-before-flush-hook nil "Hook run before `scratchb-flush'.")
 
-(defvar scratchb-after-flush-hook nil "Hook run after `scratchb-flush'.")
-
-(defvar scratchb-before-revert-hook nil "Hook run before `scratchb-revert'.")
-
-(defvar scratchb-after-revert-hook nil "Hook run after `scratchb-revert'.")
-
 ;;;###autoload
 (defun scratchb-flush ()
   "`erase-buffer' and `set-buffer-modified-p' nil on *scratch* buffer."
@@ -38,19 +32,16 @@
   (run-hook-with-args 'scratchb-before-flush-hook)
   (with-current-buffer "*scratch*"
     (erase-buffer)
-    (set-buffer-modified-p nil)
-    (run-hook-with-args 'scratchb-after-flush-hook)))
+    (set-buffer-modified-p nil)))
 
 ;;;###autoload
 (defun scratchb-revert ()
   "Generate *scratch* buffer if it does not exist."
   (interactive)
-  (run-hook-with-args 'scratchb-before-revert-hook)
   (unless (get-buffer "*scratch*")
     (with-current-buffer (get-buffer-create "*scratch*")
       (cd scratchb-default-directory)
-      (funcall initial-major-mode)
-      (run-hook-with-args 'scratchb-after-revert-hook))))
+      (funcall initial-major-mode))))
 
 ;;;###autoload
 (defun scratchb-snapshot ()
