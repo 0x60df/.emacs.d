@@ -48,10 +48,12 @@
 
 (defvar sdired-base-switches sdired-switches-for-name "Base switches for sort.")
 (make-variable-buffer-local 'sdired-base-switches)
-(defvar sdired-other-base-switches "" "Base switches other than builtin.")
-(make-variable-buffer-local 'sdired-other-base-switches)
-(defvar sdired-optional-switches '() "Optional switches for sort.")
-(make-variable-buffer-local 'sdired-optional-switches)
+
+(defvar sdired-edited-base-switches "" "Base switches edited by user.")
+(make-variable-buffer-local 'sdired-edited-base-switches)
+
+(defvar sdired-optional-switch-list '() "Optional switches for sort.")
+(make-variable-buffer-local 'sdired-optional-switch-list)
 
 (defface sdired-group '((t :inherit (dired-header italic)))
   "Face for group part of sdired."
@@ -96,7 +98,7 @@ and interactive interface."
                       (propertize key
                                   'face
                                   (if (member optional-switch
-                                              sdired-optional-switches)
+                                              sdired-optional-switch-list)
                                       'sdired-active-key
                                     'sdired-key))
                       description)))
@@ -188,10 +190,10 @@ and interactive interface."
               ((string-equal sdired-base-switches sdired-switches-for-type)
                sdired-switches-for-vnum)
               ((string-equal sdired-base-switches sdired-switches-for-vnum)
-               (if (string-equal sdired-other-base-switches "")
+               (if (string-equal sdired-edited-base-switches "")
                    sdired-switches-for-name
-                 sdired-other-base-switches))
-              ((string-equal sdired-base-switches sdired-other-base-switches)
+                 sdired-edited-base-switches))
+              ((string-equal sdired-base-switches sdired-edited-base-switches)
                sdired-switches-for-name)))
   (sdired-refresh))
 
@@ -200,17 +202,17 @@ and interactive interface."
 If ARG is non-nil, reset switches."
   (interactive "P")
   (if arg
-      (setq sdired-other-base-switches ""
+      (setq sdired-edited-base-switches ""
             sdired-base-switches sdired-switches-for-name)
     (let ((s (read-string "ls switches (must contain -l): "
                           dired-actual-switches)))
       (setq sdired-base-switches s)
-      (unless (or (string-equal s sdired-switches-for-name)
-                  (string-equal s sdired-switches-for-date)
-                  (string-equal s sdired-switches-for-size)
-                  (string-equal s sdired-switches-for-type)
-                  (string-equal s sdired-switches-for-vnum))
-        (setq sdired-other-base-switches s))))
+      (unless (member s (list sdired-switches-for-name
+                              sdired-switches-for-date
+                              sdired-switches-for-size
+                              sdired-switches-for-type
+                              sdired-switches-for-vnum))
+        (setq sdired-edited-base-switches s))))
   (sdired-refresh))
 
 (defun sdired-sort-by (&optional key)
@@ -231,27 +233,29 @@ If ARG is non-nil, reset switches."
 (defun sdired-toggle-reverse ()
   "Sort dired with reverse option."
   (interactive)
-  (if (member sdired-switch-for-reverse sdired-optional-switches)
-      (setq sdired-optional-switches
-            (remove sdired-switch-for-reverse sdired-optional-switches))
-    (add-to-list 'sdired-optional-switches sdired-switch-for-reverse))
+  (if (member sdired-switch-for-reverse sdired-optional-switch-list)
+      (setq sdired-optional-switch-list
+            (remove sdired-switch-for-reverse sdired-optional-switch-list))
+    (add-to-list 'sdired-optional-switch-list sdired-switch-for-reverse))
   (sdired-refresh))
 
 (defun sdired-toggle-directory-first ()
   "Sort dired with directory first option."
   (interactive)
-  (if (member sdired-switch-for-directory-first sdired-optional-switches)
-      (setq sdired-optional-switches
-            (remove sdired-switch-for-directory-first sdired-optional-switches))
-    (add-to-list 'sdired-optional-switches sdired-switch-for-directory-first))
+  (if (member sdired-switch-for-directory-first sdired-optional-switch-list)
+      (setq sdired-optional-switch-list
+            (remove sdired-switch-for-directory-first
+                    sdired-optional-switch-list))
+    (add-to-list 'sdired-optional-switch-list
+                 sdired-switch-for-directory-first))
   (sdired-refresh))
 
 (defun sdired-reset ()
   "Reset sort configurations."
   (interactive)
   (setq sdired-base-switches sdired-switches-for-name
-        sdired-other-base-switches ""
-        sdired-optional-switches '())
+        sdired-edited-base-switches ""
+        sdired-optional-switch-list '())
   (sdired-refresh))
 
 (defun sdired-set-mode-line ()
@@ -278,11 +282,11 @@ builtin, switches are shown literally."
 (defun sdired-refresh ()
   "Refresh current dired buffer according to set switches.
 Call `dired-sort-other' with `sdired-base-switches',
-and `sdired-optional-switches'.
+and `sdired-optional-switch-list'.
 Subsequently, call `sdired-set-mode-line'"
   (dired-sort-other
    (mapconcat 'identity
-              (cons sdired-base-switches sdired-optional-switches)
+              (cons sdired-base-switches sdired-optional-switch-list)
               " "))
   (sdired-set-mode-line))
 
