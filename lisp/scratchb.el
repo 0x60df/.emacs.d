@@ -69,9 +69,9 @@
                      (file-exists-p file))
                 (delete-file file)))
           (nthcdr scratchb-snapshot-limit
-                  (reverse (sort (file-expand-wildcards
-                                  (concat scratchb-snapshot-directory "*.el"))
-                                 #'string<))))))
+                  (sort (file-expand-wildcards
+                         (concat scratchb-snapshot-directory "*.el"))
+                        #'string>)))))
 
 (defun scratchb--snapshot-when-scratchb ()
   "Snapshot scratchb when current buffer is *scratch* buffer."
