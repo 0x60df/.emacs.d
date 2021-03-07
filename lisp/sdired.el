@@ -80,52 +80,52 @@ and interactive interface."
     (error "Cannot sort this Dired buffer"))
   (if arg
       (let ((current-prefix-arg nil)
-            (warning-message nil))
+            (warning-message nil)
+            (commands-line
+             (lambda (group &rest commands)
+               (format
+                "%-18s: %s"
+                (propertize group 'face 'sdired-group)
+                (mapconcat
+                 (lambda (command-spec)
+                   (let ((key (car command-spec))
+                         (description (cadr command-spec))
+                         (optional-switch (caddr command-spec)))
+                     (format
+                      "[%s] %-15s"
+                      (propertize key
+                                  'face
+                                  (if (member optional-switch
+                                              sdired-optional-switches)
+                                      'sdired-active-key
+                                    'sdired-key))
+                      description)))
+                 commands
+                 " ")))))
         (catch 'sdired-quit-sort
           (while t
-            (let* ((sequence
+            (let* ((commands
+                    `(,(funcall commands-line "Key control"
+                                '("k" "select key")
+                                '("t" "toggle key"))
+                      ,(funcall commands-line "Custom switch"
+                                '("e" "edit switches")
+                                '("c" "clean switches"))
+                      ,(funcall commands-line "Optional switch"
+                                `("r" "reversal order"
+                                  ,sdired-switch-for-reverse)
+                                `("d" "directory first"
+                                  ,sdired-switch-for-directory-first))
+                      ,(funcall commands-line "Sort control"
+                                '("s" "reset")
+                                '("q" "quit"))))
+                   (sequence
                     (read-key-sequence
-                     (concat
-                      (propertize "Key control       " 'face 'sdired-group)
-                      ": "
-                      "["
-                      (propertize "k" 'face 'sdired-key)
-                      "] select key      ["
-                      (propertize "t"  'face 'sdired-key)
-                      "] toggle key\n"
-                      (propertize "Custom switch     " 'face 'sdired-group)
-                      ": "
-                      "["
-                      (propertize "e"  'face 'sdired-key)
-                      "] edit switches   ["
-                      (propertize "c"  'face 'sdired-key)
-                      "] clean switches\n"
-                      (propertize "Optional switch   " 'face 'sdired-group)
-                      ": "
-                      "["
-                      (propertize
-                       "r"  'face
-                       (if (member sdired-switch-for-reverse
-                                   sdired-optional-switches)
-                           'sdired-active-key
-                         'sdired-key))
-                      "] reversal order  ["
-                      (propertize
-                       "d"  'face
-                       (if (member sdired-switch-for-directory-first
-                                   sdired-optional-switches)
-                           'sdired-active-key
-                         'sdired-key))
-                      "] directory first\n"
-                      (propertize "Sort control      " 'face 'sdired-group)
-                      ": "
-                      "["
-                      (propertize "s"  'face 'sdired-key)
-                      "] reset           ["
-                      (propertize "q"  'face 'sdired-key)
-                      "] quit"
-                      (if (stringp warning-message)
-                          warning-message))))
+                     (mapconcat
+                      (lambda (line) (replace-regexp-in-string " +$" "" line))
+                      `(,@commands
+                        ,@(if (stringp warning-message) (list warning-message)))
+                      "\n")))
                    (command (key-binding sequence)))
               (setq warning-message nil)
               (cond ((equal sequence "k")
@@ -149,22 +149,19 @@ and interactive interface."
                          (eq command 'digit-argument)
                          (eq command 'negative-argument))
                      (setq warning-message
-                           (concat "\n"
-                                   (propertize "Warning message   "
-                                               'face 'sdired-group)
-                                   ": "
-                                   "["
-                                   (propertize (key-description sequence)
-                                               'face 'sdired-warning)
-                                   "] "
-                                   (format-message "`%s' is not supported"
-                                                   command))))
+                           (format
+                            "%-18s: [%s] %s"
+                            (propertize "Warning message" 'face 'sdired-group)
+                            (propertize (key-description sequence)
+                                        'face 'sdired-warning)
+                            (format-message "`%s' is not supported" command))))
                     (t (ignore-errors (call-interactively command))
                        (if isearch-mode (sdired--start-isearch))
                        (if (not (eq major-mode 'dired-mode))
                            (throw 'sdired-quit-sort t))))
               (window-resize (minibuffer-window)
-                             (- (if warning-message 5 4)
+                             (- (+ (length commands)
+                                   (if warning-message 1 0))
                                 (window-height (minibuffer-window))))))))
     (sdired-toggle-key)))
 
