@@ -31,8 +31,6 @@
 
 (defvar scratchb-after-revert-hook nil "Hook run after `scratchb-revert'.")
 
-(defvar scratchb-mode-map (make-sparse-keymap) "Keymap for scratchb-mode.")
-
 ;;;###autoload
 (defun scratchb-flush ()
   "`erase-buffer' and `set-buffer-modified-p' nil on *scratch* buffer."
@@ -83,7 +81,7 @@
 (define-minor-mode scratchb-mode
   "Minor mode to hold utilities for *scratch* buffer."
   :group 'scratchb
-  :keymap 'scratchb-mode-map)
+  :keymap (make-sparse-keymap))
 
 ;;;###autoload
 (defun scratchb-mode-buffer-sticky ()
