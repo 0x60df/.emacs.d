@@ -73,23 +73,33 @@
                          (concat scratchb-snapshot-directory "*.el"))
                         #'string>)))))
 
+;;;###autoload
 (define-minor-mode scratchb-mode
   "Minor mode to hold utilities for *scratch* buffer."
   :group 'scratchb
   :keymap (make-sparse-keymap))
 
+(defun scratchb--stick ()
+  "Enable `scratchb-sticky-mode' after major mode is changed.
+This function is intended to be used only in
+`scratchb-sticky-mode'."
+  (add-hook 'after-change-major-mode-hook #'scratchb-sticky-mode))
+
 ;;;###autoload
-(defun scratchb-mode-buffer-sticky ()
-  "Enable `scratchb-mode', and reserve enabling on change of major mode.
-Reservation is restricted on current buffer."
-  (with-current-buffer "*scratch*"
-    (scratchb-mode 1)
-    (add-hook 'change-major-mode-hook
-              (lambda ()
-                (add-hook
-                 'after-change-major-mode-hook #'scratchb-mode-buffer-sticky))
-              nil t)
-    (remove-hook 'after-change-major-mode-hook #'scratchb-mode-buffer-sticky)))
+(define-minor-mode scratchb-sticky-mode
+  "Minor mode to keep `scratchb-mode' on, even with major mode change."
+  :group 'scratchb
+  :global t
+  (if scratchb-sticky-mode
+      (with-current-buffer "*scratch*"
+        (remove-hook 'after-change-major-mode-hook #'scratchb-sticky-mode)
+        (scratchb-mode)
+        (add-hook 'change-major-mode-hook #'scratchb--stick nil t)
+        (add-hook 'scratchb-after-revert-hook #'scratchb-sticky-mode))
+    (with-current-buffer "*scratch*"
+      (scratchb-mode 0)
+      (remove-hook 'change-major-mode-hook #'scratchb--stick t)
+      (remove-hook 'scratchb-after-revert-hook #'scratchb-sticky-mode))))
 
 ;;;###autoload
 (define-minor-mode scratchb-auto-revert-mode
