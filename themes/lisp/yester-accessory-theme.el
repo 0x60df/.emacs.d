@@ -58,8 +58,10 @@
 
 
    ;; Sdired
-   `(sdired-group (,@(yester-whole-face-spec class `(:foreground ,comment))))
-   `(sdired-key (,@(yester-whole-face-spec class `(:foreground ,aqua))))
+   `(sdired-group (,@(yester-whole-face-spec class
+                       :foreground comment :slant 'italic)))
+   `(sdired-key (,@(yester-whole-face-spec class
+                     :foreground aqua :weight 'bold)))
 
 
 

@@ -53,19 +53,19 @@
 (defvar sdired-optional-switches '() "Optional switches for sort.")
 (make-variable-buffer-local 'sdired-optional-switches)
 
-(defface sdired-group '((t :inherit dired-header))
+(defface sdired-group '((t :inherit (dired-header italic)))
   "Face for group part of sdired."
   :group 'sdired)
 
-(defface sdired-key '((t :inherit dired-mark))
+(defface sdired-key '((t :inherit (dired-mark bold)))
   "Face for key part of sdired."
   :group 'sdired)
 
-(defface sdired-active-key '((t :inherit dired-marked))
+(defface sdired-active-key '((t :inherit (dired-marked bold)))
   "Face for active-key part of sdired."
   :group 'sdired)
 
-(defface sdired-warning '((t :inherit dired-warning))
+(defface sdired-warning '((t :inherit dired-warning bold))
   "Face for warning part of sdired."
   :group 'sdired)
 
@@ -86,49 +86,43 @@ and interactive interface."
             (let* ((sequence
                     (read-key-sequence
                      (concat
-                      (propertize "Key control       "
-                                  'face '(sdired-group italic))
+                      (propertize "Key control       " 'face 'sdired-group)
                       ": "
                       "["
-                      (propertize "k" 'face '(sdired-key bold))
+                      (propertize "k" 'face 'sdired-key)
                       "] select key      ["
-                      (propertize "t"  'face '(sdired-key bold))
+                      (propertize "t"  'face 'sdired-key)
                       "] toggle key\n"
-                      (propertize "Custom switch     " 'face
-                                  '(sdired-group italic))
+                      (propertize "Custom switch     " 'face 'sdired-group)
                       ": "
                       "["
-                      (propertize "e"  'face '(sdired-key bold))
+                      (propertize "e"  'face 'sdired-key)
                       "] edit switches   ["
-                      (propertize "c"  'face '(sdired-key bold))
+                      (propertize "c"  'face 'sdired-key)
                       "] clean switches\n"
-                      (propertize "Optional switch   " 'face
-                                  '(sdired-group italic))
+                      (propertize "Optional switch   " 'face 'sdired-group)
                       ": "
                       "["
                       (propertize
                        "r"  'face
-                       (list (if (member sdired-switch-for-reverse
-                                         sdired-optional-switches)
-                                 'sdired-active-key
-                               'sdired-key)
-                             'bold))
+                       (if (member sdired-switch-for-reverse
+                                   sdired-optional-switches)
+                           'sdired-active-key
+                         'sdired-key))
                       "] reversal order  ["
                       (propertize
                        "d"  'face
-                       (list (if (member sdired-switch-for-directory-first
-                                         sdired-optional-switches)
-                                 'sdired-active-key
-                               'sdired-key)
-                             'bold))
+                       (if (member sdired-switch-for-directory-first
+                                   sdired-optional-switches)
+                           'sdired-active-key
+                         'sdired-key))
                       "] directory first\n"
-                      (propertize "Sort control      "
-                                  'face '(sdired-group italic))
+                      (propertize "Sort control      " 'face 'sdired-group)
                       ": "
                       "["
-                      (propertize "s"  'face '(sdired-key bold))
+                      (propertize "s"  'face 'sdired-key)
                       "] reset           ["
-                      (propertize "q"  'face '(sdired-key bold))
+                      (propertize "q"  'face 'sdired-key)
                       "] quit"
                       (if (stringp warning-message)
                           warning-message))))
@@ -157,11 +151,11 @@ and interactive interface."
                      (setq warning-message
                            (concat "\n"
                                    (propertize "Warning message   "
-                                               'face '(sdired-group italic))
+                                               'face 'sdired-group)
                                    ": "
                                    "["
                                    (propertize (key-description sequence)
-                                               'face '(sdired-warning bold))
+                                               'face 'sdired-warning)
                                    "] "
                                    (format-message "`%s' is not supported"
                                                    command))))
