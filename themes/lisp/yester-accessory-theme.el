@@ -53,7 +53,7 @@
 
    ;; Risky
    `(risky-yes-or-no-p-prefix
-     (,@(yester-whole-face-spec class `(:foreground ,red))))
+     (,@(yester-whole-face-spec class :foreground red)))
 
 
 
