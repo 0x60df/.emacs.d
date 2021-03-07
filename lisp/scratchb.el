@@ -8,12 +8,12 @@
   "*scratch* buffer utilities"
   :group 'emacs)
 
-(defcustom scratchb-snapshot-directory (concat user-emacs-directory "scratchb")
+(defcustom scratchb-snapshot-directory (concat user-emacs-directory "scratchb/")
   "Directory in which snapshots of scratch buffer are saved."
   :type 'directory
   :group 'scratchb)
 
-(defcustom scratchb-default-directory "~"
+(defcustom scratchb-default-directory "~/"
   "Directory which is selected when scratch buffer is reverted."
   :type 'directory
   :group'scratchb)
@@ -62,7 +62,6 @@
         (widen)
         (write-region (point-min) (point-max)
                       (concat scratchb-snapshot-directory
-                              "/"
                               (format-time-string "%Y%m%d%H%M%S.el"
                                                   (current-time))))))
     (mapc (lambda (file)
@@ -71,7 +70,7 @@
                 (delete-file file)))
           (nthcdr scratchb-snapshot-limit
                   (reverse (sort (file-expand-wildcards
-                                  "~/.emacs.d/scratchb/*.el")
+                                  (concat scratchb-snapshot-directory "*.el"))
                                  #'string<))))))
 
 (defun scratchb--snapshot-when-scratchb ()
