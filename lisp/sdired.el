@@ -55,6 +55,14 @@
 (defvar sdired-optional-switch-list '() "Optional switches for sort.")
 (make-variable-buffer-local 'sdired-optional-switch-list)
 
+(defvar sdired-base-switches-alist
+  `(("name" . ,sdired-switches-for-name)
+    ("date" . ,sdired-switches-for-date)
+    ("size" . ,sdired-switches-for-size)
+    ("type" . ,sdired-switches-for-type)
+    ("vnum" . ,sdired-switches-for-vnum))
+  "Alist of base switches and its label.")
+
 (defface sdired-group '((t :inherit (dired-header italic)))
   "Face for group part of sdired."
   :group 'sdired)
@@ -207,27 +215,19 @@ If ARG is non-nil, reset switches."
     (let ((s (read-string "ls switches (must contain -l): "
                           dired-actual-switches)))
       (setq sdired-base-switches s)
-      (unless (member s (list sdired-switches-for-name
-                              sdired-switches-for-date
-                              sdired-switches-for-size
-                              sdired-switches-for-type
-                              sdired-switches-for-vnum))
-        (setq sdired-edited-base-switches s))))
+      (setq sdired-edited-base-switches
+            (if (rassoc s sdired-base-switches-alist)
+                ""
+              s))))
   (sdired-refresh))
 
 (defun sdired-sort-by (&optional key)
   "Sort dired by KEY."
-  (interactive (list
-                (completing-read "Key: "
-                                 '("name" "date" "size" "type" "vnum"))))
-  (setq sdired-base-switches
-        (cond ((stringp key)
-               (cond ((string-equal key "name") sdired-switches-for-name)
-                     ((string-equal key "date") sdired-switches-for-date)
-                     ((string-equal key "size") sdired-switches-for-size)
-                     ((string-equal key "type") sdired-switches-for-type)
-                     ((string-equal key "vnum") sdired-switches-for-vnum)))
-              (t dired-actual-switches)))
+  (interactive
+   (list (completing-read "Key: " (mapcar #'car sdired-base-switches-alist))))
+  (setq sdired-base-switches (if (stringp key)
+                                 (cdr (assoc key sdired-base-switches-alist))
+                               dired-actual-switches))
   (sdired-refresh))
 
 (defun sdired-toggle-reverse ()
@@ -260,23 +260,16 @@ If ARG is non-nil, reset switches."
 
 (defun sdired-set-mode-line ()
   "Set mode line display according to `sdired-base-switches'.
-Mode line displays \"by name\", \"by date\", \"by size\",
-\"by type\" or \"by vnum\". If switches are other than
-builtin, switches are shown literally."
+Mode line displays car of `sdired-base-switches-alist'.
+If switches does not match with cdr of
+`sdired-base-switches-alist', switches are shown literally."
   (when (eq major-mode 'dired-mode)
     (setq mode-name
-          (cond ((string-equal sdired-base-switches sdired-switches-for-name)
-                 "Dired by name")
-                ((string-equal sdired-base-switches sdired-switches-for-date)
-                 "Dired by date")
-                ((string-equal sdired-base-switches sdired-switches-for-size)
-                 "Dired by size")
-                ((string-equal sdired-base-switches sdired-switches-for-type)
-                 "Dired by type")
-                ((string-equal sdired-base-switches sdired-switches-for-vnum)
-                 "Dired by vnum")
-                (t
-                 (concat "Dired " sdired-base-switches))))
+          (let ((entry (rassoc sdired-base-switches
+                               sdired-base-switches-alist)))
+            (concat "Dired " (if entry
+                                 (concat "by " (car entry))
+                               sdired-base-switches))))
     (force-mode-line-update)))
 
 (defun sdired-refresh ()
@@ -289,6 +282,18 @@ Subsequently, call `sdired-set-mode-line'"
               (cons sdired-base-switches sdired-optional-switch-list)
               " "))
   (sdired-set-mode-line))
+
+(defun sdired-update-base-switches-alist (&optional alist)
+  "Update `sdired-base-switches-alist' with switches variables.
+If ALIST is a list, overwrite alist by ALIST."
+  (setq sdired-base-switches-alist
+        (if (listp alist)
+            alist
+          `(("name" . ,sdired-switches-for-name)
+            ("date" . ,sdired-switches-for-date)
+            ("size" . ,sdired-switches-for-size)
+            ("type" . ,sdired-switches-for-type)
+            ("vnum" . ,sdired-switches-for-vnum)))))
 
 
 (provide 'sdired)
