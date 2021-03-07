@@ -73,10 +73,6 @@
                          (concat scratchb-snapshot-directory "*.el"))
                         #'string>)))))
 
-(defun scratchb--snapshot-when-scratchb ()
-  "Snapshot scratchb when current buffer is *scratch* buffer."
-  (if (equal "*scratch*" (buffer-name)) (scratchb-snapshot)))
-
 (define-minor-mode scratchb-mode
   "Minor mode to hold utilities for *scratch* buffer."
   :group 'scratchb
@@ -115,10 +111,12 @@ Reservation is restricted on current buffer."
       (progn
         (add-hook 'scratchb-before-flush-hook #'scratchb-snapshot)
         (add-hook 'kill-emacs-hook #'scratchb-snapshot)
-        (add-hook 'kill-buffer-hook #'scratchb--snapshot-when-scratchb))
+        (with-current-buffer "*scratch*"
+          (add-hook 'kill-buffer-hook #'scratchb-snapshot nil t)))
     (remove-hook 'scratchb-before-flush-hook #'scratchb-snapshot)
     (remove-hook 'kill-emacs-hook #'scratchb-snapshot)
-    (remove-hook 'kill-buffer-hook #'scratchb--snapshot-when-scratchb)))
+    (with-current-buffer "*scratch*"
+      (remove-hook 'kill-buffer-hook #'scratchb-snapshot t))))
 
 (provide 'scratchb)
 
