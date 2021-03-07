@@ -46,6 +46,7 @@
 
 (overriding-set-key (kbd "H-v") #'magit-status)
 (overriding-set-key (kbd "C-c v m") #'magit-status)
+(overriding-set-key (kbd "C-c v c") #'magit-checkout)
 (overriding-set-key (kbd "C-c v b") #'magit-blame)
 
 (with-eval-after-load 'magit-mode
