@@ -2,7 +2,7 @@
 
 ;;; Commentary:
 
-;;; code:
+;;; Code:
 
 (defgroup scratchb nil
   "*scratch* buffer utilities"

@@ -1,6 +1,8 @@
 ;;; scratch.el --- generate new buffer instantly
 
-;;; code:
+;;; Commentary:
+
+;;; Code:
 
 (require 'shifter)
 
@@ -9,34 +11,35 @@
   :group 'emacs)
 
 (defcustom scratch-snapshot-directory (concat user-emacs-directory "scratch/")
-  "Directory path for snapshots."
+  "Directory path for snapshots of `scratch' buffer."
   :type 'directory
   :group 'scratch)
 
 (defcustom scratch-snapshot-limit 256
-  "Limit number for snapshots."
+  "Limit number for snapshots of `scratch' buffer."
   :type 'integer
   :group 'scratch)
 
 (defcustom scratch-auto-snapshot t
-  "Flag if snapshots for scratches are saved automatically."
+  "Flag if snapshots of `scratch'es are saved automatically."
   :type 'boolean
   :group 'scratch)
 
 (defcustom scratch-auto-snapshot-delay 2.0
-  "Delay time by second for auto snapshot."
+  "Delay time by second for auto snapshot of `scratch' buffer."
   :type 'number
   :group 'scratch)
 
-(defvar scratch-auto-snapshot-timer nil "Timer for snapshot.")
+(defvar scratch-auto-snapshot-timer nil
+  "Timer for snapshot of `scratch' buffer.")
 (make-variable-buffer-local 'scratch-auto-snapshot-timer)
 
-(defvar scratch-list '() "Scratch buffer list which are not labeled.")
+(defvar scratch-list '() "List of `scratch' buffer which is not labeled.")
 
 (defvar scratch-mode-map (make-sparse-keymap) "Keymap for scratch-mode.")
 
 (defun scratch-snapshot ()
-  "Snapshot scratch buffer."
+  "Snapshot `scratch' buffer."
   (interactive)
   (unless (file-exists-p scratch-snapshot-directory)
     (make-directory scratch-snapshot-directory t))
@@ -59,7 +62,11 @@
                         #'file-newer-than-file-p)))))
 
 (defun scratch--setup-auto-snapshot-timer (begin end range)
-  "Setup timer for snapshot. This works with `after-change-functions'"
+  "Setup timer for snapshot of `scratch' buffer.
+This function is intended to hooked to
+`after-change-functions'.
+Therefore, this function receives three arguments BEGIN,
+END and RANGE.  However, all of them are ignored."
   (if scratch-auto-snapshot
       (unless scratch-auto-snapshot-timer
         (setq scratch-auto-snapshot-timer
@@ -74,7 +81,7 @@
 (defun scratch--revert-or-quit-auto-snapshot ()
   "Revert or quit auto snapshot according to the state of visit.
 If scratch does not visit file when this function is called,
-revert auto snapshot. Otherwise, do quit auto snapshot.
+revert auto snapshot.  Otherwise, do quit auto snapshot.
 This function is intended to be added to `pre-command-hook'."
   (unwind-protect
       (if buffer-file-name
@@ -89,10 +96,10 @@ This function is intended to be added to `pre-command-hook'."
 (defun scratch--try-quit-auto-snapshot ()
   "Try quit auto snapshot.
 If scratch does not visit file until `pre-command-hook',
-revert auto snapshot. Otherwise, do quit auto snapshot.
+revert auto snapshot.  Otherwise, do quit auto snapshot.
 This function is intended to be added to
 `write-contents-functions' as pre process.
-Therefore, return nil if successfull."
+Therefore, return nil if successful."
   (remove-hook 'after-change-functions #'scratch--setup-auto-snapshot-timer t)
   (add-hook 'pre-command-hook
             #'scratch--revert-or-quit-auto-snapshot nil t)
@@ -100,7 +107,7 @@ Therefore, return nil if successfull."
 
 ;;;###autoload
 (define-minor-mode scratch-mode
-  "Toggle `scratch-mode'."
+  "Minor mode to enable features for `scratch' buffer."
   :group 'scratch
   :keymap 'scratch-mode-map
   (if scratch-mode
@@ -110,14 +117,14 @@ Therefore, return nil if successfull."
                  #'scratch--setup-auto-snapshot-timer t)))
 
 (defun scratch-shred ()
-  "Kill current buffer"
+  "Kill current `scratch' buffer."
   (interactive)
   (if scratch-auto-snapshot (scratch-snapshot))
   (setq scratch-list (remove (current-buffer) scratch-list))
   (kill-buffer (current-buffer)))
 
 (defun scratch-shred-all ()
-  "Kill all scratch buffers which are not labeled."
+  "Kill all `scratch' buffers which are not labeled."
   (interactive)
   (when (yes-or-no-p "Kill all scratch buffers? ")
     (mapc (lambda (scratch)
@@ -129,7 +136,7 @@ Therefore, return nil if successfull."
       (setq scratch-list '())))
 
 (defun scratch-label ()
-  "Rename scratch buffer and remove it from `scratch-list'."
+  "Rename `scratch' buffer and remove it from `scratch-list'."
   (interactive)
   (when scratch-mode
     (rename-buffer (read-string "Lable: "))
