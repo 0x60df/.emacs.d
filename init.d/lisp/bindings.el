@@ -22,6 +22,8 @@
 (define-key key-translation-map (kbd "ESC M-m") #'event-apply-meta-modifier)
 (define-key key-translation-map (kbd "ESC M-s") #'event-apply-super-modifier)
 
+
+
 (global-unset-key (kbd "<home>"))
 (global-unset-key (kbd "<end>"))
 (global-unset-key (kbd "<prior>"))
@@ -37,6 +39,8 @@
                 #'event-apply-super-modifier))))
   (funcall form)
   (add-hook 'after-make-terminal-functions form))
+
+
 
 (defvar overriding-standard-key-map (make-sparse-keymap)
   "Overriding map for standard reserved keys.")
@@ -128,14 +132,23 @@ Keymap is determined by `overriding-map-for'"
 (overriding-set-key (kbd "M-s r") #'rgrep)
 (overriding-set-key (kbd "M-s f") #'grep-find)
 
-(overriding-set-key (kbd "H-1") #'shell-command)
-(overriding-set-key (kbd "H-4") #'ispell-word)
-(overriding-set-key (kbd "H-5") #'query-replace)
-(overriding-set-key (kbd "C-H-5") #'query-replace-regexp)
-(overriding-set-key (kbd "H-6") #'async-shell-command)
-(overriding-set-key (kbd "H-7") #'abbrev-prefix-mark)
-(overriding-set-key (kbd "H-8") #'insert-parentheses)
-(overriding-set-key (kbd "H-9") #'move-past-close-and-reindent)
+
+
+(overriding-set-key (kbd "C-l C-l") #'recenter-top-bottom)
+(overriding-set-key (kbd "C-l C-f") #'find-file-at-point)
+(overriding-set-key (kbd "C-l C-v") #'revert-buffer)
+(overriding-set-key (kbd "C-l C-c") #'save-buffers-kill-emacs)
+
+
+
+(overriding-set-key (kbd "H-1") (key-binding (kbd "M-!")))
+(overriding-set-key (kbd "H-4") (key-binding (kbd "M-$")))
+(overriding-set-key (kbd "H-5") (key-binding (kbd "M-%")))
+(overriding-set-key (kbd "C-H-5") (key-binding (kbd "C-M-%")))
+(overriding-set-key (kbd "H-6") (key-binding (kbd "M-&")))
+(overriding-set-key (kbd "H-7") (key-binding (kbd "M-'")))
+(overriding-set-key (kbd "H-8") (key-binding (kbd "M-(")))
+(overriding-set-key (kbd "H-9") (key-binding (kbd "M-)")))
 
 
 
@@ -194,12 +207,6 @@ Keymap is determined by `overriding-map-for'"
 (overriding-set-key (kbd "C-c l c") #'mode-line-show-truncated)
 (overriding-set-key (kbd "C-c l l") #'mode-line-auto-show-truncated-mode)
 (overriding-set-key (kbd "C-c i f") #'show-which-function)
-
-
-
-(overriding-set-key (kbd "C-l C-l") #'recenter-top-bottom)
-(overriding-set-key (kbd "C-l C-f") #'find-file-at-point)
-(overriding-set-key (kbd "C-l C-c") #'save-buffers-kill-emacs)
 
 
 (resolve bindings)
