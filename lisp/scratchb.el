@@ -62,7 +62,7 @@
           (nthcdr scratchb-snapshot-limit
                   (sort (file-expand-wildcards
                          (concat scratchb-snapshot-directory "*.el"))
-                        #'string>)))))
+                        #'string-greaterp)))))
 
 ;;;###autoload
 (define-minor-mode scratchb-mode
