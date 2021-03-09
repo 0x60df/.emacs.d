@@ -29,7 +29,7 @@
 (defun scratchb-flush ()
   "`erase-buffer' and `set-buffer-modified-p' nil on *scratch* buffer."
   (interactive)
-  (run-hook-with-args 'scratchb-before-flush-hook)
+  (run-hooks 'scratchb-before-flush-hook)
   (with-current-buffer "*scratch*"
     (erase-buffer)
     (set-buffer-modified-p nil)))
