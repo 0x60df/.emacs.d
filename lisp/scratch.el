@@ -104,7 +104,7 @@ This function is intended to be added to `pre-command-hook'."
   "Kill current `scratch' buffer."
   (interactive)
   (if scratch-auto-snapshot (scratch-snapshot))
-  (setq scratch-list (remove (current-buffer) scratch-list))
+  (setq scratch-list (delq (current-buffer) scratch-list))
   (kill-buffer (current-buffer)))
 
 (defun scratch-shred-all ()
@@ -125,7 +125,7 @@ This function is intended to be added to `pre-command-hook'."
   (when (memq (current-buffer) scratch-list)
     (rename-buffer (read-string "Lable: "))
     (if scratch-auto-snapshot (scratch-snapshot))
-    (setq scratch-list (remove (current-buffer) scratch-list))
+    (setq scratch-list (delq (current-buffer) scratch-list))
     (scratch-mode -1)
     (add-hook 'after-change-functions
               #'scratch--setup-auto-snapshot-timer nil t)
