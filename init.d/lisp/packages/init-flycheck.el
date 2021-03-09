@@ -9,6 +9,9 @@
 
 (push '(flycheck-mode . 45) mode-line-minor-mode-priority-alist)
 
+(custom-set-variables
+ '(flycheck-emacs-lisp-load-path 'inherit))
+
 (overriding-set-key (kbd "C-c \"") #'flycheck-mode)
 (overriding-set-key (kbd "C-l 2") #'flycheck-mode)
 
