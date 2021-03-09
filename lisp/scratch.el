@@ -36,8 +36,6 @@
 
 (defvar scratch-list '() "List of `scratch' buffer which is not labeled.")
 
-(defvar scratch-mode-map (make-sparse-keymap) "Keymap for scratch-mode.")
-
 (defun scratch-snapshot ()
   "Snapshot `scratch' buffer."
   (interactive)
@@ -109,7 +107,7 @@ Therefore, return nil if successful."
 (define-minor-mode scratch-mode
   "Minor mode to enable features for `scratch' buffer."
   :group 'scratch
-  :keymap 'scratch-mode-map
+  :keymap (make-sparse-keymap)
   (if scratch-mode
       (add-hook 'after-change-functions
                 #'scratch--setup-auto-snapshot-timer nil t)
