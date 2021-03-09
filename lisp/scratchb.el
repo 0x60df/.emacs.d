@@ -47,6 +47,8 @@
 (defun scratchb-snapshot ()
   "Write *scratch* buffer content to `scratchb-snapshot-directory'."
   (interactive)
+  (unless (file-exists-p scratchb-snapshot-directory)
+    (make-directory scratchb-snapshot-directory t))
   (when (file-writable-p scratchb-snapshot-directory)
     (with-current-buffer "*scratch*"
       (save-restriction
