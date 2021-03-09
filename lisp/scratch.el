@@ -46,7 +46,6 @@
       (widen)
       (write-region (point-min) (point-max)
                     (concat scratch-snapshot-directory
-                            "/"
                             (replace-regexp-in-string "\\*\\(.+\\)\\*" "\\1"
                                                       (buffer-name)))
                     nil 'quiet))
@@ -76,6 +75,17 @@ END and RANGE.  However, all of them are ignored."
                     (scratch-snapshot)
                     (setq scratch-auto-snapshot-timer nil))))))))
 
+(defun scratch--try-quit-auto-snapshot ()
+  "Try quit auto snapshot.
+If scratch does not visit file until `pre-command-hook',
+revert auto snapshot.  Otherwise, do quit auto snapshot.
+This function is intended to be added to
+`write-contents-functions' as pre process.
+Therefore, return nil if successful."
+  (remove-hook 'after-change-functions #'scratch--setup-auto-snapshot-timer t)
+  (add-hook 'pre-command-hook #'scratch--revert-or-quit-auto-snapshot nil t)
+  nil)
+
 (defun scratch--revert-or-quit-auto-snapshot ()
   "Revert or quit auto snapshot according to the state of visit.
 If scratch does not visit file when this function is called,
@@ -88,31 +98,7 @@ This function is intended to be added to `pre-command-hook'."
                       write-contents-functions))
         (add-hook 'after-change-functions
                   #'scratch--setup-auto-snapshot-timer nil t))
-    (remove-hook 'pre-command-hook
-                 #'scratch--revert-or-quit-auto-snapshot t)))
-
-(defun scratch--try-quit-auto-snapshot ()
-  "Try quit auto snapshot.
-If scratch does not visit file until `pre-command-hook',
-revert auto snapshot.  Otherwise, do quit auto snapshot.
-This function is intended to be added to
-`write-contents-functions' as pre process.
-Therefore, return nil if successful."
-  (remove-hook 'after-change-functions #'scratch--setup-auto-snapshot-timer t)
-  (add-hook 'pre-command-hook
-            #'scratch--revert-or-quit-auto-snapshot nil t)
-  nil)
-
-;;;###autoload
-(define-minor-mode scratch-mode
-  "Minor mode to enable features for `scratch' buffer."
-  :group 'scratch
-  :keymap (make-sparse-keymap)
-  (if scratch-mode
-      (add-hook 'after-change-functions
-                #'scratch--setup-auto-snapshot-timer nil t)
-    (remove-hook 'after-change-functions
-                 #'scratch--setup-auto-snapshot-timer t)))
+    (remove-hook 'pre-command-hook #'scratch--revert-or-quit-auto-snapshot t)))
 
 (defun scratch-shred ()
   "Kill current `scratch' buffer."
@@ -136,7 +122,7 @@ Therefore, return nil if successful."
 (defun scratch-label ()
   "Rename `scratch' buffer and remove it from `scratch-list'."
   (interactive)
-  (when scratch-mode
+  (when (memq (current-buffer) scratch-list)
     (rename-buffer (read-string "Lable: "))
     (if scratch-auto-snapshot (scratch-snapshot))
     (setq scratch-list (remove (current-buffer) scratch-list))
@@ -164,6 +150,17 @@ Therefore, return nil if successful."
                     write-contents-functions)))
     (setq write-contents-functions
           (cons #'scratch--try-quit-auto-snapshot write-contents-functions))))
+
+;;;###autoload
+(define-minor-mode scratch-mode
+  "Minor mode to enable features for `scratch' buffer."
+  :group 'scratch
+  :keymap (make-sparse-keymap)
+  (if scratch-mode
+      (add-hook 'after-change-functions
+                #'scratch--setup-auto-snapshot-timer nil t)
+    (remove-hook 'after-change-functions
+                 #'scratch--setup-auto-snapshot-timer t)))
 
 (defun scratch-mode-buffer-sticky ()
   "Enable `scratch-mode', and reserve enabling on change of major mode.
