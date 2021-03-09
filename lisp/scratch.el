@@ -10,6 +10,11 @@
   "Generate new buffer instantly"
   :group 'emacs)
 
+(defcustom scratch-hook nil
+  "Normal hook run after `scratch' buffer is generated."
+  :type 'hook
+  :group 'scratch)
+
 (defcustom scratch-snapshot-directory (concat user-emacs-directory "scratch/")
   "Directory path for snapshots of `scratch' buffer."
   :type 'directory
@@ -185,6 +190,7 @@ Reservation is restricted on current buffer."
         (kill-buffer buffer)
       (scratch-mode-buffer-sticky)
       (add-to-list 'scratch-list buffer)
+      (run-hooks 'scratch-hook)
       (setq write-contents-functions
           (cons #'scratch--try-quit-auto-snapshot write-contents-functions)))))
 
