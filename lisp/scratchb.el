@@ -9,12 +9,12 @@
   :group 'emacs)
 
 (defcustom scratchb-snapshot-directory (concat user-emacs-directory "scratchb/")
-  "Directory in which snapshots of scratch buffer are saved."
+  "Directory in which snapshots of *scratch* buffer are saved."
   :type 'directory
   :group 'scratchb)
 
 (defcustom scratchb-default-directory "~/"
-  "Directory which is selected when scratch buffer is reverted."
+  "Directory which is selected when *scratch* buffer is reverted."
   :type 'directory
   :group'scratchb)
 
