@@ -89,7 +89,9 @@ This function is intended to be used only in
 
 ;;;###autoload
 (define-minor-mode scratchb-sticky-mode
-  "Minor mode to keep `scratchb-mode' on, even with major mode change."
+  "Minor mode to keep `scratchb-mode' on even with destructive events.
+Supported events are major mode change and recreating
+*scratch* buffer."
   :group 'scratchb
   :global t
   (if scratchb-sticky-mode
