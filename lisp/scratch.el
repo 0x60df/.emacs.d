@@ -131,8 +131,9 @@ This function is intended to be added to `pre-command-hook'."
     (rename-buffer (read-string "Lable: "))
     (if scratch-auto-snapshot (scratch-snapshot))
     (setq scratch-list (delq (current-buffer) scratch-list))
-    (scratch-mode -1)
+    (scratch-mode 0)
     (scratch-sticky-mode 0)
+    (scratch-auto-snapshot-mode 0)
     (add-hook 'after-change-functions
               #'scratch--setup-auto-snapshot-timer nil t)
     (setq write-contents-functions
@@ -161,12 +162,7 @@ This function is intended to be added to `pre-command-hook'."
 (define-minor-mode scratch-mode
   "Minor mode to enable features for `scratch' buffer."
   :group 'scratch
-  :keymap (make-sparse-keymap)
-  (if scratch-mode
-      (add-hook 'after-change-functions
-                #'scratch--setup-auto-snapshot-timer nil t)
-    (remove-hook 'after-change-functions
-                 #'scratch--setup-auto-snapshot-timer t)))
+  :keymap (make-sparse-keymap))
 
 (defun scratch--stick-after-change-major-mode ()
   "Enable `scratch-sticky-mode' after major mode is changed.
@@ -188,6 +184,22 @@ This function is intended to be used only in
       (remove-hook 'change-major-mode-hook
                    #'scratch--stick-after-change-major-mode t))))
 
+(define-minor-mode scratch-auto-snapshot-mode
+  "Minor mode to take snapshot of `scratch' buffer automatically."
+  :group 'scratch
+  (when (memq (current-buffer) scratch-list)
+    (if scratch-auto-snapshot-mode
+        (progn
+          (add-hook 'after-change-functions
+                    #'scratch--setup-auto-snapshot-timer nil t)
+          (add-to-list 'write-contents-functions
+                       #'scratch--try-quit-auto-snapshot))
+      (remove-hook 'after-change-functions
+                   #'scratch--setup-auto-snapshot-timer t)
+      (setq write-contents-functions
+            (delq #'scratch--try-quit-auto-snapshot
+                  write-contents-functions)))))
+
 ;;;###autoload
 (defun scratch ()
   "Generate new buffer instantly."
@@ -199,9 +211,7 @@ This function is intended to be used only in
     (if (not (with-local-quit (shifter-shift-major-mode) t))
         (kill-buffer buffer)
       (add-to-list 'scratch-list buffer)
-      (run-hooks 'scratch-hook)
-      (setq write-contents-functions
-          (cons #'scratch--try-quit-auto-snapshot write-contents-functions)))))
+      (run-hooks 'scratch-hook))))
 
 (provide 'scratch)
 
