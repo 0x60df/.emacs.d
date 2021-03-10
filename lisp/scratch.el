@@ -132,6 +132,7 @@ This function is intended to be added to `pre-command-hook'."
     (if scratch-auto-snapshot (scratch-snapshot))
     (setq scratch-list (delq (current-buffer) scratch-list))
     (scratch-mode -1)
+    (scratch-sticky-mode 0)
     (add-hook 'after-change-functions
               #'scratch--setup-auto-snapshot-timer nil t)
     (setq write-contents-functions
@@ -167,16 +168,25 @@ This function is intended to be added to `pre-command-hook'."
     (remove-hook 'after-change-functions
                  #'scratch--setup-auto-snapshot-timer t)))
 
-(defun scratch-mode-buffer-sticky ()
-  "Enable `scratch-mode', and reserve enabling on change of major mode.
-Reservation is restricted on current buffer."
-  (scratch-mode 1)
-  (add-hook 'change-major-mode-hook
-            (lambda ()
-              (add-hook
-               'after-change-major-mode-hook #'scratch-mode-buffer-sticky))
-            nil t)
-  (remove-hook 'after-change-major-mode-hook #'scratch-mode-buffer-sticky))
+(defun scratch--stick-after-change-major-mode ()
+  "Enable `scratch-sticky-mode' after major mode is changed.
+This function is intended to be used only in
+`scratch-sticky-mode'."
+  (add-hook 'after-change-major-mode-hook #'scratch-sticky-mode))
+
+(define-minor-mode scratch-sticky-mode
+  "Minor mode to keep `scratch-mode' on even with major mode change."
+  :group 'scratch
+  (when (memq (current-buffer) scratch-list)
+    (if scratch-sticky-mode
+        (progn
+          (remove-hook 'after-change-major-mode-hook #'scratch-sticky-mode)
+          (scratch-mode)
+          (add-hook 'change-major-mode-hook
+                    #'scratch--stick-after-change-major-mode nil t))
+      (scratch-mode 0)
+      (remove-hook 'change-major-mode-hook
+                   #'scratch--stick-after-change-major-mode t))))
 
 ;;;###autoload
 (defun scratch ()
@@ -188,7 +198,6 @@ Reservation is restricted on current buffer."
     (switch-to-buffer buffer)
     (if (not (with-local-quit (shifter-shift-major-mode) t))
         (kill-buffer buffer)
-      (scratch-mode-buffer-sticky)
       (add-to-list 'scratch-list buffer)
       (run-hooks 'scratch-hook)
       (setq write-contents-functions

@@ -11,10 +11,13 @@
 (declare-function scratch-shred-all "scratch")
 (declare-function scratch-shred "scratch")
 (declare-function scratch-label "scratch")
+(declare-function scratch-sticky-mode "scratch")
 
 (overriding-set-key (kbd "C-c b") #'scratch)
 
 (with-eval-after-load 'scratch
+  (add-hook 'scratch-hook #'scratch-sticky-mode)
+
   (overriding-set-key (kbd "C-l b s") #'scratch-shred-all)
   (define-key scratch-mode-map (kbd "C-c k") #'scratch-shred)
   (define-key scratch-mode-map (kbd "C-l b l") #'scratch-label))
