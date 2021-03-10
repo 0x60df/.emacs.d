@@ -18,8 +18,8 @@
 (with-eval-after-load 'scratch
   (add-hook 'scratch-hook #'scratch-sticky-mode)
 
+  (define-key scratch-mode-map [remap kill-buffer] #'scratch-shred)
   (overriding-set-key (kbd "C-l b s") #'scratch-shred-all)
-  (define-key scratch-mode-map (kbd "C-c k") #'scratch-shred)
   (define-key scratch-mode-map (kbd "C-l b l") #'scratch-label))
 
 
