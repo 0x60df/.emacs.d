@@ -135,19 +135,19 @@ If SCRATCH is nil, snapshot current `scratch' buffer."
   "Try quit `scratch-mode' on `before-save-hook'.
 Disable `scratch-mode' and setup follow up
 function `scratch--revert' on
-`pre-command-hook' locally, which revert mode.
-If file is saved successfully,`scratch--revert' will
-be discarded because local variables including
-`pre-command-hook' will be killed."
-  (add-hook 'pre-command-hook #'scratch--revert nil t)
+`post-command-hook' locally, which revert mode.
+If file is saved successfully,`scratch--revert' will be
+discarded because local variables including
+`post-command-hook' will be killed."
+  (add-hook 'post-command-hook #'scratch--revert nil t)
   (scratch-mode 0))
 
 (defun scratch--revert ()
   "Revert `scratch-mode' according to the state of visit.
-This function is intended to be added to `pre-command-hook'."
+This function is intended to work with `post-command-hook'."
   (unwind-protect
       (scratch-mode)
-    (remove-hook 'pre-command-hook #'scratch--revert t)))
+    (remove-hook 'post-command-hook #'scratch--revert t)))
 
 (defun scratch--stick-after-change-major-mode ()
   "Enable `scratch-sticky-mode' after major mode is changed.
@@ -159,19 +159,19 @@ This function is intended to be used only in
   "Try quit stick on `before-save-hook'.
 Disable `scratch-sticky-mode' and setup follow up
 function `scratch--revert-sticky' on
-`pre-command-hook' locally, which revert sticky mode.
+`post-command-hook' locally, which revert sticky mode.
 If file is saved successfully,`scratch--revert-sticky' will
 be discarded because local variables including
-`pre-command-hook' will be killed."
-  (add-hook 'pre-command-hook #'scratch--revert-sticky nil t)
+`post-command-hook' will be killed."
+  (add-hook 'post-command-hook #'scratch--revert-sticky nil t)
   (scratch-sticky-mode 0))
 
 (defun scratch--revert-sticky ()
   "Revert stick according to the state of visit.
-This function is intended to be added to `pre-command-hook'."
+This function is intended to work with `post-command-hook'."
   (unwind-protect
       (scratch-sticky-mode)
-    (remove-hook 'pre-command-hook #'scratch--revert-sticky t)))
+    (remove-hook 'post-command-hook #'scratch--revert-sticky t)))
 
 (defun scratch--setup-auto-snapshot-timer (begin end range)
   "Setup timer for snapshot of `scratch' buffer.
@@ -194,19 +194,20 @@ END and RANGE.  However, all of them are ignored."
   "Try quit auto snapshot on `before-save-hook'.
 Disable `scratch-auto-snapshot-mode' and setup follow up
 function `scratch--revert-auto-snapshot' on
-`pre-command-hook' locally, which revert auto-snapshot.
+`post-command-hook' locally, which revert auto-snapshot.
 If file is saved successfully,
 `scratch--revert-auto-snapshot' will be discarded because
-local variables including `pre-command-hook' will be killed."
-  (add-hook 'pre-command-hook #'scratch--revert-auto-snapshot nil t)
+local variables including `post-command-hook' will be
+killed."
+  (add-hook 'post-command-hook #'scratch--revert-auto-snapshot nil t)
   (scratch-auto-snapshot-mode 0))
 
 (defun scratch--revert-auto-snapshot ()
   "Revert auto snapshot according to the state of visit.
-This function is intended to be added to `pre-command-hook'."
+This function is intended to work with `post-command-hook'."
   (unwind-protect
       (scratch-auto-snapshot-mode)
-    (remove-hook 'pre-command-hook #'scratch--revert-auto-snapshot t)))
+    (remove-hook 'post-command-hook #'scratch--revert-auto-snapshot t)))
 
 ;;;###autoload
 (define-minor-mode scratch-mode
