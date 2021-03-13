@@ -208,10 +208,13 @@ This function is intended to be used only in
         (buffer (generate-new-buffer
                  (concat "*" (substring (format "%07x" (random)) -7) "*"))))
     (switch-to-buffer buffer)
-    (if (not (with-local-quit (shifter-shift-major-mode) t))
-        (kill-buffer buffer)
-      (add-to-list 'scratch-list buffer)
-      (run-hooks 'scratch-hook))))
+    (let (success)
+      (unwind-protect
+          (setq success (with-local-quit (shifter-shift-major-mode) t))
+        (if (not success)
+            (kill-buffer buffer)
+          (add-to-list 'scratch-list buffer)
+          (run-hooks 'scratch-hook))))))
 
 (provide 'scratch)
 
