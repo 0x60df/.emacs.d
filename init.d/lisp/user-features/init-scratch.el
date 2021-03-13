@@ -20,6 +20,8 @@
   (add-hook 'scratch-hook #'scratch-sticky-mode)
   (add-hook 'scratch-hook #'scratch-auto-snapshot-mode)
 
+  (add-hook 'scratch-before-label-hook (lambda () (scratch-sticky-mode 0)))
+
   (define-key scratch-mode-map [remap kill-buffer] #'scratch-shred)
   (overriding-set-key (kbd "C-l b s") #'scratch-shred-all)
   (define-key scratch-mode-map (kbd "C-l b l") #'scratch-label))
