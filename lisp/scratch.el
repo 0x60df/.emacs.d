@@ -137,6 +137,24 @@ This function is intended to be used only in
 `scratch-sticky-mode'."
   (add-hook 'after-change-major-mode-hook #'scratch-sticky-mode))
 
+(defun scratch--try-quit-sticky ()
+  "Try quit stick on `before-save-hook'.
+Disable `scratch-sticky-mode' and setup follow up
+function `scratch--revert-sticky' on
+`pre-command-hook' locally, which revert sticky mode.
+If file is saved successfully,`scratch--revert-sticky' will
+be discarded because local variables including
+`pre-command-hook' will be killed."
+  (add-hook 'pre-command-hook #'scratch--revert-sticky nil t)
+  (scratch-sticky-mode 0))
+
+(defun scratch--revert-sticky ()
+  "Revert stick according to the state of visit.
+This function is intended to be added to `pre-command-hook'."
+  (unwind-protect
+      (scratch-sticky-mode)
+    (remove-hook 'pre-command-hook #'scratch--revert-sticky t)))
+
 (defun scratch--setup-auto-snapshot-timer (begin end range)
   "Setup timer for snapshot of `scratch' buffer.
 This function is intended to hooked to
@@ -183,9 +201,11 @@ This function is intended to be added to `pre-command-hook'."
   (if scratch-sticky-mode
       (progn
         (remove-hook 'after-change-major-mode-hook #'scratch-sticky-mode)
+        (add-hook 'before-save-hook #'scratch--try-quit-sticky nil t)
         (scratch-mode)
         (add-hook 'change-major-mode-hook
                   #'scratch--stick-after-change-major-mode nil t))
+    (remove-hook 'before-save-hook #'scratch--try-quit-sticky t)
     (scratch-mode 0)
     (remove-hook 'change-major-mode-hook
                  #'scratch--stick-after-change-major-mode t)))
