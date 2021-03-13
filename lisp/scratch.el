@@ -139,8 +139,9 @@ function `scratch--revert' on
 If file is saved successfully,`scratch--revert' will be
 discarded because local variables including
 `post-command-hook' will be killed."
-  (add-hook 'post-command-hook #'scratch--revert nil t)
-  (scratch-mode 0))
+  (unwind-protect
+      (scratch-mode 0)
+    (add-hook 'post-command-hook #'scratch--revert nil t)))
 
 (defun scratch--revert ()
   "Revert `scratch-mode' according to the state of visit.
@@ -163,8 +164,9 @@ function `scratch--revert-sticky' on
 If file is saved successfully,`scratch--revert-sticky' will
 be discarded because local variables including
 `post-command-hook' will be killed."
-  (add-hook 'post-command-hook #'scratch--revert-sticky nil t)
-  (scratch-sticky-mode 0))
+  (unwind-protect
+      (scratch-sticky-mode 0)
+    (add-hook 'post-command-hook #'scratch--revert-sticky nil t)))
 
 (defun scratch--revert-sticky ()
   "Revert stick according to the state of visit.
@@ -199,8 +201,9 @@ If file is saved successfully,
 `scratch--revert-auto-snapshot' will be discarded because
 local variables including `post-command-hook' will be
 killed."
-  (add-hook 'post-command-hook #'scratch--revert-auto-snapshot nil t)
-  (scratch-auto-snapshot-mode 0))
+  (unwind-protect
+      (scratch-auto-snapshot-mode 0)
+    (add-hook 'post-command-hook #'scratch--revert-auto-snapshot nil t)))
 
 (defun scratch--revert-auto-snapshot ()
   "Revert auto snapshot according to the state of visit.
