@@ -131,6 +131,24 @@ If SCRATCH is nil, snapshot current `scratch' buffer."
                              (concat scratch-snapshot-directory "*"))
                             #'file-newer-than-file-p)))))))
 
+(defun scratch--try-quit ()
+  "Try quit `scratch-mode' on `before-save-hook'.
+Disable `scratch-mode' and setup follow up
+function `scratch--revert' on
+`pre-command-hook' locally, which revert mode.
+If file is saved successfully,`scratch--revert' will
+be discarded because local variables including
+`pre-command-hook' will be killed."
+  (add-hook 'pre-command-hook #'scratch--revert nil t)
+  (scratch-mode 0))
+
+(defun scratch--revert ()
+  "Revert `scratch-mode' according to the state of visit.
+This function is intended to be added to `pre-command-hook'."
+  (unwind-protect
+      (scratch-mode)
+    (remove-hook 'pre-command-hook #'scratch--revert t)))
+
 (defun scratch--stick-after-change-major-mode ()
   "Enable `scratch-sticky-mode' after major mode is changed.
 This function is intended to be used only in
@@ -194,7 +212,10 @@ This function is intended to be added to `pre-command-hook'."
 (define-minor-mode scratch-mode
   "Minor mode to enable features for `scratch' buffer."
   :group 'scratch
-  :keymap (make-sparse-keymap))
+  :keymap (make-sparse-keymap)
+  (if scratch-mode
+      (add-hook 'before-save-hook #'scratch--try-quit nil t)
+    (remove-hook 'before-save-hook #'scratch--try-quit t)))
 
 (define-minor-mode scratch-sticky-mode
   "Minor mode to keep `scratch-mode' on even with major mode change."
