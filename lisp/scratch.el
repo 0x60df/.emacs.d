@@ -167,9 +167,10 @@ END and RANGE.  However, all of them are ignored."
            scratch-auto-snapshot-delay
            nil
            `(lambda ()
-              (with-current-buffer ,(current-buffer)
-                (scratch-snapshot)
-                (setq scratch-auto-snapshot-timer nil)))))))
+              (if (buffer-live-p ,(current-buffer))
+                  (with-current-buffer ,(current-buffer)
+                    (scratch-snapshot)
+                    (setq scratch-auto-snapshot-timer nil))))))))
 
 (defun scratch--try-quit-auto-snapshot ()
   "Try quit auto snapshot on `before-save-hook'.
