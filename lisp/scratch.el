@@ -48,6 +48,16 @@
 
 (defvar scratch-labeled-list '() "List of labeled `scratch' buffer.")
 
+(defun scratch--delete-from-list (&optional scratch)
+  "Delete SCRATCH from `scratch-list'.
+If SCRATCH is nil, delete current `scratch' buffer. "
+  (setq scratch-list (delq (or scratch (current-buffer)) scratch-list)))
+
+(defun scratch--delete-from-labeled-list (&optional scratch)
+  "Delete labled SCRATCH from `scratch-labeled-list'.
+If SCRATCH is nil, delete current `scratch' buffer. "
+  (setq scratch-list (delq (or scratch (current-buffer)) scratch-list)))
+
 (defun scratch-shred (&optional scratch)
   "Kill SCRATCH buffer.
 If SCRATCH is nil, kill current `scratch' buffer."
@@ -78,6 +88,9 @@ If SCRATCH is nil, lable current `scratch' buffer."
 
           (setq scratch-list (delq s scratch-list))
           (add-to-list 'scratch-labeled-list s)
+          (remove-hook 'kill-buffer-hook #'scratch--delete-from-list t)
+          (add-hook 'kill-buffer-hook
+                    #'scratch--delete-from-labeled-list nil t)
 
           (if (or (null write-contents-functions)
                   (yes-or-no-p "Override write-contents-functions?: "))
@@ -274,6 +287,7 @@ Typically, the following forms keep
         (if (not success)
             (kill-buffer buffer)
           (add-to-list 'scratch-list buffer)
+          (add-hook 'kill-buffer-hook #'scratch--delete-from-list nil t)
           (run-hooks 'scratch-hook))))))
 
 (provide 'scratch)
