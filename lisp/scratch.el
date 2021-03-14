@@ -25,6 +25,16 @@
   :type 'hook
   :group 'scratch)
 
+(defcustom scratch-after-write-hook nil
+  "Normal hook run after `scratch' buffer is written ."
+  :type 'hook
+  :group 'scratch)
+
+(defcustom scratch-after-write-labeled-hook nil
+  "Normal hook run after labeled `scratch' buffer is written."
+  :type 'hook
+  :group 'scratch)
+
 (defcustom scratch-snapshot-directory (concat user-emacs-directory "scratch/")
   "Directory path for snapshots of `scratch' buffer."
   :type 'directory
@@ -43,6 +53,11 @@
 (defvar scratch-auto-snapshot-timer nil
   "Timer for snapshot of `scratch' buffer.")
 (make-variable-buffer-local 'scratch-auto-snapshot-timer)
+
+(defvar scratch-preserved-mode nil
+  "Preserved mode symbol for `scratch-preserving-mode'.")
+(put 'scratch-preserved-mode 'permanent-local t)
+(make-variable-buffer-local 'scratch-preserved-mode)
 
 (defvar scratch-list '() "List of `scratch' buffer which is not labeled.")
 
@@ -67,7 +82,8 @@ If SCRATCH is nil, write current `scratch' buffer."
   (let ((s (car (memq (or scratch (current-buffer)) scratch-list))))
     (if s
         (with-current-buffer s
-          (let ((wcf write-contents-functions))
+          (let ((wcf write-contents-functions)
+                (sawh scratch-after-write-hook))
             (unwind-protect
                 (progn
                   (setq write-contents-functions nil)
@@ -76,6 +92,7 @@ If SCRATCH is nil, write current `scratch' buffer."
                   (save-buffer)
                   (setq scratch-list (delq (current-buffer) scratch-list))
                   (remove-hook 'kill-buffer-hook #'scratch--delete-from-list t)
+                  (run-hooks 'sawh)
                   (setq wcf nil)
                   t)
               (when wcf
@@ -95,7 +112,8 @@ If SCRATCH is nil, write current `scratch' buffer."
           (let ((directory (read-directory-name "Directory to save in: ")))
             (if (not (file-writable-p directory))
                 (user-error "Specified directory is not writable")
-              (let ((wcf write-contents-functions))
+              (let ((wcf write-contents-functions)
+                    (sawlh scratch-after-write-labeled-hook))
                 (unwind-protect
                     (progn
                       (setq write-contents-functions nil)
@@ -106,6 +124,7 @@ If SCRATCH is nil, write current `scratch' buffer."
                             (delq (current-buffer) scratch-labeled-list))
                       (remove-hook 'kill-buffer-hook
                                    #'scratch--delete-from-labeled-list t)
+                      (run-hooks 'sawlh)
                       (setq wcf nil)
                       t)
                   (when wcf
@@ -295,6 +314,17 @@ This function is intended to work with `post-command-hook'."
       (scratch-auto-snapshot-mode)
     (remove-hook 'post-command-hook #'scratch--revert-auto-snapshot t)))
 
+(defun scratch--restore-mode ()
+  "Restore `scratch-preserved-mode'."
+  (when (and buffer-file-name
+             (functionp scratch-preserved-mode))
+    (funcall scratch-preserved-mode)
+    (kill-local-variable 'scratch-preserved-mode)))
+
+(defun scratch--preserve-mode ()
+  "Preserve major mode for `scratch-preserving-mode'."
+  (setq scratch-preserved-mode major-mode))
+
 ;;;###autoload
 (define-minor-mode scratch-mode
   "Minor mode to enable features for `scratch' buffer."
@@ -342,6 +372,19 @@ Typically, the following forms keep
     (remove-hook 'before-save-hook #'scratch--try-quit-auto-snapshot t)
     (remove-hook 'scratch-before-shred-hook #'scratch-snapshot t)
     (remove-hook 'scratch-before-label-hook #'scratch-snapshot t)))
+
+(define-minor-mode scratch-preserving-mode
+  "Minor mode to preserve major mode after `scratch' buffer is saved."
+  :group 'scratch
+  (if scratch-preserving-mode
+      (progn
+        (add-hook 'before-save-hook #'scratch--preserve-mode nil t)
+        (add-hook 'scratch-after-write-hook #'scratch--restore-mode nil t)
+        (add-hook 'scratch-after-write-labeled-hook
+                  #'scratch--restore-mode nil t))
+    (remove-hook 'before-save-hook #'scratch--preserve-mode t)
+    (remove-hook 'scratch-after-write-hook #'scratch--restore-mode t)
+    (remove-hook 'scratch-after-write-labeled-hook #'scratch--restore-mode t)))
 
 ;;;###autoload
 (defun scratch ()

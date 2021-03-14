@@ -13,6 +13,7 @@
 (declare-function scratch-label "scratch")
 (declare-function scratch-sticky-mode "scratch")
 (declare-function scratch-auto-snapshot-mode "scratch")
+(declare-function scratch-preserving-mode "scratch")
 
 (overriding-set-key (kbd "C-c b") #'scratch)
 
@@ -22,6 +23,10 @@
   (add-hook 'scratch-sticky-mode-hook (lambda ()
                                         (if scratch-sticky-mode
                                             (scratch-auto-snapshot-mode))))
+  (add-hook 'scratch-hook #'scratch-preserving-mode)
+  (add-hook 'scratch-sticky-mode-hook (lambda ()
+                                        (if scratch-sticky-mode
+                                            (scratch-preserving-mode))))
 
   (add-hook 'scratch-before-label-hook (lambda () (scratch-sticky-mode 0)))
 
