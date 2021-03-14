@@ -19,6 +19,9 @@
 (with-eval-after-load 'scratch
   (add-hook 'scratch-hook #'scratch-sticky-mode)
   (add-hook 'scratch-hook #'scratch-auto-snapshot-mode)
+  (add-hook 'scratch-sticky-mode-hook (lambda ()
+                                        (if scratch-sticky-mode
+                                            (scratch-auto-snapshot-mode))))
 
   (add-hook 'scratch-before-label-hook (lambda () (scratch-sticky-mode 0)))
 

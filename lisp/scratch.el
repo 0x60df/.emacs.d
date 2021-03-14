@@ -222,7 +222,15 @@ This function is intended to work with `post-command-hook'."
     (remove-hook 'before-save-hook #'scratch--try-quit t)))
 
 (define-minor-mode scratch-sticky-mode
-  "Minor mode to keep `scratch-mode' on even with major mode change."
+  "Minor mode to keep `scratch-mode' on even with major mode change.
+Any functions which should be called on major mode change
+can be added to `scratch-sticky-mode-hook'.
+Typically, the following forms keep
+`scratch-auto-snapshot-mode' active after major mode change.
+(add-hook 'scratch-sticky-mode-hook
+          (lambda ()
+            (if scratch-sticky-mode
+                (scratch-auto-snapshot-mode))))"
   :group 'scratch
   (if scratch-sticky-mode
       (progn
