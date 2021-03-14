@@ -234,28 +234,28 @@ If SCRATCH is nil, snapshot current `scratch' buffer."
                             #'file-newer-than-file-p)))))))
 
 (defun scratch--stick-after-change-major-mode ()
-  "Enable `scratch-sticky-mode' after major mode is changed.
+  "Enable `scratch-sticking-mode' after major mode is changed.
 This function is intended to be used only in
-`scratch-sticky-mode'."
-  (add-hook 'after-change-major-mode-hook #'scratch-sticky-mode))
+`scratch-sticking-mode'."
+  (add-hook 'after-change-major-mode-hook #'scratch-sticking-mode))
 
 (defun scratch--try-quit-sticky ()
   "Try quit stick on `before-save-hook'.
-Disable `scratch-sticky-mode' and setup follow up
+Disable `scratch-sticking-mode' and setup follow up
 function `scratch--revert-sticky' on
 `post-command-hook' locally, which revert sticky mode.
 If file is saved successfully,`scratch--revert-sticky' will
 be discarded because local variables including
 `post-command-hook' will be killed."
   (unwind-protect
-      (scratch-sticky-mode 0)
+      (scratch-sticking-mode 0)
     (add-hook 'post-command-hook #'scratch--revert-sticky nil t)))
 
 (defun scratch--revert-sticky ()
   "Revert stick according to the state of visit.
 This function is intended to work with `post-command-hook'."
   (unwind-protect
-      (scratch-sticky-mode)
+      (scratch-sticking-mode)
     (remove-hook 'post-command-hook #'scratch--revert-sticky t)))
 
 (defun scratch--setup-auto-snapshot-timer (begin end range)
@@ -292,26 +292,24 @@ END and RANGE.  However, all of them are ignored."
   :group 'scratch
   :keymap (make-sparse-keymap))
 
-(define-minor-mode scratch-sticky-mode
-  "Minor mode to keep `scratch-mode' on even with major mode change.
+(define-minor-mode scratch-sticking-mode
+  "Minor mode to keep local preferences even with major mode change.
 Any functions which should be called on major mode change
-can be added to `scratch-sticky-mode-hook'.
+can be added to `scratch-sticking-mode-hook'.
 Typically, the following forms keep
 `scratch-auto-snapshot-mode' active after major mode change.
-(add-hook 'scratch-sticky-mode-hook
+(add-hook 'scratch-sticking-mode-hook
           (lambda ()
-            (if scratch-sticky-mode
+            (if scratch-sticking-mode
                 (scratch-auto-snapshot-mode))))"
   :group 'scratch
-  (if scratch-sticky-mode
+  (if scratch-sticking-mode
       (progn
-        (remove-hook 'after-change-major-mode-hook #'scratch-sticky-mode)
+        (remove-hook 'after-change-major-mode-hook #'scratch-sticking-mode)
         (add-hook 'before-save-hook #'scratch--try-quit-sticky nil t)
-        (scratch-mode)
         (add-hook 'change-major-mode-hook
                   #'scratch--stick-after-change-major-mode nil t))
     (remove-hook 'before-save-hook #'scratch--try-quit-sticky t)
-    (scratch-mode 0)
     (remove-hook 'change-major-mode-hook
                  #'scratch--stick-after-change-major-mode t)))
 
