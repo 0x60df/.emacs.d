@@ -7,7 +7,7 @@
 (require 'shifter)
 
 (defgroup scratch nil
-  "Generate new buffer instantly"
+  "Generate new buffer instantly."
   :group 'emacs)
 
 (defcustom scratch-hook nil
