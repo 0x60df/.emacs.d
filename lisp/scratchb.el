@@ -5,7 +5,7 @@
 ;;; Code:
 
 (defgroup scratchb nil
-  "*scratch* buffer utilities"
+  "*scratch* buffer utilities."
   :group 'emacs)
 
 (defcustom scratchb-snapshot-directory (concat user-emacs-directory "scratchb/")
