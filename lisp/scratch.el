@@ -58,6 +58,31 @@ If SCRATCH is nil, delete current `scratch' buffer. "
 If SCRATCH is nil, delete current `scratch' buffer. "
   (setq scratch-list (delq (or scratch (current-buffer)) scratch-list)))
 
+(defun scratch--write-labeled (&optional scratch)
+  "Writing function for labled SCRATCH buffer.
+This function is intended to work with
+`write-contents-functions'
+Therefore, return t if succeeded.
+If SCRATCH is nil, write current `scratch' buffer."
+  (let ((s (car (memq (or scratch (current-buffer)) scratch-labeled-list))))
+    (if s
+        (with-current-buffer s
+          (let ((directory (read-directory-name "Directory to save in: ")))
+            (if (not (file-writable-p directory))
+                (user-error "Specified directory is not writable")
+              (let ((wcf write-contents-functions))
+                (unwind-protect
+                    (progn
+                      (setq write-contents-functions nil)
+                      (write-file (concat directory (buffer-name)))
+                      (setq scratch-labeled-list
+                            (delq (current-buffer) scratch-labeled-list))
+                      (remove-hook 'kill-buffer-hook
+                                   #'scratch--delete-from-labeled-list t)
+                      (setq wcf nil)
+                      t)
+                  (if wcf (setq write-contents-functions wcf))))))))))
+
 (defun scratch-shred (&optional scratch)
   "Kill SCRATCH buffer.
 If SCRATCH is nil, kill current `scratch' buffer."
@@ -95,26 +120,7 @@ If SCRATCH is nil, lable current `scratch' buffer."
           (if (or (null write-contents-functions)
                   (yes-or-no-p "Override write-contents-functions?: "))
               (setq write-contents-functions
-                    (cons (lambda ()
-                            (let ((directory (read-directory-name
-                                              "Directory to save in: ")))
-                              (if (not (file-writable-p directory))
-                                  (user-error
-                                   "Specified directory is not writable")
-                                (let ((wcf write-contents-functions))
-                                  (unwind-protect
-                                      (progn
-                                        (setq write-contents-functions nil)
-                                        (write-file (concat directory
-                                                            (buffer-name)))
-                                        (setq scratch-labeled-list
-                                              (delq (current-buffer)
-                                                    scratch-labeled-list))
-                                        (setq wcf nil)
-                                        t)
-                                    (if wcf (setq write-contents-functions
-                                                  wcf)))))))
-                          write-contents-functions)))))))
+                    `(scratch--write-labeled ,@write-contents-functions)))))))
 
 (defun scratch-snapshot (&optional scratch)
   "Snapshot SCRATCH buffer.
