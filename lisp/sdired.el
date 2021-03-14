@@ -8,7 +8,7 @@
 (require 'isearch)
 
 (defgroup sdired nil
-  "Sorting utilities for dired ."
+  "Sorting utilities for dired."
   :group 'emacs)
 
 (defcustom sdired-switches-for-name "-al"
