@@ -233,25 +233,6 @@ If SCRATCH is nil, snapshot current `scratch' buffer."
                              (concat scratch-snapshot-directory "*"))
                             #'file-newer-than-file-p)))))))
 
-(defun scratch--try-quit ()
-  "Try quit `scratch-mode' on `before-save-hook'.
-Disable `scratch-mode' and setup follow up
-function `scratch--revert' on
-`post-command-hook' locally, which revert mode.
-If file is saved successfully,`scratch--revert' will be
-discarded because local variables including
-`post-command-hook' will be killed."
-  (unwind-protect
-      (scratch-mode 0)
-    (add-hook 'post-command-hook #'scratch--revert nil t)))
-
-(defun scratch--revert ()
-  "Revert `scratch-mode' according to the state of visit.
-This function is intended to work with `post-command-hook'."
-  (unwind-protect
-      (scratch-mode)
-    (remove-hook 'post-command-hook #'scratch--revert t)))
-
 (defun scratch--stick-after-change-major-mode ()
   "Enable `scratch-sticky-mode' after major mode is changed.
 This function is intended to be used only in
@@ -294,26 +275,6 @@ END and RANGE.  However, all of them are ignored."
                     (scratch-snapshot)
                     (setq scratch-auto-snapshot-timer nil))))))))
 
-(defun scratch--try-quit-auto-snapshot ()
-  "Try quit auto snapshot on `before-save-hook'.
-Disable `scratch-auto-snapshot-mode' and setup follow up
-function `scratch--revert-auto-snapshot' on
-`post-command-hook' locally, which revert auto-snapshot.
-If file is saved successfully,
-`scratch--revert-auto-snapshot' will be discarded because
-local variables including `post-command-hook' will be
-killed."
-  (unwind-protect
-      (scratch-auto-snapshot-mode 0)
-    (add-hook 'post-command-hook #'scratch--revert-auto-snapshot nil t)))
-
-(defun scratch--revert-auto-snapshot ()
-  "Revert auto snapshot according to the state of visit.
-This function is intended to work with `post-command-hook'."
-  (unwind-protect
-      (scratch-auto-snapshot-mode)
-    (remove-hook 'post-command-hook #'scratch--revert-auto-snapshot t)))
-
 (defun scratch--restore-mode ()
   "Restore `scratch-preserved-mode'."
   (when (and buffer-file-name
@@ -329,10 +290,7 @@ This function is intended to work with `post-command-hook'."
 (define-minor-mode scratch-mode
   "Minor mode to enable features for `scratch' buffer."
   :group 'scratch
-  :keymap (make-sparse-keymap)
-  (if scratch-mode
-      (add-hook 'before-save-hook #'scratch--try-quit nil t)
-    (remove-hook 'before-save-hook #'scratch--try-quit t)))
+  :keymap (make-sparse-keymap))
 
 (define-minor-mode scratch-sticky-mode
   "Minor mode to keep `scratch-mode' on even with major mode change.
@@ -364,12 +322,10 @@ Typically, the following forms keep
       (progn
         (add-hook 'after-change-functions
                   #'scratch--setup-auto-snapshot-timer nil t)
-        (add-hook 'before-save-hook #'scratch--try-quit-auto-snapshot nil t)
         (add-hook 'scratch-before-shred-hook #'scratch-snapshot nil t)
         (add-hook 'scratch-before-label-hook #'scratch-snapshot nil t))
     (remove-hook 'after-change-functions
                  #'scratch--setup-auto-snapshot-timer t)
-    (remove-hook 'before-save-hook #'scratch--try-quit-auto-snapshot t)
     (remove-hook 'scratch-before-shred-hook #'scratch-snapshot t)
     (remove-hook 'scratch-before-label-hook #'scratch-snapshot t)))
 
