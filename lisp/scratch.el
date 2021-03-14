@@ -50,14 +50,14 @@
   :type 'number
   :group 'scratch)
 
-(defvar scratch-auto-snapshot-timer nil
+(defvar scratch--auto-snapshot-timer nil
   "Timer for snapshot of `scratch' buffer.")
-(make-variable-buffer-local 'scratch-auto-snapshot-timer)
+(make-variable-buffer-local 'scratch--auto-snapshot-timer)
 
-(defvar scratch-preserved-mode nil
+(defvar scratch--preserved-mode nil
   "Preserved mode symbol for `scratch-preserving-mode'.")
-(put 'scratch-preserved-mode 'permanent-local t)
-(make-variable-buffer-local 'scratch-preserved-mode)
+(put 'scratch--preserved-mode 'permanent-local t)
+(make-variable-buffer-local 'scratch--preserved-mode)
 
 (defvar scratch-list '() "List of `scratch' buffer which is not labeled.")
 
@@ -264,8 +264,8 @@ This function is intended to hooked to
 `after-change-functions'.
 Therefore, this function receives three arguments BEGIN,
 END and RANGE.  However, all of them are ignored."
-  (unless scratch-auto-snapshot-timer
-    (setq scratch-auto-snapshot-timer
+  (unless scratch--auto-snapshot-timer
+    (setq scratch--auto-snapshot-timer
           (run-with-idle-timer
            scratch-auto-snapshot-delay
            nil
@@ -273,18 +273,18 @@ END and RANGE.  However, all of them are ignored."
               (if (buffer-live-p ,(current-buffer))
                   (with-current-buffer ,(current-buffer)
                     (scratch-snapshot)
-                    (setq scratch-auto-snapshot-timer nil))))))))
+                    (setq scratch--auto-snapshot-timer nil))))))))
 
 (defun scratch--restore-mode ()
-  "Restore `scratch-preserved-mode'."
+  "Restore `scratch--preserved-mode'. If buffer is visiting file."
   (when (and buffer-file-name
-             (functionp scratch-preserved-mode))
-    (funcall scratch-preserved-mode)
-    (kill-local-variable 'scratch-preserved-mode)))
+             (functionp scratch--preserved-mode))
+    (funcall scratch--preserved-mode)
+    (kill-local-variable 'scratch--preserved-mode)))
 
 (defun scratch--preserve-mode ()
   "Preserve major mode for `scratch-preserving-mode'."
-  (setq scratch-preserved-mode major-mode))
+  (setq scratch--preserved-mode major-mode))
 
 ;;;###autoload
 (define-minor-mode scratch-mode
@@ -328,7 +328,8 @@ Typically, the following forms keep
     (remove-hook 'scratch-before-label-hook #'scratch-snapshot t)))
 
 (define-minor-mode scratch-preserving-mode
-  "Minor mode to preserve major mode after `scratch' buffer is saved."
+  "Minor mode to preserve major mode during writing `scratch' buffer.
+Preserved major mode is restored after buffer is saved."
   :group 'scratch
   (if scratch-preserving-mode
       (progn
