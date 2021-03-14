@@ -1,12 +1,14 @@
 ;;; shifter.el --- shift major/minor-mode
 
-;;; code:
+;;; Commentary:
+
+;;; Code:
 
 (require 'fmmm)
 (require 'cl-lib)
 
 (defgroup shifter nil
-  "shift major/minor-mode"
+  "Shift major/minor-mode."
   :group 'emacs)
 
 (defcustom shifter-hist-file (concat user-emacs-directory "shifter-hists")
@@ -19,11 +21,11 @@
   :group 'shifter
   :type 'boolean)
 
-(defvar shifter-major-mode-hist nil "History of major modes shifted in past")
-(defvar shifter-minor-mode-hist nil "History of minor modes shifted in past")
+(defvar shifter-major-mode-hist nil "History of major modes shifted in past.")
+(defvar shifter-minor-mode-hist nil "History of minor modes shifted in past.")
 
 (defun shifter-save-hist ()
-  "save shifter-major/minor-mode-hist to `shifter-hist-file'"
+  "Save shifter-major/minor-mode-hist to `shifter-hist-file'."
   (with-temp-buffer
     (prin1 `(mapc (lambda (m)
                     (if (symbol-function m)
@@ -39,7 +41,7 @@
 
 ;;;###autoload
 (defun shifter-shift-major-mode ()
-  "shift major mode"
+  "Shift major mode."
   (interactive)
   (if (and (not shifter-keep-hist-volatile)
            (not (bound-and-true-p shifter-non-volatile-hist-mode)))
@@ -67,7 +69,7 @@
 
 ;;;###autoload
 (defun shifter-shift-minor-mode ()
-  "shift minor mode"
+  "Shift minor mode."
   (interactive)
   (if (and (not shifter-keep-hist-volatile)
            (not (bound-and-true-p shifter-non-volatile-hist-mode)))
@@ -88,7 +90,9 @@
 
 ;;;###autoload
 (defun shifter-turn-on-minor-mode (force)
-  "turn on minor mode"
+  "Turn on minor mode.
+If FORCE is non-nil, read and enable minor mode regardless
+of its state."
   (interactive "P")
   (if (and (not shifter-keep-hist-volatile)
            (not (bound-and-true-p shifter-non-volatile-hist-mode)))
@@ -117,7 +121,9 @@
 
 ;;;###autoload
 (defun shifter-turn-off-minor-mode (force)
-  "turn off minor mode"
+  "Turn off minor mode.
+If FORCE is non-nil, read and disable minor mode regardless
+of its state."
   (interactive "P")
   (if (and (not shifter-keep-hist-volatile)
            (not (bound-and-true-p shifter-non-volatile-hist-mode)))
