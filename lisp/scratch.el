@@ -58,6 +58,31 @@ If SCRATCH is nil, delete current `scratch' buffer. "
 If SCRATCH is nil, delete current `scratch' buffer. "
   (setq scratch-list (delq (or scratch (current-buffer)) scratch-list)))
 
+(defun scratch--write (&optional scratch)
+  "Writing function for SCRATCH buffer.
+This function is intended to work with
+`write-contents-functions'
+Therefore, return t if succeeded.
+If SCRATCH is nil, write current `scratch' buffer."
+  (let ((s (car (memq (or scratch (current-buffer)) scratch-list))))
+    (if s
+        (with-current-buffer s
+          (let ((wcf write-contents-functions))
+            (unwind-protect
+                (progn
+                  (setq write-contents-functions nil)
+                  (remove-hook 'change-major-mode-hook
+                               #'scratch--stick-write-function t)
+                  (save-buffer)
+                  (setq scratch-list (delq (current-buffer) scratch-list))
+                  (remove-hook 'kill-buffer-hook #'scratch--delete-from-list t)
+                  (setq wcf nil)
+                  t)
+              (when wcf
+                (setq write-contents-functions wcf)
+                (add-hook 'change-major-mode-hook
+                          #'scratch--stick-write-function nil t))))))))
+
 (defun scratch--write-labeled (&optional scratch)
   "Writing function for labled SCRATCH buffer.
 This function is intended to work with
@@ -82,6 +107,21 @@ If SCRATCH is nil, write current `scratch' buffer."
                       (setq wcf nil)
                       t)
                   (if wcf (setq write-contents-functions wcf))))))))))
+
+(defun scratch--stick-write-function ()
+  "Re set `scratch--write' function after major mode change."
+  (add-hook 'after-change-major-mode-hook #'scratch--set-sticky-write-function))
+
+(defun scratch--set-sticky-write-function ()
+  "Set `scratch--write' even with major mode change."
+  (remove-hook 'after-change-major-mode-hook
+               #'scratch--set-sticky-write-function)
+  (with-local-quit
+    (if (or (null write-contents-functions)
+            (yes-or-no-p "Override write-contents-functions?: "))
+        (setq write-contents-functions
+              `(scratch--write ,@write-contents-functions))))
+  (add-hook 'change-major-mode-hook #'scratch--stick-write-function nil t))
 
 (defun scratch-shred (&optional scratch)
   "Kill SCRATCH buffer.
@@ -117,10 +157,16 @@ If SCRATCH is nil, lable current `scratch' buffer."
           (add-hook 'kill-buffer-hook
                     #'scratch--delete-from-labeled-list nil t)
 
-          (if (or (null write-contents-functions)
-                  (yes-or-no-p "Override write-contents-functions?: "))
-              (setq write-contents-functions
-                    `(scratch--write-labeled ,@write-contents-functions)))))))
+          (setq write-contents-functions
+                (delq #'scratch--write write-contents-functions))
+          (remove-hook 'change-major-mode-hook
+                       #'scratch--stick-write-function t)
+          (with-local-quit
+            (if (or (null write-contents-functions)
+                    (yes-or-no-p "Override write-contents-functions?: "))
+                (setq write-contents-functions
+                      `(scratch--write-labeled
+                        ,@write-contents-functions))))))))
 
 (defun scratch-snapshot (&optional scratch)
   "Snapshot SCRATCH buffer.
@@ -294,6 +340,7 @@ Typically, the following forms keep
             (kill-buffer buffer)
           (add-to-list 'scratch-list buffer)
           (add-hook 'kill-buffer-hook #'scratch--delete-from-list nil t)
+          (scratch--set-sticky-write-function)
           (run-hooks 'scratch-hook))))))
 
 (provide 'scratch)
