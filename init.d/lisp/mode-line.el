@@ -347,6 +347,9 @@ If no boundary is detected until LIMIT, retun nil."
                           (funcall duplicate-next-percent (+ next 1)))))))))
     (funcall duplicate-next-percent 0)))
 
+(define-minor-mode mode-line-format-auto-truncate-on-boundary-mode
+  "Minor mode to truncate on boundary of mode line elements.")
+
 (defvar mode-line-format-raw
   (mapcar (lambda (e)
             (if (stringp e)
@@ -388,12 +391,15 @@ mode-line string by window-width."
                                        original-last-element-end)))
                       (let ((last-element-start
                              (mode-line--previous-boundary
-                              (+ last-non-space 1) subtext 0))
-                            (property (get-text-property
-                                       last-non-space 'face subtext)))
-                        (add-face-text-property
-                         last-element-start length 'mode-line-transform
-                         nil subtext)))
+                              (+ last-non-space 1) subtext 0)))
+                        (if mode-line-format-auto-truncate-on-boundary-mode
+                            (setq subtext (substring subtext 0
+                                                     last-element-start))
+                          (let ((property (get-text-property
+                                           last-non-space 'face subtext)))
+                            (add-face-text-property
+                             last-element-start length 'mode-line-transform
+                             nil subtext)))))
                   subtext)
               text)))
       (mode-line--duplicate-percent-with-text-properties shrinked))))
@@ -405,8 +411,19 @@ mode-line string by window-width."
          (text-width (string-width text))
          (max-width (+ (window-body-width) 1)))
     (when (< max-width text-width)
-      (let* ((subtext (truncate-string-to-width text max-width))
-             (truncated (substring text (length subtext) (length text))))
+      (let* ((subtext (truncate-string-to-width
+                       text
+                       (if mode-line-format-auto-truncate-on-boundary-mode
+                           (mode-line--previous-boundary max-width text 0)
+                         max-width)))
+             (truncated (replace-regexp-in-string
+                         "\\s-+$" ""
+                         (substring text (length subtext) (length text))))
+             (width (string-width truncated))
+             (first-element-end (mode-line--next-boundary 0 truncated width)))
+        (unless mode-line-format-auto-truncate-on-boundary-mode
+          (add-face-text-property 0 first-element-end 'mode-line-transform
+                                  nil truncated))
         (message "%s" truncated)))))
 
 (defun mode-line-set-showing-timer ()
@@ -423,6 +440,13 @@ mode-line string by window-width."
   (if mode-line-auto-show-truncated-mode
       (add-hook 'post-command-hook #'mode-line-set-showing-timer nil t)
     (remove-hook 'post-command-hook #'mode-line-set-showing-timer t)))
+
+(add-hook 'mode-line-auto-show-truncated-mode-hook
+          (lambda ()
+            (if mode-line-auto-show-truncated-mode
+                (mode-line-format-auto-truncate-on-boundary-mode)
+              (mode-line-format-auto-truncate-on-boundary-mode 0))
+            (mode-line-show-truncated)))
 
 (setq-default mode-line-format
               (mode-line-format-auto-truncate mode-line-format-raw))
