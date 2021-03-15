@@ -16,11 +16,6 @@
   :group 'shifter
   :type 'file)
 
-(defcustom shifter-keep-hist-volatile nil
-  "When non-nil shifter does not save/load hist file automatically."
-  :group 'shifter
-  :type 'boolean)
-
 (defvar shifter-major-mode-hist nil "History of major modes shifted in past.")
 (defvar shifter-minor-mode-hist nil "History of minor modes shifted in past.")
 
@@ -43,9 +38,6 @@
 (defun shifter-shift-major-mode ()
   "Shift major mode."
   (interactive)
-  (if (and (not shifter-keep-hist-volatile)
-           (not (bound-and-true-p shifter-non-volatile-hist-mode)))
-      (shifter-non-volatile-hist-mode 1))
   (let ((l (fmmm-major-mode-list))
         (h shifter-major-mode-hist))
     (mapc (lambda (s) (setq l (delq s l))) h)
@@ -71,9 +63,6 @@
 (defun shifter-shift-minor-mode ()
   "Shift minor mode."
   (interactive)
-  (if (and (not shifter-keep-hist-volatile)
-           (not (bound-and-true-p shifter-non-volatile-hist-mode)))
-      (shifter-non-volatile-hist-mode 1))
   (let ((l (fmmm-minor-mode-list))
         (h shifter-minor-mode-hist))
     (mapc (lambda (s) (setq l (delq s l))) h)
@@ -94,9 +83,6 @@
 If FORCE is non-nil, read and enable minor mode regardless
 of its state."
   (interactive "P")
-  (if (and (not shifter-keep-hist-volatile)
-           (not (bound-and-true-p shifter-non-volatile-hist-mode)))
-      (shifter-non-volatile-hist-mode 1))
   (let ((l (if force
                (fmmm-minor-mode-list)
              (fmmm-disabled-minor-mode-list)))
@@ -125,9 +111,6 @@ of its state."
 If FORCE is non-nil, read and disable minor mode regardless
 of its state."
   (interactive "P")
-  (if (and (not shifter-keep-hist-volatile)
-           (not (bound-and-true-p shifter-non-volatile-hist-mode)))
-      (shifter-non-volatile-hist-mode 1))
   (let ((l (if force
                (fmmm-minor-mode-list)
              (fmmm-enabled-minor-mode-list)))
@@ -153,15 +136,31 @@ of its state."
 ;;;###autoload
 (define-minor-mode shifter-non-volatile-hist-mode
   "Minor mode for supporting shifter history system.
-When enabled, load `shifter-hist-file' if shifter-major/minor-mode-hist are nil.
-When kill emacs, save shifter-major/minor-mode-hist if this mode is enabled."
+When enabled, load `shifter-hist-file' and push current
+shifter-major/minor-mode-hist on loaded history.
+If this mode is enabled, history is saved when emacs is killed."
   :group 'shifter
   :global t
   (if shifter-non-volatile-hist-mode
       (progn
         (add-hook 'kill-emacs-hook #'shifter-save-hist)
-        (if (and (null shifter-major-mode-hist) (null shifter-minor-mode-hist))
-            (load shifter-hist-file t nil t)))
+        (let ((major-mode-hist shifter-major-mode-hist)
+              (minor-mode-hist shifter-minor-mode-hist))
+          (load shifter-hist-file t nil t)
+          (mapc (lambda (m)
+                  (setq shifter-major-mode-hist
+                        (delq m shifter-major-mode-hist)))
+                major-mode-hist)
+          (setq shifter-major-mode-hist
+                (append major-mode-hist shifter-major-mode-hist))
+          (mapc (lambda (m)
+                  (setq shifter-minor-mode-hist
+                        (delq m shifter-minor-mode-hist)))
+                minor-mode-hist)
+          (setq shifter-minor-mode-hist
+                (append minor-mode-hist shifter-minor-mode-hist))
+          (if (or major-mode-hist minor-mode-hist)
+              (shifter-save-hist))))
     (remove-hook 'kill-emacs-hook #'shifter-save-hist)))
 
 (provide 'shifter)

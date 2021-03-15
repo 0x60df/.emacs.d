@@ -12,6 +12,8 @@
 (overriding-set-key (kbd "C-c n") #'shifter-shift-minor-mode)
 
 (with-eval-after-load 'shifter
+  (shifter-non-volatile-hist-mode)
+
   (defvar shifter-hist-auto-save-timer nil
     "Timer used to automatically save the shifter hist.")
   (setq shifter-hist-auto-save-timer
