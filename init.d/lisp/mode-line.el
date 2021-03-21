@@ -444,9 +444,10 @@ mode-line string by window-width."
 (add-hook 'mode-line-auto-show-truncated-mode-hook
           (lambda ()
             (if mode-line-auto-show-truncated-mode
-                (mode-line-format-auto-truncate-on-boundary-mode)
-              (mode-line-format-auto-truncate-on-boundary-mode 0))
-            (mode-line-show-truncated)))
+                (progn
+                  (mode-line-format-auto-truncate-on-boundary-mode)
+                  (mode-line-show-truncated))
+              (mode-line-format-auto-truncate-on-boundary-mode 0))))
 
 (setq-default mode-line-format
               (mode-line-format-auto-truncate mode-line-format-raw))
