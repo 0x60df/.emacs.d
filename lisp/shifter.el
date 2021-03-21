@@ -11,12 +11,18 @@
   "Shift major/minor-mode."
   :group 'emacs)
 
+(defcustom shifter-use-hist t
+  "Flag if `shifter' use history."
+  :group 'shifter
+  :type 'boolean)
+
 (defcustom shifter-hist-file (concat user-emacs-directory "shifter-hists")
   "File which stores shifter history."
   :group 'shifter
   :type 'file)
 
 (defvar shifter-major-mode-hist nil "History of major modes shifted in past.")
+
 (defvar shifter-minor-mode-hist nil "History of minor modes shifted in past.")
 
 (defun shifter-save-hist ()
@@ -39,7 +45,7 @@
   "Shift major mode."
   (interactive)
   (let ((l (fmmm-major-mode-list))
-        (h shifter-major-mode-hist))
+        (h (if shifter-use-hist shifter-major-mode-hist)))
     (mapc (lambda (s) (setq l (delq s l))) h)
     (let ((s (intern (completing-read "Major mode: "
                                       (mapcar 'symbol-name (append h l))))))
@@ -53,7 +59,7 @@
           (if (autoloadp f) (autoload-do-load f))))
       (if (not (fmmm-major-mode-p s))
           (setq s 'fundamental-mode))
-      (when (fmmm-major-mode-p s)
+      (when (and shifter-use-hist (fmmm-major-mode-p s))
         (setq shifter-major-mode-hist (delq s shifter-major-mode-hist))
         (add-to-list 'shifter-major-mode-hist s))
       (funcall s))))
@@ -89,20 +95,21 @@ for disabling."
                    (fmmm-enabled-minor-mode-list))
                   ((not force) (fmmm-disabled-minor-mode-list))
                   (t (fmmm-minor-mode-list))))
-         (h (funcall
-             (cond ((eq shift 'toggle) #'identity)
-                  ((and (integerp shift) (< shift 1) (not force))
-                   (lambda (hist)
-                     (let ((enabled-list (fmmm-enabled-minor-mode-list)))
-                       (seq-filter (lambda (e) (memq e enabled-list))
-                                   hist))))
-                  ((not force)
-                   (lambda (hist)
-                     (let ((enabled-list (fmmm-enabled-minor-mode-list)))
-                       (seq-filter (lambda (e) (not (memq e enabled-list)))
-                                   hist))))
-                  (t #'identity))
-             shifter-minor-mode-hist)))
+         (h (if shifter-use-hist
+                (funcall
+                 (cond ((eq shift 'toggle) #'identity)
+                       ((and (integerp shift) (< shift 1) (not force))
+                        (lambda (hist)
+                          (let ((enabled-list (fmmm-enabled-minor-mode-list)))
+                            (seq-filter (lambda (e) (memq e enabled-list))
+                                        hist))))
+                       ((not force)
+                        (lambda (hist)
+                          (let ((enabled-list (fmmm-enabled-minor-mode-list)))
+                            (seq-filter (lambda (e) (not (memq e enabled-list)))
+                                        hist))))
+                       (t #'identity))
+                 shifter-minor-mode-hist))))
     (mapc (lambda (s) (setq l (delq s l))) h)
     (let ((s (intern (completing-read "Minor mode: "
                                       (mapcar 'symbol-name (append h l))))))
@@ -116,7 +123,7 @@ for disabling."
           (if (autoloadp f) (autoload-do-load f))))
       (if (not (fmmm-minor-mode-p s))
           (setq s 'ignore))
-      (when (fmmm-minor-mode-p s)
+      (when (and shifter-use-hist (fmmm-minor-mode-p s))
         (setq shifter-minor-mode-hist (delq s shifter-minor-mode-hist))
         (add-to-list 'shifter-minor-mode-hist s))
       (funcall s shift))))
@@ -130,7 +137,7 @@ If this mode is enabled, history is saved when emacs is killed."
   :group 'shifter
   :global t
   (if shifter-non-volatile-hist-mode
-      (progn
+      (when shifter-use-hist
         (add-hook 'kill-emacs-hook #'shifter-save-hist)
         (let ((major-mode-hist shifter-major-mode-hist)
               (minor-mode-hist shifter-minor-mode-hist))
