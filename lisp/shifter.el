@@ -46,9 +46,8 @@
       (letrec ((trace-to-function
                 (lambda (ms)
                   (let ((f (symbol-function ms)))
-                    (cond ((autoloadp f) f)
-                          ((symbolp f)
-                           (funcall trace-to-function f))
+                    (cond ((null f) f)
+                          ((symbolp f) (funcall trace-to-function f))
                           (t f))))))
         (let ((f (funcall trace-to-function s)))
           (if (autoloadp f) (autoload-do-load f))))
@@ -68,8 +67,14 @@
     (mapc (lambda (s) (setq l (delq s l))) h)
     (let ((s (intern (completing-read "Minor mode: "
                                       (mapcar 'symbol-name (append h l))))))
-      (let ((f (symbol-function s)))
-        (if (autoloadp f) (autoload-do-load f)))
+      (letrec ((trace-to-function
+                (lambda (ms)
+                  (let ((f (symbol-function ms)))
+                    (cond ((null f) f)
+                          ((symbolp f) (funcall trace-to-function f))
+                          (t f))))))
+        (let ((f (funcall trace-to-function s)))
+          (if (autoloadp f) (autoload-do-load f))))
       (if (not (fmmm-minor-mode-p s))
           (setq s 'ignore))
       (when (fmmm-minor-mode-p s)

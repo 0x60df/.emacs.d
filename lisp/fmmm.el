@@ -107,8 +107,16 @@
 ;;;###autoload
 (defun fmmm-minor-mode-p (symbol)
   "Non-nil if SYMBOL seems to be minor mode."
-  (or (memq symbol minor-mode-list)
-      (assq symbol minor-mode-alist)))
+  (letrec ((root-symbol
+            (lambda (s)
+              (let ((f (symbol-function s)))
+                (cond ((null f) s)
+                      ((symbolp f) (funcall root-symbol f))
+                      (t s))))))
+    (let ((root (funcall root-symbol symbol)))
+      (or (memq root minor-mode-list)
+          (assq root minor-mode-alist)
+          (assq root minor-mode-map-alist)))))
 
 ;;;###autoload
 (defun fmmm-minor-mode-list ()
