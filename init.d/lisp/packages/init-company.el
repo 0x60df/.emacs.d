@@ -44,8 +44,7 @@
 (declare-function company-complete-inside-setup load-file-name t t)
 (declare-function company-complete-inside-test-context load-file-name t t)
 (declare-function company-complete-inside-delete-aux-space load-file-name t t)
-(declare-function company-complete-inside-delete-suffix-or-aux-space
-                  load-file-name t t)
+(declare-function company-complete-inside-delete-suffix load-file-name t t)
 (declare-function company-pseudo-tooltip-set-maximum-width-ratio
                   load-file-name t t)
 (declare-function company-search-recover-fail load-file-name t t)
@@ -308,10 +307,7 @@ complete-inside is started.")
                 (company-complete-inside-clean-up)
               (add-hook-for-once
                'company-completion-finished-hook
-               #'company-complete-inside-delete-suffix-or-aux-space)
-              (add-hook-for-once
-               'company-completion-cancelled-hook
-               #'company-complete-inside-delete-aux-space)
+               #'company-complete-inside-delete-suffix)
               (add-hook-for-once
                'company-after-completion-hook
                #'company-complete-inside-clean-up))))))))
@@ -364,7 +360,7 @@ complete-inside is started.")
     (if (company-complete-inside-test-context)
         (delete-char 1)))
 
-  (defun company-complete-inside-delete-suffix-or-aux-space (&rest args)
+  (defun company-complete-inside-delete-suffix (&rest args)
     "Delete duplicated suffix around point during complete inside.
 If suffix does not match, delete aux space."
     (if (company-complete-inside-test-context)
@@ -376,9 +372,7 @@ If suffix does not match, delete aux space."
           (save-excursion
             (backward-char (length suffix))
             (if (looking-at (regexp-quote (concat suffix " ")))
-                (delete-region (- mid 1) end)
-              (forward-char (length suffix))
-              (delete-char 1))))))
+                (delete-region (- mid 1) end))))))
 
   (add-hook 'pre-command-hook #'company-complete-inside-setup)
 
