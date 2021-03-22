@@ -10,12 +10,12 @@
 
 (defcustom fmmm-complementary-major-mode-list nil
   "List of simbols which are considered as `major-mode' by `fmmm'."
-  :type '(list symbol)
+  :type '(repeat symbol)
   :group 'fmmm)
 
 (defcustom fmmm-complementary-minor-mode-list nil
   "List of simbols which are considered as `minor-mode' by `fmmm'."
-  :type '(list symbol)
+  :type '(repeat symbol)
   :group 'fmmm)
 
 (defcustom fmmm-cache-file (concat user-emacs-directory "fmmm-cache")
