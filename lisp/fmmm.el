@@ -1,18 +1,20 @@
-;;; fmmm.el --- functionalities for major/minor-mode
+;;; fmmm.el --- feature for major/minor-mode
 
-;;; code:
+;;; Commentary:
+
+;;; Code:
 
 (defgroup fmmm nil
-  "functionalities for major/minor-mode"
+  "Feature for major/minor-mode"
   :group 'emacs)
 
 (defcustom fmmm-complementary-major-mode-list nil
-  "List of simbols which are considered as major-mode in `fmmm'"
+  "List of simbols which are considered as `major-mode' by `fmmm'."
   :type '(list symbol)
   :group 'fmmm)
 
 (defcustom fmmm-complementary-minor-mode-list nil
-  "List of simbols which are considered as minor-mode in `fmmm'"
+  "List of simbols which are considered as `minor-mode' by `fmmm'."
   :type '(list symbol)
   :group 'fmmm)
 
@@ -29,16 +31,16 @@
                       (if minor-mode-function
                           (setq l (cons (cons minor-mode-function a) l)))))))
     l)
-  "Alist of minor-mode and minor-mode variable")
+  "Alist of minor-mode and minor-mode variable.")
 
 (defvar fmmm-major-mode-on-autoload-list nil
-  "List of simbols of major-mode which will be autoloaded")
+  "List of simbols of `major-mode' which will be autoloaded.")
 
 (defvar fmmm-minor-mode-on-autoload-list nil
-  "List of simbols of minor-mode which will be autoloaded")
+  "List of simbols of `minor-mode' which will be autoloaded.")
 
 (defun fmmm-save-cache ()
-  "Save fmmm-major/minor-mode-on-autoload-list to `fmmm-cache-file'"
+  "Save fmmm-major/minor-mode-on-autoload-list to `fmmm-cache-file'."
   (with-temp-buffer
     (prin1 `(mapc (lambda (m)
                     (if (symbol-function m)
@@ -185,12 +187,10 @@ according to current `obarray'"
     (setq fmmm-minor-mode-variable-alist l)))
 
 (defconst fmmm-initial-major-mode-list (fmmm-major-mode-list)
-  "List of simbols of major-mode which are loaded
-at the time this feature is loaded.")
+  "List of simbols of `major-mode' which have been loaded on loading.")
 
 (defconst fmmm-initial-minor-mode-list (fmmm-minor-mode-list)
-  "List of simbols of minor-mode which are loaded
-at the time this feature is loaded.")
+  "List of simbols of `minor-mode' which have been loaded on loading.")
 
 (defun fmmm-update-major-mode-on-autoload-list ()
   "Update `fmmm-major-mode-on-autoload-list'.
