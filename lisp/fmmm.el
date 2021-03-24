@@ -4,14 +4,11 @@
 
 ;;; Code:
 
+(require 'seq)
+
 (defgroup fmmm nil
   "Feature for major/minor-mode"
   :group 'emacs)
-
-(defcustom fmmm-complementary-major-mode-list nil
-  "List of simbols which are considered as `major-mode' by `fmmm'."
-  :type '(repeat symbol)
-  :group 'fmmm)
 
 (defcustom fmmm-complementary-minor-mode-list nil
   "List of simbols which are considered as `minor-mode' by `fmmm'."
@@ -33,7 +30,7 @@
     l)
   "Alist of minor-mode and minor-mode variable.")
 
-(defvar fmmm-major-mode-on-autoload-list nil
+(defvar fmmm--major-mode-on-autoload-list nil
   "List of simbols of `major-mode' which will be autoloaded.")
 
 (defvar fmmm-minor-mode-on-autoload-list nil
@@ -44,8 +41,8 @@
   (with-temp-buffer
     (prin1 `(mapc (lambda (m)
                     (if (symbol-function m)
-                        (push m fmmm-major-mode-on-autoload-list)))
-                  ',(reverse fmmm-major-mode-on-autoload-list))
+                        (push m fmmm--major-mode-on-autoload-list)))
+                  ',(reverse fmmm--major-mode-on-autoload-list))
            (current-buffer))
     (prin1 `(mapc (lambda (m)
                     (if (symbol-function m)
@@ -56,55 +53,41 @@
 
 ;;;###autoload
 (defun fmmm-major-mode-p (symbol)
-  "Non-nil if SYMBOL seems to be major mode."
-  (letrec ((inspect
-            (lambda (s)
-              (let ((f (symbol-function s)))
-                (cond ((null f) nil)
-                      ((autoloadp f) nil)
-                      ((byte-code-function-p f)
-                       (let ((l (append (aref f 2) nil)))
-                         (or (memq 'kill-all-local-variables l)
-                             (memq 'run-mode-hooks l))))
-                      ((symbolp f) (funcall inspect f))
-                      ((functionp f)
-                       (or (get s 'derived-mode-parent)
-                           (and (listp f)
-                                (let ((l (mapcar
-                                          (lambda (e) (if (listp e) (car e)))
-                                          f)))
-                                  (or (memq 'kill-all-local-variables l)
-                                      (memq 'run-mode-hooks l))))))
-                      (t nil))))))
-    (funcall inspect symbol)))
+  "Non-nil if SYMBOL seems to be major mode.
+This function obly can predicate loaded functions, in other
+words, this function regard autoload as non major mode.
+That's because autoload object does not contain the content
+of function, hence it cannot be inferable that SYMBOL is
+major mode."
+  (or (memq symbol fmmm--major-mode-on-autoload-list)
+      (letrec ((inspect
+                (lambda (s)
+                  (let ((f (symbol-function s)))
+                    (cond ((null f) nil)
+                          ((autoloadp f) nil)
+                          ((byte-code-function-p f)
+                           (let ((l (append (aref f 2) nil)))
+                             (or (memq 'kill-all-local-variables l)
+                                 (memq 'run-mode-hooks l))))
+                          ((symbolp f) (funcall inspect f))
+                          ((functionp f)
+                           (or (get s 'derived-mode-parent)
+                               (and (listp f)
+                                    (let ((l (mapcar
+                                              (lambda (e)
+                                                (if (listp e) (car e)))
+                                              f)))
+                                      (or (memq 'kill-all-local-variables l)
+                                          (memq 'run-mode-hooks l))))))
+                          (t nil))))))
+        (funcall inspect symbol))))
 
 ;;;###autoload
 (defun fmmm-major-mode-list ()
-  "Return list consist of major mode symbol."
-  (let ((valid-complemntary-list
-         (letrec ((filter
-                   (lambda (p l)
-                     (cond ((null l) l)
-                           ((funcall p (car l)) (funcall filter p (cdr l)))
-                           (t (cons (car l) (funcall filter p (cdr l)))))))
-                  (inspect
-                   (lambda (s)
-                     (let ((f (symbol-function s)))
-                       (cond ((null f) nil)
-                             ((symbolp f) (funcall inspect f))
-                             (t f))))))
-           (funcall filter
-                    (lambda (symbol)
-                      (and (not (autoloadp (funcall inspect symbol)))
-                           (not (fmmm-major-mode-p symbol))))
-                    fmmm-complementary-major-mode-list))))
-    (let (l)
-      (mapatoms
-       (lambda (a) (if (and (fmmm-major-mode-p a)
-                            (not (memq a valid-complemntary-list))
-                            (not (memq a fmmm-major-mode-on-autoload-list)))
-                       (setq l (cons a l)))))
-      (append valid-complemntary-list fmmm-major-mode-on-autoload-list l))))
+  "Return list consist of symbol which seem to be major mode."
+  (let (l)
+    (mapatoms (lambda (a) (if (fmmm-major-mode-p a) (push a l))))
+    l))
 
 ;;;###autoload
 (defun fmmm-minor-mode-p (symbol)
@@ -186,23 +169,23 @@ according to current `obarray'"
                           (setq l (cons (cons minor-mode-function a) l)))))))
     (setq fmmm-minor-mode-variable-alist l)))
 
-(defconst fmmm-initial-major-mode-list (fmmm-major-mode-list)
+(defconst fmmm--initial-major-mode-list (fmmm-major-mode-list)
   "List of simbols of `major-mode' which have been loaded on loading.")
 
 (defconst fmmm-initial-minor-mode-list (fmmm-minor-mode-list)
   "List of simbols of `minor-mode' which have been loaded on loading.")
 
 (defun fmmm-update-major-mode-on-autoload-list ()
-  "Update `fmmm-major-mode-on-autoload-list'.
-according to current `obarray'"
+  "Update `fmmm--major-mode-on-autoload-list'.
+according to currently loaded functions which are reachable
+via `obarray'."
   (mapatoms
    (lambda (a)
      (if (symbolp a)
          (if (and (fmmm-major-mode-p a)
-                  (not (memq a fmmm-initial-major-mode-list))
-                  (not (memq a fmmm-major-mode-on-autoload-list)))
-             (setq fmmm-major-mode-on-autoload-list
-                   (cons a fmmm-major-mode-on-autoload-list)))))))
+                  (not (memq a fmmm--initial-major-mode-list))
+                  (not (memq a fmmm--major-mode-on-autoload-list)))
+             (push a fmmm--major-mode-on-autoload-list))))))
 
 (defun fmmm-update-minor-mode-on-autoload-list ()
   "Update `fmmm-minor-mode-on-autoload-list'.
@@ -220,7 +203,7 @@ according to current `obarray'"
 (define-minor-mode fmmm-autoload-collector-mode
   "Minor mode for supporting fmmm autoload collecting system.
 When enabled, load `fmmm-cache-file', if
-`fmmm-major-mode-on-autoload-list', and
+`fmmm--major-mode-on-autoload-list', and
 `fmmm-minor-mode-on-autoload-list' are nil.
 In addition add hook
 `fmmm-update-major-mode-on-autoload-list',
@@ -230,7 +213,7 @@ and `fmmm-save-cache' to `kill-meacs-hook'"
   :global t
   (if fmmm-autoload-collector-mode
       (progn
-        (if (and (null fmmm-major-mode-on-autoload-list)
+        (if (and (null fmmm--major-mode-on-autoload-list)
                  (null fmmm-minor-mode-on-autoload-list))
             (load fmmm-cache-file t t t))
         (add-hook 'kill-emacs-hook #'fmmm-save-cache)
@@ -241,7 +224,7 @@ and `fmmm-save-cache' to `kill-meacs-hook'"
     (fmmm-update-major-mode-on-autoload-list)
     (fmmm-update-minor-mode-on-autoload-list)
     (fmmm-save-cache)
-    (setq fmmm-major-mode-on-autoload-list nil
+    (setq fmmm--major-mode-on-autoload-list nil
           fmmm-minor-mode-on-autoload-list nil)
     (remove-hook 'kill-emacs-hook #'fmmm-save-cache)
     (remove-hook 'kill-emacs-hook
