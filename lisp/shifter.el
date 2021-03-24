@@ -49,13 +49,13 @@
     (mapc (lambda (s) (setq l (delq s l))) h)
     (let ((s (intern (completing-read "Major mode: "
                                       (mapcar 'symbol-name (append h l))))))
-      (letrec ((trace-to-function
+      (letrec ((inspect
                 (lambda (ms)
                   (let ((f (symbol-function ms)))
                     (cond ((null f) f)
-                          ((symbolp f) (funcall trace-to-function f))
+                          ((symbolp f) (funcall inspect f))
                           (t f))))))
-        (let ((f (funcall trace-to-function s)))
+        (let ((f (funcall inspect s)))
           (if (autoloadp f) (autoload-do-load f))))
       (if (not (fmmm-major-mode-p s))
           (setq s 'fundamental-mode))
@@ -113,13 +113,13 @@ for disabling."
     (mapc (lambda (s) (setq l (delq s l))) h)
     (let ((s (intern (completing-read "Minor mode: "
                                       (mapcar 'symbol-name (append h l))))))
-      (letrec ((trace-to-function
+      (letrec ((inspect
                 (lambda (ms)
                   (let ((f (symbol-function ms)))
                     (cond ((null f) f)
-                          ((symbolp f) (funcall trace-to-function f))
+                          ((symbolp f) (funcall inspect f))
                           (t f))))))
-        (let ((f (funcall trace-to-function s)))
+        (let ((f (funcall inspect s)))
           (if (autoloadp f) (autoload-do-load f))))
       (if (not (fmmm-minor-mode-p s))
           (setq s 'ignore))
