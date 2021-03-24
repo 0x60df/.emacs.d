@@ -34,7 +34,11 @@
                         (push m fmmm--minor-mode-on-autoload-list)))
                   ',(reverse fmmm--minor-mode-on-autoload-list))
            (current-buffer))
-  (write-file fmmm-cache-file)))
+    (write-file fmmm-cache-file)))
+
+(defun fmmm-load-cache ()
+  "Load fmmm-major/minor-mode-on-autoload-list from `fmmm-cache-file'."
+  (load fmmm-cache-file t t t))
 
 ;;;###autoload
 (defun fmmm-major-mode-p (symbol)
@@ -181,7 +185,7 @@ and `fmmm-save-cache' to `kill-meacs-hook'"
       (progn
         (if (and (null fmmm--major-mode-on-autoload-list)
                  (null fmmm--minor-mode-on-autoload-list))
-            (load fmmm-cache-file t t t))
+            (fmmm-load-cache))
         (add-hook 'kill-emacs-hook #'fmmm-save-cache)
         (add-hook 'kill-emacs-hook
                   #'fmmm-update-minor-mode-on-autoload-list)
@@ -190,8 +194,6 @@ and `fmmm-save-cache' to `kill-meacs-hook'"
     (fmmm-update-major-mode-on-autoload-list)
     (fmmm-update-minor-mode-on-autoload-list)
     (fmmm-save-cache)
-    (setq fmmm--major-mode-on-autoload-list nil
-          fmmm--minor-mode-on-autoload-list nil)
     (remove-hook 'kill-emacs-hook #'fmmm-save-cache)
     (remove-hook 'kill-emacs-hook
                  #'fmmm-update-minor-mode-on-autoload-list)
