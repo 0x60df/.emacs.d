@@ -1,4 +1,4 @@
-;;; fmmm.el --- feature for major/minor-mode
+;;; fmmm.el --- Feature for major/minor-mode
 
 ;;; Commentary:
 

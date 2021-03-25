@@ -1,4 +1,4 @@
-;;; shifter.el --- shift major/minor-mode
+;;; shifter.el --- Shift major/minor-mode
 
 ;;; Commentary:
 

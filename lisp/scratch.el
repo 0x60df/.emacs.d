@@ -1,4 +1,4 @@
-;;; scratch.el --- generate new buffer instantly
+;;; scratch.el --- Generate new buffer instantly
 
 ;;; Commentary:
 
