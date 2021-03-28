@@ -8,15 +8,28 @@
 (premise bindings)
 (premise inst-loophole)
 
+(eval-when-compile (require 'loophole))
+
+(declare-function loophole-enable-map "loophole")
+(declare-function loophole-disable-last-map "loophole")
+(declare-function loophole-quit "loophole")
+(declare-function loophole-start-edit "loophole")
+(declare-function loophole-stop-edit "loophole")
+(declare-function loophole-unset-key "loophole")
+(declare-function loophole-disable-map "loophole")
+(declare-function loophole-disable-all-maps "loophole")
+(declare-function loophole-end-kmacro "loophole")
+(declare-function loophole-abort-kmacro "loophole")
+(declare-function loophole-mode-set-lighter-format "loophole")
+
 (push '(loophole-mode . 20) mode-line-minor-mode-priority-alist)
 
-(require 'loophole)
-
 (overriding-set-key (kbd "C-]") #'loophole-set-key)
-(overriding-set-key (kbd "C-c ] e") #'loophole-enable-map)
 (overriding-set-key (kbd "C-c ] ]") #'loophole-mode)
 
 (with-eval-after-load 'loophole
+  (overriding-set-key (kbd "C-c ] e") #'loophole-enable-map)
+
   (setcdr loophole-mode-map nil)
 
   (defvar overriding-loophole-mode-map
