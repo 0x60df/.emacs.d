@@ -157,6 +157,11 @@ UNIT is a literal symbol."
        (1 font-lock-keyword-face)
        (2 font-lock-constant-face nil t))))))
 
+(let ((el (expand-file-name "early-init.el" user-emacs-directory))
+      (elc (expand-file-name "early-init.elc" user-emacs-directory)))
+  (unless (and (file-readable-p elc) (file-newer-than-file-p elc el))
+    (byte-compile-file el)))
+
 (setq message-truncate-lines t)
 (add-hook 'after-init-hook (lambda () (setq message-truncate-lines nil)))
 
