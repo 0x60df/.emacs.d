@@ -12,6 +12,7 @@
 !/el-get-user/
 !/el-get-user/recipes/
 !/el-get-user/recipes/*
+!/el-get-user/site-recipes/
 !/el-get-user/init-files/
 !/el-get-user/init-files/*
 !/eshell/
