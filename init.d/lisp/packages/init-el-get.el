@@ -6,10 +6,6 @@
 (premise custom)
 (premise inst-el-get)
 
-(custom-set-variables
- '(el-get-user-package-directory
-   (concat user-emacs-directory "el-get-user/init-files")))
-
 (with-eval-after-load 'el-get-recipes
   (add-to-list 'el-get-recipe-path
                (concat user-emacs-directory "el-get-user/site-recipes")))
