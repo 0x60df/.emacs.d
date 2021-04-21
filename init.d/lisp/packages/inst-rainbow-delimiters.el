@@ -3,9 +3,9 @@
 
 
 (premise init)
-(premise init-el-get)
+(premise package)
 
-(el-get-bundle rainbow-delimiters)
+(package-inst rainbow-delimiters)
 
 
 (resolve inst-rainbow-delimiters)

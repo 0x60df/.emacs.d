@@ -3,9 +3,9 @@
 
 
 (premise init)
-(premise init-el-get)
+(premise package)
 
-(el-get-bundle visible-mark)
+(package-inst visible-mark)
 
 
 (resolve inst-visible-mark)

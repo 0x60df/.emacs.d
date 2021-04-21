@@ -3,9 +3,9 @@
 
 
 (premise init)
-(premise init-el-get)
+(premise package)
 
-(el-get-bundle page-break-lines)
+(package-inst page-break-lines)
 
 
 (resolve inst-page-break-lines)

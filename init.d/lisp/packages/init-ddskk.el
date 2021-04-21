@@ -5,17 +5,11 @@
 (premise init)
 (premise mode-line)
 (premise bindings)
-(premise feature)
 (premise inst-ddskk)
 
 (declare-function skk-henkan-inactivate "skk")
 (declare-function skk-henkan-off-by-quit "skk")
 (declare-function skk-erase-prefix "skk-macs")
-(declare-function skk-remove-minibuffer-setup-hook "skk")
-(declare-function skk-kakutei "skk")
-(declare-function ccc-setup "ccc")
-
-(lazy-autoload 'skk-mode "skk")
 
 (declare-function ccc-update-buffer-local-cursor-color-suppressor
                   load-file-name t t)
@@ -25,7 +19,6 @@
 ;;; setup
 
 (with-eval-after-load 'skk
-  (require 'skk-autoloads)
   (ccc-setup))
 
 

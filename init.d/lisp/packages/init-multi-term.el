@@ -6,6 +6,8 @@
 (premise bindings)
 (premise inst-multi-term)
 
+(eval-when-compile (require 'multi-term))
+
 (overriding-set-key (kbd "H-t") #'multi-term)
 (overriding-set-key (kbd "C-l t") #'multi-term)
 (with-eval-after-load 'multi-term

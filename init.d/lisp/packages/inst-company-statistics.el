@@ -3,11 +3,9 @@
 
 
 (premise init)
-(premise init-el-get)
+(premise package)
 
-(el-get-bundle company-mode/company-statistics
-  :description "Sort candidates using completion history."
-  :depends (company-mode))
+(package-inst company-statistics)
 
 
 (resolve inst-company-statistics)

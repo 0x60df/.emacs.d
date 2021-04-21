@@ -3,9 +3,9 @@
 
 
 (premise init)
-(premise init-el-get)
+(premise package)
 
-(el-get-bundle flex-isearch-)
+(package-inst flex-isearch)
 
 
 (resolve inst-flex-isearch)

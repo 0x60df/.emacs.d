@@ -3,9 +3,9 @@
 
 
 (premise init)
-(premise init-el-get)
+(premise package)
 
-(el-get-bundle web-mode)
+(package-inst web-mode)
 
 
 (resolve inst-web-mode)

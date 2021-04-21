@@ -4,16 +4,14 @@
 
 (premise init)
 (premise custom)
-(premise feature)
 (premise inst-visible-mark)
 
 (eval-when-compile (require 'visible-mark))
 
-(lazy-autoload 'global-visible-mark-mode "visible-mark")
-
 (custom-set-variables
  '(visible-mark-max 1)
- '(visible-mark-inhibit-trailing-overlay t))
+ '(visible-mark-inhibit-trailing-overlay t)
+ '(visible-mark-faces '(visible-mark-active)))
 
 (defun visible-mark-overlays-set-priority (&rest args)
   "Advising function for `visible-mark-initialize-overlays'.

@@ -3,9 +3,9 @@
 
 
 (premise init)
-(premise init-el-get)
+(premise package)
 
-(el-get-bundle which-key)
+(package-inst which-key)
 
 
 (resolve inst-which-key)

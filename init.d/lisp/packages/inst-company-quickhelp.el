@@ -3,10 +3,9 @@
 
 
 (premise init)
-(premise init-el-get)
+(premise package)
 
-(el-get-bundle pos-tip)
-(el-get-bundle company-quickhelp)
+(package-inst company-quickhelp)
 
 
 (resolve inst-company-quickhelp)

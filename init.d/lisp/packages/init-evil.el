@@ -32,12 +32,6 @@
  '(evil-motion-state-modes nil)
  '(evil-mode-line-format 'after))
 
-;; undo-tree
-(custom-set-variables
- '(undo-tree-mode-lighter " UT"))
-(with-eval-after-load 'undo-tree
-  (global-undo-tree-mode 0))
-
 
 
 ;;; mode-line

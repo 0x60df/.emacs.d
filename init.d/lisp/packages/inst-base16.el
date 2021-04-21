@@ -3,9 +3,9 @@
 
 
 (premise init)
-(premise init-el-get)
+(premise package)
 
-(el-get-bundle base16)
+(package-inst base16-theme)
 
 
 (resolve inst-base16)

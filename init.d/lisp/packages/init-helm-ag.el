@@ -7,8 +7,8 @@
 (premise init-ag)
 (premise inst-helm-ag)
 
-
-(define-key helm-command-map (kbd "C-a") #'helm-ag)
+(with-eval-after-load 'helm-global-bindings
+  (define-key helm-command-map (kbd "C-a") #'helm-ag))
 
 
 (resolve init-helm-ag)

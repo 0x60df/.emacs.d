@@ -3,9 +3,9 @@
 
 
 (premise init)
-(premise init-el-get)
+(premise package)
 
-(el-get-bundle git-gutter-fringe)
+(package-inst git-gutter-fringe)
 
 
 (resolve inst-git-gutter-fringe)

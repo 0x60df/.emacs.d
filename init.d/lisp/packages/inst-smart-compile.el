@@ -3,9 +3,9 @@
 
 
 (premise init)
-(premise init-el-get)
+(premise package)
 
-(el-get-bundle smart-compile-)
+(package-inst smart-compile)
 
 
 (resolve inst-smart-compile)

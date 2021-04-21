@@ -3,9 +3,11 @@
 
 
 (premise init)
-(premise init-el-get)
+(premise package)
 
-(el-get-bundle dired-hacks)
+(package-inst dired-filter)
+(package-inst dired-narrow)
+(package-inst dired-subtree)
 
 
 (resolve inst-dired-hacks)

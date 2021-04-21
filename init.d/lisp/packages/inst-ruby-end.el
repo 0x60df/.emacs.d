@@ -3,9 +3,9 @@
 
 
 (premise init)
-(premise init-el-get)
+(premise package)
 
-(el-get-bundle ruby-end)
+(package-inst ruby-end)
 
 
 (resolve inst-ruby-end)

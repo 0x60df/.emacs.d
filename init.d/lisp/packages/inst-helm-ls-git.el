@@ -3,9 +3,9 @@
 
 
 (premise init)
-(premise init-el-get)
+(premise package)
 
-(el-get-bundle helm-ls-git)
+(package-inst helm-ls-git)
 
 
 (resolve inst-helm-ls-git)

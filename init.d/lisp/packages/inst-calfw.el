@@ -3,9 +3,10 @@
 
 
 (premise init)
-(premise init-el-get)
+(premise package)
 
-(el-get-bundle calfw)
+(package-inst calfw)
+(package-inst calfw-org)
 
 
 (resolve inst-calfw)

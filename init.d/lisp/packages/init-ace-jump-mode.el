@@ -9,10 +9,13 @@
 
 (eval-when-compile (require 'ace-jump-mode))
 
+(declare-function ace-jump-mode-enable-mark-sync "ace-jump-mode")
+
 (push '(ace-jump-mode . 22) mode-line-minor-mode-priority-alist)
 
 (with-eval-after-load 'ace-jump-mode
-  (setq ace-jump-mode-move-keys (loop for i from ?a to ?z collect i)))
+  (setq ace-jump-mode-move-keys (loop for i from ?a to ?z collect i))
+  (ace-jump-mode-enable-mark-sync))
 
 (overriding-set-key (kbd "M-g M-j") #'ace-jump-mode)
 (overriding-set-key (kbd "H-g") #'ace-jump-mode)

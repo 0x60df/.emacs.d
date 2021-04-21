@@ -3,9 +3,9 @@
 
 
 (premise init)
-(premise init-el-get)
+(premise package)
 
-(el-get-bundle volatile-highlights)
+(package-inst volatile-highlights)
 
 
 (resolve inst-volatile-highlights)

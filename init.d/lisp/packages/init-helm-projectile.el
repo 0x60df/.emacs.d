@@ -11,7 +11,8 @@
 (custom-set-variables
  '(helm-projectile-truncate-lines t))
 
-(define-key helm-command-map (kbd "C-p") #'helm-projectile)
+(with-eval-after-load 'helm-global-bindings
+  (define-key helm-command-map (kbd "C-p") #'helm-projectile))
 
 
 (resolve init-helm-projectile)

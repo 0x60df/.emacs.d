@@ -3,9 +3,9 @@
 
 
 (premise init)
-(premise init-el-get)
+(premise package)
 
-(el-get-bundle rainbow-mode)
+(package-inst rainbow-mode)
 
 
 (resolve inst-rainbow-mode)

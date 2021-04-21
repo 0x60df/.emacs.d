@@ -3,9 +3,9 @@
 
 
 (premise init)
-(premise init-el-get)
+(premise package)
 
-(el-get-bundle ox-gfm)
+(package-inst ox-gfm)
 
 
 (resolve inst-ox-gfm)

@@ -3,9 +3,9 @@
 
 
 (premise init)
-(premise init-el-get)
+(premise package)
 
-(el-get-bundle helm-descbinds)
+(package-inst helm-descbinds)
 
 
 (resolve inst-helm-descbinds)

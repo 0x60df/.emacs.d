@@ -3,9 +3,11 @@
 
 
 (premise init)
-(premise init-el-get)
+(premise package)
 
-(el-get-bundle git-modes)
+(package-inst gitattributes-mode)
+(package-inst gitconfig-mode)
+(package-inst gitignore-mode)
 
 
 (resolve inst-git-modes)

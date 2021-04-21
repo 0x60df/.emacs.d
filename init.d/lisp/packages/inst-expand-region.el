@@ -3,9 +3,9 @@
 
 
 (premise init)
-(premise init-el-get)
+(premise package)
 
-(el-get-bundle expand-region)
+(package-inst expand-region)
 
 
 (resolve inst-expand-region)

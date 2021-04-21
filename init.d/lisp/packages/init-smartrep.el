@@ -11,6 +11,7 @@
 
 (eval-when-compile
   (require 'org)
+  (require 'dired)
   (require 'smerge-mode)
   (require 'flyspell))
 

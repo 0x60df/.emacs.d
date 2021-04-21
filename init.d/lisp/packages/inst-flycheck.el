@@ -3,9 +3,9 @@
 
 
 (premise init)
-(premise init-el-get)
+(premise package)
 
-(el-get-bundle flycheck)
+(package-inst flycheck)
 
 
 (resolve inst-flycheck)

@@ -6,6 +6,8 @@
 (premise mode-line)
 (premise inst-dired-hacks)
 
+(eval-when-compile (require 'dired))
+
 (declare-function dired-subtree-overlays-put-priority t t)
 
 (with-eval-after-load 'dired-filter

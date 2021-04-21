@@ -3,9 +3,9 @@
 
 
 (premise init)
-(premise init-el-get)
+(premise package)
 
-(el-get-bundle yasnippet-snippets)
+(package-inst yasnippet-snippets)
 
 
 (resolve inst-yasnippet-snippets)

@@ -3,9 +3,9 @@
 
 
 (premise init)
-(premise init-el-get)
+(premise package)
 
-(el-get-bundle magit)
+(package-inst magit)
 
 
 (resolve inst-magit)

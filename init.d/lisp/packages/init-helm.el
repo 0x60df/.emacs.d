@@ -9,6 +9,13 @@
 (premise init-ido)
 (premise inst-helm)
 
+(eval-when-compile
+  (require 'helm)
+  (require 'helm-mode))
+
+(declare-function helm-execute-persistent-action "helm")
+(declare-function helm-select-action "helm")
+
 
 ;;; settings
 
@@ -58,7 +65,7 @@
 (custom-set-variables
  '(helm-command-prefix-key "C-q"))
 
-(with-eval-after-load 'helm-config
+(with-eval-after-load 'helm-global-bindings
   (overriding-set-key (kbd "C-q") helm-command-map)
 
   (define-key helm-command-map (kbd "C-q") #'quoted-insert)

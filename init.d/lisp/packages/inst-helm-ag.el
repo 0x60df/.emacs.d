@@ -3,9 +3,9 @@
 
 
 (premise init)
-(premise init-el-get)
+(premise package)
 
-(el-get-bundle helm-ag)
+(package-inst helm-ag)
 
 
 (resolve inst-helm-ag)

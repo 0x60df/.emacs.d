@@ -3,9 +3,9 @@
 
 
 (premise init)
-(premise inst-el-get)
+(premise package)
 
-(el-get-bundle ox-qmd)
+(package-inst ox-qmd)
 
 
 (resolve inst-ox-qmd)

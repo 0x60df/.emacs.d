@@ -6,7 +6,8 @@
 (premise init-helm)
 (premise inst-helm-swoop)
 
-(define-key helm-command-map (kbd "C-s") #'helm-swoop)
+(with-eval-after-load 'helm-global-bindings
+  (define-key helm-command-map (kbd "C-s") #'helm-swoop))
 (with-eval-after-load 'isearch
   (define-key isearch-mode-map (kbd "C-q") (make-sparse-keymap))
   (define-key isearch-mode-map (kbd "C-q C-q") #'isearch-quote-char)

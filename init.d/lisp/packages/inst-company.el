@@ -3,9 +3,9 @@
 
 
 (premise init)
-(premise init-el-get)
+(premise package)
 
-(el-get-bundle company-mode)
+(package-inst company)
 
 
 (resolve inst-company)

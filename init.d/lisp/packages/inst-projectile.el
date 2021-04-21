@@ -3,9 +3,9 @@
 
 
 (premise init)
-(premise init-el-get)
+(premise package)
 
-(el-get-bundle projectile)
+(package-inst projectile)
 
 
 (resolve inst-projectile)

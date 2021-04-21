@@ -3,9 +3,9 @@
 
 
 (premise init)
-(premise init-el-get)
+(premise package)
 
-(el-get-bundle multi-term)
+(package-inst multi-term)
 
 
 (resolve inst-multi-term)

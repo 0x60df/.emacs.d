@@ -5,7 +5,7 @@
 (premise init)
 (premise init-helm)
 
-(with-eval-after-load 'helm-config
+(with-eval-after-load 'helm-global-bindings
   (define-key helm-command-map (kbd ".") #'helm-frames)
 
   (with-eval-after-load 'server

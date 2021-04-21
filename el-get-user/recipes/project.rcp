@@ -1,4 +1,0 @@
-(:name project
-       :description "Operations on the current project"
-       :website "https://elpa.gnu.org/packages/project.html"
-       :type elpa)

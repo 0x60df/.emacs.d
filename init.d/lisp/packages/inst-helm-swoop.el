@@ -3,9 +3,9 @@
 
 
 (premise init)
-(premise init-el-get)
+(premise package)
 
-(el-get-bundle helm-swoop)
+(package-inst helm-swoop)
 
 
 (resolve inst-helm-swoop)

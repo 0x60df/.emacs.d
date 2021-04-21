@@ -3,9 +3,9 @@
 
 
 (premise init)
-(premise init-el-get)
+(premise package)
 
-(el-get-bundle yaml-mode)
+(package-inst yaml-mode)
 
 
 (resolve inst-yaml-mode)

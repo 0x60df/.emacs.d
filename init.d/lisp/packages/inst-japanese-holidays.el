@@ -3,9 +3,9 @@
 
 
 (premise init)
-(premise init-el-get)
+(premise package)
 
-(el-get-bundle japanese-holidays)
+(package-inst japanese-holidays)
 
 
 (resolve inst-japanese-holidays)

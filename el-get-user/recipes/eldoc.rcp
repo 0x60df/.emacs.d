@@ -1,4 +1,0 @@
-(:name eldoc
-       :description "Show function arglist or variable docstring in echo area"
-       :website "http://elpa.gnu.org/packages/eldoc.html"
-       :type elpa)

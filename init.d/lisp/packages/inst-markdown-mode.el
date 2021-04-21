@@ -3,9 +3,9 @@
 
 
 (premise init)
-(premise init-el-get)
+(premise package)
 
-(el-get-bundle markdown-mode)
+(package-inst markdown-mode)
 
 
 (resolve inst-markdown-mode)

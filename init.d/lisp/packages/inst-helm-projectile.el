@@ -3,9 +3,9 @@
 
 
 (premise init)
-(premise init-el-get)
+(premise package)
 
-(el-get-bundle helm-projectile)
+(package-inst helm-projectile)
 
 
 (resolve inst-helm-projectile)

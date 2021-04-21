@@ -3,10 +3,9 @@
 
 
 (premise init)
-(premise init-el-get)
+(premise package)
 
-(el-get-bundle robe-mode
-  :post-init nil)
+(package-inst robe)
 
 
 (resolve inst-robe)

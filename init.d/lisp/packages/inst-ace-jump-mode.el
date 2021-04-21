@@ -3,9 +3,9 @@
 
 
 (premise init)
-(premise init-el-get)
+(premise package)
 
-(el-get-bundle ace-jump-mode)
+(package-inst ace-jump-mode)
 
 
 (resolve inst-ace-jump-mode)

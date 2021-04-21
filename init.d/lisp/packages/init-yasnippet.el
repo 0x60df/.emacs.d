@@ -15,9 +15,9 @@
 (declare-function yas-expand "yasnippet")
 (declare-function yas-insert-snippet "yasnippet")
 (declare-function yas-describe-tables "yasnippet")
-
 (declare-function yas--field-probably-deleted-p "yasnippet")
 (declare-function yas-exit-snippet "yasnippet")
+
 (declare-function yas--find-next-field-boundary-guard load-file-name t t)
 
 (custom-set-variables

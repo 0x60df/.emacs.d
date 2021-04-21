@@ -3,9 +3,9 @@
 
 
 (premise init)
-(premise init-el-get)
+(premise package)
 
-(el-get-bundle yatex)
+(package-inst yatex)
 
 
 (resolve inst-yatex)

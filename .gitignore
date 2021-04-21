@@ -19,8 +19,6 @@
 !/init.d/
 !/init.d/lisp/
 !/init.d/lisp/*.el
-!/init.d/lisp/el-get/
-!/init.d/lisp/el-get/*.el
 !/init.d/lisp/features/
 !/init.d/lisp/features/*.el
 !/init.d/lisp/packages/

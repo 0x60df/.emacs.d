@@ -3,9 +3,9 @@
 
 
 (premise init)
-(premise init-el-get)
+(premise package)
 
-(el-get-bundle multiple-cursors)
+(package-inst multiple-cursors)
 
 
 (resolve inst-multiple-cursors)

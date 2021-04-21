@@ -9,8 +9,6 @@
 (premise bindings)
 (premise inst-git-gutter-fringe)
 
-(declare-function git-gutter:close-popup load-file-name t t)
-
 (declare-function git-gutter:popup-buffer-window "git-gutter")
 (declare-function git-gutter:previous-hunk "git-gutter")
 (declare-function git-gutter:next-hunk "git-gutter")
@@ -18,6 +16,8 @@
 (declare-function git-gutter:revert-hunk "git-gutter")
 (declare-function git-gutter:stage-hunk "git-gutter")
 (declare-function git-gutter:mark-hunk "git-gutter")
+
+(declare-function git-gutter:close-popup load-file-name t t)
 
 (custom-set-variables
  '(git-gutter:lighter " GGt"))

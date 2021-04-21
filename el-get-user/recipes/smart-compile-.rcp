@@ -1,5 +1,0 @@
-(:name smart-compile-
-       :website "https://www.emacswiki.org/emacs/SmartCompile"
-       :description "an interface to compile"
-       :type git
-       :url "https://github.com/zenitani/elisp.git")

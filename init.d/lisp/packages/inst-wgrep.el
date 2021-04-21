@@ -3,9 +3,9 @@
 
 
 (premise init)
-(premise init-el-get)
+(premise package)
 
-(el-get-bundle wgrep)
+(package-inst wgrep)
 
 
 (resolve inst-wgrep)
