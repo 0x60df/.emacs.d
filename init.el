@@ -265,8 +265,6 @@ UNIT is a literal symbol."
 
 (init package)
 
-(init-package el-get)
-
 (init-package company)
 (init-package company-statistics)
 (init-package company-quickhelp)
