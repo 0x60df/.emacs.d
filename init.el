@@ -235,6 +235,7 @@ UNIT is a literal symbol."
 (init-feature hippie-exp)
 (init-feature doc-view)
 (init-feature info)
+(init-feature compile)
 (init-feature hi-lock)
 (init-feature epa)
 (init-feature speedbar)
