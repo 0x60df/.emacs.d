@@ -11,10 +11,14 @@
 
 (lazy-autoload 'robe-start "robe")
 
-(advice-add 'ac-robe-candidates
-            :filter-return #'ac-delete-duplicated-candidates)
+(declare-function ac-delete-duplicated-candidates "auto-complete")
 
 (with-eval-after-load 'ac-robe
+  (require 'auto-complete nil t)
+
+  (advice-add 'ac-robe-candidates
+              :filter-return #'ac-delete-duplicated-candidates)
+
   (defface ac-robe-candidate-face
     '((t :inherit ac-candidate-face
          :foreground "#CC342D"))
@@ -41,7 +45,6 @@
   "Setup robe and start."
   (interactive)
   (robe-mode)
-  (ac-robe-setup)
   (save-window-excursion (inf-ruby))
   (robe-start))
 
