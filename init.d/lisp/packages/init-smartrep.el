@@ -99,11 +99,13 @@
         ("R" . smerge-refine)
         ("a" . smerge-keep-all)
         ("b" . smerge-keep-base)
+        ("l" . smerge-keep-lower)
         ("m" . smerge-keep-mine)
         ("n" . smerge-next)
         ("o" . smerge-keep-other)
         ("p" . smerge-prev)
-        ("r" . smerge-resolve)))))
+        ("r" . smerge-resolve)
+        ("u" . smerge-keep-upper)))))
 
 (add-hook 'after-init-hook
           (lambda ()
