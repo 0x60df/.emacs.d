@@ -132,6 +132,9 @@
 
  ;; Company
  `(company-search-cursor-color ,(yester-whole-symbol-exp yellow))
- `(company-search-fail-cursor-color ,(yester-whole-symbol-exp orange)))
+ `(company-search-fail-cursor-color ,(yester-whole-symbol-exp orange))
+
+ ;; Multiple-cursors
+ `(mc-mode-cursor-color ,(yester-whole-symbol-exp orange)))
 
 (provide-theme 'yester-accessory)

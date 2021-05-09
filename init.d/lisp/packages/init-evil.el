@@ -127,7 +127,12 @@ Conditions are specified by `evil-refresh-cursor-interrupt-conditions'."
   (with-eval-after-load 'company
     (add-to-list 'evil-refresh-cursor-interrupt-conditions
                  '(and (memq evil-state '(emacs insert))
-                       company-search-mode))))
+                       company-search-mode)))
+
+  (with-eval-after-load 'multiple-cursors-core
+    (add-to-list 'evil-refresh-cursor-interrupt-conditions
+                 '(and (memq evil-state '(emacs insert))
+                       multiple-cursors-mode))))
 
 
 
