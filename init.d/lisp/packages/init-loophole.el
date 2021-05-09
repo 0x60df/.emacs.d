@@ -25,6 +25,7 @@
 (with-eval-after-load 'loophole
   (define-key loophole-mode-map (kbd "C-c [") nil)
   (define-key loophole-mode-map (kbd "C-c \\") nil)
+  (define-key loophole-mode-map (kbd "C-c ] ]") #'loophole-enable)
 
   (defvar overriding-loophole-mode-map
     (let ((map (make-sparse-keymap)))
