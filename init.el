@@ -230,6 +230,7 @@ UNIT is a literal symbol."
 (init-feature eshell)
 (init-feature eww)
 (init-feature ediff)
+(init-feature tramp)
 (init-feature calendar)
 (init-feature abbrev)
 (init-feature hippie-exp)
