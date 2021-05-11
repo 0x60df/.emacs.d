@@ -11,8 +11,11 @@
 (eval-when-compile (require 'loophole))
 
 (declare-function loophole-dig "loophole")
+(declare-function loophole-edit "loophole")
+(declare-function loophole-reveal "loophole")
 (declare-function loophole-cover-latest "loophole")
 (declare-function loophole-break "loophole")
+(declare-function loophole-bury "loophole")
 (declare-function loophole-turn-on-auto-prioritize "loophole")
 (declare-function loophole-turn-on-auto-stop-editing "loophole")
 (declare-function loophole-turn-on-auto-resume "loophole")
@@ -25,12 +28,15 @@
 (with-eval-after-load 'loophole
   (define-key loophole-mode-map (kbd "C-c [") nil)
   (define-key loophole-mode-map (kbd "C-c \\") nil)
-  (define-key loophole-mode-map (kbd "C-c ] ]") #'loophole-enable)
+  (define-key loophole-mode-map (kbd "C-c ] [") #'loophole-edit)
+  (define-key loophole-mode-map (kbd "C-c ] ]") #'loophole-reveal)
+  
 
   (defvar overriding-loophole-mode-map
     (let ((map (make-sparse-keymap)))
       (define-key map (kbd "C-}") #'loophole-cover-latest)
       (define-key map (kbd "C-{") #'loophole-break)
+      (define-key map (kbd "M-]") #'loophole-bury)
       map)
     "Keymap for ‘loophole-mode’ which overrides global overriding maps.")
 
