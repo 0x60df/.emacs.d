@@ -223,6 +223,7 @@ UNIT is a literal symbol."
 (init-feature flyspell)
 (init-feature flymake)
 (init-feature dired)
+(init-feature dired-aux)
 (init-feature dired-x)
 (init-feature wdired)
 (init-feature org)
