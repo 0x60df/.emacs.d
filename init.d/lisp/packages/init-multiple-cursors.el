@@ -18,6 +18,7 @@
 
 (custom-set-variables
  '(mc/always-run-for-all t)
+ '(mc/max-cursors 32)
  `(mc/mode-line
    '(" MC:" (:eval (format ,(propertize "%d" 'face '(bold mode-line-warning))
                            (mc/num-cursors))))))
