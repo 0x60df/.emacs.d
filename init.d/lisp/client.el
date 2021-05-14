@@ -190,9 +190,9 @@ belongs to the same client as originally selected frame."
                                     'frame-list)
         (advice-remove 'frame-list #'filter-typical-frame-of-each-client))))))
 
-(defun pick-typical-frame-of-each-client ()
+(defun pick-typical-frame-of-each-client (&optional post-process)
   "Pick typical frame of each client."
-  (interactive)
+  (interactive "p")
   (let ((frame-alpha-alist
          (mapcar (lambda (frame) (cons frame (frame-parameter frame 'alpha)))
                  (frame-list))))
@@ -211,7 +211,7 @@ belongs to the same client as originally selected frame."
                         :around #'seek-nearest-typical-frame-of-each-client)
             (advice-add 'previous-frame
                         :around #'seek-nearest-typical-frame-of-each-client)
-            (call-interactively #'pick-frame))
+            (funcall #'pick-frame post-process))
         (advice-remove 'previous-frame
                        #'seek-nearest-typical-frame-of-each-client)
         (advice-remove 'next-frame #'seek-nearest-typical-frame-of-each-client)
@@ -232,7 +232,7 @@ to the client of current frame."
         (seq-filter (lambda (f) (eq proc (frame-parameter f 'client)))
                     frame-list))))
 
-(defun seek-nearest-frame-on-selected-frame
+(defun seek-nearest-frame-on-selected-client
     (next-or-previous-frame &optional frame miniframe args)
   "Advising function for `next-frame' and `previous-frame'.
 Call these function recursively while returned frame
@@ -246,9 +246,9 @@ belongs the other client than originally selected frame."
                                                    f miniframe args)))))))
       (funcall seek (apply next-or-previous-frame frame miniframe args)))))
 
-(defun pick-frame-on-selected-client ()
+(defun pick-frame-on-selected-client (&optional post-process)
   "Pick frame which belongs to same client."
-  (interactive)
+  (interactive "p")
   (let ((frame-alpha-alist
          (mapcar (lambda (frame) (cons frame (frame-parameter frame 'alpha)))
                  (frame-list))))
@@ -261,19 +261,83 @@ belongs the other client than originally selected frame."
             (advice-add 'frame-list
                         :filter-return #'filter-frame-on-selected-client)
             (advice-add 'next-frame
-                        :around #'seek-nearest-frame-on-selected-frame)
+                        :around #'seek-nearest-frame-on-selected-client)
             (advice-add 'previous-frame
-                        :around #'seek-nearest-frame-on-selected-frame)
-            (call-interactively #'pick-frame))
+                        :around #'seek-nearest-frame-on-selected-client)
+            (funcall #'pick-frame post-process))
         (advice-remove 'frame-list #'filter-frame-on-selected-client)
-        (advice-remove 'next-frame #'seek-nearest-frame-on-selected-frame)
-        (advice-remove 'previous-frame #'seek-nearest-frame-on-selected-frame)
+        (advice-remove 'next-frame #'seek-nearest-frame-on-selected-client)
+        (advice-remove 'previous-frame #'seek-nearest-frame-on-selected-client)
         (mapc (lambda (frame-alpha)
                 (let ((frame (car frame-alpha))
                       (alpha (cdr frame-alpha)))
                   (if (frame-live-p frame)
                       (set-frame-parameter frame 'alpha (or alpha 100)))))
               frame-alpha-alist)))))
+
+(defun filter-frame-on-other-client (frame-list)
+  "Advising fuction for `frame-list'.
+Filter FRAME-LIST and return list of frames which belongs
+to the other clients than current frame."
+  (let* ((proc (frame-parameter nil 'client)))
+    (seq-filter (lambda (f)
+                  (let ((f-proc (frame-parameter f 'client)))
+                    (and f-proc (not (eq proc f-proc)))))
+                frame-list)))
+
+(defun seek-nearest-frame-on-other-client
+    (next-or-previous-frame &optional frame miniframe args)
+  "Advising function for `next-frame' and `previous-frame'.
+Call these function recursively while returned frame
+belongs the same client as originally selected frame."
+  (let* ((original-frame (selected-frame))
+         (original-client (frame-parameter original-frame 'client)))
+    (letrec ((seek (lambda (f)
+                     (let ((proc (frame-parameter f 'client)))
+                       (cond ((and proc
+                                   (not (eq original-client
+                                            (frame-parameter f 'client))))
+                            f)
+                           (t (funcall seek (apply next-or-previous-frame
+                                                   f miniframe args))))))))
+      (funcall seek (apply next-or-previous-frame frame miniframe args)))))
+
+(defun pick-frame-on-other-client (&optional post-process)
+  "Pick frame which belongs to other clients."
+  (interactive "p")
+  (let ((frame-alpha-alist
+         (mapcar (lambda (frame) (cons frame (frame-parameter frame 'alpha)))
+                 (frame-list)))
+        (other-client-frame-list
+         (mapcan #'client-frame-list
+                 (remq (frame-parameter nil 'client)
+                       (client-list)))))
+    (unwind-protect
+        (progn
+          (mapc (lambda (frame)
+                  (set-frame-parameter frame 'alpha 0))
+                (remove (selected-frame) (frame-list)))
+          (if (< 1 (length other-client-frame-list))
+              (unwind-protect
+                  (progn
+                    (advice-add 'frame-list
+                                :filter-return #'filter-frame-on-other-client)
+                    (advice-add 'next-frame
+                                :around #'seek-nearest-frame-on-other-client)
+                    (advice-add 'previous-frame
+                                :around #'seek-nearest-frame-on-other-client)
+                    (setq unread-command-events (listify-key-sequence "."))
+                    (funcall #'pick-frame post-process))
+                (advice-remove 'frame-list #'filter-frame-on-other-client)
+                (advice-remove 'next-frame #'seek-nearest-frame-on-other-client)
+                (advice-remove 'previous-frame
+                               #'seek-nearest-frame-on-other-client))))
+      (mapc (lambda (frame-alpha)
+              (let ((frame (car frame-alpha))
+                    (alpha (cdr frame-alpha)))
+                (if (frame-live-p frame)
+                    (set-frame-parameter frame 'alpha (or alpha 100)))))
+            frame-alpha-alist))))
 
 (defun other-frame-with-server (arg)
   "`other-frame' or `other-frame-on-selected-client'."
@@ -313,6 +377,84 @@ belongs the other client than originally selected frame."
   (interactive)
   (if (frame-parameter nil 'client)
       (call-interactively #'pick-typical-frame-of-each-client)))
+
+(defun summon-frame (&optional sacrifice)
+  "Delete frame of other client and remake it on current client.
+If optional argument SACRIFICE is not nil, current frame
+will be reused for `frameset-restore'."
+  (interactive "P")
+  (let* ((original-frame (selected-frame))
+         (remake-frame (lambda (frame)
+                         (let ((frameset (frameset-save `(,frame))))
+                           (delete-frame frame)
+                           (frameset-restore
+                            frameset
+                            :reuse-frames
+                            (if sacrifice
+                                (lambda (frame)
+                                  (prog1 (eq frame original-frame)
+                                    (setq original-frame nil))))))))
+         (finish (lambda (return)
+                   (if (equal return [3 3])
+                       (throw 'finish t)
+                     return))))
+    (unwind-protect
+        (progn
+          (advice-add 'read-key-sequence-vector :filter-return finish)
+          (catch 'finish
+            (while t
+              (let ((other-client-frame-list
+                     (filter-frame-on-other-client (frame-list))))
+                (if (= (length other-client-frame-list) 1)
+                    (let ((frame-alpha-alist
+                           (mapcar (lambda (frame)
+                                     (cons frame
+                                           (frame-parameter frame 'alpha)))
+                                   (frame-list))))
+                      (unwind-protect
+                          (progn
+                            (mapc (lambda (frame)
+                                    (set-frame-parameter frame 'alpha 0))
+                                  (remove (car other-client-frame-list)
+                                          (frame-list)))
+                            (let* ((key-sequence (read-key-sequence-vector ""))
+                                   (key-description (key-description
+                                                     key-sequence))
+                                   (key-binding (key-binding key-sequence)))
+                              (cond ((seq-contains-p
+                                      '("RET" "C-j") key-description)
+                                     (funcall remake-frame
+                                              (car other-client-frame-list)))
+                                    ((seq-contains-p
+                                      '("." "M-." "," "f" "b" "n" "p" "a" "e"
+                                        "<" ">")
+                                      key-description))
+                                    ((equal key-description "q")
+                                     (throw 'finish t))
+                                    ((eq key-binding 'self-insert-command)
+                                     (if (< 0 (length key-sequence))
+                                         (let ((character
+                                                (aref key-sequence 0)))
+                                           (if (characterp character)
+                                               (self-insert-command
+                                                1 character))))
+                                     (throw 'finish t))
+                                    ((commandp key-binding)
+                                     (call-interactively key-binding)
+                                     (throw 'finish t))
+                                    (t (throw 'finish t)))))
+                        (mapc (lambda (frame-alpha)
+                                (let ((frame (car frame-alpha))
+                                      (alpha (cdr frame-alpha)))
+                                  (if (frame-live-p frame)
+                                      (set-frame-parameter frame 'alpha
+                                                           (or alpha 100)))))
+                              frame-alpha-alist)))
+                  (let ((frame (pick-frame-on-other-client)))
+                    (if (framep frame)
+                        (funcall remake-frame frame)
+                      (throw 'finish t))))))))
+      (advice-remove 'read-key-sequence-vector finish))))
 
 
 
