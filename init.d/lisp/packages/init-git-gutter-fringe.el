@@ -22,7 +22,7 @@
 (custom-set-variables
  '(git-gutter:lighter " GGt"))
 
-(push '(git-gutter-mode . 31) mode-line-minor-mode-priority-alist)
+(push '(git-gutter-mode . 33) mode-line-minor-mode-priority-alist)
 
 (with-eval-after-load 'git-gutter
 

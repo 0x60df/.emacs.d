@@ -23,7 +23,7 @@
    '(" MC:" (:eval (format ,(propertize "%d" 'face '(bold mode-line-warning))
                            (mc/num-cursors))))))
 
-(push '(multiple-cursors-mode . 23) mode-line-minor-mode-priority-alist)
+(push '(multiple-cursors-mode . 21) mode-line-minor-mode-priority-alist)
 
 (with-eval-after-load 'multiple-cursors-core
   (defun disable-mc-before-make-frame (&rest args)

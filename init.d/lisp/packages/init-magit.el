@@ -28,7 +28,7 @@
  '(transient-highlight-mismatched-keys t)
  '(with-editor-mode-lighter " WtE"))
 
-(push '(with-editor-mode . 33) mode-line-minor-mode-priority-alist)
+(push '(with-editor-mode . 34) mode-line-minor-mode-priority-alist)
 
 (with-eval-after-load 'magit-blame
   (let ((margin-style (cdr (assq 'margin magit-blame-styles))))

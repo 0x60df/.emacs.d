@@ -21,7 +21,7 @@
 (declare-function loophole-turn-on-auto-resume "loophole")
 (declare-function loophole-mode-set-lighter-format "loophole")
 
-(push '(loophole-mode . 20) mode-line-minor-mode-priority-alist)
+(push '(loophole-mode . 13) mode-line-minor-mode-priority-alist)
 
 (overriding-set-key (kbd "C-]") #'loophole-dig)
 
@@ -30,7 +30,6 @@
   (define-key loophole-mode-map (kbd "C-c \\") nil)
   (define-key loophole-mode-map (kbd "C-c ] [") #'loophole-edit)
   (define-key loophole-mode-map (kbd "C-c ] ]") #'loophole-reveal)
-  
 
   (defvar overriding-loophole-mode-map
     (let ((map (make-sparse-keymap)))

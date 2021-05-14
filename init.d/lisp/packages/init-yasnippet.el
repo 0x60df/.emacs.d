@@ -27,12 +27,12 @@
                           yas-maybe-ido-prompt
                           yas-no-prompt)))
 
-(push '(yas-minor-mode . 13) mode-line-minor-mode-priority-alist)
+(push '(yas-minor-mode . 31) mode-line-minor-mode-priority-alist)
 
 (with-eval-after-load 'yasnippet
   (yas-reload-all)
 
-  (modify-minor-mode-lighter 'yas-minor-mode " YS")
+  (modify-minor-mode-lighter 'yas-minor-mode " YaS")
 
   (defun yas--find-next-field-boundary-guard
       (yas--find-next-field n snippet active &rest args)

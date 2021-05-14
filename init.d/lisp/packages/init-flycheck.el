@@ -7,7 +7,7 @@
 (premise bindings)
 (premise inst-flycheck)
 
-(push '(flycheck-mode . 45) mode-line-minor-mode-priority-alist)
+(push '(flycheck-mode . 44) mode-line-minor-mode-priority-alist)
 
 (custom-set-variables
  '(flycheck-emacs-lisp-load-path 'inherit))

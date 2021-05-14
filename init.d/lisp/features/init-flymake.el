@@ -13,7 +13,7 @@
 (declare-function flymake-show-help load-file-name t t)
 (declare-function flymake--modify-mode-line-format load-file-name t t)
 
-(push '(flymake -mode . 44) mode-line-minor-mode-priority-alist)
+(push '(flymake-mode . 43) mode-line-minor-mode-priority-alist)
 
 (overriding-set-key (kbd "C-c #") #'flymake-mode)
 (overriding-set-key (kbd "C-l 3") #'flymake-mode)

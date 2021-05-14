@@ -15,7 +15,7 @@
 (custom-set-variables
  '(flyspell-mode-line-string " FlyS"))
 
-(push '(flyspell-mode . 43) mode-line-minor-mode-priority-alist)
+(push '(flyspell-mode . 42) mode-line-minor-mode-priority-alist)
 
 (overriding-set-key (kbd "C-c $") #'flyspell-mode)
 (overriding-set-key (kbd "C-l 4") #'flyspell-mode)
