@@ -106,7 +106,11 @@
         '(sp-show-enclosing-pair-dwim sp-show-enclosing-pair-dwim-reverse))
 
   (advice-add 'sp-show--pair-delete-enc-overlays
-              :after #'sp-show--enclosing-pair-cleanup))
+              :after #'sp-show--enclosing-pair-cleanup)
+
+  (setq sp-ignore-modes-list
+        (delete 'minibuffer-inactive-mode sp-ignore-modes-list))
+  (sp-local-pair 'minibuffer-inactive-mode "'" nil :actions nil))
 
 (overriding-set-key (kbd "C-(") #'sp-splice-sexp)
 (overriding-set-key (kbd "C-)") #'sp-rewrap-sexp)
