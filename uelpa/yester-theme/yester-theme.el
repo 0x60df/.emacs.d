@@ -386,6 +386,8 @@
    `(org-footnote (,@(yester-whole-face-spec class :foreground aqua)))
    `(org-formula
      (,@(yester-whole-face-spec class :foreground green :inherit 'org-table)))
+   `(org-headline-done ((,class :inherit org-done :slant italic)))
+   `(org-headline-todo ((,class :inherit org-todo :slant italic)))
    `(org-hide (,@(yester-whole-face-spec class :foreground background)))
    `(org-link ((,class :inherit link)))
    `(org-scheduled (,@(yester-whole-face-spec class :foreground foreground)))
