@@ -52,6 +52,7 @@
             (lambda () (setq mode-name "Loophole Write Lisp"))))
 
 (custom-set-variables '(loophole-kmacro-completing-key (kbd "C-]"))
+                      '(loophole-use-timer t)
                       '(loophole-bind-command-order
                         '(loophole-obtain-key-and-command-by-key-sequence
                           loophole-obtain-key-and-command-by-symbol
