@@ -66,16 +66,24 @@ If called with no argument, insert the next kill"
 Increment is N. If N is ommited, use 1."
   (interactive "p")
   (unless n (setq n 1))
-  (vertical-motion n)
-  (scroll-up n))
+  (if (eql (line-number-at-pos) (line-number-at-pos (1- (window-end))))
+      (progn
+        (scroll-up n)
+        (vertical-motion n))
+    (vertical-motion n)
+    (scroll-up n)))
 
 (defun previous-line-scroll-down (n)
   "Move cursor to previous screen line and scroll down.
 Increment is N. If N is ommited, use 1."
   (interactive "p")
   (unless n (setq n 1))
-  (vertical-motion (- n))
-  (scroll-down n))
+  (if (eql (line-number-at-pos) (line-number-at-pos (window-start)))
+      (progn
+        (scroll-down n)
+        (vertical-motion (- n)))
+    (vertical-motion (- n))
+    (scroll-down n)))
 
 (defvar search-char-in-line-matched nil
   "Matched char by search-char-in-line functions.
