@@ -445,10 +445,7 @@ mode-line string by window-width."
 (add-hook 'mode-line-auto-show-truncated-mode-hook
           (lambda ()
             (if mode-line-auto-show-truncated-mode
-                (progn
-                  (mode-line-format-auto-truncate-on-boundary-mode)
-                  (mode-line-show-truncated))
-              (mode-line-format-auto-truncate-on-boundary-mode 0))))
+                (mode-line-show-truncated))))
 
 (setq-default mode-line-format
               (mode-line-format-auto-truncate mode-line-format-raw))
@@ -465,6 +462,8 @@ mode-line string by window-width."
  '(eol-mnemonic-dos "+")
  '(eol-mnemonic-mac "!")
  '(eol-mnemonic-unix ":"))
+
+(add-hook 'emacs-startup-hook #'mode-line-auto-show-truncated-mode)
 
 
 
