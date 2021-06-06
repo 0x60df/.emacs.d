@@ -377,7 +377,7 @@ If suffix does not match, delete aux space."
   (add-hook 'pre-command-hook #'company-complete-inside-setup)
 
   (add-hook 'emacs-lisp-mode-hook #'company-split-mode)
-
+  
 
 
   ;;; mode-line lighter
@@ -610,7 +610,7 @@ can be more than this value.")
 
 ;;; startup
 
-(add-hook 'emacs-startup-hook #'global-company-mode)
+(add-hook 'after-init-hook #'global-company-mode)
 
 
 (resolve init-company)
