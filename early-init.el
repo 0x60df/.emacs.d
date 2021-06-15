@@ -6,3 +6,6 @@
 (push '(tool-bar-lines . 0) default-frame-alist)
 (push '(vertical-scroll-bars . nil) default-frame-alist)
 (push '(horizontal-scroll-bars . nil) default-frame-alist)
+
+(custom-set-variables
+ '(package-enable-at-startup nil))
