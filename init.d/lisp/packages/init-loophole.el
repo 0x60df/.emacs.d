@@ -38,6 +38,15 @@
       map)
     "Keymap for ‘loophole-mode’ which overrides global overriding maps.")
 
+  (define-key loophole-kmacro-by-recursive-edit-map (kbd "C-c [") nil)
+  (define-key loophole-kmacro-by-recursive-edit-map (kbd "C-c \\") nil)
+  (define-key loophole-kmacro-by-recursive-edit-map (kbd "C-]")
+    #'loophole-end-kmacro)
+  (define-key loophole-kmacro-by-recursive-edit-map (kbd "C-}")
+    #'loophole-abort-kmacro)
+  (define-key loophole-kmacro-by-recursive-edit-map (kbd "C-c ] k a")
+    'undefined)
+
   (push `(loophole-mode . ,overriding-loophole-mode-map)
         overriding-reserved-key-map-alist)
 
@@ -69,6 +78,8 @@
      loophole-obtain-key-and-keymap-by-read-keymap-variable
      loophole-obtain-key-and-keymap-by-read-keymap-function
      loophole-obtain-key-and-object))
+ '(loophole-kmacro-by-recursive-edit-map-tag
+   "<End: \\[loophole-end-kmacro], Abort: \\[loophole-abort-kmacro]>")
  '(loophole-mode-lighter-use-face t))
 
 (loophole-define-map loophole-navigation-map
