@@ -17,7 +17,9 @@
 (declare-function loophole-cover-latest "loophole")
 (declare-function loophole-break "loophole")
 (declare-function loophole-bury "loophole")
-(declare-function loophole-mode-set-lighter-format "loophole")
+(declare-function loophole-name "loophole")
+(declare-function loophole-end-kmacro "loophole")
+(declare-function loophole-abort-kmacro "loophole")
 
 (push '(loophole-mode . 13) mode-line-minor-mode-priority-alist)
 
