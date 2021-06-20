@@ -442,6 +442,9 @@ mode-line string by window-width."
       (add-hook 'post-command-hook #'mode-line-set-showing-timer nil t)
     (remove-hook 'post-command-hook #'mode-line-set-showing-timer t)))
 
+(define-globalized-minor-mode mode-line-auto-show-truncated-global-mode
+  mode-line-auto-show-truncated-mode mode-line-auto-show-truncated-mode)
+
 (add-hook 'mode-line-auto-show-truncated-mode-hook
           (lambda ()
             (if mode-line-auto-show-truncated-mode
@@ -449,6 +452,8 @@ mode-line string by window-width."
 
 (setq-default mode-line-format
               (mode-line-format-auto-truncate mode-line-format-raw))
+
+(add-hook 'emacs-startup-hook #'mode-line-auto-show-truncated-global-mode)
 
 
 
