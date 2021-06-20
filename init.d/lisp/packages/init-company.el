@@ -14,6 +14,8 @@
   (require 'company)
   (require 'company-tng))
 
+(declare-function company-finish "company")
+(declare-function company-abort "company")
 (declare-function company-pseudo-tooltip-frontend "company")
 (declare-function company-preview-frontend "company")
 (declare-function company-echo-metadata-frontend "company")
@@ -48,6 +50,7 @@
 (declare-function company-pseudo-tooltip-set-maximum-width-ratio
                   load-file-name t t)
 (declare-function company-search-recover-fail load-file-name t t)
+(declare-function company-filter-candidates-or-abort load-file-name t t)
 
 
 
@@ -588,6 +591,19 @@ can be more than this value.")
 
 
 
+  ;;; utilities
+
+  (defun company-filter-candidates-or-abort ()
+    "`company-filter-candidates' if selecting, else `company-abort'."
+    (interactive)
+    (echo company-status)
+    (cond ((eq company-status 'selecting) (company-filter-candidates))
+          ((eq company-status 'expanded)
+           (company-finish (car company-candidates)))
+          (t (company-abort))))
+
+
+
   ;;; bindings
 
   (define-key company-active-map (kbd "<tab>")
@@ -595,7 +611,8 @@ can be more than this value.")
   (define-key company-active-map (kbd "<backtab>")
     #'company-expand-selection-or-cycle-reverse)
 
-  (define-key company-active-map (kbd "C-<tab>") #'company-filter-candidates)
+  (define-key company-active-map (kbd "C-<tab>")
+    #'company-filter-candidates-or-abort)
   (define-key company-active-map (kbd "C-v") #'company-next-page)
   (define-key company-active-map (kbd "M-v") #'company-previous-page)
 
