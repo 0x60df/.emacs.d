@@ -7,9 +7,6 @@
 (premise feature)
 (premise advice)
 
-(lazy-autoload 'frameset-name "frameset")
-(lazy-autoload 'frameset-description "frameset")
-
 
 ;;; subr
 
@@ -461,12 +458,11 @@ will be reused for `frameset-restore'."
 ;;; session
 
 (defcustom client-session-max 16
-  "Maximum number of `client-session-alist'."
+  "Maximum number of `client-session-list'."
   :type 'integer
   :group 'user)
 
-(defvar client-session-list nil
-  "List to store client sessions.")
+(defvar client-session-list nil "List to store client sessions.")
 
 (defun client-save-session (&optional client)
   "Save current session for CLIENT as a `frameset'.
@@ -532,7 +528,7 @@ When interactively, ask SESSION from `client-session-list'."
   (client-save-session))
 
 (advice-add 'save-buffers-kill-terminal
-            :before #' client-save-session-when-kill-terminal)
+            :before #'client-save-session-when-kill-terminal)
 
 
 

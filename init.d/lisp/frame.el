@@ -8,6 +8,8 @@
 
 (lazy-autoload 'seq-every-p "seq")
 (lazy-autoload 'seq-contains-p "seq")
+(lazy-autoload 'frameset-name "frameset")
+(lazy-autoload 'frameset-description "frameset")
 
 
 ;;; settings
@@ -59,6 +61,69 @@ newly created terminal."
     made-frame))
 
 (advice-add 'make-frame :around #'run-after-make-terminal-functions)
+
+
+
+;;; session
+
+(defcustom frame-session-max 16
+  "Maximum number of `frame-session-list'."
+  :type 'integer
+  :group 'user)
+
+(defvar frame-session-list nil "List to store frame sessions.")
+
+(defun frame-save-session (&optional frame)
+  "Save current session for FRAME as a `frameset'.
+If FRAME is not specified, use current frame.
+Session will be saved in `frame-session-list'."
+  (interactive)
+  (let* ((frame (or frame (selected-frame)))
+         (buffer-list (mapcar #'window-buffer (window-list frame)))
+         (buffer-num (length buffer-list))
+         (frameset
+          (frameset-save (list frame)
+                         :app 'user
+                         :name (format "%s" (frame-parameter frame 'window-id))
+                         :description (format "[%s] %d buffer%s: %s"
+                                              (format-time-string "%FT%T")
+                                              buffer-num
+                                              (if (not (eql buffer-num 1))
+                                                  "s"
+                                                "")
+                                              (mapconcat #'buffer-name
+                                                         buffer-list
+                                                         ", ")))))
+    (let ((session-num (length frame-session-list)))
+      (setq frame-session-list
+            (cons frameset
+                  (if (< session-num frame-session-max)
+                      frame-session-list
+                    (butlast frame-session-list
+                             (+ 1 (- session-num frame-session-max)))))))))
+
+(defun frame-restore-session (session)
+  "Restore frame session by SESSION.
+SESSION is a `frameset'.
+When interactively, ask SESSION from `frame-session-list'."
+  (interactive (list
+                (let ((name-session-alist
+                       (mapcar (lambda (session)
+                                 (cons (format "%s %s"
+                                               (frameset-name session)
+                                               (frameset-description session))
+                                       session))
+                               frame-session-list)))
+                  (cdr (assoc (completing-read "Session: "
+                                               name-session-alist nil t)
+                              name-session-alist)))))
+  (let ((selected-frame (selected-frame)))
+    (frameset-restore session
+                      :reuse-frames
+                      (lambda (frame)
+                        (eq selected-frame frame)))))
+
+(add-hook 'delete-frame-functions #'frame-save-session)
 
 
 
