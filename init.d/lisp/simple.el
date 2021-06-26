@@ -73,7 +73,7 @@ Increment is N. If N is ommited, use 1."
     (vertical-motion n)
     (scroll-up n)))
 
-(defun previous-line-scroll-down (n)
+(defun previous-line-scroll-down (&optional n)
   "Move cursor to previous screen line and scroll down.
 Increment is N. If N is ommited, use 1."
   (interactive "p")
