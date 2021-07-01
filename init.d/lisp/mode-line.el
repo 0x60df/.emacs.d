@@ -419,7 +419,7 @@ mode-line string by window-width."
              (truncated (replace-regexp-in-string
                          "\\s-+$" ""
                          (substring text (length subtext) (length text))))
-             (width (string-width truncated))
+             (width (length truncated))
              (first-element-end (mode-line--next-boundary 0 truncated width)))
         (unless mode-line-format-auto-truncate-on-boundary-mode
           (add-face-text-property 0 first-element-end 'mode-line-transform
