@@ -31,6 +31,16 @@
   (define-key loophole-mode-map (kbd "C-c ] [") #'loophole-edit)
   (define-key loophole-mode-map (kbd "C-c ] ]") #'loophole-reveal)
   (define-key loophole-mode-map (kbd "C-c ] n") #'loophole-name)
+  (define-key loophole-mode-map (kbd "C-c ] t") #'loophole-tag)
+  (define-key loophole-mode-map (kbd "C-c ] : [") #'loophole-start-timer)
+  (define-key loophole-mode-map (kbd "C-c ] : ]") #'loophole-stop-timer)
+  (define-key loophole-mode-map (kbd "C-c ] : +") #'loophole-extend-timer)
+  (define-key loophole-mode-map (kbd "C-c ] : : [")
+    #'loophole-start-editing-timer)
+  (define-key loophole-mode-map (kbd "C-c ] : : ]")
+    #'loophole-stop-editing-timer)
+  (define-key loophole-mode-map (kbd "C-c ] : : +")
+    #'loophole-extend-editing-timer)
 
   (defvar overriding-loophole-mode-map
     (let ((map (make-sparse-keymap)))
@@ -56,30 +66,28 @@
             (lambda () (setq mode-name "Loophole Write Lisp"))))
 
 (custom-set-variables
- '(loophole-use-timer t)
- '(loophole-use-editing-timer t)
+ '(loophole-use-auto-timer t)
+ '(loophole-use-auto-editing-timer t)
  '(loophole-kmacro-by-read-key-finish-key (kbd "C-]"))
  '(loophole-array-by-read-key-finish-key (kbd "C-]"))
- '(loophole-bind-command-order
-   '(loophole-obtain-key-and-command-by-key-sequence
-     loophole-obtain-key-and-command-by-read-command
-     loophole-obtain-key-and-command-by-lambda-form
-     loophole-obtain-key-and-object))
- '(loophole-bind-kmacro-order
-   '(loophole-obtain-key-and-kmacro-by-read-key
-     loophole-obtain-key-and-kmacro-by-recursive-edit
-     loophole-obtain-key-and-kmacro-by-recall-record
-     loophole-obtain-key-and-object))
  '(loophole-set-key-order
-   '(loophole-obtain-key-and-command-by-key-sequence
-     loophole-obtain-key-and-kmacro-by-read-key
-     loophole-obtain-key-and-command-by-read-command
-     loophole-obtain-key-and-kmacro-by-recursive-edit
-     loophole-obtain-key-and-command-by-lambda-form
-     loophole-obtain-key-and-kmacro-by-recall-record
-     loophole-obtain-key-and-keymap-by-read-keymap-variable
-     loophole-obtain-key-and-keymap-by-read-keymap-function
-     loophole-obtain-key-and-object))
+   '(loophole-obtain-command-by-key-sequence
+     (loophole-obtain-kmacro-by-read-key
+      :key loophole-read-key-for-kmacro-by-read-key)
+     loophole-obtain-command-by-read-command
+     loophole-obtain-kmacro-by-recursive-edit
+     loophole-obtain-command-by-lambda-form
+     loophole-obtain-kmacro-by-recall-record
+     loophole-obtain-keymap-by-read-keymap-variable
+     loophole-obtain-keymap-by-read-keymap-function
+     loophole-obtain-symbol-by-read-array-function
+     loophole-obtain-object
+
+     loophole-obtain-symbol-by-read-command
+     loophole-obtain-symbol-by-read-keymap-function
+     (loophole-obtain-array-by-read-key
+      :key loophole-read-key-for-array-by-read-key)
+     loophole-obtain-array-by-read-string))
  '(loophole-kmacro-by-recursive-edit-map-tag
    "<End: \\[loophole-end-kmacro], Abort: \\[loophole-abort-kmacro]>")
  '(loophole-mode-lighter-use-face t))
