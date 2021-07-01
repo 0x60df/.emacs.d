@@ -20,6 +20,7 @@
 (declare-function loophole-name "loophole")
 (declare-function loophole-end-kmacro "loophole")
 (declare-function loophole-abort-kmacro "loophole")
+(declare-function loophole-disable "loophole")
 
 (push '(loophole-mode . 13) mode-line-minor-mode-priority-alist)
 
@@ -63,7 +64,33 @@
         overriding-reserved-key-map-alist)
 
   (add-hook 'loophole-write-lisp-mode-hook
-            (lambda () (setq mode-name "Loophole Write Lisp"))))
+            (lambda () (setq mode-name "Loophole Write Lisp")))
+
+  (defvar loophole-navigation-map
+    (let ((map (make-sparse-keymap)))
+      (mapc (lambda (k)
+              (define-key map (vector k)
+                (lambda (n)
+                  (interactive "p")
+                  (loophole-disable 'loophole-navigation-map)
+                  (if (eq (get major-mode 'mode-class) 'special)
+                      (message "Loophole navigation map is disabled")
+                    (self-insert-command n)))))
+            (vconcat " !\"#$%&'()*+,-./0123456789:;<=>?"
+                     "@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_"
+                     "`acdeghijklmoqrstuvwxyz{|}~"))
+      (define-key map (kbd "n") #'next-line-scroll-up)
+      (define-key map (kbd "p") #'previous-line-scroll-down)
+      (define-key map (kbd "f") #'scroll-up-command)
+      (define-key map (kbd "b") #'scroll-down-command)
+      map)
+    "Keymap for simple navigation.")
+
+  (defvar loophole-navigation-map-state nil
+    "State of `loophole-navigation-map'.")
+
+  (loophole-register
+   'loophole-navigation-map 'loophole-navigation-map-state "n"))
 
 (custom-set-variables
  '(loophole-use-auto-timer t)
@@ -91,15 +118,6 @@
  '(loophole-kmacro-by-recursive-edit-map-tag
    "<End: \\[loophole-end-kmacro], Abort: \\[loophole-abort-kmacro]>")
  '(loophole-mode-lighter-use-face t))
-
-(loophole-define-map loophole-navigation-map
-  '(("n" . next-line-scroll-up)
-    ("p" . previous-line-scroll-down)
-    ("f" . scroll-up-command)
-    ("b" . scroll-down-command))
-  "Keymap for simple navigation."
-  loophole-navigation-map-state nil "State of `loophole-navigation-map'."
-  "n")
 
 (add-hook 'emacs-startup-hook #'loophole-mode)
 
