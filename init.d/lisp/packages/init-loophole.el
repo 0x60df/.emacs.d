@@ -33,6 +33,8 @@
   (define-key loophole-mode-map (kbd "C-c ] ]") #'loophole-reveal)
   (define-key loophole-mode-map (kbd "C-c ] n") #'loophole-name)
   (define-key loophole-mode-map (kbd "C-c ] t") #'loophole-tag)
+  (define-key loophole-mode-map (kbd "C-c ] g") #'loophole-globalize)
+  (define-key loophole-mode-map (kbd "C-c ] l") #'loophole-localize)
   (define-key loophole-mode-map (kbd "C-c ] : [") #'loophole-start-timer)
   (define-key loophole-mode-map (kbd "C-c ] : ]") #'loophole-stop-timer)
   (define-key loophole-mode-map (kbd "C-c ] : +") #'loophole-extend-timer)
