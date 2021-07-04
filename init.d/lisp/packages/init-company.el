@@ -455,8 +455,8 @@ can be more than this value.")
           (setq company-tooltip-minimum-width width)
           (setq company-tooltip-maximum-width width))))
 
-  (advice-add 'company-pseudo-tooltip-frontend
-              :before #'company-pseudo-tooltip-set-width)
+  ;; (advice-add 'company-pseudo-tooltip-frontend
+  ;;             :before #'company-pseudo-tooltip-set-width)
 
   (defun company-pseudo-tooltip-set-maximum-width-ratio (ratio)
     "Read RATIO and set `company-tooltip-maximum-width-ratio'."
