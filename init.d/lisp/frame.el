@@ -247,6 +247,11 @@ side of the monitor. Otherwise, margin is regarded as 0."
   :type 'number
   :group 'user)
 
+(defcustom switch-monitor-delay 0
+  "Delay time in milliseconds for switching monitor."
+  :type 'number
+  :group 'user)
+
 (defun manipulate-frame (&optional arg)
   "Manipulate frame position and size interactively."
   (interactive "P")
@@ -468,7 +473,8 @@ side of the monitor. Otherwise, margin is regarded as 0."
                                   (and (< (cadr frame-workarea) top)
                                        (< top (+ (cadr frame-workarea)
                                                  (cadddr frame-workarea)))))
-                       (funcall place-frame frame left top)))))
+                       (funcall place-frame frame left top)
+                       (sleep-for 0 switch-monitor-delay)))))
                 ((equal key-description "s")
                  (let ((read (read-from-minibuffer
                               (format "Step[%d]: " factor)
