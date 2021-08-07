@@ -14,7 +14,7 @@
 (custom-set-variables
  '(org-use-speed-commands t)
  '(org-loop-over-headlines-in-active-region t)
- '(org-highlight-latex-and-related '(latex script entities))
+ '(org-highlight-latex-and-related '(latex entities))
  '(org-fontify-done-headline nil))
 
 (push '(org-indent-mode . 1) mode-line-minor-mode-priority-alist)
