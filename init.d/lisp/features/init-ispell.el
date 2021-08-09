@@ -4,6 +4,8 @@
 
 (premise init)
 
+(eval-when-compile (require 'ispell))
+
 (with-eval-after-load 'ispell
   (advice-add 'ispell-word :before
               (lambda (&rest args)
