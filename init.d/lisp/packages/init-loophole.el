@@ -21,6 +21,15 @@
 (declare-function loophole-end-kmacro "loophole")
 (declare-function loophole-abort-kmacro "loophole")
 (declare-function loophole-disable "loophole")
+(declare-function loophole-tag "loohole")
+(declare-function loophole-globalize "loohole")
+(declare-function loophole-localize "loohole")
+(declare-function loophole-start-timer "loohole")
+(declare-function loophole-stop-timer "loohole")
+(declare-function loophole-extend-timer "loohole")
+(declare-function loophole-start-editing-timer "loohole")
+(declare-function loophole-stop-editing-timer "loohole")
+(declare-function loophole-extend-editing-timer "loohole")
 
 (push '(loophole-mode . 13) mode-line-minor-mode-priority-alist)
 

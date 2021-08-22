@@ -5,7 +5,7 @@
 (premise init)
 (premise init-el-get)
 
-(el-get-bundle loophole)
+(package-inst loophole)
 
 
 (resolve inst-loophole)
