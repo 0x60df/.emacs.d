@@ -13,6 +13,8 @@
 
 (custom-set-variables
  '(org-use-speed-commands t)
+ '(org-speed-commands-user '(("s" . save-buffer)
+                             ("g" . ignore)))
  '(org-loop-over-headlines-in-active-region t)
  '(org-highlight-latex-and-related '(latex entities))
  '(org-fontify-done-headline nil))
