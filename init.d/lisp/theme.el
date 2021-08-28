@@ -37,9 +37,10 @@ bound, is not set by any other theme, and does not have the
 symbol property saved-symbol-value."
   (interactive
    (list (intern (completing-read "Enable custom theme: "
-                                  (mapcar #'symbol-name
-                                          (custom-available-themes))
-                                  nil t))))
+                                  (custom-available-themes)
+                                  (lambda (theme)
+                                    (not (memq theme custom-enabled-themes)))
+                                  t))))
   (unless (custom-theme-p theme)
     (load-theme theme t t)
     (let ((settings (get theme 'theme-settings)))
@@ -66,8 +67,7 @@ variable is bound, is not set by any other theme, and have
 the symbol property saved-symbol-value."
   (interactive
    (list (intern (completing-read "Disable custom theme: "
-		                  (mapcar #'symbol-name custom-enabled-themes)
-		                  nil t))))
+                                  custom-enabled-themes nil t))))
   (disable-theme theme)
   (let ((settings (get theme 'theme-settings)))
     (dolist (s settings)
