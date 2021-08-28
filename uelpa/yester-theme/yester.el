@@ -233,19 +233,82 @@ SCENE should be valid scene listed in `yester-scenes'."
                         (t ,(cons 'list (cdr (car canonical-day-plists)))))))))
     (error "Display `%s' is not supported" display)))
 
-(defmacro yester-whole-symbol-exp (form)
-  "Construct expression for day and night symbol value by FORM."
-  `(list
-    'cond
-    (list '(eq frame-background-mode 'dark)
-          (list 'quote (yester-let-colors night ,form)))
-    (list '(eq frame-background-mode 'light)
-          (list 'quote (yester-let-colors day ,form)))
-    (list t (list 'cond
-                  (list '(eq (frame-parameter nil 'background-mode) 'dark)
-                        (list 'quote (yester-let-colors night ,form)))
-                  (list '(eq (frame-parameter nil 'background-mode) 'light)
-                        (list 'quote (yester-let-colors day ,form)))))))
+(defmacro yester-symbol-exp (&rest forms)
+  "Construct expression for symbol value by FORMS.
+FORMS is a list of a single form describing symbol
+expression or an alist which looks like below.
+
+  ((night . FORMS)
+   (day . FORMS)
+
+FORMS again is a list of a single form describing symbol
+expression for each phase or an alist which looks like
+below.
+
+  ((nil . FORM)
+   (SCENE . FORM)...)
+
+FORM is a list of a single form describing symbol expression
+for each scene.
+SCENE should be valid scene listed in `yester-scenes'."
+  (declare (indent 0))
+  (let (canonical-night-forms
+        canonical-day-forms
+        (night-cell  (assq 'night forms))
+        (day-cell  (assq 'day forms)))
+    (cond ((and (not night-cell) (not day-cell))
+           (setq canonical-night-forms `((nil . ,forms)))
+           (setq canonical-day-forms `((nil . ,forms))))
+          ((and night-cell day-cell)
+           (let ((night-forms (cdr night-cell))
+                 (night-scenes (cdr (assq 'night yester-scenes)))
+                 (day-forms (cdr day-cell))
+                 (day-scenes (cdr (assq 'day yester-scenes))))
+             (setq canonical-night-forms
+                   (if (seq-some (lambda (scene)
+                                   (assq scene night-forms))
+                                 (cons nil night-scenes))
+                       (cons (or (assq nil day-forms) '(nil . nil))
+                             (seq-filter (lambda (scene-cell)
+                                           (memq (car scene-cell)
+                                                 night-scenes))
+                                         night-forms))
+                     `((nil . ,night-forms))))
+             (setq canonical-day-forms
+                   (if (seq-some (lambda (scene)
+                                   (assq scene day-forms))
+                                 (cons nil day-scenes))
+                       (cons (or (assq nil day-forms) '(nil . nil))
+                             (seq-filter (lambda (scene-cell)
+                                           (memq (car scene-cell)
+                                                 day-scenes))
+                                         day-forms))
+                     `((nil . ,day-forms))))))
+          (t (error "Either day or night form only is unacceptable")))
+    `(list
+      'cond
+       (list '(eq (yester-current-phase) 'night)
+              (list 'quote
+                     (yester-let-colors night
+                       (cond ,@(mapcar
+                                (lambda (cell)
+                                  (list (list 'eq
+                                               '(yester-current-scene 'night)
+                                               (list 'quote (car cell)))
+                                        (car (cdr cell))))
+                                (cdr canonical-night-forms))
+                             (t ,(car (cdr (car canonical-night-forms))))))))
+      (list '(eq (yester-current-phase) 'day)
+             (list 'quote
+                    (yester-let-colors day
+                      (cond ,@(mapcar
+                               (lambda (cell)
+                                 (list (list 'eq
+                                              '(yester-current-scene 'day)
+                                              (list 'quote (car cell)))
+                                       (car (cdr cell))))
+                               (cdr canonical-day-forms))
+                            (t ,(car (cdr (car canonical-day-forms)))))))))))
 
 (defun yester-theme-set-faces (theme &rest args)
   "Set face specs for THEME by using ARGS.

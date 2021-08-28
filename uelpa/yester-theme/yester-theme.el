@@ -1383,73 +1383,60 @@
  'yester
 
  ;; Distant-foreground
- '(face-near-same-color-threshold
-   '(let ((night 5000)
-          (day 10000)
-          (morning 3000))
-      (cond ((eq frame-background-mode 'dark) night)
-            ((eq frame-background-mode 'light)
-             (cond ((eq (cdr (assq 'day yester--scene)) 'morning) morning)
-                   (t day)))
-            (t (cond ((eq (frame-parameter nil 'background-mode) 'dark) night)
-                     ((eq (frame-parameter nil 'background-mode) 'light)
-                      (cond ((eq (cdr (assq 'day yester--scene)) 'morning)
-                             morning)
-                            (t day))))))))
+ '(face-near-same-color-threshold (yester-symbol-exp
+                                    (night 5000)
+                                    (day (nil 10000)
+                                         (morning 3000))))
 
 
 
  ;; Popup
- `(popup-isearch-cursor-color
-   (yester-whole-symbol-exp yellow))
+ `(popup-isearch-cursor-color (yester-symbol-exp yellow))
 
 
 
  ;; Auto-complete
- `(ac-fuzzy-cursor-color
-   (yester-whole-symbol-exp orange))
+ `(ac-fuzzy-cursor-color (yester-symbol-exp orange))
 
 
 
  ;; Smartrep
- `(smartrep-mode-line-active-bg ,(yester-whole-symbol-exp selection))
+ `(smartrep-mode-line-active-bg (yester-symbol-exp selection))
 
 
 
  ;; Evil
- `(evil-emacs-state-cursor (yester-whole-symbol-exp red))
- `(evil-normal-state-cursor (yester-whole-symbol-exp green))
- `(evil-insert-state-cursor (yester-whole-symbol-exp `(bar ,green)))
- `(evil-replace-state-cursor (yester-whole-symbol-exp `(hbar ,green)))
- `(evil-operator-state-cursor (yester-whole-symbol-exp green))
- `(evil-visual-state-cursor (yester-whole-symbol-exp green))
- `(evil-motion-state-cursor (yester-whole-symbol-exp comment))
+ `(evil-emacs-state-cursor (yester-symbol-exp red))
+ `(evil-normal-state-cursor (yester-symbol-exp green))
+ `(evil-insert-state-cursor (yester-symbol-exp `(bar ,green)))
+ `(evil-replace-state-cursor (yester-symbol-exp `(hbar ,green)))
+ `(evil-operator-state-cursor (yester-symbol-exp green))
+ `(evil-visual-state-cursor (yester-symbol-exp green))
+ `(evil-motion-state-cursor (yester-symbol-exp comment))
 
 
 
  ;; Calfw
- `(cfw:face-item-separator-color (yester-whole-symbol-exp selection))
- `(cfw:org-face-agenda-item-foreground-color
-   (yester-whole-symbol-exp foreground))
+ `(cfw:face-item-separator-color (yester-symbol-exp selection))
+ `(cfw:org-face-agenda-item-foreground-color (yester-symbol-exp foreground))
 
 
 
  ;; Gnus
- `(gnus-logo-colors (yester-whole-symbol-exp (list selection current-line)))
+ `(gnus-logo-colors (yester-symbol-exp (list selection current-line)))
 
 
 
  ;; Skk
  `(skk-use-color-cursor t)
- `(skk-cursor-abbrev-color (yester-whole-symbol-exp blue))
- `(skk-cursor-jisx0208-latin-color (yester-whole-symbol-exp blue))
- `(skk-cursor-katakana-color (yester-whole-symbol-exp aqua))
- `(skk-cursor-hiragana-color (yester-whole-symbol-exp blue))
- `(skk-cursor-jisx0201-color (yester-whole-symbol-exp aqua))
- `(skk-cursor-latin-color (yester-whole-symbol-exp red))
- `(skk-inline-show-background-color (yester-whole-symbol-exp current-line))
- `(skk-inline-show-background-color-odd
-   (yester-whole-symbol-exp current-line)))
+ `(skk-cursor-abbrev-color (yester-symbol-exp blue))
+ `(skk-cursor-jisx0208-latin-color (yester-symbol-exp blue))
+ `(skk-cursor-katakana-color (yester-symbol-exp aqua))
+ `(skk-cursor-hiragana-color (yester-symbol-exp blue))
+ `(skk-cursor-jisx0201-color (yester-symbol-exp aqua))
+ `(skk-cursor-latin-color (yester-symbol-exp red))
+ `(skk-inline-show-background-color (yester-symbol-exp current-line))
+ `(skk-inline-show-background-color-odd (yester-symbol-exp current-line)))
 
 (provide-theme 'yester)
 

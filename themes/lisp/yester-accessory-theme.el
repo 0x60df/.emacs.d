@@ -106,17 +106,17 @@
  'yester-accessory
 
  ;; Calfw
- `(calfw-org-source-period-bgcolor (yester-whole-symbol-exp background))
- `(calfw-org-source-period-fgcolor (yester-whole-symbol-exp foreground))
+ `(calfw-org-source-period-bgcolor (yester-symbol-exp background))
+ `(calfw-org-source-period-fgcolor (yester-symbol-exp foreground))
 
  ;; Gnus
- `(gnus-mode-line-image-color (yester-whole-symbol-exp purple))
+ `(gnus-mode-line-image-color (yester-symbol-exp purple))
 
  ;; Company
- `(company-search-cursor-color (yester-whole-symbol-exp yellow))
- `(company-search-fail-cursor-color (yester-whole-symbol-exp orange))
+ `(company-search-cursor-color (yester-symbol-exp yellow))
+ `(company-search-fail-cursor-color (yester-symbol-exp orange))
 
  ;; Multiple-cursors
- `(mc-mode-cursor-color (yester-whole-symbol-exp orange)))
+ `(mc-mode-cursor-color (yester-symbol-exp orange)))
 
 (provide-theme 'yester-accessory)
