@@ -6,7 +6,7 @@
 
 ;; Color definitions and utility functions
 
-;; Color scheme is designed by Chris Kempson:
+;; Base color scheme is designed by Chris Kempson:
 ;; https://github.com/chriskempson/tomorrow-theme
 
 ;;; Code:
