@@ -1,4 +1,0 @@
-(:name loophole
-       :description "Temporary key bindings management feature"
-       :type github
-       :pkgname "0x60df/loophole")
