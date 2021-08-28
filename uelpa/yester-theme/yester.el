@@ -122,11 +122,6 @@ variable expressions.
 THEME is arbitrary theme name.")
 (put 'yester-forms 'risky-local-variable t)
 
-(defcustom yester-recalc '(yester)
-  "List of themes which will be recalculated when phase is shifted."
-  :type '(repeat symbol)
-  :group 'yester)
-
 (defun yester-current-phase ()
   "Return current phase.
 If no phase is specified, return nil."
@@ -286,7 +281,7 @@ When called interactively, use current-phase as PHASE."
                      (custom-theme-recalc-face symbol))
                     ((eq prop 'theme-value)
                      (custom-theme-recalc-variable symbol))))))
-        yester-recalc))
+        (mapcar #'car yester--themes)))
 
 (defun yester--recalc-once-on-post-command ()
   "Recalc once and `remove-hook' `post-command-hook'."

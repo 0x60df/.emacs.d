@@ -16,7 +16,6 @@
                   load-file-name t t)
 
 (with-eval-after-load 'yester
-  (add-to-list 'yester-recalc 'yester-accessory)
   (yester-phase-shift-mode))
 
 
