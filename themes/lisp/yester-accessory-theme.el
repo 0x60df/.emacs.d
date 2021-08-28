@@ -9,14 +9,14 @@
    'yester-accessory
 
    ;; Mode-line
-   `(mode-line-highlight (yester-whole-face-spec
-                             ',class `(:foreground ,green
-                                                   :weight bold
-                                                   :slant italic)))
-   `(mode-line-emphasis (yester-whole-face-spec
-                            ',class `(:foreground ,green
-                                                  :weight bold
-                                                  :slant normal)))
+   `(mode-line-highlight (yester-whole-face-spec ',class
+                           :foreground green
+                           :weight 'bold
+                           :slant 'italic))
+   `(mode-line-emphasis (yester-whole-face-spec ',class
+                          :foreground green
+                          :weight 'bold
+                          :slant 'normal))
    `(mode-line-mode-name
      (list
       (cons '(,@class (background dark))
