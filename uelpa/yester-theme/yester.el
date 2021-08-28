@@ -157,19 +157,81 @@ which set of colors is referred."
     `(let ,varlist
        ,@body)))
 
-(defmacro yester-whole-face-spec (display &rest plist)
-  "Construct face spec form for day and night by DISPLAY and PLIST.
+(defmacro yester-face-spec (display &rest plists)
+  "Construct face spec form by DISPLAY and PLISTS.
 DISPLAY must be a list, because background-mode is valid
 only with a display which is specified by a list.
-PLIST must be specified as rest arguments."
+PLISTS is a plist describing face spec or an alist which
+looks like below.
+
+  ((night . PLISTS)
+   (day . PLISTS)
+
+PLISTS again is a plist describing face spec for each
+phase or an alist which looks like below.
+
+  ((nil . PLIST)
+   (SCENE . PLIST)...)
+
+PLIST is a plist describing face spec for each scene.
+SCENE should be valid scene listed in `yester-scenes'."
   (declare (indent 1))
-  `(if (listp ,display)
-       (list
-        (cons (append ,display '((background dark)))
-              (yester-let-colors night ,(cons 'list plist)))
-        (cons (append ,display '((background light)))
-              (yester-let-colors day ,(cons 'list plist))))
-     (error "Display `%s' is not supported" ,display)))
+  (if (listp display)
+      (let (canonical-night-plists
+            canonical-day-plists
+            (night-cell (assq 'night plists))
+            (day-cell (assq 'day plists)))
+        (cond ((and (not night-cell) (not day-cell))
+               (setq canonical-night-plists `((nil . ,plists)))
+               (setq canonical-day-plists `((nil . ,plists))))
+              ((and night-cell day-cell)
+               (let ((night-plists (cdr night-cell))
+                     (night-scenes (cdr (assq 'night yester-scenes)))
+                     (day-plists (cdr day-cell))
+                     (day-scenes (cdr (assq 'day yester-scenes))))
+                 (setq canonical-night-plists
+                       (if (seq-some (lambda (scene)
+                                       (assq scene night-plists))
+                                     (cons nil night-scenes))
+                           (cons (or (assq nil day-plists) '(nil . nil))
+                            (seq-filter (lambda (scene-cell)
+                                         (memq (car scene-cell)
+                                               night-scenes))
+                                       night-plists))
+                         `((nil . ,night-plists))))
+                 (setq canonical-day-plists
+                       (if (seq-some (lambda (scene)
+                                       (assq scene day-plists))
+                                     (cons nil day-scenes))
+                           (cons (or (assq nil day-plists) '(nil . nil))
+                                 (seq-filter (lambda (scene-cell)
+                                               (memq (car scene-cell)
+                                                     day-scenes))
+                                             day-plists))
+                         `((nil . ,day-plists))))))
+              (t (error "Either day or night plist only is unacceptable")))
+        `(list
+          (cons (append ,display '((background dark)))
+                (yester-let-colors night
+                  (cond ,@(mapcar
+                           (lambda (cell)
+                             (list (list 'eq
+                                          '(yester-current-scene 'night)
+                                           (list 'quote (car cell)))
+                                   (cons 'list (cdr cell))))
+                           (cdr canonical-night-plists))
+                        (t ,(cons 'list (cdr (car canonical-night-plists)))))))
+          (cons (append ,display '((background light)))
+                (yester-let-colors day
+                  (cond ,@(mapcar
+                           (lambda (cell)
+                             (list (list 'eq
+                                          '(yester-current-scene 'day)
+                                           (list 'quote (car cell)))
+                                   (cons 'list (cdr cell))))
+                           (cdr canonical-day-plists))
+                        (t ,(cons 'list (cdr (car canonical-day-plists)))))))))
+    (error "Display `%s' is not supported" display)))
 
 (defmacro yester-whole-symbol-exp (form)
   "Construct expression for day and night symbol value by FORM."

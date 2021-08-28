@@ -9,69 +9,49 @@
    'yester-accessory
 
    ;; Mode-line
-   `(mode-line-highlight (yester-whole-face-spec ',class
-                           :foreground green
-                           :weight 'bold
-                           :slant 'italic))
-   `(mode-line-emphasis (yester-whole-face-spec ',class
-                          :foreground green
-                          :weight 'bold
-                          :slant 'normal))
-   `(mode-line-mode-name
-     (list
-      (cons '(,@class (background dark))
-            (yester-let-colors night (list :foreground yellow)))
-      (cons '(,@class (background light))
-            (cond ((eq (cdr (assq 'day yester--scene)) 'morning)
-                   (yester-let-colors day (list :foreground red)))
-                  (t (yester-let-colors day
-                       (list :foreground blue :weight 'bold)))))))
-   `(mode-line-warning
-     (list
-      (cons '(,@class (background dark))
-            (yester-let-colors night (list :foreground red)))
-      (cons '(,@class (background light))
-            (cond ((eq (cdr (assq 'day yester--scene)) 'morning)
-                   (yester-let-colors day (list :foreground red :weight 'bold)))
-                  (t (yester-let-colors day (list :foreground red)))))))
+   `(mode-line-highlight
+     (yester-face-spec ',class :foreground green :weight 'bold :slant 'italic))
+   `(mode-line-emphasis
+     (yester-face-spec ',class :foreground green :weight 'bold :slant 'normal))
+   `(mode-line-mode-name (yester-face-spec ',class
+                           (night  :foreground yellow)
+                           (day (nil :foreground blue :weight 'bold)
+                                (morning :foreground red))))
+   `(mode-line-warning (yester-face-spec ',class
+                         (night  :foreground red)
+                         (day (nil :foreground red)
+                              (morning  :foreground red :weight 'bold))))
    `(mode-line-transform '((,class (:slant italic))))
 
 
 
    ;; VC
-   `(vc-state-base (yester-whole-face-spec ',class :foreground orange))
-   `(vc-conflict-state (yester-whole-face-spec ',class :foreground red))
-   `(vc-edited-state (yester-whole-face-spec ',class :foreground orange))
-   `(vc-locally-added-state
-     (yester-whole-face-spec ',class :foreground orange))
-   `(vc-locked-state (yester-whole-face-spec ',class :foreground orange))
-   `(vc-missing-state (yester-whole-face-spec ',class :foreground orange))
-   `(vc-needs-update-state
-     (yester-whole-face-spec ',class :foreground orange))
-   `(vc-removed-state (yester-whole-face-spec ',class :foreground orange))
-   `(vc-up-to-date-state (yester-whole-face-spec ',class :foreground green))
+   `(vc-state-base (yester-face-spec ',class :foreground orange))
+   `(vc-conflict-state (yester-face-spec ',class :foreground red))
+   `(vc-edited-state (yester-face-spec ',class :foreground orange))
+   `(vc-locally-added-state (yester-face-spec ',class :foreground orange))
+   `(vc-locked-state (yester-face-spec ',class :foreground orange))
+   `(vc-missing-state (yester-face-spec ',class :foreground orange))
+   `(vc-needs-update-state (yester-face-spec ',class :foreground orange))
+   `(vc-removed-state (yester-face-spec ',class :foreground orange))
+   `(vc-up-to-date-state (yester-face-spec ',class :foreground green))
 
 
 
    ;; Risky
-   `(risky-yes-or-no-p-prefix
-     (yester-whole-face-spec ',class :foreground red))
+   `(risky-yes-or-no-p-prefix (yester-face-spec ',class :foreground red))
 
 
 
    ;; Sdired
-   `(sdired-group (yester-whole-face-spec ',class
-                    :foreground comment :slant 'italic))
-   `(sdired-key (yester-whole-face-spec ',class
-                  :foreground aqua :weight 'bold))
+   `(sdired-group (yester-face-spec ',class :foreground comment :slant 'italic))
+   `(sdired-key (yester-face-spec ',class :foreground aqua :weight 'bold))
 
 
 
    ;; Company
-   `(company-tooltip-yasnippet
-     (yester-whole-face-spec ',class :foreground red))
-   `(company-tooltip-dabbrev-code
-     (yester-whole-face-spec ',class :foreground purple))
+   `(company-tooltip-yasnippet (yester-face-spec ',class :foreground red))
+   `(company-tooltip-dabbrev-code (yester-face-spec ',class :foreground purple))
 
 
 
@@ -96,7 +76,7 @@
 
 
    ;; Magit
-   `(magit-blame-margin-body (yester-whole-face-spec ',class
+   `(magit-blame-margin-body (yester-face-spec ',class
                                :weight 'normal
                                :slant 'italic
                                :foreground comment
@@ -108,17 +88,17 @@
 
    ;; Evil
    `(evil-normal-state-tag
-     (yester-whole-face-spec ',class :foreground green :weight 'bold))
+     (yester-face-spec ',class :foreground green :weight 'bold))
    `(evil-insert-state-tag
-     (yester-whole-face-spec ',class :foreground green :weight 'bold))
+     (yester-face-spec ',class :foreground green :weight 'bold))
    `(evil-replace-state-tag
-     (yester-whole-face-spec ',class :foreground green :weight 'bold))
+     (yester-face-spec ',class :foreground green :weight 'bold))
    `(evil-operator-state-tag
-     (yester-whole-face-spec ',class :foreground green :weight 'bold))
+     (yester-face-spec ',class :foreground green :weight 'bold))
    `(evil-visual-state-tag
-     (yester-whole-face-spec ',class :foreground green :weight 'bold))
+     (yester-face-spec ',class :foreground green :weight 'bold))
    `(evil-motion-state-tag
-     (yester-whole-face-spec ',class :foreground comment :weight 'bold))))
+     (yester-face-spec ',class :foreground comment :weight 'bold))))
 
 
 
