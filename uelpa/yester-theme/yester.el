@@ -109,8 +109,8 @@ scene forms overwrite face specs and variable expressions.")
   "Themes of `yester-theme' and its settings.
 This looks like below.
 
-((THEME . ((face . (SETTINGS...))
-           (variable . (SETTINGS...))))...)
+  ((THEME . ((face . (SETTINGS...))
+             (variable . (SETTINGS...))))...)
 
 SETTINGS for face and variable should be valid list for
 `custom-theme-set-faces' and `custom-theme-set-variables' as
@@ -413,8 +413,9 @@ When called interactively, use current-phase as PHASE."
   (yester-recalc)
   (remove-hook 'post-command-hook #'yester--recalc-once-on-post-command))
 
-(defun yester--background-mode-guard (symbol newval operation where)
-  "Watch `frame-background-mode' and `add-hook' `post-command-hook'."
+(defun yester--background-mode-guard (_symbol _newval operation _where)
+  "Watch `frame-background-mode' and `add-hook' `post-command-hook'.
+Only if OPERATION is set, hook will be added."
   (if (eq operation 'set)
       (add-hook 'post-command-hook #'yester--recalc-once-on-post-command)))
 
