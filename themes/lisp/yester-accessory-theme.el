@@ -14,13 +14,13 @@
    `(mode-line-emphasis
      (yester-face-spec ',class :foreground green :weight 'bold :slant 'normal))
    `(mode-line-mode-name (yester-face-spec ',class
-                           (night  :foreground yellow)
+                           (night :foreground yellow)
                            (day (nil :foreground blue :weight 'bold)
                                 (morning :foreground red))))
    `(mode-line-warning (yester-face-spec ',class
-                         (night  :foreground red)
+                         (night :foreground red)
                          (day (nil :foreground red)
-                              (morning  :foreground red :weight 'bold))))
+                              (morning :foreground red :weight 'bold))))
    `(mode-line-transform '((,class (:slant italic))))
 
 

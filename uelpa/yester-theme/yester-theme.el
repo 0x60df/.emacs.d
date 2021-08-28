@@ -20,8 +20,8 @@
    'yester
 
    ;; Basic faces
-   `(default (yester-face-spec ',class
-               :foreground foreground :background background))
+   `(default
+      (yester-face-spec ',class :foreground foreground :background background))
    `(bold '((,class :weight bold)))
    `(italic '((,class :slant italic)))
    `(bold-italic '((,class :slant italic :weight bold)))
@@ -45,34 +45,24 @@
 
 
    ;; Font Lock
-   `(font-lock-builtin-face
-     (yester-face-spec ',class :foreground aqua))
+   `(font-lock-builtin-face (yester-face-spec ',class :foreground aqua))
    `(font-lock-comment-delimiter-face
      (yester-face-spec ',class :foreground comment :slant 'italic))
    `(font-lock-comment-face
      (yester-face-spec ',class :foreground comment :slant 'italic))
-   `(font-lock-constant-face
-     (yester-face-spec ',class :foreground aqua))
-   `(font-lock-doc-face
-     (yester-face-spec ',class :foreground comment))
-   `(font-lock-function-name-face
-     (yester-face-spec ',class :foreground blue))
-   `(font-lock-keyword-face
-     (yester-face-spec ',class :foreground purple))
-   `(font-lock-negation-char-face
-     (yester-face-spec ',class :foreground green))
-   `(font-lock-preprocessor-face
-     (yester-face-spec ',class :foreground purple))
+   `(font-lock-constant-face (yester-face-spec ',class :foreground aqua))
+   `(font-lock-doc-face (yester-face-spec ',class :foreground comment))
+   `(font-lock-function-name-face (yester-face-spec ',class :foreground blue))
+   `(font-lock-keyword-face (yester-face-spec ',class :foreground purple))
+   `(font-lock-negation-char-face (yester-face-spec ',class :foreground green))
+   `(font-lock-preprocessor-face (yester-face-spec ',class :foreground purple))
    `(font-lock-regexp-grouping-backslash
      (yester-face-spec ',class :foreground yellow))
    `(font-lock-regexp-grouping-construct
      (yester-face-spec ',class :foreground purple))
-   `(font-lock-string-face
-     (yester-face-spec ',class :foreground green))
-   `(font-lock-type-face
-     (yester-face-spec ',class :foreground yellow))
-   `(font-lock-variable-name-face
-     (yester-face-spec ',class :foreground orange))
+   `(font-lock-string-face (yester-face-spec ',class :foreground green))
+   `(font-lock-type-face (yester-face-spec ',class :foreground yellow))
+   `(font-lock-variable-name-face (yester-face-spec ',class :foreground orange))
    `(font-lock-warning-face
      (yester-face-spec ',class :weight 'bold :foreground red))
 
@@ -80,8 +70,7 @@
 
    ;; Standard Faces
    `(region (yester-face-spec ',class :background selection))
-   `(secondary-selection
-     (yester-face-spec ',class :background current-line))
+   `(secondary-selection (yester-face-spec ',class :background current-line))
    `(trailing-whitespace
      (yester-face-spec ',class :background red :foreground yellow))
    `(escape-glyph (yester-face-spec ',class :foreground red))
@@ -162,8 +151,7 @@
    `(window-divider (yester-face-spec ',class :foreground selection))
    `(window-divider-first-pixel
      (yester-face-spec ',class :foreground selection))
-   `(window-divider-last-pixel
-     (yester-face-spec ',class :foreground selection))
+   `(window-divider-last-pixel (yester-face-spec ',class :foreground selection))
 
 
 
@@ -205,12 +193,10 @@
    `(dired-mark (yester-face-spec ',class :foreground comment))
    `(dired-perm-write
      (yester-face-spec ',class :foreground orange :weight 'bold))
-   `(dired-set-id
-     (yester-face-spec ',class :foreground red :weight 'bold))
+   `(dired-set-id (yester-face-spec ',class :foreground red :weight 'bold))
    `(dired-special (yester-face-spec ',class :foreground yellow))
    `(dired-symlink (yester-face-spec ',class :foreground aqua))
-   `(dired-warning
-     (yester-face-spec ',class :foreground red :weight 'bold))
+   `(dired-warning (yester-face-spec ',class :foreground red :weight 'bold))
 
 
 
@@ -242,9 +228,9 @@
                            (night :inherit 'diff-refine-changed
                                   :foreground diff-variant-red
                                   :background diff-accent-red)
-                           (day  :inherit 'diff-refine-changed
-                                 :foreground diff-accent-red
-                                 :background diff-variant-red)))
+                           (day :inherit 'diff-refine-changed
+                                :foreground diff-accent-red
+                                :background diff-variant-red)))
    `(diff-indicator-changed (yester-face-spec ',class
                               :inherit 'diff-changed
                               :foreground diff-accent-yellow))
@@ -311,10 +297,10 @@
    `(ediff-fine-diff-B '((,class :inherit diff-refine-added)))
    `(ediff-fine-diff-C '((,class :inherit diff-refine-changed)))
    `(ediff-fine-diff-Ancestor (yester-face-spec ',class
-                                (night  :foreground diff-variant-cyan
-                                        :background diff-accent-cyan)
-                                (day  :foreground diff-accent-cyan
-                                      :background diff-variant-cyan)))
+                                (night :foreground diff-variant-cyan
+                                       :background diff-accent-cyan)
+                                (day :foreground diff-accent-cyan
+                                     :background diff-variant-cyan)))
    `(ediff-even-diff-A (yester-face-spec ',class :background current-line))
    `(ediff-even-diff-B (yester-face-spec ',class :background current-line))
    `(ediff-even-diff-C (yester-face-spec ',class :background current-line))
@@ -403,8 +389,7 @@
    ;; Sh-script
    `(sh-escaped-newline '((,class :inherit 'font-lock-builtin-face)))
    `(sh-heredoc '((,class :inherit 'font-lock-string-face)))
-   `(sh-quoted-exec
-     (yester-face-spec ',class :foreground green :weight 'bold))
+   `(sh-quoted-exec (yester-face-spec ',class :foreground green :weight 'bold))
 
 
 
@@ -651,15 +636,15 @@
      (yester-face-spec ',class :background selection))
    `(popup-summary-face '((,class :inherit (shadow popup-face))))
    `(popup-tip-face (yester-face-spec ',class
-                      (night  :foreground foreground
-                              :background selection
-                              :inherit 'popup-face)
+                      (night :foreground foreground
+                             :background selection
+                             :inherit 'popup-face)
                       (day (nil :foreground foreground
                                 :background current-line
                                 :inherit 'popup-face)
-                           (morning  :foreground foreground
-                                     :background selection
-                                     :inherit 'popup-face))))
+                           (morning :foreground foreground
+                                    :background selection
+                                    :inherit 'popup-face))))
 
 
 
@@ -687,7 +672,7 @@
 
    ;; Ace-jump-mode
    `(ace-jump-face-foreground (yester-face-spec ',class
-                                (night  :foreground emboss)
+                                (night :foreground emboss)
                                 (day :weight 'bold :foreground emboss )))
    `(ace-jump-face-background '((,class :inherit shadow)))
 
@@ -707,7 +692,7 @@
    `(anzu-replace-highlight '((,class :inherit lazy-highlight)))
    `(anzu-replace-to (yester-face-spec ',class
                        (night :foreground emboss)
-                       (day  :weight 'bold :foreground emboss)))
+                       (day :weight 'bold :foreground emboss)))
 
 
 
@@ -759,8 +744,8 @@
    `(helm-ff-pipe '((,class :inherit dired-special)))
    `(helm-ff-prefix (yester-face-spec ',class)
                     (night :foreground yellow :weight 'bold)
-                    (day (nil  :foreground blue :weight 'bold)
-                         (morning  :foreground red :weight 'bold)))
+                    (day (nil :foreground blue :weight 'bold)
+                         (morning :foreground red :weight 'bold)))
    `(helm-ff-socket '((,class :slant italic :inherit dired-special)))
    `(helm-ff-suid '((,class :inherit dired-set-id)))
    `(helm-ff-symlink '((,class :inherit dired-symlink)))
@@ -779,8 +764,8 @@
    `(helm-grep-match '((,class :inherit helm-match)))
    `(helm-locate-finish '((,class :inherit success)))
    `(helm-match (yester-face-spec ',class
-                  (night  :foreground emboss)
-                  (day  :weight 'bold :foreground emboss)))
+                  (night :foreground emboss)
+                  (day :weight 'bold :foreground emboss)))
    `(helm-moccur-buffer (yester-face-spec ',class :foreground green))
    `(helm-resume-need-update (yester-face-spec ',class
                                :weight 'bold
@@ -1017,7 +1002,7 @@
    `(evil-ex-substitute-matches '((,class :inherit evil-ex-lazy-highlight)))
    `(evil-ex-substitute-replacement (yester-face-spec ',class
                                       (night :foreground emboss)
-                                      (day  :weight 'bold :foreground emboss)))
+                                      (day :weight 'bold :foreground emboss)))
 
 
 
