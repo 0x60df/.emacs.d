@@ -498,6 +498,7 @@ can be more than this value.")
                        ((eq kind 'class) 'font-lock-type-face)
                        ((eq kind 'method) 'font-lock-function-name-face)
                        ((eq kind 'snippet) 'error)
+                       ((eq kind 'color) 'success)
                        (t 'shadow))))
       (if face
           (let ((beg (length left))
