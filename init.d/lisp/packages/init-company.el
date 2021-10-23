@@ -72,7 +72,8 @@
  '(company-transformers '(company-sort-by-length
                           company-sort-by-occurrence
                           company-replace-yasnippet-candidate-on-first))
- '(company-search-regexp-function #'company-search-words-in-any-order-regexp))
+ '(company-search-regexp-function #'company-search-words-in-any-order-regexp)
+ '(company-format-margin-function nil))
 
 (push '(company-mode . 11) mode-line-minor-mode-priority-alist)
 (push '(company-search-mode . 12) mode-line-minor-mode-priority-alist)
