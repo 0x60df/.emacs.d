@@ -8,16 +8,15 @@
 (defun advice-add-for-once (symbol where function &optional props trigger)
   "`advice-add' for one time use.
 
-Advising function is not a FUNCTION but uninterned symbol,
-`transient-advice-function', whick stores lambda form
-containing FUNCTION and `advice-remove' for
-#:transient-advice-function.
+Advising function is not a FUNCTION but uninterned symbol
+`:', whick stores lambda form containing FUNCTION and
+`advice-remove' form for #::.
 SYMBOL, WHERE, and PROPS are passed to `advice-add' and
 `advice-remove'.
 When TRIGGER is non-nil, running FUNCTION and
 `advice-remove' is delayed until funcall TRIGGER returns
 non-nil."
-  (let ((advice (make-symbol "transient-advice-function")))
+  (let ((advice (make-symbol ":")))
     (fset advice `(lambda (&rest args)
                     (if (or ,(null trigger) (funcall ',trigger))
                         (unwind-protect
@@ -30,15 +29,15 @@ non-nil."
 Find the function for the SYMBOL, and `advice-remove' it.
 
 When optional argument TRIGGER is non-nil, `advice-remove'
-is performed only if `transient-advice-function' is added
-with trigger function which equals to TRIGGER.
-On the other hand, `transient-advice-function' with trigger
-can be removed only if TRIGGER equals to the trigger."
+is performed only if #:: is added with trigger function
+which equals to TRIGGER.
+On the other hand, #:: with trigger can be removed only if
+TRIGGER equals to the trigger."
   (let (advice)
     (advice-mapc (lambda (f p)
                    (if (and (symbolp f)
-                            (equal (symbol-name f) "transient-advice-function")
-                            (not (eq f (intern "transient-advice-function")))
+                            (equal (symbol-name f) ":")
+                            (not (eq f (intern ":")))
                             (if trigger
                                 (equal (cadr (caddr (cadr
                                                      (caddr

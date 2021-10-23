@@ -12,14 +12,13 @@
 (defun add-hook-for-once (hook function &optional depth local trigger)
   "Add to the value of HOOK the function FUNCTION for once use.
 
-Hooked function is not a FUNCTION but uninterned symbol,
-`transient-hook-function', which stores lambda form
-containing FUNCTION and `remove-hook' for
-#:transient-hook-function.
+Hooked function is not a FUNCTION but uninterned symbol `:',
+which stores lambda form containing FUNCTION and
+`remove-hook' form for #::.
 DEPTH and LOCAL are passed to `add-hook' and `remove-hook'.
 When TRIGGER is non-nil, running FUNCTION and `remove-hook'
 is delayed until funcall TRIGGER returns non-nil."
-  (let ((symbol (make-symbol "transient-hook-function")))
+  (let ((symbol (make-symbol ":")))
     (fset symbol `(lambda (&rest args)
                     (if (or ,(null trigger) (funcall ',trigger))
                         (unwind-protect
@@ -33,15 +32,15 @@ is delayed until funcall TRIGGER returns non-nil."
 Optional argument LOCAL is passed to `remove-hook'.
 
 When optional argument TRIGGER is non-nil, `remove-hook' is
-performed only if `transient-hook-function' is added with
-trigger function which equals to TRIGGER.
-On the other hand, `transient-hook-function' with trigger
-can be removed only if TRIGGER equals to the trigger."
+performed only if #:: is added with trigger function which
+equals to TRIGGER.
+On the other hand, #:: with trigger can be removed only if
+TRIGGER equals to the trigger."
   (let ((symbol (seq-find
                  (lambda (f)
                    (and (symbolp f)
-                        (equal (symbol-name f) "transient-hook-function")
-                        (not (eq f (intern "transient-hook-function")))
+                        (equal (symbol-name f) ":")
+                        (not (eq f (intern ":")))
                         (if trigger
                             (equal (cadr (caddr (cadr (caddr
                                                        (symbol-function f)))))
