@@ -53,6 +53,7 @@ major mode."
                 (lambda (s)
                   (let ((f (symbol-function s)))
                     (cond ((null f) nil)
+                          ((memq s '(fundamental-mode text-mode prog-mode)) t)
                           ((autoloadp f) nil)
                           ((byte-code-function-p f)
                            (let ((l (append (aref f 2) nil)))
