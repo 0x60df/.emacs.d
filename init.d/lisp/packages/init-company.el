@@ -101,14 +101,6 @@
   (require 'seq)
   (require 'company-tng)
 
-  (defface company-tooltip-yasnippet nil
-    "Face used for highlighting `company-yasnippet' candidate."
-    :group 'user)
-
-  (defface company-tooltip-dabbrev-code nil
-    "Face used for highlighting `company-dabbrev-code' candidate."
-    :group 'user)
-
   (setq company-echo-delay 0.5)
   (setq company-search-lighter '("~"
                                  (company-search-filtering "\"" "'")
@@ -505,7 +497,7 @@ can be more than this value.")
                        ((eq kind 'module) 'font-lock-type-face)
                        ((eq kind 'class) 'font-lock-type-face)
                        ((eq kind 'method) 'font-lock-function-name-face)
-                       ((eq kind 'snippet) 'company-tooltip-yasnippet)
+                       ((eq kind 'snippet) 'error)
                        (t 'shadow))))
       (if face
           (let ((beg (length left))

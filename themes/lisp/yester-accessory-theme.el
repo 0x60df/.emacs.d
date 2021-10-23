@@ -49,12 +49,6 @@
 
 
 
-   ;; Company
-   `(company-tooltip-yasnippet (yester-face-spec ',class :foreground red))
-   `(company-tooltip-dabbrev-code (yester-face-spec ',class :foreground purple))
-
-
-
    ;; Auto-complete
    `(ac-dictionary-candidate-face
      '((,class :inherit (font-lock-keyword-face ac-candidate-face))))
