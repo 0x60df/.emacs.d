@@ -36,6 +36,7 @@
   (add-hook 'scratch-before-label-hook (lambda () (scratch-mode 0)))
 
   (define-key scratch-mode-map [remap kill-buffer] #'scratch-shred)
+  (define-key scratch-mode-map (kbd "C-c k") #'scratch-shred)
   (overriding-set-key (kbd "C-l b s") #'scratch-shred-all)
   (define-key scratch-mode-map (kbd "C-l b l") #'scratch-label))
 
