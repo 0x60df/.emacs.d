@@ -380,7 +380,7 @@ If suffix does not match, delete aux space."
   (add-hook 'pre-command-hook #'company-complete-inside-setup)
 
   (add-hook 'emacs-lisp-mode-hook #'company-split-mode)
-  
+
 
 
   ;;; mode-line lighter
