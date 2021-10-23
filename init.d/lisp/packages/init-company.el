@@ -491,20 +491,25 @@ can be more than this value.")
   (defun company-pseudo-tooltip-decorate-candidate
       (function value annotation width selected left right &rest args)
     "Advising `company-fill-propertize' to decorate candidate."
-    (let ((line (apply function
-                       value annotation width selected left right args))
-          (backend (get-text-property 0 'company-backend value)))
-      (if (memq backend '(company-yasnippet company-dabbrev-code))
+    (let* ((line (apply function
+                        value annotation width selected left right args))
+           (kind (company-call-backend 'kind value))
+           (face (cond ((null kind) 'default)
+                       ((eq kind 'text) 'default)
+                       ((eq kind 'keyword) 'font-lock-keyword-face)
+                       ((eq kind 'function) 'font-lock-function-name-face)
+                       ((eq kind 'variable) 'font-lock-variable-name-face)
+                       ((eq kind 'folder) 'dired-directory)
+                       ((eq kind 'file) 'default)
+                       ((eq kind 'module) 'font-lock-type-face)
+                       ((eq kind 'class) 'font-lock-type-face)
+                       ((eq kind 'method) 'font-lock-function-name-face)
+                       ((eq kind 'snippet) 'company-tooltip-yasnippet)
+                       (t 'shadow))))
+      (if face
           (let ((beg (length left))
                 (end (+ (length value) 1)))
-            (font-lock-append-text-property
-             beg end
-             'face (cond
-                    ((eq backend 'company-yasnippet)
-                     'company-tooltip-yasnippet)
-                    ((eq backend 'company-dabbrev-code)
-                     'company-tooltip-dabbrev-code))
-             line)))
+            (font-lock-append-text-property beg end 'face face line)))
       line))
 
   (advice-add 'company-fill-propertize
