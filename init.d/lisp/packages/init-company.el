@@ -73,7 +73,8 @@
                           company-sort-by-occurrence
                           company-replace-yasnippet-candidate-on-first))
  '(company-search-regexp-function #'company-search-words-in-any-order-regexp)
- '(company-format-margin-function nil))
+ '(company-format-margin-function nil)
+ '(completion-styles '(basic emacs22)))
 
 (push '(company-mode . 11) mode-line-minor-mode-priority-alist)
 (push '(company-search-mode . 12) mode-line-minor-mode-priority-alist)
