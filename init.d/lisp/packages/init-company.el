@@ -596,7 +596,6 @@ can be more than this value.")
   (defun company-filter-candidates-or-abort ()
     "`company-filter-candidates' if selecting, else `company-abort'."
     (interactive)
-    (echo company-status)
     (cond ((eq company-status 'selecting) (company-filter-candidates))
           ((eq company-status 'expanded)
            (company-finish (car company-candidates)))
