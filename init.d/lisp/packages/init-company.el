@@ -322,13 +322,15 @@ complete-inside is started.")
     (setq company-complete-inside-point (point)))
 
   (defun company-complete-inside-after-completion (&rest args)
-    (if company-complete-inside-point
-        (save-excursion
-          (goto-char company-complete-inside-point)
-          (company-complete-inside-delete-aux-space)))
-    (company-complete-inside-delete-aux-space)
-    (if (eql (point) company-complete-inside-point)
-        (ignore-errors (forward-char)))
+    (let ((point (point)))
+      (if company-complete-inside-point
+          (save-excursion
+            (goto-char company-complete-inside-point)
+            (company-complete-inside-delete-aux-space)))
+      (company-complete-inside-delete-aux-space)
+      (if (and (eql (+ (point) 1) point)
+               (eql (point) company-complete-inside-point))
+          (ignore-errors (forward-char))))
     (company-complete-inside-clean-up))
 
   (defun company-complete-inside-follow-point ()
