@@ -318,10 +318,12 @@ complete-inside is started.")
                  #'company-complete-inside-after-completion)))))))))
 
   (defun company-complete-inside-finish (&rest args)
+    "Function for hook `company-completion-finished-hook'."
     (company-complete-inside-delete-suffix)
     (setq company-complete-inside-point (point)))
 
   (defun company-complete-inside-after-completion (&rest args)
+    "Function for hook `company-after-completion-hook'."
     (let ((point (point)))
       (if company-complete-inside-point
           (save-excursion
