@@ -273,8 +273,12 @@ keyword :with."
 This alist contains line number, prefix and suffix after
 complete-inside is started.")
 
+  (defvar company-complete-inside-point nil
+    "Point integer for company-complete-inside.")
+
   (defun company-complete-inside-setup ()
     "Setup company complete inside."
+    (unless (company--active-p) (company-complete-inside-clean-up))
     (when (and company-split-mode
                (null company-complete-inside-context)
                (memq this-command company-begin-commands)
@@ -301,17 +305,36 @@ complete-inside is started.")
           'pre-command-hook
           (lambda ()
             (if (not (company--active-p))
-                (company-complete-inside-clean-up)
+                (progn
+                  (company-complete-inside-delete-aux-space)
+                  (company-complete-inside-clean-up))
+              (company-complete-inside-follow-point)
               (add-hook-for-once
                'company-completion-finished-hook
-               #'company-complete-inside-delete-suffix)
+               (lambda (&rest args)
+                 (company-complete-inside-delete-suffix)
+                 (setq company-complete-inside-point (point))))
               (add-hook-for-once
                'company-after-completion-hook
-               #'company-complete-inside-clean-up))))))))
+               (lambda (&rest args)
+                 (if company-complete-inside-point
+                      (save-excursion
+                        (goto-char company-complete-inside-point)
+                        (company-complete-inside-delete-aux-space)))
+                 (company-complete-inside-delete-aux-space)
+                 (company-complete-inside-clean-up))))))))))
+
+  (defun company-complete-inside-follow-point ()
+    "Follow `company-point' during company-complete-inside is active."
+    (when company-complete-inside-context
+      (setq company-complete-inside-point (point))
+      (add-hook-for-once 'pre-command-hook
+                          #'company-complete-inside-follow-point)))
 
   (defun company-complete-inside-clean-up (&rest args)
     "Clean up complete inside."
-    (setq company-complete-inside-context nil))
+    (setq company-complete-inside-context nil)
+    (setq company-complete-inside-point nil))
 
   (defun company-complete-inside-check-candidates ()
     "Check and return candidates without modifying company state."
@@ -345,31 +368,33 @@ complete-inside is started.")
            (looking-at
             (regexp-quote
              (cdr (assq 'prefix company-complete-inside-context)))))
-         (equal (buffer-substring
-                 (save-excursion (forward-char)
-                                 (point))
-                 (save-excursion (forward-char) (skip-syntax-forward "w_")
-                                 (point)))
-                (cdr (assq 'suffix company-complete-inside-context)))))
+         (ignore-errors
+           (equal (buffer-substring
+                   (save-excursion (forward-char)
+                                   (point))
+                   (save-excursion (forward-char) (skip-syntax-forward "w_")
+                                   (point)))
+                  (cdr (assq 'suffix company-complete-inside-context))))))
 
-  (defun company-complete-inside-delete-aux-space (&rest args)
+  (defun company-complete-inside-delete-aux-space ()
     "Delete aux space for company complete inside."
     (if (company-complete-inside-test-context)
         (delete-char 1)))
 
-  (defun company-complete-inside-delete-suffix (&rest args)
+  (defun company-complete-inside-delete-suffix ()
     "Delete duplicated suffix around point during complete inside.
 If suffix does not match, delete aux space."
     (if (company-complete-inside-test-context)
-        (let* ((mid (save-excursion (forward-char)
-                                    (point)))
-               (end (save-excursion (forward-char) (skip-syntax-forward "w_")
-                                    (point)))
-               (suffix (buffer-substring mid end)))
-          (save-excursion
-            (backward-char (length suffix))
-            (if (looking-at (regexp-quote (concat suffix " ")))
-                (delete-region (- mid 1) end))))))
+        (ignore-errors
+          (let* ((mid (save-excursion (forward-char)
+                                      (point)))
+                 (end (save-excursion (forward-char) (skip-syntax-forward "w_")
+                                      (point)))
+                 (suffix (buffer-substring mid end)))
+            (save-excursion
+              (backward-char (length suffix))
+              (if (looking-at (regexp-quote (concat suffix " ")))
+                  (delete-region (- mid 1) end)))))))
 
   (add-hook 'pre-command-hook #'company-complete-inside-setup)
 
