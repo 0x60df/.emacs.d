@@ -322,6 +322,8 @@ complete-inside is started.")
                         (goto-char company-complete-inside-point)
                         (company-complete-inside-delete-aux-space)))
                  (company-complete-inside-delete-aux-space)
+                 (if (eql (point) company-complete-inside-point)
+                     (ignore-errors (forward-char)))
                  (company-complete-inside-clean-up))))))))))
 
   (defun company-complete-inside-follow-point ()
