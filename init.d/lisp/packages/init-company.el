@@ -298,33 +298,38 @@ complete-inside is started.")
       (add-hook-for-once
        'post-command-hook
        (lambda ()
-         (unless (company-complete-inside-check-candidates)
-           (company-complete-inside-delete-aux-space)
-           (company-complete-inside-clean-up))
-         (add-hook-for-once
-          'pre-command-hook
-          (lambda ()
-            (if (not (company--active-p))
-                (progn
-                  (company-complete-inside-delete-aux-space)
-                  (company-complete-inside-clean-up))
-              (company-complete-inside-follow-point)
-              (add-hook-for-once
-               'company-completion-finished-hook
-               (lambda (&rest args)
-                 (company-complete-inside-delete-suffix)
-                 (setq company-complete-inside-point (point))))
-              (add-hook-for-once
-               'company-after-completion-hook
-               (lambda (&rest args)
-                 (if company-complete-inside-point
-                      (save-excursion
-                        (goto-char company-complete-inside-point)
-                        (company-complete-inside-delete-aux-space)))
-                 (company-complete-inside-delete-aux-space)
-                 (if (eql (point) company-complete-inside-point)
-                     (ignore-errors (forward-char)))
-                 (company-complete-inside-clean-up))))))))))
+         (if (not (company-complete-inside-check-candidates))
+             (progn
+               (company-complete-inside-delete-aux-space)
+               (company-complete-inside-clean-up))
+           (company-complete-inside-follow-point)
+           (add-hook-for-once
+            'pre-command-hook
+            (lambda ()
+              (if (not (company--active-p))
+                  (progn
+                    (company-complete-inside-delete-aux-space)
+                    (company-complete-inside-clean-up))
+                (add-hook-for-once
+                 'company-completion-finished-hook
+                 #'company-complete-inside-finish)
+                (add-hook-for-once
+                 'company-after-completion-hook
+                 #'company-complete-inside-after-completion)))))))))
+
+  (defun company-complete-inside-finish (&rest args)
+    (company-complete-inside-delete-suffix)
+    (setq company-complete-inside-point (point)))
+
+  (defun company-complete-inside-after-completion (&rest args)
+    (if company-complete-inside-point
+        (save-excursion
+          (goto-char company-complete-inside-point)
+          (company-complete-inside-delete-aux-space)))
+    (company-complete-inside-delete-aux-space)
+    (if (eql (point) company-complete-inside-point)
+        (ignore-errors (forward-char)))
+    (company-complete-inside-clean-up))
 
   (defun company-complete-inside-follow-point ()
     "Follow `company-point' during company-complete-inside is active."
@@ -333,10 +338,17 @@ complete-inside is started.")
       (add-hook-for-once 'pre-command-hook
                           #'company-complete-inside-follow-point)))
 
-  (defun company-complete-inside-clean-up (&rest args)
+  (defun company-complete-inside-clean-up ()
     "Clean up complete inside."
+    (interactive)
     (setq company-complete-inside-context nil)
-    (setq company-complete-inside-point nil))
+    (setq company-complete-inside-point nil)
+    (remove-hook-for-once 'pre-command-hook
+                          #'company-complete-inside-follow-point)
+    (remove-hook-for-once 'company-completion-finished-hook
+                          #'company-complete-inside-finish)
+    (remove-hook-for-once 'company-after-completion-hook
+                          #'company-complete-inside-after-completion))
 
   (defun company-complete-inside-check-candidates ()
     "Check and return candidates without modifying company state."
