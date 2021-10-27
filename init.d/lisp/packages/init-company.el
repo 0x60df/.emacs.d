@@ -111,6 +111,17 @@
                                  company-search-string
                                  (company-search-filtering "\"" "'")))
 
+  (with-eval-after-load 'company-keywords
+    (mapc (lambda (m)
+            (let ((a (assq m company-keywords-alist)))
+              (unless a
+                (setq a (list m))
+                (push a company-keywords-alist))
+              (mapc (lambda (k)
+                      (unless (memq k (cdr a)) (setcdr a (cons k (cdr a)))))
+                    '("&optional" "&rest"))))
+          '(emacs-lisp-mode lisp-interaction-mode)))
+
 
 
   ;;; frontend
@@ -234,7 +245,8 @@ keyword :with."
                      'append))))
 
   (company-append-backends
-   'company-capf :with 'company-dabbrev-code 'company-yasnippet)
+   'company-capf
+   :with 'company-dabbrev-code 'company-keywords 'company-yasnippet)
   (company-append-backends
    'company-clang :with 'company-dabbrev-code 'company-yasnippet)
   (company-append-backends 'company-dabbrev-code :with 'company-yasnippet)
