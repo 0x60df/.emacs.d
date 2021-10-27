@@ -92,6 +92,15 @@
 (advice-add-for-once 'company-split-mode :before (lambda (&rest args)
                                                    (require 'company)))
 
+(define-globalized-minor-mode company-split-global-mode company-split-mode
+  (lambda ()
+    (if (or (eq company-global-modes t)
+            (and (consp company-global-modes)
+                 (or (and (eq (car company-global-modes) 'not)
+                          (not (memq major-mode (cdr company-global-modes))))
+                     (memq major-mode company-global-modes))))
+        (company-split-mode))))
+
 
 
 ;; initialization
@@ -431,8 +440,6 @@ If suffix does not match, delete aux space."
 
   (add-hook 'pre-command-hook #'company-complete-inside-setup)
 
-  (add-hook 'emacs-lisp-mode-hook #'company-split-mode)
-
 
 
   ;;; mode-line lighter
@@ -685,6 +692,7 @@ can be more than this value.")
 ;;; startup
 
 (add-hook 'after-init-hook #'global-company-mode)
+(add-hook 'after-init-hook #'company-split-global-mode)
 
 
 (resolve init-company)
