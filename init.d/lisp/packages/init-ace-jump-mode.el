@@ -19,6 +19,8 @@
 
 (overriding-set-key (kbd "M-g M-j") #'ace-jump-mode)
 (overriding-set-key (kbd "H-g") #'ace-jump-mode)
+(overriding-set-key (kbd "H-<henkan>") #'ace-jump-mode)
+(overriding-set-key (kbd "s-<muhenkan>") #'ace-jump-mode)
 (mapc (lambda (c)
         (let ((s (char-to-string c)))
           (eval-after-load 'iso-transl
