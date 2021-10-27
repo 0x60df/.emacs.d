@@ -150,6 +150,16 @@ Keymap is determined by `overriding-map-for'"
 (overriding-set-key (kbd "H-8") (key-binding (kbd "M-(")))
 (overriding-set-key (kbd "H-9") (key-binding (kbd "M-)")))
 
+(overriding-set-key (kbd "s-1") "!")
+(overriding-set-key (kbd "s-2") "\"")
+(overriding-set-key (kbd "s-3") "#")
+(overriding-set-key (kbd "s-4") "$")
+(overriding-set-key (kbd "s-5") "%")
+(overriding-set-key (kbd "s-6") "&")
+(overriding-set-key (kbd "s-7") "'")
+(overriding-set-key (kbd "s-8") "(")
+(overriding-set-key (kbd "s-9") ")")
+
 
 
 (overriding-set-key (kbd "M-+") #'duplicate-and-comment)
