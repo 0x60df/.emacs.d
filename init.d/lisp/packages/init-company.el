@@ -92,14 +92,17 @@
 (advice-add-for-once 'company-split-mode :before (lambda (&rest args)
                                                    (require 'company)))
 
+(defun company-split-mode-on ()
+  "Turn on `company-split-mode'."
+  (if (or (eq company-global-modes t)
+          (and (consp company-global-modes)
+               (or (and (eq (car company-global-modes) 'not)
+                        (not (memq major-mode (cdr company-global-modes))))
+                   (memq major-mode company-global-modes))))
+      (company-split-mode)))
+
 (define-globalized-minor-mode company-split-global-mode company-split-mode
-  (lambda ()
-    (if (or (eq company-global-modes t)
-            (and (consp company-global-modes)
-                 (or (and (eq (car company-global-modes) 'not)
-                          (not (memq major-mode (cdr company-global-modes))))
-                     (memq major-mode company-global-modes))))
-        (company-split-mode))))
+  company-split-mode-on)
 
 
 
