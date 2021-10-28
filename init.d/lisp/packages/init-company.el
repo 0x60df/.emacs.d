@@ -12,6 +12,7 @@
 
 (eval-when-compile
   (require 'company)
+  (require 'company-keywords)
   (require 'company-tng))
 
 (declare-function company-finish "company")
@@ -102,7 +103,8 @@
       (company-split-mode)))
 
 (define-globalized-minor-mode company-split-global-mode company-split-mode
-  company-split-mode-on)
+  company-split-mode-on
+  :group 'user)
 
 
 
