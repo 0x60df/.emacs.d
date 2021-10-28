@@ -90,8 +90,8 @@
 (define-minor-mode company-split-mode
   "Minor mode to split symbol if input is occurred on inside.")
 
-(advice-add-for-once 'company-split-mode :before (lambda (&rest args)
-                                                   (require 'company)))
+(advice-add-for-once 'company-split-global-mode :before (lambda (&rest args)
+							  (require 'company)))
 
 (defun company-split-mode-on ()
   "Turn on `company-split-mode'."
