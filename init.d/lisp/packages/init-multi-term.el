@@ -22,7 +22,14 @@
           ("C-p" . term-send-raw)
           ("C-n" . term-send-raw)
           ("C-r" . term-send-raw)
-          ("C-s" . term-send-raw))))
+          ("C-s" . term-send-raw)))
+
+  (advice-add 'multi-term :after (lambda (&rest _args)
+                                   (let ((process (get-buffer-process
+                                                   (current-buffer))))
+                                     (if (process-live-p process)
+                                         (set-process-query-on-exit-flag
+                                          process nil))))))
 
 (add-hook 'after-init-hook
           (lambda ()
