@@ -5,7 +5,6 @@
 (premise init)
 (premise mode-line)
 (premise feature)
-(premise init-auto-complete)
 (premise init-inf-ruby)
 (premise inst-robe)
 
