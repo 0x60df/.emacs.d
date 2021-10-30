@@ -1,5 +1,4 @@
+# -*- mode: snippet -*-
 # name: ... ... ( ... );
-# key: prototype
-
 # --
 ${1:type} ${2:name}(${3:arg});

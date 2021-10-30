@@ -1,5 +1,4 @@
-# name: ... ... ( ... ) { ... }
-# key: args
-
+# -*- mode: snippet -*-
+# name: int ... , char *...[]
 # --
 int ${1:argc}, char *${2:argv}[]
