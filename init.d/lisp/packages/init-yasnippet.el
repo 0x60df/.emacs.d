@@ -77,7 +77,8 @@ Otherwise, return original one."
             (mapc (lambda (hook)
                     (add-hook hook #'yas-minor-mode))
                   '(prog-mode-hook
-                    html-mode-hook))
+                    html-mode-hook
+                    org-mode-hook))
 
             (with-current-buffer "*scratch*"
               (let ((hook (make-local-variable 'first-change-hook)))
