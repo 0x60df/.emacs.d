@@ -5,9 +5,7 @@
 (premise init)
 (premise package)
 
-(package-inst gitattributes-mode)
-(package-inst gitconfig-mode)
-(package-inst gitignore-mode)
+(package-inst git-modes)
 
 
 (resolve inst-git-modes)
