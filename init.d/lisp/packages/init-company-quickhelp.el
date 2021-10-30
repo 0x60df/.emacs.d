@@ -27,7 +27,7 @@
       (apply company-quickhelp-frontend command args)))
   (advice-add 'company-quickhelp-frontend :around #'company-quickhelp-auto-hide)
 
-  (company-quickhelp-mode)
+  (add-hook-for-once 'pre-command-hook #'company-quickhelp-mode)
   (define-key company-active-map (kbd "C-<iso-lefttab>")
     #'company-quickhelp-manual-begin))
 
