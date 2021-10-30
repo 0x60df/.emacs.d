@@ -138,17 +138,19 @@
 
               ;; dired-backs
               (if (init-unit-p inst-dired-hacks)
-                  (smartrep-define-key dired-mode-map ";"
-                    '(("b" . dired-subtree-up)
-                      ("f" . dired-subtree-down)
-                      ("n" . dired-subtree-next-sibling)
-                      ("p" . dired-subtree-previous-sibling)
-                      ("M-<" . dired-subtree-beginning)
-                      ("M->" . dired-subtree-end)
-                      ("m" . dired-subtree-mark-subtree)
-                      ("u" . dired-subtree-unmark-subtree)
-                      ("o f" . dired-subtree-only-this-file)
-                      ("o d" . dired-subtree-only-this-directory)))))))
+                  (with-eval-after-load 'dired
+                    (smartrep-define-key
+                     dired-mode-map ";"
+                     '(("b" . dired-subtree-up)
+                       ("f" . dired-subtree-down)
+                       ("n" . dired-subtree-next-sibling)
+                       ("p" . dired-subtree-previous-sibling)
+                       ("M-<" . dired-subtree-beginning)
+                       ("M->" . dired-subtree-end)
+                       ("m" . dired-subtree-mark-subtree)
+                       ("u" . dired-subtree-unmark-subtree)
+                       ("o f" . dired-subtree-only-this-file)
+                       ("o d" . dired-subtree-only-this-directory))))))))
 
 
 (resolve init-smartrep)
