@@ -3,7 +3,6 @@
 
 
 (premise init)
-(premise init-el-get)
 
 (package-inst loophole)
 
