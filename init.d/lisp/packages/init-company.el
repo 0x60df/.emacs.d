@@ -264,6 +264,7 @@ keyword :with."
   (company-append-backends
    'company-clang :with 'company-dabbrev-code 'company-yasnippet)
   (company-append-backends 'company-dabbrev-code :with 'company-yasnippet)
+  (company-append-backends 'company-dabbrev :with 'company-yasnippet)
   (company-append-backends 'company-yasnippet)
 
 
