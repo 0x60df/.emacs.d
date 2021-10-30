@@ -45,7 +45,11 @@
   "Setup robe and start."
   (interactive)
   (robe-mode)
-  (save-window-excursion (inf-ruby))
+  (save-window-excursion
+    (inf-ruby)
+    (let ((process (get-buffer-process (current-buffer))))
+      (if (process-live-p process)
+          (set-process-query-on-exit-flag process nil))))
   (robe-start))
 
 (with-eval-after-load 'ruby-mode
