@@ -68,8 +68,12 @@
                 return)
       return))
 
-  (advice-add 'flymake--mode-line-format
-              :filter-return #'flymake--modify-mode-line-format)
+  (cond ((version< emacs-version "28")
+         (advice-add 'flymake--mode-line-format
+                     :filter-return #'flymake--modify-mode-line-format))
+        (t (advice-add 'flymake--mode-line-title
+                       :filter-return
+                       (lambda (return) " FlyM"))))
 
   (defvar overriding-flymake-mode-map
     (let ((map (make-sparse-keymap)))
