@@ -41,7 +41,15 @@
       return))
 
   (advice-add 'eglot--mode-line-format
-              :filter-return #'eglot--modify-mode-line-format))
+              :filter-return #'eglot--modify-mode-line-format)
+
+
+  (advice-add 'eglot :after (lambda (&rest _args)
+                              (let ((process (jsonrpc--process
+                                              (eglot-current-server))))
+                                (if (process-live-p process)
+                                    (set-process-query-on-exit-flag
+                                     process nil))))))
 
 
 (defun eglot-toggle ()
