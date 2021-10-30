@@ -1,5 +1,5 @@
+# -*- mode: snippet -*-
 # name: add-variable-watcher
-# key: add-variable-watcher
 # --
 (add-variable-watcher
  '$1
