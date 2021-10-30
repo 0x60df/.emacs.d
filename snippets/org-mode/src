@@ -1,7 +1,6 @@
 # -*- mode: snippet -*-
-# name: src
-# key: +s
+# name: #+begin_src ... ... #+end_src
 # --
-#+begin_src ${1:language}
+#+begin_src ${1:emacs-lisp}
   $0
 #+end_src
