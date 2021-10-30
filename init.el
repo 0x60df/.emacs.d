@@ -272,7 +272,6 @@ UNIT is a literal symbol."
 (init-package company)
 (init-package company-statistics)
 (init-package company-quickhelp)
-(init-package auto-complete)
 (init-package smex)
 (init-package ace-jump-mode)
 (init-package visible-mark)
