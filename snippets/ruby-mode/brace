@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: { |v| ... }
+# group: general
+# --
+{ |${v}| $0 }

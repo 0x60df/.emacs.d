@@ -1,6 +1,0 @@
-#name : eigen class
-#group : definitions
-# --
-class << self
-  $0
-end

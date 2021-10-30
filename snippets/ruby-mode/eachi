@@ -1,4 +1,0 @@
-#name : eachi
-#group : collections
-# --
-each {|${e}| $0 }

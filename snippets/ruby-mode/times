@@ -1,6 +1,0 @@
-#name : times
-#group : control structure
-# --
-times do |${i}|
-  $0
-end

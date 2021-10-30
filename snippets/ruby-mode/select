@@ -1,4 +1,0 @@
-#name : select
-#group : collections
-# --
-select {|${1:e}| $0 }

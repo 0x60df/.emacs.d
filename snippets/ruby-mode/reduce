@@ -1,4 +1,0 @@
-#name : reduce
-#group : collections
-# --
-reduce {|${1:m}, ${2:e}| $0 }

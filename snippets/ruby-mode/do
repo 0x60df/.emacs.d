@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: do |v| ... end
+# group: general
+# --
+do |${v}|
+  $0
+end

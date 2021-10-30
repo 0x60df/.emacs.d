@@ -1,6 +1,0 @@
-#name : downto
-#group : control structure
-# --
-downto(${0}) do |${i}|
-  $0
-end

@@ -1,5 +1,0 @@
-# -*- mode: snippet -*-
-# name: expand_to_string
-# key: es
-# --
-#{$0}
