@@ -301,7 +301,6 @@ UNIT is a literal symbol."
 (init-package wgrep)
 (init-package ag)
 (init-package flex-isearch)
-(init-package frame-dealer)
 (init-package evil)
 (init-package smart-compile)
 (init-package quickrun)
