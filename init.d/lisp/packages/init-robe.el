@@ -9,6 +9,8 @@
 (premise init-inf-ruby)
 (premise inst-robe)
 
+(eval-when-compile (require 'company))
+
 (lazy-autoload 'robe-start "robe")
 
 (declare-function ac-delete-duplicated-candidates "auto-complete")
@@ -35,6 +37,24 @@
                '(candidate-face . ac-robe-candidate-face))
   (add-to-list 'ac-source-robe
                '(selection-face . ac-robe-selection-face)))
+
+(with-eval-after-load 'robe
+  (with-eval-after-load 'company
+    (letrec ((find-capf-cell
+              (lambda (l)
+                (cond ((null l) l)
+                      ((or (eq 'company-capf (cadr l))
+                           (and (listp (cadr l))
+                                (eq 'company-capf (caadr l))))
+                       l)
+                      (t (funcall find-capf-cell (cdr l)))))))
+      (let ((cell (funcall find-capf-cell company-backends)))
+        (setcdr cell
+                (cons
+                 '(company-robe
+                   :with
+                   company-dabbrev-code company-keywords company-yasnippet)
+                 (cdr cell)))))))
 
 (push '(robe-mode . 2) mode-line-minor-mode-priority-alist)
 (with-eval-after-load 'robe
