@@ -3,7 +3,10 @@
 
 
 (premise init)
-(premise init-el-get)
+(premise feature)
+
+(lazy-autoload 'lm-with-file "lisp-mnt")
+(lazy-autoload 'lm-header-multiline "lisp-mnt")
 
 (defconst user-package-directory (concat user-emacs-directory "uelpa/")
   "Directory which contains user packages.")
@@ -22,10 +25,9 @@
                                 (t (error "Invalid requires spec `%s'"
                                           spec))))
                       (name (symbol-name package)))
-                 (when (or (not (locate-file name load-path
-                                             (get-load-suffixes)))
-                           (el-get-package-installed-p name))
-                   (eval `(el-get-bundle ,package)))))
+                 (if (not (or (locate-file name load-path (get-load-suffixes))
+                              (package-installed-p package)))
+                     (package-install package))))
              requires))))))
 
 
