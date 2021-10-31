@@ -54,7 +54,10 @@
 (declare-function company-pseudo-tooltip-set-maximum-width-ratio
                   load-file-name t t)
 (declare-function company-search-recover-fail load-file-name t t)
-(declare-function company-filter-candidates-or-abort load-file-name t t)
+(declare-function company-complete-selection-and-append-return
+                  load-file-name t t)
+(declare-function company-filter-candidates-or-abort-and-hippie-expand
+                  load-file-name t t)
 
 
 
