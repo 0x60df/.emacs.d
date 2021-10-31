@@ -6,7 +6,7 @@
 (premise custom)
 
 (custom-set-variables
- '(set-mark-command-repeat-pop t))
+ '(set-mark-command-repeat-pop nil))
 
 
 (resolve mark)
