@@ -701,6 +701,8 @@ After abort, call `hippie-expand'."
 
   (define-key company-active-map (kbd "<return>")
     #'company-complete-selection-and-append-return)
+  (define-key company-active-map (kbd "RET")
+    #'company-complete-selection-and-append-return)
 
   (define-key company-active-map (kbd "C-<tab>")
     #'company-filter-candidates-or-abort-and-hippie-expand)
@@ -712,7 +714,8 @@ After abort, call `hippie-expand'."
 
   (define-key company-search-map (kbd "C-n") #'company-select-next)
   (define-key company-search-map (kbd "C-p") #'company-select-previous)
-  (define-key company-search-map (kbd "<return>") #'company-complete-selection))
+  (define-key company-search-map (kbd "<return>") #'company-complete-selection)
+  (define-key company-search-map (kbd "RET") #'company-complete-selection))
 
 
 
