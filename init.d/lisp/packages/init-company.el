@@ -179,13 +179,13 @@
 
   (defun company-preview-if-just-beginning-frontend (command)
     "`company-preview-frontend', but only shown for just beginning."
-    (when (or (not (eq command 'post-command))
+    (when (or (not (memq command '(post-command unhide)))
               (not company-status))
       (company-preview-frontend command)))
 
   (defun company-pseudo-tooltip-unless-initial-inline-frontend (command)
     "`company-pseudo-tooltip-frontend', but not for initial inline."
-    (unless (and (eq command 'post-command)
+    (unless (and (memq command '(post-command unhide))
                  (or (not company-status)
                      (eq company-status 'expanded)))
       (if company-tng--overlay          ; hide temporary to align tooltip.
@@ -199,7 +199,7 @@
 
   (defun company-echo-metadata-unless-initial-inline-frontend (command)
     "`company-echo-metadata-frontend', but not for initial inline."
-    (unless (and (eq command 'post-command)
+    (unless (and (memq command '(post-command unhide))
                  (or (not company-status)
                      (eq company-status 'expanded)))
       (company-echo-metadata-frontend command)))
