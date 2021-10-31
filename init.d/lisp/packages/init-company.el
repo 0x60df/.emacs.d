@@ -670,7 +670,8 @@ After abort, call `hippie-expand'."
     (interactive)
     (cond ((eq company-status 'selecting) (company-filter-candidates))
           ((eq company-status 'expanded)
-           (company-finish (car company-candidates)))
+           (company-expand-selection-or-cycle)
+           (company-filter-candidates))
           (t (company-abort)
              (hippie-expand current-prefix-arg))))
 
