@@ -674,6 +674,16 @@ After abort, call `hippie-expand'."
           (t (company-abort)
              (hippie-expand current-prefix-arg))))
 
+  (defun company-complete-selection-and-append-return ()
+    "`company-complete-selection' and occasionally append return key."
+    (interactive)
+    (let ((status company-status))
+      (call-interactively #'company-complete-selection)
+      (if (eq status 'expanded)
+          (setq unread-command-events
+                (append (listify-key-sequence (kbd "RET"))
+                        unread-command-events)))))
+
 
 
   ;;; bindings
@@ -682,6 +692,9 @@ After abort, call `hippie-expand'."
     #'company-expand-selection-or-cycle)
   (define-key company-active-map (kbd "<backtab>")
     #'company-expand-selection-or-cycle-reverse)
+
+  (define-key company-active-map (kbd "<return>")
+    #'company-complete-selection-and-append-return)
 
   (define-key company-active-map (kbd "C-<tab>")
     #'company-filter-candidates-or-abort)
