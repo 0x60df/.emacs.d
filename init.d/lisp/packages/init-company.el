@@ -664,13 +664,15 @@ can be more than this value.")
 
   ;;; utilities
 
-  (defun company-filter-candidates-or-abort ()
-    "`company-filter-candidates' if selecting, else `company-abort'."
+  (defun company-filter-candidates-or-abort-and-hippie-expand ()
+    "`company-filter-candidates' if selecting, else `company-abort'.
+After abort, call `hippie-expand'."
     (interactive)
     (cond ((eq company-status 'selecting) (company-filter-candidates))
           ((eq company-status 'expanded)
            (company-finish (car company-candidates)))
-          (t (company-abort))))
+          (t (company-abort)
+             (hippie-expand current-prefix-arg))))
 
 
 
