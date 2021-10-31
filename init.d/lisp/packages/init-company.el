@@ -697,7 +697,7 @@ After abort, call `hippie-expand'."
     #'company-complete-selection-and-append-return)
 
   (define-key company-active-map (kbd "C-<tab>")
-    #'company-filter-candidates-or-abort)
+    #'company-filter-candidates-or-abort-and-hippie-expand)
   (define-key company-active-map (kbd "C-v") #'company-next-page)
   (define-key company-active-map (kbd "M-v") #'company-previous-page)
 
