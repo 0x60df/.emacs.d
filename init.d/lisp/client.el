@@ -323,7 +323,9 @@ belongs the same client as originally selected frame."
                                 :around #'seek-nearest-frame-on-other-client)
                     (advice-add 'previous-frame
                                 :around #'seek-nearest-frame-on-other-client)
-                    (setq unread-command-events (listify-key-sequence "."))
+                    (setq unread-command-events
+                          (append (listify-key-sequence ".")
+                                  unread-command-events))
                     (funcall #'pick-frame post-process))
                 (advice-remove 'frame-list #'filter-frame-on-other-client)
                 (advice-remove 'next-frame #'seek-nearest-frame-on-other-client)
