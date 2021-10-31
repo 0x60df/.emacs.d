@@ -11,6 +11,7 @@
 
 (lazy-autoload 'eglot-current-server "eglot")
 (lazy-autoload 'eglot-shutdown "eglot")
+(lazy-autoload 'jsonrpc--process "jsonrpc")
 
 (declare-function eglot--modify-mode-line-format load-file-name t t)
 
@@ -43,7 +44,6 @@
   (advice-add 'eglot--mode-line-format
               :filter-return #'eglot--modify-mode-line-format)
 
-  (require 'jsonrpc)
   (advice-add 'eglot :after (lambda (&rest _args)
                               (let ((process (jsonrpc--process
                                               (eglot-current-server))))
