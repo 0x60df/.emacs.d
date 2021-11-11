@@ -4,6 +4,7 @@
 
 (premise init)
 (premise custom)
+(premise frame)
 (premise mode-line)
 (premise bindings)
 (premise feature)
@@ -61,7 +62,11 @@
   (with-eval-after-load 'visible-mark
     (add-to-list 'mc/unsupported-minor-modes 'visible-mark-mode)))
 
-(overriding-set-key (kbd "C-@") #'mc/mark-all-dwim)
+(add-hook-for-once 'after-make-terminal-functions
+                   (lambda (_)
+                     (if (display-graphic-p)
+                         (overriding-set-key (kbd "C-@") #'mc/mark-all-dwim))))
+(overriding-set-key (kbd "C-c @ @") #'mc/mark-all-dwim)
 (overriding-set-key (kbd "C-c @ e") #'mc/edit-lines)
 (overriding-set-key (kbd "C-c @ n") #'mc/mark-next-like-this)
 (overriding-set-key (kbd "C-c @ p") #'mc/mark-previous-like-this)
