@@ -17,6 +17,7 @@
   (setq ace-jump-mode-move-keys (loop for i from ?a to ?z collect i))
   (ace-jump-mode-enable-mark-sync))
 
+(overriding-set-key (kbd "ESC M-g") #'ace-jump-char-mode)
 (overriding-set-key (kbd "M-g M-j") #'ace-jump-mode)
 (overriding-set-key (kbd "H-g") #'ace-jump-mode)
 (overriding-set-key (kbd "H-<henkan>") #'ace-jump-char-mode)
