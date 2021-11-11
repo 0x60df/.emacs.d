@@ -315,7 +315,6 @@ UNIT is a literal symbol."
 (init-package inf-ruby)
 (init-package robe)
 (init-package yaml-mode)
-(init-package yatex)
 (init-package ox-gfm)
 (init-package ox-qmd)
 (init-package calfw)
