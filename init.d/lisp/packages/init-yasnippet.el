@@ -70,7 +70,16 @@ Otherwise, return original one."
     "Keymap for `yas-minor-mode' which overrides global overriding maps.")
 
   (push `(yas-minor-mode . ,overriding-yas-minor-mode-map)
-        overriding-reserved-key-map-alist))
+        overriding-reserved-key-map-alist)
+
+  (with-eval-after-load 'company
+    (when (init-unit-p init-company)
+      (add-hook 'yas-before-expand-snippet-hook
+                (lambda ()
+                  (company-split-mode -1)))
+      (add-hook 'yas-after-exit-snippet-hook
+                (lambda ()
+                  (company-split-mode))))))
 
 (add-hook 'emacs-startup-hook
           (lambda ()
