@@ -294,6 +294,7 @@ UNIT is a literal symbol."
 (init-package yasnippet)
 (init-package yasnippet-snippets)
 (init-package magit)
+(init-package git-gutter)
 (init-package git-gutter-fringe)
 (init-package git-modes)
 (init-package projectile)
