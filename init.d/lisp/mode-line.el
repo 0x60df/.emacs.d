@@ -64,7 +64,7 @@
             (propertize " "
                         'display
                         '(space :align-to (+ left-margin left-fringe)))
-          "-")))
+          "")))
 
 (defvar mode-line-mule-info-showing-input-method-flag nil
   "State of `mode-line-mule-info' replesentation.
@@ -266,8 +266,7 @@ They also compared by `symbol-name'."
           ("" which-func-format " ")))
         (global-mode-string ("" global-mode-string " "))))
 
-(setq mode-line-end-spaces
-      '(:eval (unless (display-graphic-p) "-%-")))
+(setq mode-line-end-spaces "")
 
 (defcustom mode-line-boundary-faces
   '(mode-line-buffer-id
