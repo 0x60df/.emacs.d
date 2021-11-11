@@ -105,7 +105,8 @@
                (or (and (eq (car company-global-modes) 'not)
                         (not (memq major-mode (cdr company-global-modes))))
                    (memq major-mode company-global-modes))))
-      (company-split-mode)))
+      (unless (memq major-mode '(org-mode))
+        (company-split-mode))))
 
 (define-globalized-minor-mode company-split-global-mode company-split-mode
   company-split-mode-on
