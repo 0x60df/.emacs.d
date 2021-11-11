@@ -33,6 +33,13 @@
       (select-window (split-window-right))
     (select-window (split-window-below))))
 
+(defun split-window-above-or-other-window ()
+  "Split window above if window is only one, otherwise, other-window."
+  (interactive)
+  (if (< 1 (length (window-list)))
+      (call-interactively #'other-window)
+    (split-window-above)))
+
 (defcustom manipulate-window-default-factor 2
   "Defult factor of deformation for manipulating window."
   :type 'number
