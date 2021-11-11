@@ -9,6 +9,7 @@
 (declare-function er/contract-region "expand-region")
 
 (overriding-set-key (kbd "C-`") #'er/expand-region)
+(overriding-set-key (kbd "M-@") #'er/expand-region)
 (with-eval-after-load 'expand-region
   (overriding-set-key (kbd "C-M-`") #'er/contract-region))
 
