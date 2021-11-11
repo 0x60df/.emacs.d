@@ -696,6 +696,8 @@ After abort, call `hippie-expand'."
 
   (define-key company-active-map (kbd "<tab>")
     #'company-expand-selection-or-cycle)
+  (define-key company-active-map (kbd "TAB")
+    #'company-expand-selection-or-cycle)
   (define-key company-active-map (kbd "<backtab>")
     #'company-expand-selection-or-cycle-reverse)
 
@@ -706,6 +708,9 @@ After abort, call `hippie-expand'."
 
   (define-key company-active-map (kbd "C-<tab>")
     #'company-filter-candidates-or-abort-and-hippie-expand)
+  (define-key company-active-map (kbd "C-M-i")
+    #'company-filter-candidates-or-abort-and-hippie-expand)
+  (define-key company-active-map (kbd "C-s") #'company-filter-candidates)
   (define-key company-active-map (kbd "C-v") #'company-next-page)
   (define-key company-active-map (kbd "M-v") #'company-previous-page)
 
