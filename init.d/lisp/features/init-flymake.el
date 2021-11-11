@@ -73,7 +73,7 @@
                      :filter-return #'flymake--modify-mode-line-format))
         (t (advice-add 'flymake--mode-line-title
                        :filter-return
-                       (lambda (return) " FlyM"))))
+                       (lambda (return) "FlyM"))))
 
   (defvar overriding-flymake-mode-map
     (let ((map (make-sparse-keymap)))
