@@ -57,7 +57,9 @@
   (defvar overriding-loophole-mode-map
     (let ((map (make-sparse-keymap)))
       (define-key map (kbd "C-}") #'loophole-cover-latest)
+      (define-key map (kbd "ESC M-]") #'loophole-cover-latest)
       (define-key map (kbd "C-{") #'loophole-break)
+      (define-key map (kbd "ESC M-[") #'loophole-break)
       (define-key map (kbd "M-]") #'loophole-close)
       map)
     "Keymap for ‘loophole-mode’ which overrides global overriding maps.")
