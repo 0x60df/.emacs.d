@@ -110,8 +110,8 @@
   "Colors for specific scene for `yester-theme'.")
 
 (defconst yester-scenes
-  '((night . nil)
-    (day . (morning)))
+  '((night . (eight-bit))
+    (day . (morning eight-bit)))
   "Scene list for night and day phase.")
 
 (defvar yester--scene '((night . nil) (day . nil))
