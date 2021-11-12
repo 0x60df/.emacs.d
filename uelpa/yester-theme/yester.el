@@ -72,8 +72,8 @@
   "Colors for extended use for `yester-theme'.")
 
 (defconst yester-scene-colors
-  '((night . ((eight-bit . ((selection . "#3a3a3a")
-                            (current-line . "#303030")
+  '((night . ((eight-bit . ((current-line . "#303030")
+                            (selection . "#3a3a3a")
                             (blue . "#87afd7")
                             (block . "#262626")
                             (diff-green . "#005f00")
