@@ -66,7 +66,11 @@ If called with no argument, insert the next kill"
 Increment is N. If N is ommited, use 1."
   (interactive "p")
   (unless n (setq n 1))
-  (if (eql (line-number-at-pos) (line-number-at-pos (1- (window-end))))
+  (if (eql (line-number-at-pos) (line-number-at-pos
+                                 (let ((we (1- (window-end))))
+                                   (if (zerop we)
+                                       1
+                                     we))))
       (progn
         (scroll-up n)
         (vertical-motion n))
