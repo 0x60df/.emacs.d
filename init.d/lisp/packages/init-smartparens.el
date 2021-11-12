@@ -113,9 +113,9 @@
   (sp-local-pair 'minibuffer-inactive-mode "'" nil :actions nil))
 
 (overriding-set-key (kbd "C-(") #'sp-splice-sexp)
-(overriding-set-key (kbd "C-c 8") #'sp-splice-sexp)
+(overriding-set-key (kbd "ESC M-8") #'sp-splice-sexp)
 (overriding-set-key (kbd "C-)") #'sp-rewrap-sexp)
-(overriding-set-key (kbd "C-c 9") #'sp-rewrap-sexp)
+(overriding-set-key (kbd "ESC M-9") #'sp-rewrap-sexp)
 (overriding-set-key (kbd "C-l h p") #'sp-show-enclosing-pair-dwim)
 (overriding-set-key (kbd "C-l p") #'sp-show-enclosing-pair-dwim)
 
