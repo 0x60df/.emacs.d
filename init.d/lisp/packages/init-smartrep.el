@@ -46,8 +46,8 @@
   ;; navigation
   (let ((key "ESC ESC"))
     (smartrep-define-key (overriding-map-for (kbd key))  key
-      '(("C-n" . next-line-scroll-up)
-        ("C-p" . previous-line-scroll-down))))
+      '(("n" . next-line-scroll-up)
+        ("p" . previous-line-scroll-down))))
 
   ;; page
   (let ((key "C-x"))
