@@ -4,6 +4,7 @@
 
 (premise init)
 (premise custom)
+(premise simple)
 (premise bindings)
 (premise mode-line)
 (premise init-flyspell)
@@ -41,6 +42,12 @@
 ;;; bindings
 
 (with-eval-after-load 'smartrep
+
+  ;; navigation
+  (let ((key "ESC ESC"))
+    (smartrep-define-key (overriding-map-for (kbd key))  key
+      '(("C-n" . next-line-scroll-up)
+        ("C-p" . previous-line-scroll-down))))
 
   ;; page
   (let ((key "C-x"))
