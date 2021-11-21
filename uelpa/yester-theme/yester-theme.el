@@ -178,14 +178,12 @@
    ;; Completion
    `(completions-annotations '((,class :inherit shadow)))
    `(completions-common-part (yester-face-spec ',class
-                               (night (nil :foreground aqua)
-                                      (moonlight :foreground blue))
-                               (day (nil :foreground aqua)
-                                    (sunlight :foreground orange))))
+                               (night (nil :foreground yellow)
+                                      (moonlight :foreground aqua))
+                               (day (nil :foreground blue)
+                                    (sunlight :foreground red))))
    `(completions-first-difference (yester-face-spec ',class
-                                    (night (nil :foreground emboss)
-                                           (moonlight :weight 'bold
-                                                      :foreground emboss))
+                                    (night :weight 'bold :foreground emboss)
                                     (day :weight 'bold :foreground emboss)))
 
 
@@ -696,8 +694,8 @@
    `(anzu-mode-line-no-match (yester-face-spec ',class :foreground aqua))
    `(anzu-replace-highlight '((,class :inherit lazy-highlight)))
    `(anzu-replace-to (yester-face-spec ',class
-                       (night :foreground emboss)
-                       (day :weight 'bold :foreground emboss)))
+                       (night :foreground aqua)
+                       (day :weight 'bold :foreground aqua)))
 
 
 
@@ -1010,8 +1008,8 @@
    `(evil-ex-info (yester-face-spec ',class :foreground red :slant 'italic))
    `(evil-ex-substitute-matches '((,class :inherit evil-ex-lazy-highlight)))
    `(evil-ex-substitute-replacement (yester-face-spec ',class
-                                      (night :foreground emboss)
-                                      (day :weight 'bold :foreground emboss)))
+                                      (night :foreground aqua)
+                                      (day :weight 'bold :foreground aqua)))
 
 
 
