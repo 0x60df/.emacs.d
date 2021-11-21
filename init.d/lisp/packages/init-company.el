@@ -320,6 +320,9 @@ complete-inside is started.")
   (defvar company-complete-inside-point nil
     "Point integer for company-complete-inside.")
 
+  (defvar company-complete-inside-marker nil
+    "Marker tracing auxiliary space for company-complete-inside.")
+
   (defun company-complete-inside-setup ()
     "Setup company complete inside."
     (unless (company--active-p) (company-complete-inside-clean-up))
@@ -339,10 +342,12 @@ complete-inside is started.")
                           (save-excursion (skip-syntax-forward "w_")
                                           (point))))))
       (save-excursion (insert-char ?\s)
-                      (put-text-property
-                       (- (point) 1) (point)
-                       'display
-                        `(space :width company-complete-inside-space-width)))
+                      (setq company-complete-inside-marker (point-marker))
+                      (let ((position (marker-position
+                                       company-complete-inside-marker)))
+                        (put-text-property
+                         (- position 1) position 'display
+                         `(space :width ,company-complete-inside-space-width))))
       (add-hook-for-once
        'post-command-hook
        (lambda ()
@@ -395,6 +400,12 @@ complete-inside is started.")
     (interactive)
     (setq company-complete-inside-context nil)
     (setq company-complete-inside-point nil)
+    (when (markerp company-complete-inside-marker)
+      (let ((position (marker-position company-complete-inside-marker)))
+        (when (equal (get-text-property (- position 1) 'display)
+                     `(space :width ,company-complete-inside-space-width))
+          (remove-text-properties (- position 1) position '(display nil))))
+      (setq company-complete-inside-marker nil))
     (remove-hook-for-once 'pre-command-hook
                           #'company-complete-inside-follow-point)
     (remove-hook-for-once 'company-completion-finished-hook
