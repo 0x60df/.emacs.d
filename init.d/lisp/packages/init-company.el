@@ -310,6 +310,7 @@ keyword :with."
     "Width for auxiliary space of complete inside."
     :group 'user
     :type 'float)
+  (defvar company-complete-inside-space-width)
 
   (defvar company-complete-inside-context nil
     "Context information for company-complete-inside.
