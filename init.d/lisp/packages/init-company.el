@@ -330,7 +330,9 @@ complete-inside is started.")
                           (point)
                           (save-excursion (skip-syntax-forward "w_")
                                           (point))))))
-      (save-excursion (insert-char ?\s))
+      (save-excursion (insert-char ?\s)
+                      (put-text-property (- (point) 1) (point)
+                                         'display '(space :width 0.5)))
       (add-hook-for-once
        'post-command-hook
        (lambda ()
