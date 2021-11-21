@@ -178,11 +178,14 @@
    ;; Completion
    `(completions-annotations '((,class :inherit shadow)))
    `(completions-common-part (yester-face-spec ',class
-                               (night :foreground aqua)
+                               (night (nil :foreground aqua)
+                                      (moonlight :foreground blue))
                                (day (nil :foreground aqua)
-                                    (morning :foreground orange))))
+                                    (sunlight :foreground orange))))
    `(completions-first-difference (yester-face-spec ',class
-                                    (night :foreground emboss)
+                                    (night (nil :foreground emboss)
+                                           (moonlight :weight 'bold
+                                                      :foreground emboss))
                                     (day :weight 'bold :foreground emboss)))
 
 
@@ -642,9 +645,9 @@
                       (day (nil :foreground foreground
                                 :background current-line
                                 :inherit 'popup-face)
-                           (morning :foreground foreground
-                                    :background selection
-                                    :inherit 'popup-face))))
+                           (sunlight :foreground foreground
+                                     :background selection
+                                     :inherit 'popup-face))))
 
 
 
@@ -672,8 +675,10 @@
 
    ;; Ace-jump-mode
    `(ace-jump-face-foreground (yester-face-spec ',class
-                                (night :foreground emboss)
-                                (day :weight 'bold :foreground emboss )))
+                                (night (nil :foreground emboss)
+                                       (moonlight :weight 'bold
+                                                  :foreground emboss))
+                                (day :weight 'bold :foreground emboss)))
    `(ace-jump-face-background '((,class :inherit shadow)))
 
 
@@ -705,21 +710,24 @@
                           :background current-line
                           :inherit 'variable-pitch))
    `(helm-candidate-number (yester-face-spec ',class
-                             (night :foreground yellow)
+                             (night (nil :foreground yellow)
+                                    (moonlight :foreground aqua :weight 'bold))
                              (day (nil :foreground blue :weight 'bold)
-                                  (morning :foreground red))))
+                                  (sunlight :foreground red))))
    `(helm-header-line-left-margin
      (yester-face-spec ',class :foreground yellow :inverse-video t))
    `(helm-selection (yester-face-spec ',class :background selection))
    `(helm-selection-line '((,class :weight bold)))
    `(helm-separator (yester-face-spec ',class
-                      (night :foreground yellow)
+                      (night (nil :foreground yellow)
+                             (moonlight :foreground aqua :weight 'bold))
                       (day (nil :foreground blue :weight 'bold)
-                           (morning :foreground red))))
+                           (sunlight :foreground red))))
    `(helm-visible-mark (yester-face-spec ',class
-                         (night :underline yellow)
+                         (night (nil :underline yellow)
+                                (moonlight :underline aqua))
                          (day (nil :underline blue)
-                              (morning :underline red))))
+                              (sunlight :underline red))))
    `(helm-buffer-archive '((,class :slant italic)))
    `(helm-buffer-directory '((,class :inherit dired-directory)))
    `(helm-buffer-file '((,class)))
@@ -742,10 +750,11 @@
    `(helm-ff-file-extension '((,class :inherit helm-ff-file)))
    `(helm-ff-invalid-symlink '((,class :inherit dired-warning)))
    `(helm-ff-pipe '((,class :inherit dired-special)))
-   `(helm-ff-prefix (yester-face-spec ',class)
-                    (night :foreground yellow :weight 'bold)
-                    (day (nil :foreground blue :weight 'bold)
-                         (morning :foreground red :weight 'bold)))
+   `(helm-ff-prefix (yester-face-spec ',class
+                      (night (nil :foreground yellow :weight 'bold)
+                             (moonlight :foreground aqua :weight 'bold))
+                      (day (nil :foreground blue :weight 'bold)
+                           (sunlight :foreground red :weight 'bold))))
    `(helm-ff-socket '((,class :slant italic :inherit dired-special)))
    `(helm-ff-suid '((,class :inherit dired-set-id)))
    `(helm-ff-symlink '((,class :inherit dired-symlink)))
@@ -1371,7 +1380,7 @@
  '(face-near-same-color-threshold (yester-symbol-exp
                                     (night 5000)
                                     (day (nil 10000)
-                                         (morning 3000))))
+                                         (sunlight 3000))))
 
 
 
