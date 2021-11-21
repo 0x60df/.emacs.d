@@ -398,7 +398,6 @@ complete-inside is started.")
 
   (defun company-complete-inside-clean-up ()
     "Clean up complete inside."
-    (interactive)
     (setq company-complete-inside-context nil)
     (when (markerp company-complete-inside-marker)
       (let ((position (marker-position company-complete-inside-marker)))
@@ -470,6 +469,24 @@ If suffix does not match, delete aux space."
               (backward-char (length suffix))
               (if (looking-at (regexp-quote (concat suffix " ")))
                   (delete-region (- mid 1) end)))))))
+
+  (defun company-complete-inside-force-clean-up ()
+    "Clean up complete inside.
+Do `company-complete-inside-clean-up' and remove orphans of
+text property for aux space."
+    (interactive)
+    (company-complete-inside-clean-up)
+    (let ((start 1)
+          (end (or (next-single-property-change 1 'display) (point-max))))
+      (while end
+        (if (equal (get-text-property start 'display)
+                   `(space :width ,company-complete-inside-space-width))
+            (remove-text-properties start end '(display nil)))
+        (setq start end)
+        (setq end (next-single-property-change start 'display)))
+      (if (equal (get-text-property start 'display)
+                 `(space :width ,company-complete-inside-space-width))
+          (remove-text-properties start (point-max) '(display nil)))))
 
   (add-hook 'pre-command-hook #'company-complete-inside-setup)
 
