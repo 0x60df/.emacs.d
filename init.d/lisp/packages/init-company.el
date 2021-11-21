@@ -438,6 +438,7 @@ complete-inside is started.")
          (eql (line-number-at-pos)
               (cdr (assq 'line company-complete-inside-context)))
          (save-excursion
+           (skip-syntax-backward "-")
            (skip-syntax-backward "w_")
            (looking-at
             (regexp-quote
