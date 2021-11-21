@@ -304,6 +304,14 @@ keyword :with."
 
   ;;; complete-inside
 
+  (defcustom company-complete-inside-space-width (if (or (display-graphic-p)
+                                                         (daemonp))
+                                                     0.5
+                                                   1.0)
+    "Width for auxiliary space of complete inside."
+    :group 'user
+    :type 'float)
+
   (defvar company-complete-inside-context nil
     "Context information for company-complete-inside.
 This alist contains line number, prefix and suffix after
@@ -331,8 +339,10 @@ complete-inside is started.")
                           (save-excursion (skip-syntax-forward "w_")
                                           (point))))))
       (save-excursion (insert-char ?\s)
-                      (put-text-property (- (point) 1) (point)
-                                         'display '(space :width 0.5)))
+                      (put-text-property
+                       (- (point) 1) (point)
+                       'display
+                        `(space :width company-complete-inside-space-width)))
       (add-hook-for-once
        'post-command-hook
        (lambda ()
