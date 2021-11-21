@@ -30,8 +30,8 @@
 !/init.d/site-lisp/
 !/init.el
 !/lisp/
-!/lisp/**/
-!/lisp/**/*.el
+!/lisp/**
+/lisp/**/*.elc
 /lisp/**/*-loaddefs.el
 !/scratchb/
 !/site-lisp/
@@ -42,6 +42,6 @@
 !/themes/lisp/*.el
 !/themes/site-lisp/
 !/uelpa/
-!/uelpa/**/
-!/uelpa/**/*.el
+!/uelpa/**
+/uelpa/**/*.elc
 /uelpa/**/*-loaddefs.el
