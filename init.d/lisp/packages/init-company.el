@@ -306,7 +306,7 @@ keyword :with."
 
   (defcustom company-complete-inside-space-width (if (or (display-graphic-p)
                                                          (daemonp))
-                                                     0.5
+                                                     0.3
                                                    1.0)
     "Width for auxiliary space of complete inside."
     :group 'user
