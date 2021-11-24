@@ -10,7 +10,10 @@
 
 (with-eval-after-load 'elisp-mode
   (add-hook 'lisp-interaction-mode-hook (lambda () (setq mode-name "Lisp I")))
-  (add-hook 'emacs-lisp-mode-hook (lambda () (setq mode-name "E-Lisp")))
+  (add-hook 'emacs-lisp-mode-hook
+            (lambda () (setq mode-name '("ELisp" (lexical-binding
+                                                  (:propertize "/l")
+                                                  (:propertize "/d"))))))
 
   (with-eval-after-load 'find-func
     (defconst find-unit-regexp ";;;; "
