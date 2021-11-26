@@ -320,6 +320,9 @@ complete-inside is started.")
   (defvar company-complete-inside-marker nil
     "Marker tracing auxiliary space for company-complete-inside.")
 
+  (defvar company-complete-inside-change-group nil
+    "Change groul handler for company-complete-inside.")
+
   (defun company-complete-inside-setup ()
     "Setup company complete inside."
     (unless (company--active-p) (company-complete-inside-clean-up))
@@ -338,6 +341,7 @@ complete-inside is started.")
                           (point)
                           (save-excursion (skip-syntax-forward "w_")
                                           (point))))))
+      (push (prepare-change-group) company-complete-inside-change-group)
       (save-excursion (insert-char ?\s)
                       (setq company-complete-inside-marker (point-marker))
                       (let ((position (marker-position
@@ -406,6 +410,11 @@ complete-inside is started.")
                      `(space :width ,company-complete-inside-space-width))
           (remove-text-properties (- position 1) position '(display nil))))
       (setq company-complete-inside-marker nil))
+    (when company-complete-inside-change-group
+      (dolist (handler company-complete-inside-change-group)
+        (accept-change-group handler)
+        (undo-amalgamate-change-group handler))
+      (setq company-complete-inside-change-group nil))
     (remove-hook-for-once 'company-completion-finished-hook
                           #'company-complete-inside-finish)
     (remove-hook-for-once 'company-after-completion-hook
