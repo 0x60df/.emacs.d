@@ -43,15 +43,20 @@
 
 (with-eval-after-load 'smartrep
 
+  ;; undo
+  (let ((key "C-x"))
+    (smartrep-define-key (overriding-map-for (kbd key)) key
+      '(("u" . undo))))
+
   ;; navigation
   (let ((key "ESC ESC"))
-    (smartrep-define-key (overriding-map-for (kbd key))  key
+    (smartrep-define-key (overriding-map-for (kbd key)) key
       '(("n" . next-line-scroll-up)
         ("p" . previous-line-scroll-down))))
 
   ;; page
   (let ((key "C-x"))
-    (smartrep-define-key (overriding-map-for (kbd key))  key
+    (smartrep-define-key (overriding-map-for (kbd key)) key
       '(("[" . backward-page)
         ("]" . forward-page))))
 
