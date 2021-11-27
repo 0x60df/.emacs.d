@@ -342,6 +342,7 @@ complete-inside is started.")
                           (save-excursion (skip-syntax-forward "w_")
                                           (point))))))
       (setq company-complete-inside-change-group (prepare-change-group))
+      (setq buffer-undo-list (cons (point) buffer-undo-list))
       (save-excursion (insert-char ?\s)
                       (setq company-complete-inside-marker (point-marker))
                       (let ((position (marker-position
