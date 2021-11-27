@@ -114,11 +114,6 @@
                           (diff-variant-cyan . "#afffff"))))))
   "Colors for specific scene for `yester-theme'.")
 
-(defconst yester-scenes
-  '((night . (moonlight eight-bit))
-    (day . (sunlight eight-bit)))
-  "Scene list for night and day phase.")
-
 (defvar yester--scene '((night . nil) (day . nil))
   "Scene specifier for night and day phase of `yester-theme'.
 This looks like ((night . SCENE) (day . SCENE)).
@@ -196,7 +191,7 @@ phase or an alist which looks like below.
    (SCENE . PLIST)...)
 
 PLIST is a plist describing face spec for each scene.
-SCENE should be valid scene listed in `yester-scenes'."
+SCENE should be valid scene listed in `yester-scene-colors'."
   (declare (indent 1))
   (if (listp display)
       (let (canonical-night-plists
@@ -208,9 +203,11 @@ SCENE should be valid scene listed in `yester-scenes'."
                (setq canonical-day-plists `((nil . ,plists))))
               ((and night-cell day-cell)
                (let ((night-plists (cdr night-cell))
-                     (night-scenes (cdr (assq 'night yester-scenes)))
+                     (night-scenes
+                      (mapcar #'car (cdr (assq 'night yester-scene-colors))))
                      (day-plists (cdr day-cell))
-                     (day-scenes (cdr (assq 'day yester-scenes))))
+                     (day-scenes
+                      (mapcar #'car (cdr (assq 'day yester-scene-colors)))))
                  (setq canonical-night-plists
                        (if (seq-some (lambda (scene)
                                        (assq scene night-plists))
@@ -272,7 +269,7 @@ below.
 
 FORM is a list of a single form describing symbol expression
 for each scene.
-SCENE should be valid scene listed in `yester-scenes'."
+SCENE should be valid scene listed in `yester-scene-colors'."
   (declare (indent 0))
   (let (canonical-night-forms
         canonical-day-forms
@@ -283,9 +280,11 @@ SCENE should be valid scene listed in `yester-scenes'."
            (setq canonical-day-forms `((nil . ,forms))))
           ((and night-cell day-cell)
            (let ((night-forms (cdr night-cell))
-                 (night-scenes (cdr (assq 'night yester-scenes)))
+                 (night-scenes
+                  (mapcar #'car (cdr (assq 'night yester-scene-colors))))
                  (day-forms (cdr day-cell))
-                 (day-scenes (cdr (assq 'day yester-scenes))))
+                 (day-scenes
+                  (mapcar #'car (cdr (assq 'day yester-scene-colors)))))
              (setq canonical-night-forms
                    (if (seq-some (lambda (scene)
                                    (assq scene night-forms))
@@ -389,12 +388,14 @@ When called interactively, use current-phase as PHASE."
   (interactive (let ((phase (yester-current-phase)))
                  (list
                   (intern
-                   (completing-read "Scene: "
-                                    (remq
-                                     (cdr (assq phase yester--scene))
-                                     (cons nil
-                                           (cdr (assq phase yester-scenes))))
-                                    nil t))
+                   (completing-read
+                    "Scene: "
+                    (remq
+                     (cdr (assq phase yester--scene))
+                     (cons nil (mapcar
+                                #'car
+                                (cdr (assq phase yester-scene-colors)))))
+                    nil t))
                   phase)))
   (unless (eq (cdr (assq phase yester--scene)) scene)
     (setcdr (assq phase yester--scene) scene)
