@@ -409,6 +409,7 @@ complete-inside is started.")
         (when (equal (get-text-property (- position 1) 'display)
                      `(space :width ,company-complete-inside-space-width))
           (remove-text-properties (- position 1) position '(display nil))))
+      (set-marker company-complete-inside-marker nil)
       (setq company-complete-inside-marker nil))
     (when company-complete-inside-change-group
       (accept-change-group company-complete-inside-change-group)
