@@ -329,7 +329,8 @@ complete-inside is started.")
 
   (defun company-complete-inside-setup ()
     "Setup company complete inside."
-    (unless (company--active-p) (company-complete-inside-clean-up))
+    (if (and company-split-mode (not (company--active-p)))
+        (company-complete-inside-clean-up))
     (when (and company-split-mode
                (null company-complete-inside-context)
                (memq this-command company-begin-commands)
