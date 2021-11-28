@@ -44,6 +44,7 @@
 (declare-function company-pseudo-tooltip-decorate-candidate load-file-name t t)
 (declare-function company-complete-inside-finish load-file-name t t)
 (declare-function company-complete-inside-after-completion load-file-name t t)
+(declare-function company-complete-inside-post-command load-file-name t t)
 (declare-function company-complete-inside-clean-up load-file-name t t)
 (declare-function company-complete-inside-check-candidates load-file-name t t)
 (declare-function company-complete-inside-setup load-file-name t t)
@@ -317,6 +318,9 @@ keyword :with."
 This alist contains line number, prefix and suffix after
 complete-inside is started.")
 
+  (defvar company-complete-inside-buffer nil
+    "Buffer on which company-complete-inside is set up.")
+
   (defvar company-complete-inside-marker nil
     "Marker tracing auxiliary space for company-complete-inside.")
 
@@ -341,6 +345,7 @@ complete-inside is started.")
                           (point)
                           (save-excursion (skip-syntax-forward "w_")
                                           (point))))))
+      (setq company-complete-inside-buffer (current-buffer))
       (setq company-complete-inside-change-group (prepare-change-group))
       (activate-change-group company-complete-inside-change-group)
       (setq buffer-undo-list (cons (point) buffer-undo-list))
@@ -354,73 +359,103 @@ complete-inside is started.")
       (add-hook-for-once
        'post-command-hook
        (lambda ()
-         (if (not (company-complete-inside-check-candidates))
+         (if (or (not (company-complete-inside-check-candidates))
+                 (not (eq company-complete-inside-buffer (current-buffer))))
              (let ((position
                     (if (markerp company-complete-inside-marker)
                         (marker-position company-complete-inside-marker))))
-               (if (and position (not (zerop (- position 1))))
-                   (save-excursion
-                     (goto-char (- position 1))
-                     (company-complete-inside-delete-aux-space))
-                 (company-complete-inside-delete-aux-space))
+               (with-current-buffer (or company-complete-inside-buffer
+                                        (current-buffer))
+                 (if (and position (not (zerop (- position 1))))
+                     (save-excursion
+                       (goto-char (- position 1))
+                       (company-complete-inside-delete-aux-space))
+                   (company-complete-inside-delete-aux-space)))
                (company-complete-inside-clean-up))
            (add-hook-for-once
             'pre-command-hook
             (lambda ()
-              (if (not (company--active-p))
+              (if (or (not (company--active-p))
+                      (not (eq company-complete-inside-buffer
+                               (current-buffer))))
                   (let ((position
                          (if (markerp company-complete-inside-marker)
-                             (marker-position company-complete-inside-marker))))
-                    (if (and position (not (zerop (- position 1))))
-                        (save-excursion
-                          (goto-char (- position 1))
-                          (company-complete-inside-delete-aux-space))
-                      (company-complete-inside-delete-aux-space))
+                             (marker-position
+                              company-complete-inside-marker))))
+                    (with-current-buffer (or company-complete-inside-buffer
+                                             (current-buffer))
+                      (if (and position (not (zerop (- position 1))))
+                          (save-excursion
+                            (goto-char (- position 1))
+                            (company-complete-inside-delete-aux-space))
+                        (company-complete-inside-delete-aux-space)))
                     (company-complete-inside-clean-up))
                 (add-hook-for-once
                  'company-completion-finished-hook
                  #'company-complete-inside-finish)
                 (add-hook-for-once
                  'company-after-completion-hook
-                 #'company-complete-inside-after-completion)))))))))
+                 #'company-complete-inside-after-completion)
+                (add-hook-for-once
+                 'post-command-hook
+                 #'company-complete-inside-post-command)))))))))
 
   (defun company-complete-inside-finish (&rest args)
     "Function for hook `company-completion-finished-hook'."
-    (company-complete-inside-delete-suffix))
+    (with-current-buffer (or company-complete-inside-buffer (current-buffer))
+        (company-complete-inside-delete-suffix)))
 
   (defun company-complete-inside-after-completion (&rest args)
     "Function for hook `company-after-completion-hook'."
-    (let ((point (point))
-          (position (if (markerp company-complete-inside-marker)
-                        (marker-position company-complete-inside-marker))))
-      (if (and position (not (zerop (- position 1))))
-          (save-excursion
-            (goto-char (- position 1))
-            (company-complete-inside-delete-aux-space))
-        (company-complete-inside-delete-aux-space))
-      (if (and (eql (+ (point) 1) point)
-               (eql (point) (- position 1)))
-          (ignore-errors (forward-char))))
+    (with-current-buffer (or company-complete-inside-buffer (current-buffer))
+      (let ((point (point))
+            (position (if (markerp company-complete-inside-marker)
+                          (marker-position company-complete-inside-marker))))
+        (if (and position (not (zerop (- position 1))))
+            (save-excursion
+              (goto-char (- position 1))
+              (company-complete-inside-delete-aux-space))
+          (company-complete-inside-delete-aux-space))
+        (if (and (eql (+ (point) 1) point)
+                 (eql (point) (- position 1)))
+            (ignore-errors (forward-char)))))
     (company-complete-inside-clean-up))
+
+  (defun company-complete-inside-post-command (&rest _)
+    "Function for hook `post-command-hook'."
+    (cond ((and company-complete-inside-buffer
+                (not (eq company-complete-inside-buffer (current-buffer))))
+           (with-current-buffer company-complete-inside-buffer
+             (if (company--active-p)
+                 (company-complete-inside-clean-up)
+               (company-complete-inside-delete-aux-space)
+               (company-complete-inside-clean-up))))
+          ((not (company--active-p)) (company-complete-inside-clean-up))
+          (t (add-hook-for-once 'post-command-hook
+                                #'company-complete-inside-post-command))))
 
   (defun company-complete-inside-clean-up ()
     "Clean up complete inside."
     (setq company-complete-inside-context nil)
-    (when (markerp company-complete-inside-marker)
-      (let ((position (marker-position company-complete-inside-marker)))
-        (when (equal (get-text-property (- position 1) 'display)
-                     `(space :width ,company-complete-inside-space-width))
-          (remove-text-properties (- position 1) position '(display nil))))
-      (set-marker company-complete-inside-marker nil)
-      (setq company-complete-inside-marker nil))
-    (when company-complete-inside-change-group
-      (accept-change-group company-complete-inside-change-group)
-      (undo-amalgamate-change-group company-complete-inside-change-group)
-      (setq company-complete-inside-change-group nil))
+    (with-current-buffer (or company-complete-inside-buffer (current-buffer))
+      (when (markerp company-complete-inside-marker)
+        (let ((position (marker-position company-complete-inside-marker)))
+          (when (equal (get-text-property (- position 1) 'display)
+                       `(space :width ,company-complete-inside-space-width))
+            (remove-text-properties (- position 1) position '(display nil))))
+        (set-marker company-complete-inside-marker nil)
+        (setq company-complete-inside-marker nil))
+      (when company-complete-inside-change-group
+        (accept-change-group company-complete-inside-change-group)
+        (undo-amalgamate-change-group company-complete-inside-change-group)
+        (setq company-complete-inside-change-group nil)))
+    (setq company-complete-inside-buffer nil)
     (remove-hook-for-once 'company-completion-finished-hook
                           #'company-complete-inside-finish)
     (remove-hook-for-once 'company-after-completion-hook
-                          #'company-complete-inside-after-completion))
+                          #'company-complete-inside-after-completion)
+    (remove-hook-for-once 'post-command-hook
+                          #'company-complete-inside-post-command))
 
   (defun company-complete-inside-check-candidates ()
     "Check and return candidates without modifying company state."
