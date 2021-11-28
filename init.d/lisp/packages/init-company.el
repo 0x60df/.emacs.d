@@ -819,6 +819,7 @@ After abort, call `hippie-expand'."
 
 (add-hook 'after-init-hook #'global-company-mode)
 (add-hook 'after-init-hook #'company-split-global-mode)
+(add-hook 'minibuffer-setup-hook (lambda () (company-split-mode 0)))
 
 
 (resolve init-company)
