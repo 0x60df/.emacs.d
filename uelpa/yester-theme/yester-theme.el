@@ -118,6 +118,14 @@
                     :background background
                     :weight 'bold
                     :inverse-video t))
+   `(isearch-group-1 (yester-face-spec ',class
+                       :foreground orange
+                       :background background
+                       :inverse-video t))
+   `(isearch-group-2 (yester-face-spec ',class
+                       :foreground orange
+                       :background background
+                       :inverse-video t))
    `(mode-line-emphasis
      (yester-face-spec ',class :foreground foreground :slant 'italic))
    `(show-paren-match (yester-face-spec ',class
@@ -131,6 +139,9 @@
    `(show-paren-match-expression
      (yester-face-spec ',class :background current-line))
    `(which-func (yester-face-spec ',class :foreground blue))
+   `(help-key-binding (yester-face-spec ',class
+                        :foreground aqua
+                        :box `(:line-width (1 . -1) :color ,selection)))
    `(tab-line-tab '((,class :inherit 'tab-line)))
    `(tab-line-tab-current (yester-face-spec ',class
                             :weight 'bold
@@ -198,6 +209,10 @@
    `(dired-special (yester-face-spec ',class :foreground yellow))
    `(dired-symlink (yester-face-spec ',class :foreground aqua))
    `(dired-warning (yester-face-spec ',class :foreground red :weight 'bold))
+   `(dired-broken-symlink (yester-face-spec ',class
+                            :foreground yellow
+                            :background red
+                            :weight 'bold))
 
 
 
@@ -241,6 +256,7 @@
    `(diff-indicator-removed (yester-face-spec ',class
                               :inherit 'diff-removed
                               :foreground diff-accent-red))
+   `(diff-error (yester-face-spec ',class :weight 'bold :foreground red))
 
 
 
@@ -359,6 +375,36 @@
 
 
 
+   ;; Ansi-color
+   `(ansi-color-black
+     (yester-face-spec ',class :foreground background :background background))
+   `(ansi-color-red
+     (yester-face-spec ',class :foreground red :background red))
+   `(ansi-color-green
+     (yester-face-spec ',class :foreground green :background green))
+   `(ansi-color-yellow
+     (yester-face-spec ',class :foreground yellow :background yellow))
+   `(ansi-color-blue
+     (yester-face-spec ',class :foreground blue :background blue))
+   `(ansi-color-magenta
+     (yester-face-spec ',class :foreground purple :background purple))
+   `(ansi-color-cyan
+     (yester-face-spec ',class :foreground aqua :background aqua))
+   `(ansi-color-white
+     (yester-face-spec ',class :foreground foreground :background foreground))
+   `(ansi-color-faint
+     (yester-face-spec ',class :foreground comment))
+   `(ansi-color-bright-black '((,class :inherit ansi-color-black)))
+   `(ansi-color-bright-red '((,class :inherit ansi-color-red)))
+   `(ansi-color-bright-green '((,class :inherit ansi-color-green)))
+   `(ansi-color-bright-yellow '((,class :inherit ansi-color-yellow)))
+   `(ansi-color-bright-blue '((,class :inherit ansi-color-blue)))
+   `(ansi-color-bright-magenta '((,class :inherit ansi-color-magenta)))
+   `(ansi-color-bright-cyan '((,class :inherit ansi-color-cyan)))
+   `(ansi-color-bright-white '((,class :inherit ansi-color-white)))
+
+
+
    ;; Term-mode
    `(term-color-black
      (yester-face-spec ',class :foreground background :background background))
@@ -443,6 +489,14 @@
 
 
 
+   ;; Ert
+   `(ert-test-result-expected
+     (yester-face-spec ',class :background green :foreground background))
+   `(ert-test-result-unexpected
+     (yester-face-spec ',class :background red :foreground background))
+
+
+
    ;; Calendar
    `(calendar-today (yester-face-spec ',class :weight 'bold :foreground yellow))
    `(calendar-month-header (yester-face-spec ',class :foreground blue))
@@ -512,8 +566,16 @@
 
 
    ;; Info
+   `(Info-quoted (yester-face-spec ',class :foreground aqua))
    `(info-node '((,class :weight bold)))
    `(info-menu-star (yester-face-spec ',class :foreground yellow :weight 'bold))
+
+
+
+   ;; shorthand
+   `(elisp-shorthand-font-lock-face (yester-face-spec ',class
+                                      :inherit 'font-lock-keyword-face
+                                      :weight 'bold))
 
 
 
@@ -566,6 +628,12 @@
 
    ;; Table
    `(table-cell (yester-face-spec ',class :background block))
+
+
+
+   ;; Bookmark
+   `(bookmark-face
+     (yester-face-spec ',class :foreground selection :background selection))
 
 
 
@@ -1055,6 +1123,7 @@
      (yester-face-spec ',class :weight 'bold :foreground comment))
    `(markdown-metadata-key-face '((,class :inherit shadow)))
    `(markdown-metadata-value-face (yester-face-spec ',class :foreground aqua))
+   `(markdown-highlighting-face '((,class :inherit highlight)))
 
 
 
