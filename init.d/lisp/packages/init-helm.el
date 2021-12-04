@@ -38,7 +38,10 @@
                   '(dired . ido-read-file-name)))
   (with-eval-after-load 'sdired
     (add-to-list 'helm-completing-read-handlers-alist
-                  '(dired . ido-read-file-name))))
+                 '(dired . ido-read-file-name)))
+
+  (add-hook 'helm-major-mode-hook
+            (lambda () (setq show-trailing-whitespace nil))))
 
 
 
