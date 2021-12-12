@@ -633,7 +633,7 @@
 
    ;; Bookmark
    `(bookmark-face
-     (yester-face-spec ',class :foreground selection :background selection))
+     (yester-face-spec ',class :foreground purple :background purple))
 
 
 
