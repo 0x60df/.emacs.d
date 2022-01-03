@@ -1192,6 +1192,57 @@
 
 
 
+   ;; Auctex
+   `(TeX-error-description-error '((,class :inherit error)))
+   `(TeX-error-description-help '((,class :inherit success)))
+   `(TeX-error-description-tex-said '((,class :inherit success)))
+   `(TeX-error-description-warning '((,class :inherit warning)))
+   `(font-latex-bold-face '((,class :inherit bold)))
+   `(font-latex-doctex-documentation-face
+     (yester-face-spec ',class :foreground comment))
+   `(font-latex-doctex-preprocessor-face
+     (yester-face-spec ',class :foreground aqua))
+   `(font-latex-italic-face '((,class :inherit italic)))
+   `(font-latex-math-face (yester-face-spec ',class :foreground yellow))
+   `(font-latex-script-char-face (yester-face-spec ',class :foreground comment))
+   `(font-latex-sectioning-0-face (yester-face-spec ',class
+                                    :underline t
+                                    :weight 'bold
+                                    :foreground yellow))
+   `(font-latex-sectioning-1-face (yester-face-spec ',class
+                                    :underline t
+                                    :weight 'bold
+                                    :foreground aqua))
+   `(font-latex-sectioning-2-face (yester-face-spec ',class
+                                    :underline t
+                                    :weight 'bold
+                                    :foreground blue))
+   `(font-latex-sectioning-3-face (yester-face-spec ',class
+                                    :underline t
+                                    :weight 'bold
+                                    :foreground orange))
+   `(font-latex-sectioning-4-face (yester-face-spec ',class
+                                    :underline t
+                                    :weight 'bold
+                                    :foreground purple))
+   `(font-latex-sectioning-5-face (yester-face-spec ',class
+                                    :underline t
+                                    :weight 'bold
+                                    :foreground comment))
+   `(font-latex-sedate-face (yester-face-spec ',class :foreground comment))
+   `(font-latex-slide-title-face
+     (yester-face-spec ',class :foreground yellow :weight 'bold))
+   `(font-latex-string-face '((,class :inherit font-lock-string-face)))
+   `(font-latex-subscript-face
+     (yester-face-spec ',class :foreground yellow :underline t))
+   `(font-latex-superscript-face
+     (yester-face-spec ',class :foreground yellow :overline t))
+   `(font-latex-verbatim-face (yester-face-spec ',class :foreground orange))
+   `(font-latex-warning-face
+     (yester-face-spec ',class :foreground red :weight 'bold))
+
+
+
    ;; YaTeX
    `(delimiter (yester-face-spec ',class :foreground comment))
    `(YaTeX-font-lock-crossref-face (yester-face-spec ',class :foreground blue))
@@ -1474,6 +1525,10 @@
  `(evil-operator-state-cursor (yester-symbol-exp green))
  `(evil-visual-state-cursor (yester-symbol-exp green))
  `(evil-motion-state-cursor (yester-symbol-exp comment))
+
+
+
+ '(font-latex-script-display ''((raise -0.0) . (raise 0.0)))
 
 
 
