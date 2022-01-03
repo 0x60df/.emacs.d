@@ -316,6 +316,7 @@ UNIT is a literal symbol."
 (init-package robe)
 (init-package yaml-mode)
 (init-package auctex)
+(init-package helm-bibtex)
 (init-package ox-gfm)
 (init-package ox-qmd)
 (init-package calfw)
