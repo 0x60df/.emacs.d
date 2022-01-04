@@ -111,6 +111,7 @@
 (custom-set-variables
  '(loophole-use-auto-timer t)
  '(loophole-use-auto-editing-timer t)
+ '(loophole-use-idle-prioritize t)
  '(loophole-kmacro-by-read-key-finish-key (kbd "C-]"))
  '(loophole-array-by-read-key-finish-key (kbd "C-]"))
  '(loophole-set-key-order
