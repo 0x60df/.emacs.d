@@ -33,13 +33,21 @@
 (with-eval-after-load 'org-indent
   (modify-minor-mode-lighter 'org-indent-mode " ind"))
 
-(defun enhance-org-capture-header-line-format (&rest args)
-  "Advising `org-capture-mode' to make `header-line-format' enhanced.
-Specifically, add front space and setup auto truncate. "
-  (setq header-line-format (mode-line-format-auto-truncate
-                            (list mode-line-front-space header-line-format))))
+(with-eval-after-load 'org-capture
+  (add-hook 'org-capture-mode-hook
+            (lambda ()
+              (if header-line-format
+                  (setq header-line-format
+                        (mode-line-format-auto-truncate
+                         (list mode-line-front-space header-line-format)))))))
 
-(advice-add 'org-capture-mode :after #'enhance-org-capture-header-line-format)
+(with-eval-after-load 'org-src
+  (add-hook 'org-src-mode-hook
+            (lambda ()
+              (if header-line-format
+                  (setq header-line-format
+                        (mode-line-format-auto-truncate
+                         (list mode-line-front-space header-line-format)))))))
 
 (overriding-set-key (kbd "C-c o a") #'org-agenda)
 (overriding-set-key (kbd "C-c o c") #'org-capture)
