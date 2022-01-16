@@ -54,6 +54,9 @@
   (define-key loophole-mode-map (kbd "C-c ] : : +")
     #'loophole-extend-editing-timer)
 
+  (loophole-load)
+  (add-hook 'kill-emacs-hook #'loophole-save)
+
   (defvar overriding-loophole-mode-map
     (let ((map (make-sparse-keymap)))
       (define-key map (kbd "C-}") #'loophole-cover-latest)
@@ -105,6 +108,8 @@
   (defvar loophole-navigation-map-state nil
     "State of `loophole-navigation-map'.")
 
+  (if (loophole-registered-p 'loophole-navigation-map)
+      (loophole-unregister 'loophole-navigation-map))
   (loophole-register
    'loophole-navigation-map 'loophole-navigation-map-state "n"))
 
@@ -134,6 +139,8 @@
      loophole-obtain-array-by-read-string))
  '(loophole-kmacro-by-recursive-edit-map-tag
    "<End: \\[loophole-end-kmacro], Abort: \\[loophole-abort-kmacro]>")
+ '(loophole-make-load-overwrite-map t)
+ '(loophole-use-idle-save t)
  '(loophole-mode-lighter-use-face t))
 
 (add-hook 'emacs-startup-hook #'loophole-mode)
