@@ -628,6 +628,15 @@
 
    ;; Table
    `(table-cell (yester-face-spec ',class :background block))
+
+
+   ;; Edebug
+   `(edebug-enabled-breakpoint
+     (yester-face-spec ',class
+       :foreground purple :background background :inverse-video t))
+   `(edebug-disabled-breakpoint
+     (yester-face-spec ',class
+       :foreground comment :background background :inverse-video t))
 
 
 
