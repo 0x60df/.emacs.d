@@ -79,7 +79,8 @@
   (push `(loophole-mode . ,overriding-loophole-mode-map)
         overriding-reserved-key-map-alist)
 
-  (add-hook 'loophole-start-editing-functions #'loophole-enable)
+  (add-hook 'loophole-after-start-editing-functions #'loophole-enable)
+  (add-hook 'loophole-after-globalize-functions #'loophole-enable)
 
   (add-hook 'loophole-write-lisp-mode-hook
             (lambda () (setq mode-name "Loophole Write Lisp")))
