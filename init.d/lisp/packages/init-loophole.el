@@ -81,6 +81,7 @@
 
   (add-hook 'loophole-after-start-editing-functions #'loophole-enable)
   (add-hook 'loophole-after-globalize-functions #'loophole-enable)
+  (add-hook 'loophole-after-merge-functions #'loophole-start-editing)
 
   (add-hook 'loophole-write-lisp-mode-hook
             (lambda () (setq mode-name "Loophole Write Lisp")))
