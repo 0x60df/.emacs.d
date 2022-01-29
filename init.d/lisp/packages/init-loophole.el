@@ -138,7 +138,15 @@
      loophole-obtain-symbol-by-read-keymap-function
      (loophole-obtain-array-by-read-key
       :key loophole-read-key-for-array-by-read-key)
-     loophole-obtain-array-by-read-string))
+     loophole-obtain-array-by-read-string
+
+     (loophole-obtain-command-by-read-command
+      :key loophole-read-key-with-time-limit)
+     (loophole-obtain-keymap-by-read-keymap-variable
+      :key loophole-read-key-with-time-limit)
+     (loophole-obtain-symbol-by-read-keymap-function
+      :key loophole-read-key-with-time-limit)
+     (loophole-obtain-object :key loophole-read-key-with-time-limit)))
  '(loophole-kmacro-by-recursive-edit-map-tag
    "<End: \\[loophole-end-kmacro], Abort: \\[loophole-abort-kmacro]>")
  '(loophole-make-load-overwrite-map t)
