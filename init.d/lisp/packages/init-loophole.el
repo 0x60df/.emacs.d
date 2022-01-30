@@ -55,7 +55,14 @@
     #'loophole-extend-editing-timer)
 
   (loophole-load)
-  (add-hook 'kill-emacs-hook #'loophole-save)
+  (add-hook 'kill-emacs-hook
+            (lambda ()
+              (loophole-save
+               (lambda (map-variable)
+                 (let ((name (symbol-name map-variable)))
+                   (and (string-match "^loophole-.+-map$" name)
+                        (not (string-equal name
+                                           "loophole-navigation-map"))))))))
 
   (defvar overriding-loophole-mode-map
     (let ((map (make-sparse-keymap)))
@@ -150,7 +157,11 @@
  '(loophole-kmacro-by-recursive-edit-map-tag
    "<End: \\[loophole-end-kmacro], Abort: \\[loophole-abort-kmacro]>")
  '(loophole-make-load-overwrite-map t)
- '(loophole-use-idle-save t)
+ '(loophole-use-idle-save
+   (lambda (map-variable)
+     (let ((name (symbol-name map-variable)))
+       (and (string-match "^loophole-.+-map$" name)
+            (not (string-equal name "loophole-navigation-map"))))))
  '(loophole-mode-lighter-use-face t))
 
 (add-hook 'emacs-startup-hook #'loophole-mode)
