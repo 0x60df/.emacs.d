@@ -74,13 +74,13 @@
       map)
     "Keymap for ‘loophole-mode’ which overrides global overriding maps.")
 
-  (define-key loophole-kmacro-by-recursive-edit-map (kbd "C-c [") nil)
-  (define-key loophole-kmacro-by-recursive-edit-map (kbd "C-c \\") nil)
-  (define-key loophole-kmacro-by-recursive-edit-map (kbd "C-]")
+  (define-key loophole-defining-kmacro-map (kbd "C-c [") nil)
+  (define-key loophole-defining-kmacro-map (kbd "C-c \\") nil)
+  (define-key loophole-defining-kmacro-map (kbd "C-]")
     #'loophole-end-kmacro)
-  (define-key loophole-kmacro-by-recursive-edit-map (kbd "C-}")
+  (define-key loophole-defining-kmacro-map (kbd "C-}")
     #'loophole-abort-kmacro)
-  (define-key loophole-kmacro-by-recursive-edit-map (kbd "C-c ] k a")
+  (define-key loophole-defining-kmacro-map (kbd "C-c ] k a")
     'undefined)
 
   (push `(loophole-mode . ,overriding-loophole-mode-map)
@@ -128,18 +128,21 @@
  '(loophole-use-idle-prioritize t)
  '(loophole-kmacro-by-read-key-finish-key (kbd "C-]"))
  '(loophole-array-by-read-key-finish-key (kbd "C-]"))
+ '(loophole-read-buffer-inhibit-recursive-edit t)
  '(loophole-set-key-order
    '(loophole-obtain-command-by-key-sequence
      (loophole-obtain-kmacro-by-read-key
       :key loophole-read-key-for-kmacro-by-read-key)
      loophole-obtain-command-by-read-command
-     loophole-obtain-kmacro-by-recursive-edit
+     loophole-obtain-kmacro-on-top-level
      loophole-obtain-command-by-lambda-form
      loophole-obtain-kmacro-by-recall-record
      loophole-obtain-keymap-by-read-keymap-variable
      loophole-obtain-keymap-by-read-keymap-function
      loophole-obtain-symbol-by-read-array-function
      loophole-obtain-object
+
+     loophole-obtain-kmacro-by-recursive-edit
 
      loophole-obtain-symbol-by-read-command
      loophole-obtain-symbol-by-read-keymap-function
