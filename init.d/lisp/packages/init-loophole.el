@@ -90,9 +90,6 @@
   (add-hook 'loophole-after-globalize-functions #'loophole-enable)
   (add-hook 'loophole-after-merge-functions #'loophole-start-editing)
 
-  (add-hook 'loophole-write-lisp-mode-hook
-            (lambda () (setq mode-name "Loophole Write Lisp")))
-
   (defvar loophole-navigation-map
     (let ((map (make-sparse-keymap)))
       (mapc (lambda (k)
@@ -131,33 +128,27 @@
  '(loophole-read-buffer-inhibit-recursive-edit t)
  '(loophole-set-key-order
    '(loophole-obtain-command-by-key-sequence
+     loophole-obtain-kmacro-on-top-level
+     (loophole-obtain-command-by-read-command
+      :key loophole-read-key-with-time-limit)
      (loophole-obtain-kmacro-by-read-key
       :key loophole-read-key-for-kmacro-by-read-key)
-     loophole-obtain-command-by-read-command
-     loophole-obtain-kmacro-on-top-level
      loophole-obtain-command-by-lambda-form
      loophole-obtain-kmacro-by-recall-record
-     loophole-obtain-keymap-by-read-keymap-variable
-     loophole-obtain-keymap-by-read-keymap-function
-     loophole-obtain-symbol-by-read-array-function
-     loophole-obtain-object
-
-     loophole-obtain-kmacro-by-recursive-edit
-
-     loophole-obtain-symbol-by-read-command
      loophole-obtain-symbol-by-read-keymap-function
+     loophole-obtain-keymap-by-read-keymap-variable
+     loophole-obtain-object
+     (loophole-obtain-object :key loophole-read-key-with-time-limit)
+
      (loophole-obtain-array-by-read-key
       :key loophole-read-key-for-array-by-read-key)
      loophole-obtain-array-by-read-string
+     loophole-obtain-symbol-by-read-array-function
 
-     (loophole-obtain-command-by-read-command
-      :key loophole-read-key-with-time-limit)
-     (loophole-obtain-keymap-by-read-keymap-variable
-      :key loophole-read-key-with-time-limit)
-     (loophole-obtain-symbol-by-read-keymap-function
-      :key loophole-read-key-with-time-limit)
-     (loophole-obtain-object :key loophole-read-key-with-time-limit)))
- '(loophole-kmacro-by-recursive-edit-map-tag
+     loophole-obtain-kmacro-by-recursive-edit
+     loophole-obtain-symbol-by-read-command
+     loophole-obtain-keymap-by-read-keymap-function))
+ '(loophole-defining-kmacro-map-tag
    "<End: \\[loophole-end-kmacro], Abort: \\[loophole-abort-kmacro]>")
  '(loophole-make-load-overwrite-map t)
  '(loophole-use-idle-save
