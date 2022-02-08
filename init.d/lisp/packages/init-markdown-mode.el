@@ -8,6 +8,9 @@
 
 (eval-when-compile (require 'markdown-mode))
 
+(custom-set-variables
+ '(markdown-nested-imenu-heading-index nil))
+
 (with-eval-after-load 'markdown-mode
   (add-to-list 'markdown-code-lang-modes '("el" . emacs-lisp-mode)))
 
