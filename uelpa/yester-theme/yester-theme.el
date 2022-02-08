@@ -305,14 +305,26 @@
 
 
    ;; Ediff
-   `(ediff-current-diff-A '((,class :inherit diff-removed)))
-   `(ediff-current-diff-B '((,class :inherit diff-added)))
+   `(ediff-current-diff-A (yester-face-spec ',class :background diff-red))
+   `(ediff-current-diff-B (yester-face-spec ',class :background diff-green))
    `(ediff-current-diff-C (yester-face-spec ',class :background diff-yellow))
    `(ediff-current-diff-Ancestor
      (yester-face-spec ',class :background diff-cyan))
-   `(ediff-fine-diff-A '((,class :inherit diff-refine-removed)))
-   `(ediff-fine-diff-B '((,class :inherit diff-refine-added)))
-   `(ediff-fine-diff-C '((,class :inherit diff-refine-changed)))
+   `(ediff-fine-diff-A (yester-face-spec ',class
+                         (night :foreground diff-variant-red
+                                :background diff-accent-red)
+                         (day :foreground diff-accent-red
+                              :background diff-variant-red)))
+   `(ediff-fine-diff-B (yester-face-spec ',class
+                         (night :foreground diff-variant-green
+                                :background diff-accent-green)
+                         (day :foreground diff-accent-green
+                              :background diff-variant-green)))
+   `(ediff-fine-diff-C (yester-face-spec ',class
+                           (night :foreground diff-variant-yellow
+                                  :background diff-accent-yellow)
+                           (day :foreground diff-accent-yellow
+                                :background diff-variant-yellow)))
    `(ediff-fine-diff-Ancestor (yester-face-spec ',class
                                 (night :foreground diff-variant-cyan
                                        :background diff-accent-cyan)
