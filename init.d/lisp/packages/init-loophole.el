@@ -137,11 +137,10 @@
      loophole-obtain-kmacro-by-recall-record
      loophole-obtain-symbol-by-read-keymap-function
      loophole-obtain-keymap-by-read-keymap-variable
-     loophole-obtain-object
-     (loophole-obtain-object :key loophole-read-key-with-time-limit)
-
      (loophole-obtain-array-by-read-key
       :key loophole-read-key-for-array-by-read-key)
+     (loophole-obtain-object :key loophole-read-key-with-time-limit)
+
      loophole-obtain-array-by-read-string
      loophole-obtain-symbol-by-read-array-function
 
