@@ -83,10 +83,6 @@ inline candidate is completed."
  '(ac-quick-help-delay 1.8)
  '(ac-use-menu-map t))
 
-(with-eval-after-load 'auto-complete
-  (add-to-list 'ac-dictionary-directories
-               (concat user-emacs-directory "ac-dict")))
-
 
 
 ;;; sources
