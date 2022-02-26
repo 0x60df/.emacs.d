@@ -123,22 +123,19 @@
  '(loophole-use-auto-timer t)
  '(loophole-use-auto-editing-timer t)
  '(loophole-use-idle-prioritize t)
- '(loophole-kmacro-by-read-key-finish-key (kbd "C-]"))
- '(loophole-array-by-read-key-finish-key (kbd "C-]"))
+ '(loophole-read-key-termination-key (kbd "C-]"))
  '(loophole-read-buffer-inhibit-recursive-edit t)
  '(loophole-set-key-order
    '(loophole-obtain-command-by-key-sequence
      loophole-obtain-kmacro-on-top-level
      (loophole-obtain-command-by-read-command
       :key loophole-read-key-with-time-limit)
-     (loophole-obtain-kmacro-by-read-key
-      :key loophole-read-key-for-kmacro-by-read-key)
+     loophole-obtain-kmacro-by-read-key
      loophole-obtain-command-by-lambda-form
      loophole-obtain-kmacro-by-recall-record
      loophole-obtain-symbol-by-read-keymap-function
      loophole-obtain-keymap-by-read-keymap-variable
-     (loophole-obtain-array-by-read-key
-      :key loophole-read-key-for-array-by-read-key)
+     loophole-obtain-array-by-read-key
      (loophole-obtain-object :key loophole-read-key-with-time-limit)
 
      loophole-obtain-array-by-read-string
