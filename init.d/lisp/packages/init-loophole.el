@@ -120,8 +120,10 @@
    'loophole-navigation-map 'loophole-navigation-map-state "n"))
 
 (custom-set-variables
+ '(loophole-decide-obtaining-method-after-read-key nil)
  '(loophole-use-auto-timer t)
  '(loophole-use-auto-editing-timer t)
+ '(loophole-use-auto-start-editing-for-existing-binding t)
  '(loophole-use-idle-prioritize t)
  '(loophole-read-key-termination-key (kbd "C-]"))
  '(loophole-read-buffer-inhibit-recursive-edit t)
