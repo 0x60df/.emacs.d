@@ -30,12 +30,13 @@
 
 (push '(with-editor-mode . 34) mode-line-minor-mode-priority-alist)
 
-;; (with-eval-after-load 'magit-blame
-;;   (let ((margin-style (cdr (assq 'margin magit-blame-styles))))
-;;     (setcdr (assq 'margin-body-face margin-style)
-;;             '(magit-blame-margin-body))
-;;     (setcdr (assq 'margin-format margin-style)
-;;             '(" %s%f" " %C %a" " %H" ""))))
+(with-eval-after-load 'magit-blame
+  (let ((margin-style (cdr (assq 'margin magit-blame-styles))))
+    (when margin-style
+      (setcdr (assq 'margin-body-face margin-style)
+              '(magit-blame-margin-body))
+      (setcdr (assq 'margin-format margin-style)
+              '(" %s%f" " %C %a" " %H" "")))))
 
 (defun magit-blame-set-highlight-overlay-priority (ov &rest args)
   "Advising `magit-blame--update-highlight-overlay' to set priority."
