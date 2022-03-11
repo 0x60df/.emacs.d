@@ -76,10 +76,12 @@
 
 (setq mode-line-client
       '(:eval
-        (if (frame-parameter nil 'client)
-            (let ((l (length server-clients)))
-              (if (< l 10) (number-to-string l) "#"))
-          "")))
+        (let ((client (frame-parameter nil 'client)))
+          (if client
+              (let ((p (1+ (seq-position (reverse server-clients)
+                                         client #'eq))))
+                (if (< p 10) (number-to-string p) "#"))
+            ""))))
 
 (setq-default mode-line-modified '("%1*%1+"))
 
@@ -87,10 +89,12 @@
 
 (setq mode-line-frame-identification
       '((:eval
-         (let ((l (length (if (frame-parameter nil 'client)
-                              (client-frame-list)
-                            (frame-list)))))
-           (if (< l 10) (number-to-string l) "#")))
+         (let ((p (1+ (seq-position (reverse
+                                     (if (frame-parameter nil 'client)
+                                         (client-frame-list)
+                                       (frame-list)))
+                                    (selected-frame) #'eq))))
+           (if (< p 10) (number-to-string p) "#")))
         (:propertize " " face mode-line-separator)))
 
 (define-minor-mode mode-line-buffer-identification-shrink-mode
