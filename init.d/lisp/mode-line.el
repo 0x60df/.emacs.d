@@ -351,7 +351,7 @@ mode-line string by window-width."
     (let* ((text (format-mode-line ',form))
            (text-width (string-width text))
            (max-width (+ (window-body-width) 1))
-           (shrinked
+           (shrunk
             (if (< max-width text-width)
                 (let* ((subtext (truncate-string-to-width text max-width))
                        (length (length subtext))
@@ -383,7 +383,7 @@ mode-line string by window-width."
                              nil subtext)))))
                   subtext)
               text)))
-      (mode-line--duplicate-percent-with-text-properties shrinked))))
+      (mode-line--duplicate-percent-with-text-properties shrunk))))
 
 (defun mode-line-show-truncated ()
   "Show truncated section of mode-line in echo area."
