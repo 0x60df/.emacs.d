@@ -62,7 +62,7 @@
       (when (and shifter-use-hist (fmmm-major-mode-p s))
         (setq shifter-major-mode-hist (delq s shifter-major-mode-hist))
         (add-to-list 'shifter-major-mode-hist s))
-      (funcall s))))
+      (funcall-interactively s))))
 
 ;;;###autoload
 (defun shifter-shift-minor-mode (&optional shift force)
@@ -126,7 +126,7 @@ for disabling."
       (when (and shifter-use-hist (fmmm-minor-mode-p s))
         (setq shifter-minor-mode-hist (delq s shifter-minor-mode-hist))
         (add-to-list 'shifter-minor-mode-hist s))
-      (funcall s shift))))
+      (funcall-interactively s shift))))
 
 ;;;###autoload
 (define-minor-mode shifter-non-volatile-hist-mode
