@@ -133,12 +133,39 @@
            (4  " C%c")
            (4  " C%C"))))))
 
+(defvar-local mode-line-vc-mode-shrink-width 1
+  "Width of shrinking mode line construct for vc mode.
+Most configuration which sets this variable and derives
+local variable should kill that local variable after
+realated operation.")
+
+(define-minor-mode mode-line-vc-mode-shrink-mode
+  "Minor mode to shrink mode line construct for vc mode.")
+
 (setcdr (assq 'vc-mode mode-line-format)
         '(((:propertize " " face mode-line-separator)
            (:eval (let ((string (replace-regexp-in-string
                                  "^\\s-+\\|\\s-+$" "" vc-mode)))
                     (remove-list-of-text-properties
                      0 (length string) '(mouse-face local-map help-echo) string)
+                    (if mode-line-vc-mode-shrink-mode
+                        (let* ((max-width mode-line-vc-mode-shrink-width)
+                               (canonicalized
+                                (replace-regexp-in-string
+                                 "%" "%%"
+                                 (if (< max-width (string-width string))
+                                     (let ((truncated (truncate-string-to-width
+                                                       string max-width)))
+                                       (if (string-suffix-p " " truncated)
+                                           (substring truncated
+                                                      0
+                                                      (- (length truncated) 1))
+                                         truncated))
+                                   string))))
+                          (when (< max-width (string-width string))
+                            (setq string canonicalized)
+                            (add-face-text-property
+                             0 (length string) 'mode-line-transform t string))))
                     string)))))
 
 (defvar-local mode-line-mode-name-shrink-width 1

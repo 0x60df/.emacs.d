@@ -215,6 +215,8 @@ Keymap is determined by `overriding-map-for'"
 (overriding-set-key (kbd "C-c l n") #'mode-line-minor-mode-shrink-mode)
 (overriding-set-key (kbd "C-c l b")
                     #'mode-line-buffer-identification-shrink-mode)
+(overriding-set-key (kbd "C-c l v")
+                    #'mode-line-vc-mode-shrink-mode)
 (overriding-set-key (kbd "C-c l i")
                     #'mode-line-mule-info-showing-input-method-mode)
 (overriding-set-key (kbd "C-c l f") #'show-which-function)
