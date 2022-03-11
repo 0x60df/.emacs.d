@@ -1,4 +1,4 @@
-
+;;; -*- lexical-binding: t -*-
 ;;;; init-isearch.el
 
 
@@ -38,6 +38,61 @@
   (define-key isearch-mode-map (kbd "C-]") #'demi-view-isearch-mode)
 
   (add-hook 'isearch-mode-end-hook (lambda () (demi-view-isearch-mode 0)))
+
+  (let* ((buffer nil)
+         (minor-mode-width nil)
+         (column-number-mode-flag nil)
+         (demi-view-isearch-mode-format
+          '(demi-view-isearch-mode demi-view-isearch-mode-lighter))
+         (hook
+          (lambda ()
+            (setq buffer nil)
+            (setq minor-mode-width nil)
+            (setq column-number-mode-flag nil)
+
+            (mode-line-buffer-identification-shrink-mode)
+            (mode-line-mode-name-shrink-mode)
+            (mode-line-minor-mode-shrink-mode)
+            (mode-line-vc-mode-shrink-mode)
+
+            (setq column-number-mode-flag column-number-mode)
+            (column-number-mode 0)
+
+            (setq buffer (current-buffer))
+            (if (local-variable-p 'mode-line-minor-mode-shrink-width)
+                (setq minor-mode-width mode-line-minor-mode-shrink-width))
+            (setq mode-line-minor-mode-shrink-width 0)
+
+            (let ((cell (member "%]" mode-line-modes)))
+              (when cell
+                (setcdr cell (cons (car cell) (cdr cell)))
+                (setcar cell demi-view-isearch-mode-format)))))
+         (end-hook
+          (lambda ()
+            (setq mode-line-modes
+                  (delq demi-view-isearch-mode-format mode-line-modes))
+
+            (unwind-protect
+                (mode-line-minor-mode-shrink-mode 0)
+              (if (buffer-live-p buffer)
+                  (if minor-mode-width
+                      (setq mode-line-minor-mode-shrink-width minor-mode-width)
+                    (with-current-buffer buffer
+                      (kill-local-variable
+                       'mode-line-minor-mode-shrink-width))))
+              (setq buffer nil)
+              (setq minor-mode-width nil))
+
+            (if column-number-mode-flag
+                (unwind-protect
+                    (column-number-mode)
+                  (setq column-number-mode-flag nil)))
+
+            (mode-line-buffer-identification-shrink-mode 0)
+            (mode-line-mode-name-shrink-mode 0)
+            (mode-line-vc-mode-shrink-mode 0))))
+    (add-hook 'isearch-mode-hook hook)
+    (add-hook 'isearch-mode-end-hook end-hook))
 
   (modify-minor-mode-lighter 'isearch-mode '((-3 "" isearch-mode)
                                              (demi-view-isearch-mode
