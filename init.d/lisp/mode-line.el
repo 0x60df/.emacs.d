@@ -136,7 +136,7 @@
 (defvar-local mode-line-vc-mode-shrink-width 1
   "Width of shrinking mode line construct for vc mode.
 Most configuration which sets this variable and derives
-local variable should kill that local variable after
+local variable should take care that local variable after
 realated operation.")
 
 (define-minor-mode mode-line-vc-mode-shrink-mode
@@ -171,7 +171,7 @@ realated operation.")
 (defvar-local mode-line-mode-name-shrink-width 1
   "Width of shrinking mode line construct for mode name.
 Most configuration which sets this variable and derives
-local variable should kill that local variable after
+local variable should take care that local variable after
 realated operation.")
 
 (define-minor-mode mode-line-mode-name-shrink-mode
@@ -180,7 +180,7 @@ realated operation.")
 (defvar-local mode-line-minor-mode-shrink-width 12
   "Width of shrinking mode line construct for minor mode.
 Most configuration which sets this variable and derives
-local variable should kill that local variable after
+local variable should take care that local variable after
 realated operation.")
 
 (define-minor-mode mode-line-minor-mode-shrink-mode
