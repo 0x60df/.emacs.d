@@ -66,20 +66,11 @@
                         '(space :align-to (+ left-margin left-fringe)))
           "")))
 
-(defvar mode-line-mule-info-showing-input-method-flag nil
-  "State of `mode-line-mule-info' replesentation.
-When non-nil, `mode-line-mule-info' shows input method.")
-(make-variable-buffer-local 'mode-line-mule-info-showing-input-method-flag)
-
-(defun mode-line-mule-info-toggle-showing-input-method ()
-  "Toggle `mode-line-mule-info' showing input method state."
-  (interactive)
-  (if mode-line-mule-info-showing-input-method-flag
-      (setq mode-line-mule-info-showing-input-method-flag nil)
-    (setq mode-line-mule-info-showing-input-method-flag t)))
+(define-minor-mode mode-line-mule-info-showing-input-method-mode
+  "Minor to show input method in mode line construct for mule info.")
 
 (setq-default mode-line-mule-info
-              '((mode-line-mule-info-showing-input-method-flag
+              '((mode-line-mule-info-showing-input-method-mode
                  (current-input-method current-input-method-title))
                 "%Z"))
 
@@ -102,22 +93,13 @@ When non-nil, `mode-line-mule-info' shows input method.")
            (if (< l 10) (number-to-string l) "#")))
         (:propertize " " face mode-line-separator)))
 
-(defvar mode-line-buffer-identification-shrinked-flag nil
-  "State of `mode-line-buffer-identification' replesentation.
-When non-nil, `mode-line-buffer-identification' is shrinked.")
-(make-variable-buffer-local 'mode-line-buffer-identification-shrinked-flag)
-
-(defun mode-line-buffer-identification-toggle-shrinked ()
-  "Toggle `mode-line-buffer-identification' shrinking state."
-  (interactive)
-  (if mode-line-buffer-identification-shrinked-flag
-      (setq mode-line-buffer-identification-shrinked-flag nil)
-    (setq mode-line-buffer-identification-shrinked-flag t)))
+(define-minor-mode mode-line-buffer-identification-shrink-mode
+  "Minor mode to shrink mode line construct for buffer identification.")
 
 (setq-default mode-line-buffer-identification
               (let* ((max-width 12)
                      (format (format "%%%db" max-width)))
-                `(mode-line-buffer-identification-shrinked-flag
+                `(mode-line-buffer-identification-shrink-mode
                   (:eval
                    (let* ((text (format-mode-line ,format))
                           (canonicalized
@@ -159,43 +141,43 @@ When non-nil, `mode-line-buffer-identification' is shrinked.")
                      0 (length string) '(mouse-face local-map help-echo) string)
                     string)))))
 
-(defvar mode-line-modes-shrinked-flag nil
-  "State of `mode-line-modes' replesentation.
-When non-nil, `'mode-line-modes is shrinked.")
-(make-variable-buffer-local 'mode-line-modes-shrinked-flag)
+(defvar mode-line-minor-mode-shrink-width 12
+  "Width of shrinking mode line construct for minor mode.")
+(put 'mode-line-minor-mode-shrink-width
+     :init-value mode-line-minor-mode-shrink-width)
 
-(defun mode-line-modes-toggle-shrinked ()
-  "Toggle `mode-line-modes' shrinking state"
-  (interactive)
-  (if mode-line-modes-shrinked-flag
-      (setq mode-line-modes-shrinked-flag nil)
-    (setq mode-line-modes-shrinked-flag t)))
+(define-minor-mode mode-line-minor-mode-shrink-mode
+  "Minor mode to shrink mode line construct for minor mode."
+  :init-value nil
+  (if mode-line-minor-mode-shrink-mode
+      (setq mode-line-minor-mode-shrink-width
+            (get 'mode-line-minor-mode-shrink-width :init-value))))
 
 (setq mode-line-modes
-      (let ((max-width 12))
-        `("%["
-          (:propertize mode-name face mode-line-mode-name)
-          mode-line-process
-          (mode-line-modes-shrinked-flag
-           (:eval
-            (let* ((text (format-mode-line minor-mode-alist))
-                   (canonicalized
-                    (replace-regexp-in-string
-                     "%" "%%"
-                     (if (< ,max-width (string-width text))
-                         (let ((truncated (truncate-string-to-width
-                                           text ,max-width)))
-                           (if (string-suffix-p " " truncated)
-                               (substring truncated 0 (- (length truncated) 1))
-                             truncated))
-                       text))))
-              (if (< ,max-width (string-width text))
-                  (propertize canonicalized 'face 'mode-line-transform)
-                canonicalized)))
-           minor-mode-alist)
-          (:propertize (-4 "%n") face mode-line-emphasis)
-          "%]"
-          (:propertize " " face mode-line-separator))))
+      '("%["
+        (:propertize mode-name face mode-line-mode-name)
+        mode-line-process
+        (mode-line-minor-mode-shrink-mode
+         (:eval
+          (let* ((max-width mode-line-minor-mode-shrink-width)
+                 (text (format-mode-line minor-mode-alist))
+                 (canonicalized
+                  (replace-regexp-in-string
+                   "%" "%%"
+                   (if (< max-width (string-width text))
+                       (let ((truncated (truncate-string-to-width
+                                         text max-width)))
+                         (if (string-suffix-p " " truncated)
+                             (substring truncated 0 (- (length truncated) 1))
+                           truncated))
+                     text))))
+            (if (< max-width (string-width text))
+                (propertize canonicalized 'face 'mode-line-transform)
+              canonicalized)))
+         minor-mode-alist)
+        (:propertize (-4 "%n") face mode-line-emphasis)
+        "%]"
+        (:propertize " " face mode-line-separator)))
 
 (defcustom mode-line-minor-mode-priority-alist nil
   "Alist of minor mode and its priority for mode line display.
