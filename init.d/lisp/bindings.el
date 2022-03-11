@@ -211,6 +211,7 @@ Keymap is determined by `overriding-map-for'"
                       #'pick-typical-frame-of-each-client-with-server)
   (overriding-set-key (kbd "C-c M-.") #'summon-frame))
 
+(overriding-set-key (kbd "C-c l m") #'mode-line-mode-name-shrink-mode)
 (overriding-set-key (kbd "C-c l n") #'mode-line-minor-mode-shrink-mode)
 (overriding-set-key (kbd "C-c l b")
                     #'mode-line-buffer-identification-shrink-mode)

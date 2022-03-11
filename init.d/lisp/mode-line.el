@@ -141,21 +141,45 @@
                      0 (length string) '(mouse-face local-map help-echo) string)
                     string)))))
 
-(defvar mode-line-minor-mode-shrink-width 12
-  "Width of shrinking mode line construct for minor mode.")
-(put 'mode-line-minor-mode-shrink-width
-     :init-value mode-line-minor-mode-shrink-width)
+(defvar-local mode-line-mode-name-shrink-width 1
+  "Width of shrinking mode line construct for mode name.
+Most configuration which sets this variable and derives
+local variable should kill that local variable after
+realated operation.")
+
+(define-minor-mode mode-line-mode-name-shrink-mode
+  "Minor mode to shrink mode line construct for mode name.")
+
+(defvar-local mode-line-minor-mode-shrink-width 12
+  "Width of shrinking mode line construct for minor mode.
+Most configuration which sets this variable and derives
+local variable should kill that local variable after
+realated operation.")
 
 (define-minor-mode mode-line-minor-mode-shrink-mode
-  "Minor mode to shrink mode line construct for minor mode."
-  :init-value nil
-  (if mode-line-minor-mode-shrink-mode
-      (setq mode-line-minor-mode-shrink-width
-            (get 'mode-line-minor-mode-shrink-width :init-value))))
+  "Minor mode to shrink mode line construct for minor mode.")
 
 (setq mode-line-modes
       '("%["
-        (:propertize mode-name face mode-line-mode-name)
+        (mode-line-mode-name-shrink-mode
+         (:eval
+          (let* ((max-width mode-line-mode-name-shrink-width)
+                 (text (format-mode-line mode-name))
+                 (canonicalized
+                  (replace-regexp-in-string
+                   "%" "%%"
+                   (if (< max-width (string-width text))
+                       (let ((truncated (truncate-string-to-width
+                                         text max-width)))
+                         (if (string-suffix-p " " truncated)
+                             (substring truncated 0 (- (length truncated) 1))
+                           truncated))
+                     text))))
+            (propertize canonicalized
+                        'face (if (< max-width (string-width text))
+                                  '(mode-line-mode-name mode-line-transform)
+                                'mode-line-mode-name))))
+         (:propertize mode-name face mode-line-mode-name))
         mode-line-process
         (mode-line-minor-mode-shrink-mode
          (:eval
