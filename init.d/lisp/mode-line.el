@@ -227,8 +227,9 @@ realated operation.")
                            truncated))
                      text))))
             (if (< max-width (string-width text))
-                (propertize canonicalized 'face 'mode-line-transform)
-              canonicalized)))
+                (add-face-text-property
+                 0 (length canonicalized) 'mode-line-transform t canonicalized))
+            canonicalized))
          minor-mode-alist)
         (:propertize (-4 "%n") face mode-line-emphasis)
         "%]"
