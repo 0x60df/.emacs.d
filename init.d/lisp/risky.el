@@ -23,6 +23,7 @@
 (define-minor-mode risky-yes-or-no-p-transient-mode
   "Minor mode which is transiently turned on during `yes-or-no-p'."
   :global t
+  :group 'user
   :keymap `((,(kbd "C-j") . ,#'risky-yes-or-no-p-yes)))
 
 (defun with-risky-yes-or-no-p-transient-mode (yes-or-no-p prompt &rest args)
@@ -31,6 +32,7 @@ Enable `risky-yes-or-no-p-transient-mode' before calling
 `yes-or-no-p' with PROMPT prefixed with [RISKY],
 and disable `risky-yes-or-no-p-transient-mode' after call
 regardless of any error."
+  :group 'user
   (unwind-protect
       (progn
         (risky-yes-or-no-p-transient-mode 1)
@@ -47,6 +49,7 @@ regardless of any error."
 \\[risky-yes-or-no-p-yes] which is key binding for `risky-yes-or-no-p-yes'
 realise it as `insert' yes and `exit-minibuffer'."
   :global t
+  :group 'user
   (if risky-yes-or-no-p-mode
       (advice-add 'yes-or-no-p :around #'with-risky-yes-or-no-p-transient-mode)
     (advice-remove 'yes-or-no-p #'with-risky-yes-or-no-p-transient-mode)))

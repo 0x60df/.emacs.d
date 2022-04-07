@@ -93,7 +93,8 @@
 ;; entry point
 
 (define-minor-mode company-split-mode
-  "Minor mode to split symbol if input is occurred on inside.")
+  "Minor mode to split symbol if input is occurred on inside."
+  :group 'user)
 
 (advice-add-for-once 'company-split-global-mode :before (lambda (&rest args)
 							  (require 'company)))

@@ -5,6 +5,8 @@
 (premise init)
 (premise inst-helm-bibtex)
 
+(eval-when-compile (require 'helm-bibtex))
+
 (with-eval-after-load 'helm-bibtex
   (helm-delete-action-from-source "Insert citation" helm-source-bibtex)
   (helm-add-action-to-source "Insert citation"

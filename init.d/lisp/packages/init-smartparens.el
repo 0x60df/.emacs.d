@@ -29,16 +29,15 @@
 
 (define-minor-mode sp-show-enclosing-pair-mode
   "Minor mode for enhancing `sp-show-enclosing-pair'."
-  nil
-  nil
-  '(("p" . sp-show-enclosing-pair-dwim)
-    ("P" . sp-show-enclosing-pair-dwim-reverse)
-    ("(" . sp-show-enclosing-pair-jump-backward)
-    (")" . sp-show-enclosing-pair-jump-forward)
-    ("b" . sp-show-enclosing-pair-jump-backward)
-    ("f" . sp-show-enclosing-pair-jump-forward)
-    ("@" . sp-show-set-region)
-    ([?\s] . sp-show-set-region)))
+  :group 'user
+  :keymap '(("p" . sp-show-enclosing-pair-dwim)
+            ("P" . sp-show-enclosing-pair-dwim-reverse)
+            ("(" . sp-show-enclosing-pair-jump-backward)
+            (")" . sp-show-enclosing-pair-jump-forward)
+            ("b" . sp-show-enclosing-pair-jump-backward)
+            ("f" . sp-show-enclosing-pair-jump-forward)
+            ("@" . sp-show-set-region)
+            ([?\s] . sp-show-set-region)))
 
 (defun sp-show-enclosing-pair-dwim (&optional arg)
   "`sp-show-enclosing-pair' with auto upgrading the level."

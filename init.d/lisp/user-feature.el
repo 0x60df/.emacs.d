@@ -32,7 +32,7 @@ of loaddefs. Otherwise, basename of DIRECTORY suffixed with
 -loaddefs.el is used."
   (let ((files (seq-filter (lambda (file) (not (file-directory-p file)))
                            (directory-files directory t "\\.el$")))
-        (generated-autoload-file
+        (output-file
          (or name (let ((basename (file-name-nondirectory
                                    (replace-regexp-in-string
                                     "/$" "" directory))))
@@ -40,17 +40,16 @@ of loaddefs. Otherwise, basename of DIRECTORY suffixed with
                             (if (string-suffix-p "/" directory) "" "/")
                             basename
                             "-loaddefs.el")))))
-    (unless (or (null files)
-                (and (file-exists-p generated-autoload-file)
-                     (seq-every-p (lambda (file)
-                                    (or (file-newer-than-file-p
-                                         generated-autoload-file file)
-                                        (file-equal-p
-                                         generated-autoload-file file)))
-                                  files)))
-      (if (file-exists-p generated-autoload-file)
-          (delete-file generated-autoload-file))
-      (update-directory-autoloads directory))))
+    (unless
+        (or (null files)
+            (and (file-exists-p output-file)
+                 (seq-every-p (lambda (file)
+                                (or (file-newer-than-file-p output-file file)
+                                    (file-equal-p output-file file)))
+                              files)))
+      (if (file-exists-p output-file)
+          (delete-file output-file))
+      (make-directory-autoloads directory output-file))))
 
 (mapc
  (lambda (raw)

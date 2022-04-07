@@ -14,7 +14,7 @@
 (push '(ace-jump-mode . 22) mode-line-minor-mode-priority-alist)
 
 (with-eval-after-load 'ace-jump-mode
-  (setq ace-jump-mode-move-keys (loop for i from ?a to ?z collect i))
+  (setq ace-jump-mode-move-keys (cl-loop for i from ?a to ?z collect i))
   (ace-jump-mode-enable-mark-sync))
 
 (overriding-set-key (kbd "ESC M-g") #'ace-jump-char-mode)

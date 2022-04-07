@@ -67,7 +67,8 @@
           "")))
 
 (define-minor-mode mode-line-mule-info-showing-input-method-mode
-  "Minor to show input method in mode line construct for mule info.")
+  "Minor to show input method in mode line construct for mule info."
+  :group 'user)
 
 (setq-default mode-line-mule-info
               '((mode-line-mule-info-showing-input-method-mode
@@ -98,7 +99,8 @@
         (:propertize " " face mode-line-separator)))
 
 (define-minor-mode mode-line-buffer-identification-shrink-mode
-  "Minor mode to shrink mode line construct for buffer identification.")
+  "Minor mode to shrink mode line construct for buffer identification."
+  :group 'user)
 
 (setq-default mode-line-buffer-identification
               (let* ((max-width 12)
@@ -144,7 +146,8 @@ local variable should take care that local variable after
 realated operation.")
 
 (define-minor-mode mode-line-vc-mode-shrink-mode
-  "Minor mode to shrink mode line construct for vc mode.")
+  "Minor mode to shrink mode line construct for vc mode."
+  :group 'user)
 
 (setcdr (assq 'vc-mode mode-line-format)
         '(((:propertize " " face mode-line-separator)
@@ -179,7 +182,8 @@ local variable should take care that local variable after
 realated operation.")
 
 (define-minor-mode mode-line-mode-name-shrink-mode
-  "Minor mode to shrink mode line construct for mode name.")
+  "Minor mode to shrink mode line construct for mode name."
+  :group 'user)
 
 (defvar-local mode-line-minor-mode-shrink-width 12
   "Width of shrinking mode line construct for minor mode.
@@ -188,7 +192,8 @@ local variable should take care that local variable after
 realated operation.")
 
 (define-minor-mode mode-line-minor-mode-shrink-mode
-  "Minor mode to shrink mode line construct for minor mode.")
+  "Minor mode to shrink mode line construct for minor mode."
+  :group 'user)
 
 (setq mode-line-modes
       '("%["
@@ -385,7 +390,8 @@ If no boundary is detected until LIMIT, retun nil."
     (funcall duplicate-next-percent 0)))
 
 (define-minor-mode mode-line-format-auto-truncate-on-boundary-mode
-  "Minor mode to truncate on boundary of mode line elements.")
+  "Minor mode to truncate on boundary of mode line elements."
+  :group 'user)
 
 (defvar mode-line-format-raw
   (mapcar (lambda (e)
@@ -472,15 +478,14 @@ mode-line string by window-width."
 
 (define-minor-mode mode-line-auto-show-truncated-mode
   "Minor mode to show truncated section automatically."
-  nil
-  nil
-  nil
+  :group 'user
   (if mode-line-auto-show-truncated-mode
       (add-hook 'post-command-hook #'mode-line-set-showing-timer nil t)
     (remove-hook 'post-command-hook #'mode-line-set-showing-timer t)))
 
 (define-globalized-minor-mode mode-line-auto-show-truncated-global-mode
-  mode-line-auto-show-truncated-mode mode-line-auto-show-truncated-mode)
+  mode-line-auto-show-truncated-mode mode-line-auto-show-truncated-mode
+  :group 'user)
 
 (add-hook 'mode-line-auto-show-truncated-mode-hook
           (lambda ()

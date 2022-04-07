@@ -25,6 +25,7 @@
   (define-minor-mode demi-view-isearch-mode
     "Minor mode to view hits but not printing char."
     :global t
+    :group 'user
     (if demi-view-isearch-mode
         (dolist (key-command-original demi-view-isearch-mode-bindings)
           (define-key isearch-mode-map
