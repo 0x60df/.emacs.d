@@ -25,6 +25,10 @@
 (with-eval-after-load 'helm-mode
   (setq helm-completion-mode-string " H")
 
+  (add-to-list 'helm-this-command-black-list 'execute-extended-command)
+  (if (init-unit-p inst-smex)
+      (add-to-list 'helm-this-command-black-list 'smex))
+
   (mapc (lambda (handler)
           (add-to-list 'helm-completing-read-handlers-alist handler))
         '((find-file . ido-read-file-name)
