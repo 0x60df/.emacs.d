@@ -56,7 +56,9 @@
     "Toggle eglot"
     (interactive)
     (if (eglot-current-server)
-        (call-interactively #'eglot-shutdown)
+        (progn
+          (call-interactively #'eglot-shutdown)
+          (flymake-mode -1))
       (call-interactively #'eglot)))
 
 (overriding-set-key (kbd "C-c c l") #'eglot-toggle)
