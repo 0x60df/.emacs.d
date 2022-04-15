@@ -163,9 +163,7 @@
             (replace-match "\\1 s thing" t))
         (make-empty-file destination)))))
 
-(defvar gnus-mode-line-image-cache)
-(unless (version< emacs-version "28")
-  (defvar gnus-mode-line-image-cache nil "Chace of gnus mode line image."))
+(defvar gnus-mode-line-image-cache nil "Chace of gnus mode line image.")
 
 (add-hook
  'after-init-hook
@@ -190,36 +188,17 @@ This can also work as after advice."
 
      (gnus-update-mode-line-image-cache)
 
-     (cond ((version< emacs-version "28")
-            (defun gnus-update-mode-lines (&rest args)
-              "Update mode-lines of gnus buffers.
-This can also work as after advice."
-              (mapc (lambda (buffer)
-                      (let* ((name (buffer-name buffer))
-                             (type
-                              (cond ((string-match "^\\*Group" name) 'group)
-                                    ((string-match "^\\*Summary" name) 'summary)
-                                    ((string-match "^\\*Article" name) 'article)
-                                    ((string-match "^\\*Tree" name) 'tree))))
-                        (with-current-buffer buffer
-                          (cond ((eq type 'group) (gnus-group-set-mode-line))
-                                (type (gnus-set-mode-line type))))))
-                    gnus-buffers))
-
-            (advice-add 'gnus-update-mode-line-image-cache
-                        :after #'gnus-update-mode-lines))
-           (t
-            (advice-add
-             'gnus-mode-line-buffer-identification
-             :around
-             (lambda (original &rest args)
-               (if gnus-mode-line-image-cache
-                   (let ((advice (lambda (return) gnus-mode-line-image-cache)))
-                     (advice-add 'find-image :filter-return advice)
-                     (unwind-protect
-                         (apply original args)
-                       (advice-remove 'find-image advice)))
-                 (apply original args))))))
+     (advice-add
+      'gnus-mode-line-buffer-identification
+      :around
+      (lambda (original &rest args)
+        (if gnus-mode-line-image-cache
+            (let ((advice (lambda (return) gnus-mode-line-image-cache)))
+              (advice-add 'find-image :filter-return advice)
+              (unwind-protect
+                  (apply original args)
+                (advice-remove 'find-image advice)))
+          (apply original args))))
 
      (if (init-unit-p inst-yester-theme)
          (advice-add 'yester-recalc

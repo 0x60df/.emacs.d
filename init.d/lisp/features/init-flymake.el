@@ -51,29 +51,7 @@
                                (setq flymake-last-help nil))
                            (setq flymake-last-help nil))))))
 
-  (defun flymake--modify-mode-line-format (return)
-    "Advising `flymake--mode-line-format' to modify return."
-    (if (listp return)
-        (mapcar (lambda (element)
-                  (if (not (and (consp element)
-                                (eq (car element) :propertize)))
-                      element
-                    (if (equal " Flymake" (cadr element))
-                        (setcar (cdr element) " FlyM"))
-                    (mapc (lambda (prop)
-                            (if (plist-get element prop)
-                                (plist-put element prop nil)))
-                          '(mouse-face keymap help-echo))
-                    element))
-                return)
-      return))
-
-  (cond ((version< emacs-version "28")
-         (advice-add 'flymake--mode-line-format
-                     :filter-return #'flymake--modify-mode-line-format))
-        (t (advice-add 'flymake--mode-line-title
-                       :filter-return
-                       (lambda (return) "FlyM"))))
+  (advice-add 'flymake--mode-line-title :filter-return (lambda (return) "FlyM"))
 
   (defvar overriding-flymake-mode-map
     (let ((map (make-sparse-keymap)))
