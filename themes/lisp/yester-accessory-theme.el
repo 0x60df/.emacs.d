@@ -100,6 +100,9 @@
 (yester-theme-set-variables
  'yester-accessory
 
+ ;; Undo
+ `(undo-turning-point-cursor-color (yester-symbol-exp yellow))
+
  ;; Calfw
  `(calfw-org-source-period-bgcolor (yester-symbol-exp background))
  `(calfw-org-source-period-fgcolor (yester-symbol-exp foreground))

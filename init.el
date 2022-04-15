@@ -180,6 +180,7 @@ UNIT is a literal symbol."
 (init simple)
 (init risky)
 (init advice)
+(init undo)
 (init cursor)
 (init mark)
 (init region)
