@@ -9,6 +9,13 @@
 (defvar demi-view-isearch-mode)
 (declare-function demi-view-isearch-mode load-file-name t t)
 
+(defvar lazy-regexp-isearch-mode)
+(declare-function lazy-regexp-isearch-mode load-file-name t t)
+(declare-function lazy-regexp-isearch-edit-string-advice load-file-name t t)
+(declare-function lazy-regexp-isearch-process-search-string load-file-name t t)
+(declare-function lazy-regexp-isearch-encode load-file-name t t)
+(declare-function lazy-regexp-isearch-decode load-file-name t t)
+
 (push '(isearch-mode . 20) mode-line-minor-mode-priority-alist)
 
 (with-eval-after-load 'isearch
@@ -108,7 +115,7 @@
 
   (advice-add 'isearch-fallback :around
               (lambda (function &rest args)
-                (apply (if lazyi-regexp-isearch-mode #'ignore function) args)))
+                (apply (if lazy-regexp-isearch-mode #'ignore function) args)))
 
   (defun lazy-regexp-isearch-process-search-string (string message)
     "Process serch STRING and MESSAGE but with lazy regexp."
@@ -162,6 +169,7 @@
   (define-minor-mode lazy-regexp-isearch-mode
     "Regexp isearch but lazy syntax."
     :group 'user
+    :global t
     (if lazy-regexp-isearch-mode
         (when isearch-mode
           (unless isearch-regexp (isearch-toggle-regexp))
