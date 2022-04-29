@@ -1,5 +1,5 @@
 
-;;;; smartparens.el
+;;;; init-smartparens.el
 
 
 (premise init)
@@ -109,7 +109,11 @@
 
   (setq sp-ignore-modes-list
         (delete 'minibuffer-inactive-mode sp-ignore-modes-list))
-  (sp-local-pair 'minibuffer-inactive-mode "'" nil :actions nil))
+  (sp-local-pair 'minibuffer-inactive-mode "'" nil :actions nil)
+
+  (modify-minor-mode-lighter 'smartparens-mode
+                             '(" P"
+                               (:eval (if smartparens-strict-mode "/s" "")))))
 
 (overriding-set-key (kbd "C-(") #'sp-splice-sexp)
 (overriding-set-key (kbd "ESC M-8") #'sp-splice-sexp)
