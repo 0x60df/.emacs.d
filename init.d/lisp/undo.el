@@ -27,8 +27,9 @@
             :after (lambda (&rest _)
                      (if (memq pending-undo-list undo-turning-point-list)
                          (progn
-                           (setq undo-standard-cursor-color
-                                 (frame-parameter nil 'cursor-color))
+                           (unless undo-standard-cursor-color
+                             (setq undo-standard-cursor-color
+                                   (frame-parameter nil 'cursor-color)))
                            (add-hook-for-once
                             'pre-command-hook
                             (lambda ()
@@ -55,7 +56,14 @@
                        (when undo-standard-cursor-color
                          (set-frame-parameter nil 'cursor-color
                                               undo-standard-cursor-color)
-                         (setq undo-standard-cursor-color nil)))))
+                         (setq undo-standard-cursor-color nil))
+                       (add-hook-for-once
+                        'pre-command-hook
+                        (lambda ()
+                          (when (and (not (eq this-command 'undo))
+                                     (consp buffer-undo-list))
+                            (push buffer-undo-list
+                                  undo-turning-point-list)))))))
 
 
 (resolve undo)
