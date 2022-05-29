@@ -182,6 +182,17 @@ Conditions are specified by `evil-refresh-cursor-interrupt-conditions'."
 
   (evil-set-toggle-key "C-c DEL")
 
+  (define-key evil-normal-state-map (kbd "C-.") nil)
+  (define-key evil-normal-state-map (kbd "C-]") nil)
+  (define-key evil-normal-state-map (kbd "M-.") nil)
+  (define-key evil-normal-state-map (kbd "SPC") #'evil-execute-in-emacs-state)
+
+  (define-key evil-motion-state-map (kbd "C-]") nil)
+  (define-key evil-motion-state-map (kbd "<home>") nil)
+  (define-key evil-motion-state-map (kbd "<end>") nil)
+
+  (define-key evil-insert-state-map (kbd "C-q") nil)
+
   (evil-define-command evil-save-and-emacs-state (file &optional bang)
     "Saves the current buffer and toggle to emacs state."
     :repeat nil
