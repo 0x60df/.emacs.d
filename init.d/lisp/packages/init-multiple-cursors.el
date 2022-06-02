@@ -62,16 +62,11 @@
   (with-eval-after-load 'visible-mark
     (add-to-list 'mc/unsupported-minor-modes 'visible-mark-mode)))
 
-(add-hook-for-once 'after-make-terminal-functions
-                   (lambda (_)
-                     (if (display-graphic-p)
-                         (overriding-set-key (kbd "C-@") #'mc/mark-all-dwim))))
 (overriding-set-key (kbd "C-c @ @") #'mc/mark-all-dwim)
 (overriding-set-key (kbd "C-c @ e") #'mc/edit-lines)
 (overriding-set-key (kbd "C-c @ n") #'mc/mark-next-like-this)
 (overriding-set-key (kbd "C-c @ p") #'mc/mark-previous-like-this)
 (overriding-set-key (kbd "C-c @ a") #'mc/mark-all-like-this)
-(overriding-set-key (kbd "C-c @ SPC") #'set-mark-command)
 (overriding-set-key (kbd "C-c @ C-v") #'mc/cycle-forward)
 (overriding-set-key (kbd "C-c @ M-v") #'mc/cycle-backward)
 
