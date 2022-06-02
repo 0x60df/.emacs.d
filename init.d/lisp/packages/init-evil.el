@@ -181,6 +181,7 @@ Conditions are specified by `evil-refresh-cursor-interrupt-conditions'."
   (define-key evil-emacs-state-map (kbd "H-e") #'evil-exit-emacs-state)
 
   (evil-set-toggle-key "C-c DEL")
+  (evil-set-toggle-key "ESC M-RET")
 
   (define-key evil-normal-state-map (kbd "C-.") nil)
   (define-key evil-normal-state-map (kbd "C-]") nil)
