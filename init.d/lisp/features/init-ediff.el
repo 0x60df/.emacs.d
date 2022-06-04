@@ -177,5 +177,11 @@
 (overriding-set-key (kbd "C-c d b") #'ediff-buffers)
 (overriding-set-key (kbd "C-c d r") #'ediff-regions-linewise)
 
+(add-to-list 'balance-mode-key-list (kbd "C-c d f"))
+(add-to-list 'balance-mode-key-list (kbd "C-c d b"))
+(add-to-list 'balance-mode-key-list (kbd "C-c d r"))
+
+(add-to-list 'balance-mode-key-alias-alist `(,(kbd "c SPC d") . ,(kbd "c d")))
+
 
 (resolve init-ediff)
