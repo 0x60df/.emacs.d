@@ -394,7 +394,9 @@ Keymap is determined by `overriding-map-for'"
 
 (defvar overriding-global-balance-mode-map (let ((map (make-sparse-keymap)))
                                              (define-key map (kbd "ESC M-SPC")
-                                               #'balance-mode)
+                                               (lambda ()
+                                                 (interactive)
+                                                 (balance-mode)))
                                              map)
   "Overriding keymap for `global-balance-mode'.")
 
@@ -477,8 +479,10 @@ Keymap is determined by `overriding-map-for'"
                     (kbd "B") backward-command)))))
 
 (define-key overriding-balance-mode-map (kbd "h") (kbd "DEL"))
-(define-key overriding-balance-mode-map (kbd "i") #'balance-mode)
-(define-key overriding-balance-mode-map (kbd "[") #'balance-mode)
+(define-key overriding-balance-mode-map (kbd "i")
+  (lambda () (interactive) (balance-mode 0)))
+(define-key overriding-balance-mode-map (kbd "[")
+  (lambda () (interactive) (balance-mode 0)))
 (define-key overriding-balance-mode-map (kbd "R") #'replace-char)
 (define-key overriding-balance-mode-map (kbd "ESC M-SPC") #'global-balance-mode)
 
