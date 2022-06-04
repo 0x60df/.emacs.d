@@ -13,5 +13,7 @@
 (with-eval-after-load 'expand-region
   (overriding-set-key (kbd "C-M-`") #'er/contract-region))
 
+(add-to-list 'balance-mode-key-list (kbd "C-`"))
+
 
 (resolve init-expand-region)

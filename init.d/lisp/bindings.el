@@ -224,5 +224,215 @@ Keymap is determined by `overriding-map-for'"
 (overriding-set-key (kbd "C-c l l") #'mode-line-auto-show-truncated-mode)
 (overriding-set-key (kbd "C-c i f") #'show-which-function)
 
+
+
+(defvar balance-mode-key-list
+  (list (kbd "C-w")
+        (kbd "C-e")
+        (kbd "C-r")
+        (kbd "C-t")
+        (kbd "C-y")
+        (kbd "C-u")
+        (kbd "C-o")
+        (kbd "C-p")
+        (kbd "C-a")
+        (kbd "C-s")
+        (kbd "C-d")
+        (kbd "C-f")
+        (kbd "C-g")
+        (kbd "C-j")
+        (kbd "C-k")
+        (kbd "C-;")
+        (kbd "C-:")
+        (kbd "C-+")
+        (kbd "C-*")
+        (kbd "C-z")
+        (kbd "C-v")
+        (kbd "C-b")
+        (kbd "C-n")
+        (kbd "C-m")
+        (kbd "C-,")
+        (kbd "C-.")
+        (kbd "C-/")
+        (kbd "C-\\")
+        (kbd "C-<")
+        (kbd "C->")
+        (kbd "C-@")
+        (kbd "C-SPC")
+        (kbd "C-l C-c")
+        (kbd "C-l C-l")
+        (kbd "C-c C-c")
+        (kbd "C-x C-s")
+        (kbd "C-x C-f")
+        (kbd "C-x C-c")
+        (kbd "C-x C-e")
+        (kbd "C-x C-v")
+        (kbd "C-x d")
+        (kbd "C-x b")
+        (kbd "C-x [")
+        (kbd "C-x ]")
+        (kbd "C-x 1")
+        (kbd "C-x SPC")
+        (kbd "C-c ;")
+        (kbd "C-c :")
+        (kbd "C-c h v")
+        (kbd "C-c h f")
+        (kbd "C-c i d")
+        (kbd "C-c i f")
+        (kbd "C-c l m")
+        (kbd "C-c l n")
+        (kbd "C-c l b")
+        (kbd "C-c l v")
+        (kbd "C-c l i")
+        (kbd "C-c l f")
+        (kbd "C-c l c")
+        (kbd "C-c l l")
+        (kbd "C-c i f")
+        (kbd "C-c s g")
+        (kbd "C-c s l")
+        (kbd "C-c s r")
+        (kbd "C-c s z")
+        (kbd "C-c s f")
+        (kbd "C-c s o"))
+  "Key list which are implemented when `balance-mode' is enabled.")
+
+(defvar balance-mode-key-alias-alist
+  `((,(kbd "c SPC ;") . ,(kbd "c ;"))
+    (,(kbd "c SPC h") . ,(kbd "c h"))
+    (,(kbd "x SPC d") . ,(kbd "x d"))
+    (,(kbd "x SPC b") . ,(kbd "x b"))
+    (,(kbd "x SPC [") . ,(kbd "x ["))
+    (,(kbd "x SPC ]") . ,(kbd "x ]"))
+    (,(kbd "x SPC 1") . ,(kbd "x 1"))
+    (,(kbd "c SPC i") . ,(kbd "c i"))
+    (,(kbd "c SPC l") . ,(kbd "c l"))
+    (,(kbd "c SPC s") . ,(kbd "c s")))
+  "Key alias list which are defined when `balance-mode' is enabled.")
+
+(defun balance-mode-implement-keys ()
+  "Implement `balance-mode-key-list' to `overriding-balance-mode-map'."
+  (let ((balance-key-command-list
+           (mapcar
+            (lambda (key-sequence)
+              (cons (let* ((key-sequence-vector (vconcat key-sequence) )
+                           (control-sequence
+                            (if (not (zerop (length key-sequence-vector)))
+                                (memq 'control (event-modifiers
+                                                (aref key-sequence-vector 0)))))
+                           (key-list
+                            (mapcan
+                             (lambda (key)
+                               (let ((modifiers (event-modifiers key))
+                                     (basic-type (event-basic-type key)))
+                                 (if (memq 'control modifiers)
+                                     (let ((event
+                                            (event-convert-list
+                                             (append (remq 'control modifiers)
+                                                     (list basic-type)))))
+                                       (prog1 (if control-sequence
+                                                  (list event)
+                                                (list ?\s event))
+                                         (setq control-sequence t)))
+                                   (let ((event
+                                          (event-convert-list
+                                           (append modifiers
+                                                   (list basic-type)))))
+                                     (prog1 (if control-sequence
+                                                (list ?\s event)
+                                              (list event))
+                                       (setq control-sequence nil))))))
+                             key-sequence-vector)))
+                      (vconcat key-list))
+                    (key-binding key-sequence t)))
+            balance-mode-key-list)))
+      (dolist (key-command balance-key-command-list )
+        (define-key overriding-balance-mode-map
+          (car key-command) (cdr key-command)))))
+
+(defun balance-mode-alias-keys ()
+  "Define `balance-mode-key-alias-alist'."
+  (dolist (assoc balance-mode-key-alias-alist)
+    (let ((entry (lookup-key overriding-balance-mode-map (car assoc))))
+      (if (and entry (not (numberp entry)))
+          (define-key overriding-balance-mode-map (cdr assoc) entry)))))
+
+(defconst balance-mode-lighter-string " B" "Lighter string for `balance-mode'.")
+
+(defvar-local overriding-balance-mode-map (make-sparse-keymap)
+  "Overriding keymap for `balance-mode'.")
+
+(define-minor-mode balance-mode
+  "Minor mode providing key bindings without control key."
+  :group 'user
+  :lighter (:propertize balance-mode-lighter-string face mode-line-warning)
+  :keymap overriding-balance-mode-map
+  (when balance-mode
+    (balance-mode-implement-keys)
+    (balance-mode-alias-keys)))
+
+(defvar overriding-global-balance-mode-map (let ((map (make-sparse-keymap)))
+                                             (define-key map (kbd "ESC M-SPC")
+                                               #'balance-mode)
+                                             map)
+  "Overriding keymap for `global-balance-mode'.")
+
+(defvar global-balance-mode-map (make-sparse-keymap)
+  "Keymap for `global-balance-mode'.")
+
+(defun balance-mode-on ()
+  "Turn on `balance-mode'"
+  (unless (or (minibufferp)
+              (derived-mode-p 'special-mode)
+              (eq (get major-mode 'mode-class) 'special))
+    (balance-mode)))
+
+(define-globalized-minor-mode global-balance-mode balance-mode balance-mode-on
+  :group 'user)
+
+(push '(global-balance-mode . ((:eval (unless balance-mode
+                                       balance-mode-lighter-string))))
+      minor-mode-alist)
+(push `(global-balance-mode . ,global-balance-mode-map) minor-mode-map-alist)
+
+(defvar balance-mode-map-alist
+  `((balance-mode . ,overriding-balance-mode-map)
+    (global-balance-mode . ,overriding-global-balance-mode-map))
+  "Map alist for `balance-mode' added to `emulation-mode-map-alists'.")
+(add-to-list 'emulation-mode-map-alists 'balance-mode-map-alist)
+
+(push '(balance-mode . 15) mode-line-minor-mode-priority-alist)
+(push '(global-balance-mode . 15) mode-line-minor-mode-priority-alist)
+
+(advice-add 'manipulate-frame :around
+            (lambda (function &rest args)
+              (let ((binding (lookup-key overriding-balance-mode-map
+                                         (kbd "q"))))
+                (unless (numberp binding)
+                  (define-key overriding-balance-mode-map (kbd "q") nil))
+                (unwind-protect
+                    (apply function args)
+                  (unless (numberp binding)
+                    (define-key overriding-balance-mode-map
+                      (kbd "q") binding))))))
+
+(advice-add 'manipulate-window :around
+            (lambda (function &rest args)
+              (let ((binding
+                     (lookup-key overriding-balance-mode-map (kbd "q"))))
+                (unless (numberp binding)
+                  (define-key overriding-balance-mode-map (kbd "q") nil))
+                (unwind-protect
+                    (apply function args)
+                  (unless (numberp binding)
+                    (define-key overriding-balance-mode-map
+                      (kbd "q") binding))))))
+
+(define-key overriding-balance-mode-map (kbd "h") (kbd "DEL"))
+(define-key overriding-balance-mode-map (kbd "i") #'balance-mode)
+(define-key overriding-balance-mode-map (kbd "[") #'balance-mode)
+(define-key overriding-balance-mode-map (kbd "ESC M-SPC") #'global-balance-mode)
+
+(overriding-set-key (kbd "ESC M-SPC") #'global-balance-mode)
+
 
 (resolve bindings)

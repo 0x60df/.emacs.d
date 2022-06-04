@@ -124,15 +124,25 @@
             (with-eval-after-load 'smartrep
 
               ;; multiple-cursors
-              (if (init-unit-p inst-multiple-cursors)
-                  (let ((key "C-c @"))
-                    (smartrep-define-key (overriding-map-for (kbd key)) key
-                      '(("p" . mc/mark-previous-like-this)
-                        ("n" . mc/mark-next-like-this)
-                        ("P". mc/unmark-next-like-this)
-                        ("N". mc/unmark-previous-like-this)
-                        ("C-v" . mc/cycle-forward)
-                        ("M-v" . mc/cycle-backward)))))
+              (when (init-unit-p inst-multiple-cursors)
+                (let ((key "C-c @"))
+                  (smartrep-define-key (overriding-map-for (kbd key)) key
+                    '(("p" . mc/mark-previous-like-this)
+                      ("n" . mc/mark-next-like-this)
+                      ("P". mc/unmark-next-like-this)
+                      ("N". mc/unmark-previous-like-this)
+                      ("C-v" . mc/cycle-forward)
+                      ("M-v" . mc/cycle-backward))))
+                (if (init-unit-p inst-evil)
+                    (with-eval-after-load 'evil
+                      (let ((key "SPC @"))
+                        (smartrep-define-key evil-normal-state-map key
+                          '(("p" . mc/mark-previous-like-this)
+                            ("n" . mc/mark-next-like-this)
+                            ("P". mc/unmark-next-like-this)
+                            ("N". mc/unmark-previous-like-this)
+                            ("C-v" . mc/cycle-forward)
+                            ("M-v" . mc/cycle-backward)))))))
 
               ;; git-gutter
               (if (init-unit-p inst-git-gutter-fringe)

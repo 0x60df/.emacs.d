@@ -70,5 +70,15 @@
 (overriding-set-key (kbd "C-c @ C-v") #'mc/cycle-forward)
 (overriding-set-key (kbd "C-c @ M-v") #'mc/cycle-backward)
 
+(add-to-list 'balance-mode-key-list (kbd "C-c @ @"))
+(add-to-list 'balance-mode-key-list (kbd "C-c @ e"))
+(add-to-list 'balance-mode-key-list (kbd "C-c @ n"))
+(add-to-list 'balance-mode-key-list (kbd "C-c @ p"))
+(add-to-list 'balance-mode-key-list (kbd "C-c @ a"))
+(add-to-list 'balance-mode-key-list (kbd "C-c @ C-v"))
+(add-to-list 'balance-mode-key-list (kbd "C-c @ M-v"))
+
+(add-to-list 'balance-mode-key-alias-alist `(,(kbd "c SPC @") . ,(kbd "c @")))
+
 
 (resolve init-multiple-cursors)

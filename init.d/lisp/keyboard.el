@@ -3,6 +3,7 @@
 
 
 (premise init)
+(premise bindings)
 
 
 (define-key key-translation-map (kbd "<zenkaku-hankaku>") [?\C-\\])
@@ -14,6 +15,11 @@
                 #'event-apply-super-modifier))))
   (funcall form)
   (add-hook 'after-make-terminal-functions form))
+
+(define-key global-balance-mode-map (kbd "<henkan>")
+  (lambda () (interactive) (balance-mode)))
+(define-key global-balance-mode-map (kbd "<muhenkan>")
+  (lambda () (interactive) (balance-mode)))
 
 
 (resolve keyboard)

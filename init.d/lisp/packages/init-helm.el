@@ -4,6 +4,7 @@
 
 (premise init)
 (premise custom)
+(premise subr)
 (premise mode-line)
 (premise bindings)
 (premise init-ido)
@@ -84,7 +85,23 @@
   (define-key helm-command-map (kbd "C-r") #'helm-register)
   (define-key helm-command-map (kbd "C-b") #'helm-filtered-bookmarks)
   (define-key helm-command-map (kbd "C-x r b") #'helm-bookmarks)
-  (define-key helm-command-map (kbd "C-y") #'helm-show-kill-ring))
+  (define-key helm-command-map (kbd "C-y") #'helm-show-kill-ring)
+
+  (dolist (key (list (kbd "C-q C-q")
+                     (kbd "C-q C-m")
+                     (kbd "C-q M-x")
+                     (kbd "C-q C-b")
+                     (kbd "C-q C-r")
+                     (kbd "C-q C-y")
+                     (kbd "C-q i")))
+    (add-to-list 'balance-mode-key-list key))
+
+  (add-to-list 'balance-mode-key-alias-alist `(,(kbd "q SPC i") . ,(kbd "q i")))
+
+  (add-hook 'helm-cleanup-hook
+            (lambda ()
+              (add-hook-for-once 'post-command-hook
+                                 #'balance-mode-implement-keys))))
 
 (with-eval-after-load 'helm
   (define-key helm-map (kbd "TAB") #'helm-execute-persistent-action)

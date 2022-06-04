@@ -38,7 +38,20 @@
   (overriding-set-key (kbd "C-c v d") #'git-gutter:popup-hunk)
   (overriding-set-key (kbd "C-c v r") #'git-gutter:revert-hunk)
   (overriding-set-key (kbd "C-c v s") #'git-gutter:stage-hunk)
-  (overriding-set-key (kbd "C-c v SPC") #'git-gutter:mark-hunk))
+  (overriding-set-key (kbd "C-c v SPC") #'git-gutter:mark-hunk)
+
+  (add-to-list 'balance-mode-key-list (kbd "C-c v q"))
+  (add-to-list 'balance-mode-key-list (kbd "C-c v <"))
+  (add-to-list 'balance-mode-key-list (kbd "C-c v >"))
+  (add-to-list 'balance-mode-key-list (kbd "C-c v p"))
+  (add-to-list 'balance-mode-key-list (kbd "C-c v n"))
+  (add-to-list 'balance-mode-key-list (kbd "C-c v d"))
+  (add-to-list 'balance-mode-key-list (kbd "C-c v r"))
+  (add-to-list 'balance-mode-key-list (kbd "C-c v s"))
+  (add-to-list 'balance-mode-key-list (kbd "C-c v SPC"))
+
+  (add-to-list 'balance-mode-key-alias-alist
+  `(,(kbd "c SPC v") . ,(kbd "c v"))))
 
 (add-hook 'find-file-hook (lambda ()
                             (if (vc-backend (buffer-file-name))

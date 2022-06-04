@@ -49,8 +49,18 @@
                         (mode-line-format-auto-truncate
                          (list mode-line-front-space header-line-format)))))))
 
+(advice-add 'balance-mode-on :around
+            (lambda (function &rest args)
+              (unless (eq major-mode 'org-agenda-mode)
+                (apply function args))))
+
 (overriding-set-key (kbd "C-c o a") #'org-agenda)
 (overriding-set-key (kbd "C-c o c") #'org-capture)
+
+(add-to-list 'balance-mode-key-list (kbd "C-c o a"))
+(add-to-list 'balance-mode-key-list (kbd "C-c o c"))
+(add-to-list 'balance-mode-key-list (kbd "C-c C-x C-a"))
+(add-to-list 'balance-mode-key-alias-alist `(,(kbd "c SPC o") . ,(kbd "c o")))
 
 (with-eval-after-load 'org
   (define-key org-mode-map (kbd "C-c C-.") #'org-time-stamp)
