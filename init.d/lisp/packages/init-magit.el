@@ -6,6 +6,7 @@
 (premise custom)
 (premise mode-line)
 (premise bindings)
+(premise client)
 (premise init-ediff)
 (premise inst-magit)
 
@@ -53,6 +54,10 @@
 (with-eval-after-load 'magit-mode
   (add-hook 'magit-mode-hook (lambda ()
                                (setq show-trailing-whitespace nil))))
+
+(with-eval-after-load 'magit-status
+  (define-key magit-status-mode-map (kbd ",") #'other-window)
+  (define-key magit-status-mode-map (kbd ".") #'other-frame-with-server))
 
 (with-eval-after-load 'git-commit
   (add-hook 'git-commit-setup-hook #'git-commit-turn-on-flyspell))
