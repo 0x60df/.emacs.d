@@ -226,6 +226,22 @@ Keymap is determined by `overriding-map-for'"
 
 
 
+(defun setup-special-bindings-for-frame-and-window (keymap)
+  "Helper function who defines bindings on KEYMAP."
+  (define-key keymap (kbd ";") #'make-frame)
+  (define-key keymap (kbd ":") #'split-window-above)
+  (define-key keymap (kbd "+") #'delete-frame)
+  (define-key keymap (kbd "*") #'delete-other-windows)
+  (define-key keymap (kbd ",") #'other-window)
+  (define-key keymap (kbd ".") #'other-frame-with-server)
+  (define-key keymap (kbd "c") nil)
+  (define-key keymap (kbd "c ;") #'manipulate-frame)
+  (define-key keymap (kbd "c :") #'manipulate-window)
+  (define-key keymap (kbd "c .") #'pick-frame)
+  (define-key keymap (kbd "c ,") #'view-other-window))
+
+
+
 (defvar balance-mode-key-list
   (list (kbd "C-w")
         (kbd "C-e")

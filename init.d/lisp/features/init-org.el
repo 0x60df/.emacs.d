@@ -4,9 +4,6 @@
 
 (premise init)
 (premise custom)
-(premise window)
-(premise frame)
-(premise client)
 (premise mode-line)
 (premise bindings)
 
@@ -53,12 +50,7 @@
                          (list mode-line-front-space header-line-format)))))))
 
 (with-eval-after-load 'org-agenda
-  (define-key org-agenda-mode (kbd ";") #'make-frame)
-  (define-key org-agenda-mode (kbd ":") #'split-window-above)
-  (define-key org-agenda-mode (kbd "+") #'delete-frame)
-  (define-key org-agenda-mode (kbd "*") #'delete-other-windows)
-  (define-key org-agenda-mode (kbd ",") #'other-window)
-  (define-key org-agenda-mode (kbd ".") #'other-frame-with-server))
+  (setup-special-bindings-for-frame-and-window org-agenda-mode-map))
 
 (advice-add 'balance-mode-on :around
             (lambda (function &rest args)
