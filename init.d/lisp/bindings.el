@@ -273,6 +273,7 @@ Keymap is determined by `overriding-map-for'"
         (kbd "C-x ]")
         (kbd "C-x 1")
         (kbd "C-x SPC")
+        (kbd "C-c C-c")
         (kbd "C-c ;")
         (kbd "C-c :")
         (kbd "C-c h v")
