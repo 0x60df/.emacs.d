@@ -276,6 +276,8 @@ Keymap is determined by `overriding-map-for'"
         (kbd "C-c C-c")
         (kbd "C-c ;")
         (kbd "C-c :")
+        (kbd "C-c ,")
+        (kbd "C-c .")
         (kbd "C-c h v")
         (kbd "C-c h f")
         (kbd "C-c i d")
@@ -299,6 +301,9 @@ Keymap is determined by `overriding-map-for'"
 
 (defvar balance-mode-key-alias-alist
   `((,(kbd "c SPC ;") . ,(kbd "c ;"))
+    (,(kbd "c SPC :") . ,(kbd "c :"))
+    (,(kbd "c SPC ,") . ,(kbd "c ,"))
+    (,(kbd "c SPC .") . ,(kbd "c ."))
     (,(kbd "c SPC h") . ,(kbd "c h"))
     (,(kbd "x SPC d") . ,(kbd "x d"))
     (,(kbd "x SPC b") . ,(kbd "x b"))
@@ -428,9 +433,37 @@ Keymap is determined by `overriding-map-for'"
                     (define-key overriding-balance-mode-map
                       (kbd "q") binding))))))
 
+(defun replace-char ()
+  "Read char and replace the caracter under cursor."
+  (interactive)
+  (let ((new (read-char "New char: ")))
+    (save-excursion
+      (delete-char 1)
+      (insert-char new))))
+
+(add-hook 'balance-mode-hook
+          (lambda ()
+            (let ((indent-command (key-binding (kbd "C-M-\\") t)))
+              (if (and indent-command (not (numberp indent-command)))
+                  (define-key overriding-balance-mode-map
+                    (kbd "I") indent-command)))
+            (let ((save-command (key-binding (kbd "C-x C-s") t)))
+              (if (and save-command (not (numberp save-command)))
+                  (define-key overriding-balance-mode-map
+                    (kbd "S") save-command)))
+            (let ((forward-command (key-binding (kbd "C-M-f") t)))
+              (if (and forward-command (not (numberp forward-command)))
+                  (define-key overriding-balance-mode-map
+                    (kbd "F") forward-command)))
+            (let ((backward-command (key-binding (kbd "C-M-b") t)))
+              (if (and backward-command (not (numberp backward-command)))
+                  (define-key overriding-balance-mode-map
+                    (kbd "B") backward-command)))))
+
 (define-key overriding-balance-mode-map (kbd "h") (kbd "DEL"))
 (define-key overriding-balance-mode-map (kbd "i") #'balance-mode)
 (define-key overriding-balance-mode-map (kbd "[") #'balance-mode)
+(define-key overriding-balance-mode-map (kbd "R") #'replace-char)
 (define-key overriding-balance-mode-map (kbd "ESC M-SPC") #'global-balance-mode)
 
 (overriding-set-key (kbd "ESC M-SPC") #'global-balance-mode)
