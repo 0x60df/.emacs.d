@@ -7,6 +7,8 @@
 (premise mode-line)
 (premise theme)
 (premise bindings)
+(premise window)
+(premise frame)
 (premise inst-evil)
 
 (eval-when-compile (require 'evil))
@@ -168,6 +170,7 @@ Conditions are specified by `evil-refresh-cursor-interrupt-conditions'."
 
 (overriding-set-key (kbd "H-e") #'evil-mode-and-exit-emacs-state)
 (overriding-set-key (kbd "C-c DEL") #'evil-mode-and-exit-emacs-state)
+(overriding-set-key (kbd "ESC M-RET") #'evil-mode-and-exit-emacs-state)
 
 (with-eval-after-load 'evil
   (add-hook 'evil-mode-hook
@@ -186,13 +189,59 @@ Conditions are specified by `evil-refresh-cursor-interrupt-conditions'."
   (define-key evil-normal-state-map (kbd "C-.") nil)
   (define-key evil-normal-state-map (kbd "C-]") nil)
   (define-key evil-normal-state-map (kbd "M-.") nil)
-  (define-key evil-normal-state-map (kbd "SPC") #'evil-execute-in-emacs-state)
 
   (define-key evil-motion-state-map (kbd "C-]") nil)
   (define-key evil-motion-state-map (kbd "<home>") nil)
   (define-key evil-motion-state-map (kbd "<end>") nil)
 
   (define-key evil-insert-state-map (kbd "C-q") nil)
+
+  (defun manipulate-scroll-command (&optional arg)
+    "Manipulate scroll down or up command."
+    (interactive "P")
+    (catch 'quit
+      (while t
+        (let* ((key-sequence (read-key-sequence-vector "Scrolling..."))
+               (key-description (key-description key-sequence))
+               (key-binding (key-binding key-sequence)))
+          (cond ((equal key-description "f")
+                 (funcall-interactively #'scroll-up-command arg))
+                ((equal key-description "b")
+                 (funcall-interactively #'scroll-down-command arg))
+                ((or (equal key-description "q")
+                     (equal key-description "RET")
+                     (equal key-description "C-j"))
+                 (throw 'quit t))
+                ((commandp key-binding)
+                 (call-interactively key-binding)
+                 (throw 'quit t))
+                (t (throw 'quit t)))))))
+
+  (define-key evil-normal-state-map (kbd "SPC SPC")
+    #'evil-execute-in-emacs-state)
+  (define-key evil-normal-state-map (kbd "SPC q") #'evil-emacs-state)
+  (define-key evil-normal-state-map (kbd "SPC g") #'keyboard-quit)
+  (define-key evil-normal-state-map (kbd "SPC f")
+    (lambda (&optional arg)
+      (interactive "P")
+      (funcall-interactively #'scroll-up-command arg)
+      (funcall-interactively #'manipulate-scroll-command arg)))
+  (define-key evil-normal-state-map (kbd "SPC b")
+    (lambda (&optional arg)
+      (interactive "P")
+      (funcall-interactively #'scroll-down-command arg)
+      (funcall-interactively #'manipulate-scroll-command arg)))
+  (define-key evil-normal-state-map (kbd "SPC ;") #'manipulate-frame)
+  (define-key evil-normal-state-map (kbd "SPC :") #'manipulate-window)
+  (define-key evil-normal-state-map (kbd "SPC t") #'transpose-chars)
+  (define-key evil-normal-state-map (kbd "SPC @ @") #'mc/mark-all-dwim)
+  (define-key evil-normal-state-map (kbd "SPC @ e") #'mc/edit-lines)
+  (define-key evil-normal-state-map (kbd "SPC @ n") #'mc/mark-next-like-this)
+  (define-key evil-normal-state-map (kbd "SPC @ p")
+    #'mc/mark-previous-like-this)
+  (define-key evil-normal-state-map (kbd "SPC @ a") #'mc/mark-all-like-this)
+  (define-key evil-normal-state-map (kbd "SPC @ C-v") #'mc/cycle-forward)
+  (define-key evil-normal-state-map (kbd "SPC @ M-v") #'mc/cycle-backward)
 
   (evil-define-command evil-save-and-emacs-state (file &optional bang)
     "Saves the current buffer and toggle to emacs state."
