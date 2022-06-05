@@ -455,6 +455,37 @@ Keymap is determined by `overriding-map-for'"
                     (define-key overriding-balance-mode-map
                       (kbd "q") binding))))))
 
+(defcustom balance-mode-active-cursor-color (face-attribute 'cursor :background)
+  "Cursor color used while `balance-mode' is activated."
+  :group 'user
+  :type 'color)
+
+(defcustom balance-mode-inactive-cursor-color
+  (face-attribute 'cursor :background)
+  "Cursor color used while `balance-mode' is not activated."
+  :group 'user
+  :type 'color)
+
+(defun balance-mode-update-cursor-color ()
+  "Update cursor color according to the state of `balance-mode'."
+  (interactive)
+  (let ((current (frame-parameter nil 'cursor-color))
+        (trigger (if balance-mode
+                    balance-mode-inactive-cursor-color
+                  balance-mode-active-cursor-color))
+        (intent (if balance-mode
+                    balance-mode-active-cursor-color
+                  balance-mode-inactive-cursor-color)))
+    (if (string-equal current trigger)
+        (set-frame-parameter nil 'cursor-color intent))))
+
+(add-hook 'global-balance-mode-hook
+          (lambda ()
+            (if global-balance-mode
+                (add-hook 'post-command-hook #'balance-mode-update-cursor-color)
+              (remove-hook 'post-command-hook
+                           #'balance-mode-update-cursor-color))))
+
 (defun replace-char ()
   "Read char and replace the caracter under cursor."
   (interactive)

@@ -122,6 +122,9 @@ Conditions are specified by `evil-refresh-cursor-interrupt-conditions'."
 
 (with-eval-after-load 'evil
   (advice-add 'evil-refresh-cursor :around #'evil-interrupt-refresh-cursor)
+  (if (boundp 'balance-mode-active-cursor-color)
+      (add-to-list 'evil-refresh-cursor-interrupt-conditions
+                   'balance-mode))
   (if (boundp 'undo-standard-cursor-color)
       (add-to-list 'evil-refresh-cursor-interrupt-conditions
                    'undo-standard-cursor-color))

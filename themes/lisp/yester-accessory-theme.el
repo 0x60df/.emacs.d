@@ -103,6 +103,10 @@
  ;; Undo
  `(undo-turning-point-cursor-color (yester-symbol-exp yellow))
 
+ ;; Balance
+ `(balance-mode-active-cursor-color (yester-symbol-exp purple))
+ `(balance-mode-inactive-cursor-color (yester-symbol-exp red))
+
  ;; Calfw
  `(calfw-org-source-period-bgcolor (yester-symbol-exp background))
  `(calfw-org-source-period-fgcolor (yester-symbol-exp foreground))
