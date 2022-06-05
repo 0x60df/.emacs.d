@@ -275,6 +275,8 @@ Keymap is determined by `overriding-map-for'"
         (kbd "C->")
         (kbd "C-@")
         (kbd "C-SPC")
+        (kbd "C-S-n")
+        (kbd "C-S-p")
         (kbd "C-l C-c")
         (kbd "C-l C-l")
         (kbd "C-c C-c")
@@ -464,9 +466,11 @@ Keymap is determined by `overriding-map-for'"
 (add-hook 'balance-mode-hook
           (lambda ()
             (let ((indent-command (key-binding (kbd "C-M-\\") t)))
-              (if (and indent-command (not (numberp indent-command)))
-                  (define-key overriding-balance-mode-map
-                    (kbd "I") indent-command)))
+              (when (and indent-command (not (numberp indent-command)))
+                (define-key overriding-balance-mode-map
+                  (kbd "I") indent-command)
+                (define-key overriding-balance-mode-map
+                  (kbd "_") indent-command)))
             (let ((save-command (key-binding (kbd "C-x C-s") t)))
               (if (and save-command (not (numberp save-command)))
                   (define-key overriding-balance-mode-map
