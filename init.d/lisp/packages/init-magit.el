@@ -65,5 +65,10 @@
 (with-eval-after-load 'magit-ediff
   (add-hook 'magit-ediff-quit-hook #'ediff-restore-departure-frame))
 
+(advice-add 'balance-mode-on :around (lambda (function &rest args)
+                                       (unless (string-equal (buffer-name)
+                                                             "COMMIT_EDITMSG")
+                                         (apply function args))))
+
 
 (resolve init-magit)
