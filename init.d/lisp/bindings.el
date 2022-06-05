@@ -484,7 +484,8 @@ Keymap is determined by `overriding-map-for'"
             (if global-balance-mode
                 (add-hook 'post-command-hook #'balance-mode-update-cursor-color)
               (remove-hook 'post-command-hook
-                           #'balance-mode-update-cursor-color))))
+                           #'balance-mode-update-cursor-color))
+            (balance-mode-update-cursor-color)))
 
 (defun replace-char ()
   "Read char and replace the caracter under cursor."
