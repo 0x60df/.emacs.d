@@ -16,6 +16,8 @@
 (declare-function scratch-preserving-mode "scratch")
 
 (overriding-set-key (kbd "C-c b") #'scratch)
+(add-to-list 'balance-mode-key-list (kbd "C-c b"))
+(add-to-list 'balance-mode-key-alias-alist `(,(kbd "c SPC b") . ,(kbd "c b")))
 
 (with-eval-after-load 'scratch
   (add-hook 'scratch-sticking-mode-hook
@@ -38,7 +40,15 @@
   (define-key scratch-mode-map [remap kill-buffer] #'scratch-shred)
   (define-key scratch-mode-map (kbd "C-c k") #'scratch-shred)
   (overriding-set-key (kbd "C-l b s") #'scratch-shred-all)
-  (define-key scratch-mode-map (kbd "C-l b l") #'scratch-label))
+  (define-key scratch-mode-map (kbd "C-l b l") #'scratch-label)
+
+  (add-to-list 'balance-mode-key-list (kbd "C-c k"))
+  (add-to-list 'balance-mode-key-list (kbd "C-l b s"))
+  (add-to-list 'balance-mode-key-list (kbd "C-l b l"))
+  (add-to-list 'balance-mode-key-alias-alist
+               `(,(kbd "c SPC k") . ,(kbd "c k")))
+  (add-to-list 'balance-mode-key-alias-alist
+               `(,(kbd "l SPC b") . ,(kbd "l b"))))
 
 
 (resolve init-scratch)
