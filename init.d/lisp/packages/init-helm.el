@@ -101,7 +101,7 @@
   (add-hook 'helm-cleanup-hook
             (lambda ()
               (add-hook-for-once 'post-command-hook
-                                 #'balance-mode-implement-keys))))
+                                 #'balance-mode-update-keys))))
 
 (with-eval-after-load 'helm
   (define-key helm-map (kbd "TAB") #'helm-execute-persistent-action)

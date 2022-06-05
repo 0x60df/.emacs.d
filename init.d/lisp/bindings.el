@@ -335,6 +335,9 @@ Keymap is determined by `overriding-map-for'"
     (,(kbd "c SPC s") . ,(kbd "c s")))
   "Key alias list which are defined when `balance-mode' is enabled.")
 
+(defvar balance-mode-update-keys-hook nil
+  "Hook run at the last of `balance-mode-update-keys'")
+
 (defun balance-mode-implement-keys ()
   "Implement `balance-mode-key-list' to `overriding-balance-mode-map'."
   (let ((balance-key-command-list
@@ -382,6 +385,13 @@ Keymap is determined by `overriding-map-for'"
       (if (and entry (not (numberp entry)))
           (define-key overriding-balance-mode-map (cdr assoc) entry)))))
 
+(defun balance-mode-update-keys ()
+  "Update keys of `balance-mode'."
+  (interactive)
+  (balance-mode-implement-keys)
+  (balance-mode-alias-keys)
+  (run-hooks 'balance-mode-update-keys-hook))
+
 (defconst balance-mode-lighter-string " B" "Lighter string for `balance-mode'.")
 
 (defvar-local overriding-balance-mode-map (make-sparse-keymap)
@@ -392,9 +402,7 @@ Keymap is determined by `overriding-map-for'"
   :group 'user
   :lighter (:propertize balance-mode-lighter-string face mode-line-warning)
   :keymap overriding-balance-mode-map
-  (when balance-mode
-    (balance-mode-implement-keys)
-    (balance-mode-alias-keys)))
+  (if balance-mode (balance-mode-update-keys)))
 
 (defvar overriding-global-balance-mode-map (let ((map (make-sparse-keymap)))
                                              (define-key map (kbd "ESC M-SPC")
@@ -495,7 +503,7 @@ Keymap is determined by `overriding-map-for'"
       (delete-char 1)
       (insert-char new))))
 
-(add-hook 'balance-mode-hook
+(add-hook 'balance-mode-update-keys-hook
           (lambda ()
             (let ((indent-command (key-binding (kbd "C-M-\\") t)))
               (when (and indent-command (not (numberp indent-command)))
