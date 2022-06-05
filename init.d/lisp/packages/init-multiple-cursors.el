@@ -80,5 +80,7 @@
 
 (add-to-list 'balance-mode-key-alias-alist `(,(kbd "c SPC @") . ,(kbd "c @")))
 
+(add-hook 'multiple-cursors-mode-hook #'balance-mode-update-keys)
+
 
 (resolve init-multiple-cursors)
