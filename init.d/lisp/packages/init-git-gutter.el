@@ -51,7 +51,11 @@
   (add-to-list 'balance-mode-key-list (kbd "C-c v SPC"))
 
   (add-to-list 'balance-mode-key-alias-alist
-  `(,(kbd "c SPC v") . ,(kbd "c v"))))
+               `(,(kbd "c SPC v") . ,(kbd "c v")))
+
+  (when balance-mode
+    (balance-mode 0)
+    (balance-mode)))
 
 (add-hook 'find-file-hook (lambda ()
                             (if (vc-backend (buffer-file-name))
