@@ -452,9 +452,8 @@ Keymap is determined by `overriding-map-for'"
   "Minor mode providing key bindings without control key."
   :group 'user
   :lighter (:propertize balance-mode-lighter-string face mode-line-warning)
-  (if balance-mode
-      (balance-mode-update-keys)
-    (balance-mode-clean-up-keys)))
+  (if (and balance-mode (not (local-variable-p 'overriding-balance-mode-map)))
+      (balance-mode-update-keys)))
 
 (defvar global-balance-mode-map (make-sparse-keymap)
   "Keymap for `global-balance-mode'.")
