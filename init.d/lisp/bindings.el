@@ -337,6 +337,50 @@ Keymap is determined by `overriding-map-for'"
 
 (defvar balance-mode-update-keys-hook nil
   "Hook run at the last of `balance-mode-update-keys'")
+(add-hook 'balance-mode-update-keys-hook
+          (lambda ()
+            (let ((indent-command (key-binding (kbd "C-M-\\") t)))
+              (when (and indent-command (not (numberp indent-command)))
+                (define-key overriding-balance-mode-map
+                  (kbd "I") indent-command)
+                (define-key overriding-balance-mode-map
+                  (kbd "_") indent-command)))
+            (let ((save-command (key-binding (kbd "C-x C-s") t)))
+              (if (and save-command (not (numberp save-command)))
+                  (define-key overriding-balance-mode-map
+                    (kbd "S") save-command)))
+            (let ((forward-command (key-binding (kbd "C-M-f") t)))
+              (if (and forward-command (not (numberp forward-command)))
+                  (define-key overriding-balance-mode-map
+                    (kbd "F") forward-command)))
+            (let ((backward-command (key-binding (kbd "C-M-b") t)))
+              (if (and backward-command (not (numberp backward-command)))
+                  (define-key overriding-balance-mode-map
+                    (kbd "B") backward-command)))))
+
+(defvar-local overriding-balance-mode-map
+  (let ((map (make-sparse-keymap)))
+    (define-key map (kbd "h") (kbd "DEL"))
+    (define-key map (kbd "i") (lambda () (interactive) (balance-mode 0)))
+    (define-key map (kbd "[") (lambda () (interactive) (balance-mode 0)))
+    (define-key map (kbd "R") #'replace-char)
+    (define-key map (kbd "ESC M-SPC") #'global-balance-mode)
+    map)
+  "Overriding keymap for `balance-mode'.")
+
+(defvar overriding-global-balance-mode-map (let ((map (make-sparse-keymap)))
+                                             (define-key map (kbd "ESC M-SPC")
+                                               (lambda ()
+                                                 (interactive)
+                                                 (balance-mode)))
+                                             map)
+  "Overriding keymap for `global-balance-mode'.")
+
+(defvar-local balance-mode-map-alist
+  `((balance-mode . ,(default-value 'overriding-balance-mode-map))
+    (global-balance-mode . ,overriding-global-balance-mode-map))
+  "Map alist for `balance-mode' added to `emulation-mode-map-alists'.")
+(add-to-list 'emulation-mode-map-alists 'balance-mode-map-alist)
 
 (defun balance-mode-implement-keys ()
   "Implement `balance-mode-key-list' to `overriding-balance-mode-map'."
@@ -385,32 +429,31 @@ Keymap is determined by `overriding-map-for'"
       (if (and entry (not (numberp entry)))
           (define-key overriding-balance-mode-map (cdr assoc) entry)))))
 
+(defun balance-mode-clean-up-keys ()
+  "Clean up keys of `balance-mode' on current buffer."
+  (setq overriding-balance-mode-map
+        (copy-keymap (default-value 'overriding-balance-mode-map)))
+  (setq balance-mode-map-alist
+        `((balance-mode . ,overriding-balance-mode-map)
+          (global-balance-mode . ,overriding-global-balance-mode-map))))
+
 (defun balance-mode-update-keys ()
   "Update keys of `balance-mode'."
   (interactive)
+  (balance-mode-clean-up-keys)
   (balance-mode-implement-keys)
   (balance-mode-alias-keys)
   (run-hooks 'balance-mode-update-keys-hook))
 
 (defconst balance-mode-lighter-string " B" "Lighter string for `balance-mode'.")
 
-(defvar-local overriding-balance-mode-map (make-sparse-keymap)
-  "Overriding keymap for `balance-mode'.")
-
 (define-minor-mode balance-mode
   "Minor mode providing key bindings without control key."
   :group 'user
   :lighter (:propertize balance-mode-lighter-string face mode-line-warning)
-  :keymap overriding-balance-mode-map
-  (if balance-mode (balance-mode-update-keys)))
-
-(defvar overriding-global-balance-mode-map (let ((map (make-sparse-keymap)))
-                                             (define-key map (kbd "ESC M-SPC")
-                                               (lambda ()
-                                                 (interactive)
-                                                 (balance-mode)))
-                                             map)
-  "Overriding keymap for `global-balance-mode'.")
+  (if balance-mode
+      (balance-mode-update-keys)
+    (balance-mode-clean-up-keys)))
 
 (defvar global-balance-mode-map (make-sparse-keymap)
   "Keymap for `global-balance-mode'.")
@@ -429,12 +472,6 @@ Keymap is determined by `overriding-map-for'"
                                        balance-mode-lighter-string))))
       minor-mode-alist)
 (push `(global-balance-mode . ,global-balance-mode-map) minor-mode-map-alist)
-
-(defvar balance-mode-map-alist
-  `((balance-mode . ,overriding-balance-mode-map)
-    (global-balance-mode . ,overriding-global-balance-mode-map))
-  "Map alist for `balance-mode' added to `emulation-mode-map-alists'.")
-(add-to-list 'emulation-mode-map-alists 'balance-mode-map-alist)
 
 (push '(balance-mode . 15) mode-line-minor-mode-priority-alist)
 (push '(global-balance-mode . 15) mode-line-minor-mode-priority-alist)
@@ -502,35 +539,6 @@ Keymap is determined by `overriding-map-for'"
     (save-excursion
       (delete-char 1)
       (insert-char new))))
-
-(add-hook 'balance-mode-update-keys-hook
-          (lambda ()
-            (let ((indent-command (key-binding (kbd "C-M-\\") t)))
-              (when (and indent-command (not (numberp indent-command)))
-                (define-key overriding-balance-mode-map
-                  (kbd "I") indent-command)
-                (define-key overriding-balance-mode-map
-                  (kbd "_") indent-command)))
-            (let ((save-command (key-binding (kbd "C-x C-s") t)))
-              (if (and save-command (not (numberp save-command)))
-                  (define-key overriding-balance-mode-map
-                    (kbd "S") save-command)))
-            (let ((forward-command (key-binding (kbd "C-M-f") t)))
-              (if (and forward-command (not (numberp forward-command)))
-                  (define-key overriding-balance-mode-map
-                    (kbd "F") forward-command)))
-            (let ((backward-command (key-binding (kbd "C-M-b") t)))
-              (if (and backward-command (not (numberp backward-command)))
-                  (define-key overriding-balance-mode-map
-                    (kbd "B") backward-command)))))
-
-(define-key overriding-balance-mode-map (kbd "h") (kbd "DEL"))
-(define-key overriding-balance-mode-map (kbd "i")
-  (lambda () (interactive) (balance-mode 0)))
-(define-key overriding-balance-mode-map (kbd "[")
-  (lambda () (interactive) (balance-mode 0)))
-(define-key overriding-balance-mode-map (kbd "R") #'replace-char)
-(define-key overriding-balance-mode-map (kbd "ESC M-SPC") #'global-balance-mode)
 
 (overriding-set-key (kbd "ESC M-SPC") #'global-balance-mode)
 
