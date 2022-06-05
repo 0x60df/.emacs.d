@@ -285,6 +285,7 @@ Keymap is determined by `overriding-map-for'"
         (kbd "C-x C-c")
         (kbd "C-x C-e")
         (kbd "C-x C-v")
+        (kbd "C-x C-x")
         (kbd "C-x d")
         (kbd "C-x b")
         (kbd "C-x k")
