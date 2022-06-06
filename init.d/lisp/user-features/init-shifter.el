@@ -11,6 +11,14 @@
 (overriding-set-key (kbd "C-c m") #'shifter-shift-major-mode)
 (overriding-set-key (kbd "C-c n") #'shifter-shift-minor-mode)
 
+(add-to-list 'balance-mode-key-list (kbd "C-c m"))
+(add-to-list 'balance-mode-key-list (kbd "C-c n"))
+
+(add-to-list 'balance-mode-key-alias-alist
+             `(,(kbd "c SPC m") . ,(kbd "c m")))
+(add-to-list 'balance-mode-key-alias-alist
+             `(,(kbd "c SPC n") . ,(kbd "c n")))
+
 (with-eval-after-load 'shifter
   (shifter-non-volatile-hist-mode)
 
