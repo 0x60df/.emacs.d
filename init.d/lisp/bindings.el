@@ -532,6 +532,28 @@ Keymap is determined by `overriding-map-for'"
                            #'balance-mode-update-cursor-color))
             (balance-mode-update-cursor-color)))
 
+(add-hook 'balance-mode-hook
+          (lambda ()
+            (if (string-equal (buffer-name) "*scratch*")
+                (if balance-mode
+                    (progn
+                      (setq default-frame-alist
+                            (assq-delete-all 'cursor-color default-frame-alist))
+                      (push `(cursor-color . ,balance-mode-active-cursor-color)
+                            default-frame-alist))
+                  (setq default-frame-alist
+                        (assq-delete-all 'cursor-color default-frame-alist))
+                  (push `(cursor-color . ,balance-mode-inactive-cursor-color)
+                        default-frame-alist)))))
+
+(add-hook 'global-balance-mode-hook
+          (lambda ()
+            (unless global-balance-mode
+              (setq default-frame-alist
+                    (assq-delete-all 'cursor-color default-frame-alist)))))
+
+(run-with-idle-timer 0.2 t #'balance-mode-update-cursor-color)
+
 (defun replace-char ()
   "Read char and replace the caracter under cursor."
   (interactive)
