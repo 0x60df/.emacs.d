@@ -357,7 +357,15 @@ Keymap is determined by `overriding-map-for'"
             (let ((backward-command (key-binding (kbd "C-M-b") t)))
               (if (and backward-command (not (numberp backward-command)))
                   (define-key overriding-balance-mode-map
-                    (kbd "B") backward-command)))))
+                    (kbd "B") backward-command)))
+            (let ((beginning-command (key-binding (kbd "M-<") t)))
+              (if (and beginning-command (not (numberp beginning-command)))
+                  (define-key overriding-balance-mode-map
+                    (kbd "A") beginning-command)))
+            (let ((end-command (key-binding (kbd "M->") t)))
+              (if (and end-command (not (numberp end-command)))
+                  (define-key overriding-balance-mode-map
+                    (kbd "E") end-command)))))
 
 (defvar-local overriding-balance-mode-map
   (let ((map (make-sparse-keymap)))
