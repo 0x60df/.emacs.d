@@ -25,7 +25,8 @@
               (list (car key-command) (cdr key-command)
                     (lookup-key isearch-mode-map (car key-command))))
             `((,(kbd "s") . isearch-repeat-forward)
-              (,(kbd "r") . isearch-repeat-backward)))
+              (,(kbd "r") . isearch-repeat-backward)
+              (,(kbd "g") . isearch-abort)))
     "List of key, binding and its original for demi-`view-isearch-mode'.")
 
   (defvar demi-view-isearch-mode-lighter ":V"
