@@ -280,6 +280,7 @@ Keymap is determined by `overriding-map-for'"
         (kbd "C-l C-c")
         (kbd "C-l C-l")
         (kbd "C-c C-c")
+        (kbd "C-c C-k")
         (kbd "C-x C-s")
         (kbd "C-x C-f")
         (kbd "C-x C-c")
