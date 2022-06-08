@@ -1,4 +1,4 @@
-
+;;; -*- lexical-binding: t -*-
 ;;;; bindings.el
 
 
@@ -376,6 +376,12 @@ Keymap is determined by `overriding-map-for'"
     (define-key map (kbd "ESC M-SPC") #'global-balance-mode)
     map)
   "Overriding keymap for `balance-mode'.")
+
+(dolist (key '("1" "2" "3" "4" "5" "6" "7" "8" "9"))
+  (define-key overriding-balance-mode-map key
+    (lambda ()
+      (interactive)
+      (setq unread-command-events (append (kbd (concat "C-" key)) nil)))))
 
 (defvar overriding-global-balance-mode-map (let ((map (make-sparse-keymap)))
                                              (define-key map (kbd "ESC M-SPC")

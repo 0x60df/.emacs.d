@@ -53,7 +53,8 @@
              (setq unread-command-events (append (kbd (concat "s-" key)) nil)))
             (balance-mode-transient-hyper
              (setq unread-command-events (append (kbd (concat "H-" key)) nil)))
-            (t (call-interactively #'self-insert-command))))))
+            (t (setq unread-command-events
+                     (append (kbd (concat "C-" key)) nil)))))))
 
 
 (resolve keyboard)
