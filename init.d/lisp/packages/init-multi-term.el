@@ -10,6 +10,10 @@
 
 (overriding-set-key (kbd "H-t") #'multi-term)
 (overriding-set-key (kbd "C-l t") #'multi-term)
+
+(add-to-list 'balance-mode-key-list (kbd "C-l t"))
+(add-to-list 'balance-mode-key-alias-alist `(,(kbd "l SPC t") . ,(kbd "l t")))
+
 (with-eval-after-load 'multi-term
   (add-to-list 'term-unbind-key-list "C-l")
 

@@ -18,6 +18,9 @@
 (overriding-set-key (kbd "C-c #") #'flymake-mode)
 (overriding-set-key (kbd "C-l 3") #'flymake-mode)
 
+(add-to-list 'balance-mode-key-list (kbd "C-l 3"))
+(add-to-list 'balance-mode-key-alias-alist `(,(kbd "l SPC 3") . ,(kbd "l 3")))
+
 (with-eval-after-load 'flymake
   (defun flymake-show-help ()
     "Show help stirng in echo area."
@@ -72,7 +75,32 @@
     "Keymap for `flymake-mode' which overrides global overriding maps.")
 
   (push `(flymake-mode . ,overriding-flymake-mode-map)
-        overriding-reserved-key-map-alist))
+        overriding-reserved-key-map-alist)
+
+  (defvar-local balance-mode-flymake nil
+    "`flymake-mode' but t if `balance-mode' is active.")
+
+  (defvar balance-mode-overriding-flymake-mode-map
+    (let ((map (make-sparse-keymap)))
+      (define-key map (kbd "c #") (make-sparse-keymap))
+      (define-key map (kbd "c # #") #'flymake-mode)
+      (define-key map (kbd "l # n") #'flymake-goto-next-error)
+      (define-key map (kbd "l # p") #'flymake-goto-prev-error)
+
+      (define-key map (kbd "l 3") (make-sparse-keymap))
+      (define-key map (kbd "l 3 3") #'flymake-mode)
+      (define-key map (kbd "l 3 n") #'flymake-goto-next-error)
+      (define-key map (kbd "l 3 p") #'flymake-goto-prev-error)
+      map)
+    "Keymap for `flymake-mode' which overrides global overriding maps.")
+
+  (add-hook 'flymake-mode-hook (lambda ()
+                                  (if (and flymake-mode balance-mode)
+                                      (setq balance-mode-flymake t)
+                                    (setq balance-mode-flymake nil))))
+
+  (balance-mode-add-to-map-alist
+   `(balance-mode-flymake . ,balance-mode-overriding-flymake-mode-map)))
 
 
 (resolve init-flymake)

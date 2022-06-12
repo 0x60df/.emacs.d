@@ -82,7 +82,12 @@
                             (get-buffer-window eldoc--doc-buffer)))))
     (call-interactively #'eldoc-doc-buffer))
 
-  (overriding-set-key (kbd "C-l d") #'eldoc-doc-buffer-transiently))
+  (overriding-set-key (kbd "C-l d") #'eldoc-doc-buffer-transiently)
+
+  (add-to-list 'balance-mode-key-list (kbd "C-l d"))
+
+  (add-to-list 'balance-mode-key-alias-alist
+               `(,(kbd "l SPC d") . ,(kbd "l d"))))
 
 
 (resolve init-eldoc)
