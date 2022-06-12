@@ -90,9 +90,23 @@
         ("C-v" . (org-forward-heading-same-level 1))
         ("M-v" . (org-backward-heading-same-level 1)))))
 
+  ;; flymake
+  (with-eval-after-load 'flymake
+    (smartrep-define-key overriding-flymake-mode-map "C-l 3"
+      '(("n" . flymake-goto-next-error)
+        ("p" . flymake-goto-prev-error)))
+    (smartrep-define-key balance-mode-overriding-flymake-mode-map "l 3"
+      '(("n" . flymake-goto-next-error)
+        ("p" . flymake-goto-prev-error))))
+
   ;; flyspell
   (with-eval-after-load 'flyspell
-    (smartrep-define-key overriding-flyspell-mode-map "C-c $"
+    (smartrep-define-key overriding-flyspell-mode-map "C-l 4"
+       '((">" . flyspell-goto-next-error)
+         ("." . flyspell-auto-correct-word)
+         ("," . flyspell-goto-next-error)
+         (";" . flyspell-auto-correct-previous-word)))
+    (smartrep-define-key balance-mode-overriding-flyspell-mode-map "l 4"
        '((">" . flyspell-goto-next-error)
          ("." . flyspell-auto-correct-word)
          ("," . flyspell-goto-next-error)
