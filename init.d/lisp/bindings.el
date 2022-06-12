@@ -3,6 +3,7 @@
 
 
 (premise init)
+(premise subr)
 (premise simple)
 (premise risky)
 (premise window)
@@ -506,6 +507,29 @@ and set up advice to add ASSOC when initialization."
 
   (advice-add 'balance-mode-clean-up-keys :after
               (lambda (&rest _) (push assoc balance-mode-map-alist))))
+
+(defvar balance-mode-universal-argument nil
+  "Transiently t very after `universal-argument--mode' is called.")
+
+(defvar balance-mode-universal-argument-map
+  (let ((map (make-sparse-keymap)))
+    (define-key map (kbd "u") #'universal-argument-more)
+    map)
+  "`universal-argument-map' but for `balance-mode'.")
+
+(advice-add
+ 'universal-argument--mode :after
+ (lambda (&rest _)
+   (add-hook-for-once 'post-command-hook
+                      (lambda () (setq balance-mode-universal-argument nil))
+                      nil
+                      nil
+                      (lambda () (not (memq universal-argument-map
+                                            overriding-terminal-local-map))))
+   (setq balance-mode-universal-argument t)))
+
+(balance-mode-add-to-map-alist
+ `(balance-mode-universal-argument . ,balance-mode-universal-argument-map))
 
 (advice-add 'manipulate-frame :around
             (lambda (function &rest args)
