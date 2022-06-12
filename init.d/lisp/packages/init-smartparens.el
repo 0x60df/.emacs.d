@@ -129,23 +129,8 @@
              `(,(kbd "l SPC h p") . ,(kbd "l h p")))
 (add-to-list 'balance-mode-key-alias-alist `(,(kbd "l SPC p") . ,(kbd "l p")))
 
-(setq-default balance-mode-map-alist
-              (cons `(sp-show-enclosing-pair-mode
-                      . ,sp-show-enclosing-pair-mode-map)
-                    balance-mode-map-alist))
-
-(dolist (buffer (buffer-list))
-  (with-current-buffer buffer
-    (if (local-variable-p 'balance-mode-map-alist)
-        (push `(sp-show-enclosing-pair-mode
-                . ,sp-show-enclosing-pair-mode-map)
-              balance-mode-map-alist))))
-
-(advice-add 'balance-mode-clean-up-keys :after
-            (lambda (&rest _)
-              (push `(sp-show-enclosing-pair-mode
-                      . ,sp-show-enclosing-pair-mode-map)
-                    balance-mode-map-alist)))
+(balance-mode-add-to-map-alist
+ `(sp-show-enclosing-pair-mode . ,sp-show-enclosing-pair-mode-map))
 
 (add-hook 'emacs-startup-hook
           (lambda ()

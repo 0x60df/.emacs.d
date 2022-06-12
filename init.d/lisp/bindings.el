@@ -491,6 +491,22 @@ Keymap is determined by `overriding-map-for'"
 (push '(balance-mode . 15) mode-line-minor-mode-priority-alist)
 (push '(global-balance-mode . 15) mode-line-minor-mode-priority-alist)
 
+(defun balance-mode-add-to-map-alist (assoc)
+  "Add ASSOC to `balance-mode-map-alist'.
+`balance-mode-map-alist' will be initialized for each
+buffer to keep buffer local values.
+This function set default value of `balance-mode-map-alist',
+and set up advice to add ASSOC when initialization."
+  (setq-default balance-mode-map-alist (cons assoc balance-mode-map-alist))
+
+  (dolist (buffer (buffer-list))
+    (with-current-buffer buffer
+      (if (local-variable-p 'balance-mode-map-alist)
+          (push assoc balance-mode-map-alist))))
+
+  (advice-add 'balance-mode-clean-up-keys :after
+              (lambda (&rest _) (push assoc balance-mode-map-alist))))
+
 (advice-add 'manipulate-frame :around
             (lambda (function &rest args)
               (let ((binding (lookup-key overriding-balance-mode-map
