@@ -474,12 +474,17 @@ Keymap is determined by `overriding-map-for'"
 (defvar global-balance-mode-map (make-sparse-keymap)
   "Keymap for `global-balance-mode'.")
 
-(defun balance-mode-on ()
-  "Turn on `balance-mode'"
-  (unless (or (minibufferp)
-              (derived-mode-p 'special-mode)
-              (eq (get major-mode 'mode-class) 'special))
-    (balance-mode)))
+(defun balance-mode-on (&optional force)
+  "Turn on `balance-mode'.
+This function checks the context and filters some cases to
+enable `balance-mode'.
+If optional argument FORCE is non-nil, `balance-mode' is
+enabled regardless of the context."
+  (if (or force
+          (not (or (minibufferp)
+                   (derived-mode-p 'special-mode)
+                   (eq (get major-mode 'mode-class) 'special))))
+      (balance-mode)))
 
 (define-globalized-minor-mode global-balance-mode balance-mode balance-mode-on
   :group 'user)
