@@ -139,6 +139,8 @@ Keymap is determined by `overriding-map-for'"
 (overriding-set-key (kbd "C-l C-f") #'find-file-at-point)
 (overriding-set-key (kbd "C-l C-v") #'revert-buffer)
 (overriding-set-key (kbd "C-l C-c") #'save-buffers-kill-emacs)
+(overriding-set-key (kbd "C-l a") #'beginning-of-buffer)
+(overriding-set-key (kbd "C-l e") #'end-of-buffer)
 
 
 
@@ -280,6 +282,10 @@ Keymap is determined by `overriding-map-for'"
         (kbd "C-S-p")
         (kbd "C-l C-c")
         (kbd "C-l C-l")
+        (kbd "C-l C-f")
+        (kbd "C-l C-v")
+        (kbd "C-l a")
+        (kbd "C-l e")
         (kbd "C-c C-c")
         (kbd "C-c C-k")
         (kbd "C-x C-s")
@@ -333,6 +339,8 @@ Keymap is determined by `overriding-map-for'"
     (,(kbd "x SPC [") . ,(kbd "x ["))
     (,(kbd "x SPC ]") . ,(kbd "x ]"))
     (,(kbd "x SPC 1") . ,(kbd "x 1"))
+    (,(kbd "l SPC a") . ,(kbd "l a"))
+    (,(kbd "l SPC e") . ,(kbd "l e"))
     (,(kbd "c SPC i") . ,(kbd "c i"))
     (,(kbd "c SPC l") . ,(kbd "c l"))
     (,(kbd "c SPC s") . ,(kbd "c s")))
@@ -359,15 +367,7 @@ Keymap is determined by `overriding-map-for'"
             (let ((backward-command (key-binding (kbd "C-M-b") t)))
               (if (and backward-command (not (numberp backward-command)))
                   (define-key overriding-balance-mode-map
-                    (kbd "B") backward-command)))
-            (let ((beginning-command (key-binding (kbd "M-<") t)))
-              (if (and beginning-command (not (numberp beginning-command)))
-                  (define-key overriding-balance-mode-map
-                    (kbd "A") beginning-command)))
-            (let ((end-command (key-binding (kbd "M->") t)))
-              (if (and end-command (not (numberp end-command)))
-                  (define-key overriding-balance-mode-map
-                    (kbd "E") end-command)))))
+                    (kbd "B") backward-command)))))
 
 (defvar-local overriding-balance-mode-map
   (let ((map (make-sparse-keymap)))
@@ -375,6 +375,10 @@ Keymap is determined by `overriding-map-for'"
     (define-key map (kbd "i") (lambda () (interactive) (balance-mode 0)))
     (define-key map (kbd "[") (lambda () (interactive) (balance-mode 0)))
     (define-key map (kbd "R") #'replace-char)
+    (define-key map (kbd "A") (kbd "ei"))
+    (define-key map (kbd "Dd") #'kill-whole-line)
+    (define-key map (kbd "Dw") #'kill-word)
+    (define-key map (kbd "W") #'kill-ring-save)
     (define-key map (kbd "ESC M-SPC") #'global-balance-mode)
     map)
   "Overriding keymap for `balance-mode'.")
