@@ -6,12 +6,11 @@
 (premise bindings)
 (premise subr)
 
-
 (let ((form (lambda (&optional terminal)
               (define-key local-function-key-map (kbd "<zenkaku-hankaku>")
-                [?\C-\\])
+                #'event-apply-alt-modifier)
               (define-key local-function-key-map (kbd "<hiragana-katakana>")
-                [?\C-\\])
+                #'event-apply-alt-modifier)
               (define-key local-function-key-map (kbd "<henkan>")
                 #'event-apply-hyper-modifier)
               (define-key local-function-key-map (kbd "<muhenkan>")
@@ -57,6 +56,27 @@
              (setq unread-command-events (append (kbd (concat "H-" key)) nil)))
             (t (setq unread-command-events
                      (append (kbd (concat "C-" key)) nil)))))))
+
+(define-minor-mode quick-input-method-mode
+  "Enable key binding for `toggle-input-method'."
+  :group 'user
+  :global t
+  :keymap)
+
+(defvar overriding-quick-input-method-mode-map
+  (let ((map (make-sparse-keymap)))
+    (define-key map (kbd "<zenkaku-hankaku>") #'toggle-input-method)
+    (define-key map (kbd "<hiragana-katakana>") #'toggle-input-method)
+    map)
+  "Overriding keymap for `quick-input-method-mode'.")
+
+(push `(quick-input-method-mode . ,overriding-quick-input-method-mode-map)
+      overriding-reserved-key-map-alist)
+
+(overriding-set-key (kbd "ESC ESC A-<zenkaku-hankaku>")
+                    #'quick-input-method-mode)
+(overriding-set-key (kbd "ESC ESC A-<hiragana-katakana>")
+                    #'quick-input-method-mode)
 
 
 (resolve keyboard)

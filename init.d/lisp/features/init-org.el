@@ -49,6 +49,9 @@
                         (mode-line-format-auto-truncate
                          (list mode-line-front-space header-line-format)))))))
 
+(with-eval-after-load 'org
+  (add-hook 'org-mode-hook #'quick-input-method-mode))
+
 (with-eval-after-load 'org-agenda
   (setup-special-bindings-for-frame-and-window org-agenda-mode-map))
 
