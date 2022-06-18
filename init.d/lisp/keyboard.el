@@ -60,7 +60,6 @@
 (define-minor-mode quick-input-method-mode
   "Enable key binding for `toggle-input-method'."
   :group 'user
-  :global t
   :keymap)
 
 (defvar overriding-quick-input-method-mode-map
