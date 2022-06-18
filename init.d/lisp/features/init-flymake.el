@@ -98,6 +98,11 @@
                                   (if (and flymake-mode balance-mode)
                                       (setq balance-mode-flymake t)
                                     (setq balance-mode-flymake nil))))
+  (add-hook 'balance-mode-hook (lambda ()
+                                 (if balance-mode
+                                     (if flymake-mode
+                                         (setq balance-mode-flymake t))
+                                   (setq balance-mode-flymake nil))))
 
   (balance-mode-add-to-map-alist
    `(balance-mode-flymake . ,balance-mode-overriding-flymake-mode-map)))
