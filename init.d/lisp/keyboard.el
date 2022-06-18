@@ -7,9 +7,11 @@
 (premise subr)
 
 
-(define-key key-translation-map (kbd "<zenkaku-hankaku>") [?\C-\\])
-(define-key key-translation-map (kbd "<hiragana-katakana>") [?\C-\\])
 (let ((form (lambda (&optional terminal)
+              (define-key local-function-key-map (kbd "<zenkaku-hankaku>")
+                [?\C-\\])
+              (define-key local-function-key-map (kbd "<hiragana-katakana>")
+                [?\C-\\])
               (define-key local-function-key-map (kbd "<henkan>")
                 #'event-apply-hyper-modifier)
               (define-key local-function-key-map (kbd "<muhenkan>")
