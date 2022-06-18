@@ -51,6 +51,10 @@
 (overriding-set-key (kbd "C-c v c") #'magit-checkout)
 (overriding-set-key (kbd "C-c v b") #'magit-blame)
 
+(add-to-list 'balance-mode-key-list (kbd "C-c v m"))
+(add-to-list 'balance-mode-key-list (kbd "C-c v c"))
+(add-to-list 'balance-mode-key-list (kbd "C-c v b"))
+
 (with-eval-after-load 'magit-mode
   (add-hook 'magit-mode-hook (lambda ()
                                (setq show-trailing-whitespace nil))))
