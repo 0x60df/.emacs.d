@@ -57,6 +57,17 @@
             (t (setq unread-command-events
                      (append (kbd (concat "C-" key)) nil)))))))
 
+(define-key overriding-balance-mode-map (kbd "<henkan>") #'undefined)
+(define-key overriding-balance-mode-map (kbd "<muhenkan>") #'undefined)
+(define-key global-balance-mode-map (kbd "<zenkaku-hankaku>")
+  #'balance-mode)
+(define-key global-balance-mode-map (kbd "<hiragana-katakana>")
+  #'balance-mode)
+(define-key overriding-balance-mode-map (kbd "<zenkaku-hankaku>")
+  #'undefined)
+(define-key overriding-balance-mode-map (kbd "<hiragana-katakana>")
+  #'undefined)
+
 (define-minor-mode quick-input-method-mode
   "Enable key binding for `toggle-input-method'."
   :group 'user
@@ -71,6 +82,8 @@
 
 (push `(quick-input-method-mode . ,overriding-quick-input-method-mode-map)
       overriding-reserved-key-map-alist)
+(balance-mode-add-to-map-alist
+ `(quick-input-method-mode . ,overriding-quick-input-method-mode-map))
 
 (overriding-set-key (kbd "ESC ESC A-<zenkaku-hankaku>")
                     #'quick-input-method-mode)
