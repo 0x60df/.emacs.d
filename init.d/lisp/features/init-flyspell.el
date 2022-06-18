@@ -74,6 +74,11 @@
                                   (if (and flyspell-mode balance-mode)
                                       (setq balance-mode-flyspell t)
                                     (setq balance-mode-flyspell nil))))
+  (add-hook 'balance-mode-hook (lambda ()
+                                 (if balance-mode
+                                     (if flyspell-mode
+                                         (setq balance-mode-flyspell t))
+                                   (setq balance-mode-flyspell nil))))
 
   (balance-mode-add-to-map-alist
    `(balance-mode-flyspell . ,balance-mode-overriding-flyspell-mode-map)))
