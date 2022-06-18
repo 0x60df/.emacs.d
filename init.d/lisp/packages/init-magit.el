@@ -55,6 +55,8 @@
 (add-to-list 'balance-mode-key-list (kbd "C-c v c"))
 (add-to-list 'balance-mode-key-list (kbd "C-c v b"))
 
+(add-to-list 'balance-mode-key-alias-alist `(,(kbd "c SPC v") . ,(kbd "c v")))
+
 (with-eval-after-load 'magit-mode
   (add-hook 'magit-mode-hook (lambda ()
                                (setq show-trailing-whitespace nil))))

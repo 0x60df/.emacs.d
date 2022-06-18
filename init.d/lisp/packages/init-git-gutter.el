@@ -50,9 +50,6 @@
   (add-to-list 'balance-mode-key-list (kbd "C-c v s"))
   (add-to-list 'balance-mode-key-list (kbd "C-c v SPC"))
 
-  (add-to-list 'balance-mode-key-alias-alist
-               `(,(kbd "c SPC v") . ,(kbd "c v")))
-
   (when balance-mode
     (balance-mode 0)
     (balance-mode)))
