@@ -5,6 +5,7 @@
 (premise init)
 (premise subr)
 (premise mode-line)
+(premise keyboard)
 
 (defvar demi-view-isearch-mode)
 (declare-function demi-view-isearch-mode load-file-name t t)
@@ -265,7 +266,15 @@
                                (demi-view-isearch-mode
                                 demi-view-isearch-mode-lighter)
                                (lazy-regexp-isearch-mode
-                                lazy-regexp-isearch-mode-lighter))))
+                                lazy-regexp-isearch-mode-lighter)))
+
+  ;; Balance mode
+  (define-key isearch-mode-map (kbd "<henkan>") #'demi-view-isearch-mode)
+  (define-key isearch-mode-map (kbd "<muhenkan>") #'demi-view-isearch-mode)
+  (define-key isearch-mode-map (kbd "<zenkaku-hankaku>")
+    #'lazy-regexp-isearch-mode)
+  (define-key isearch-mode-map (kbd "<hiragana-katakana>")
+    #'lazy-regexp-isearch-mode))
 
 
 (resolve init-isearch)
