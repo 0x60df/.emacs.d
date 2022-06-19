@@ -97,7 +97,25 @@
     (add-to-list 'balance-mode-key-list key))
 
   (add-to-list 'balance-mode-key-alias-alist
-               `(,(kbd "q SPC i") . ,(kbd "q i"))))
+               `(,(kbd "q SPC i") . ,(kbd "q i")))
+
+  (add-hook 'balance-mode-update-keys-hook
+            (lambda ()
+              (when (or (string-equal (buffer-name) "*Messages*")
+                        (eq major-mode #'help-mode)
+                        (eq major-mode 'emacs-lisp-compilation-mode)
+                        (eq major-mode #'dired-mode)
+                        (eq major-mode 'org-agenda-mode))
+                (let ((entry (lookup-key (current-local-map) (kbd "q"))))
+                  (if (and entry (not (numberp entry)))
+                      (define-key overriding-balance-weight-mode-map
+                        (kbd "qq") entry)))
+
+                (balance-mode-implement-keys
+                 (list (kbd "C-q C-m")
+                       (kbd "C-q M-x")
+                       (kbd "C-q C-b"))
+                 overriding-balance-weight-mode-map)))))
 
 (with-eval-after-load 'helm
   (define-key helm-map (kbd "TAB") #'helm-execute-persistent-action)
