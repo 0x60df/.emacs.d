@@ -50,6 +50,31 @@
   (add-to-list 'balance-mode-key-list (kbd "C-c v s"))
   (add-to-list 'balance-mode-key-list (kbd "C-c v SPC"))
 
+  (advice-add 'balance-mode-context :filter-return
+              (lambda (ret)
+                (if (string-equal (buffer-name) "*git-gutter:diff*")
+                    #'balance-weight-mode
+                  ret)))
+
+  (add-hook 'balance-mode-update-keys-hook
+          (lambda ()
+            (when (string-equal (buffer-name) "*git-gutter:diff*")
+              (balance-mode-implement-keys
+               (list (kbd "C-n")
+                     (kbd "C-p")
+                     (kbd "C-f")
+                     (kbd "C-b")
+                     (kbd "C-a")
+                     (kbd "C-e")
+                     (kbd "C-v")
+                     (kbd "C-l a")
+                     (kbd "C-l e"))
+               overriding-balance-weight-mode-map)
+              (balance-mode-alias-keys
+               (list `(,(kbd "l SPC a") . ,(kbd "l a"))
+                     `(,(kbd "l SPC e") . ,(kbd "l e")))
+               overriding-balance-weight-mode-map))))
+
   (if (or balance-mode balance-weight-mode) (balance-mode-update-keys)))
 
 (add-hook 'find-file-hook (lambda ()
