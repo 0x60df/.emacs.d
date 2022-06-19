@@ -105,7 +105,8 @@
                         (eq major-mode #'help-mode)
                         (eq major-mode 'emacs-lisp-compilation-mode)
                         (eq major-mode #'dired-mode)
-                        (eq major-mode 'org-agenda-mode))
+                        (eq major-mode 'org-agenda-mode)
+                        (eq major-mode 'magit-status-mode))
                 (let ((entry (lookup-key (current-local-map) (kbd "q"))))
                   (if (and entry (not (numberp entry)))
                       (define-key overriding-balance-weight-mode-map
