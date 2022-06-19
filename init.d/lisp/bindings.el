@@ -626,20 +626,24 @@ and set up advice to add ASSOC when initialization."
 
 (add-hook 'balance-mode-update-keys-hook
           (lambda ()
-            (if (string-equal (buffer-name) "*Messages*")
-                (balance-mode-implement-keys
-                 (list (kbd "C-n")
-                       (kbd "C-p")
-                       (kbd "C-f")
-                       (kbd "C-b")
-                       (kbd "C-a")
-                       (kbd "C-e")
-                       (kbd "C-v")
-                       (kbd "C-s")
-                       (kbd "C-r")
-                       (kbd "C-l a")
-                       (kbd "C-l e"))
-                 overriding-balance-weight-mode-map))))
+            (when (string-equal (buffer-name) "*Messages*")
+              (balance-mode-implement-keys
+               (list (kbd "C-n")
+                     (kbd "C-p")
+                     (kbd "C-f")
+                     (kbd "C-b")
+                     (kbd "C-a")
+                     (kbd "C-e")
+                     (kbd "C-v")
+                     (kbd "C-s")
+                     (kbd "C-r")
+                     (kbd "C-l a")
+                     (kbd "C-l e"))
+               overriding-balance-weight-mode-map)
+              (balance-mode-alias-keys
+               (list `(,(kbd "l SPC a") . ,(kbd "l a"))
+                     `(,(kbd "l SPC e") . ,(kbd "l e")))
+               overriding-balance-weight-mode-map))))
 (add-hook 'balance-mode-update-keys-hook
           (lambda ()
             (if (eq major-mode #'help-mode)
