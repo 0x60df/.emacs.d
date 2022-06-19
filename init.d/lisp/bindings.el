@@ -624,6 +624,35 @@ and set up advice to add ASSOC when initialization."
                     (define-key overriding-balance-mode-map
                       (kbd "q") binding))))))
 
+(add-hook 'balance-mode-update-keys-hook
+          (lambda ()
+            (if (string-equal (buffer-name) "*Messages*")
+                (balance-mode-implement-keys
+                 (list (kbd "C-n")
+                       (kbd "C-p")
+                       (kbd "C-f")
+                       (kbd "C-b")
+                       (kbd "C-a")
+                       (kbd "C-e")
+                       (kbd "C-v")
+                       (kbd "C-s")
+                       (kbd "C-r")
+                       (kbd "C-l a")
+                       (kbd "C-l e"))
+                 overriding-balance-weight-mode-map))))
+(add-hook 'balance-mode-update-keys-hook
+          (lambda ()
+            (if (eq major-mode #'help-mode)
+                (balance-mode-implement-keys
+                 (list (kbd "C-n")
+                       (kbd "C-p")
+                       (kbd "C-f")
+                       (kbd "C-b")
+                       (kbd "C-a")
+                       (kbd "C-e")
+                       (kbd "C-v"))
+                 overriding-balance-weight-mode-map))))
+
 (defcustom balance-mode-active-cursor-color (face-attribute 'cursor :background)
   "Cursor color used while `balance-mode' is activated."
   :group 'user
