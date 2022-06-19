@@ -73,7 +73,10 @@
 
 (advice-add 'balance-mode-context :filter-return
             (lambda (ret)
-              (unless (string-equal (buffer-name) "COMMIT_EDITMSG") ret)))
+              (if (string-equal (buffer-name) "COMMIT_EDITMSG")
+                  (prog1 nil
+                    (run-with-timer 0.8 nil #'balance-mode-update-cursor-color))
+                ret)))
 
 
 (resolve init-magit)
