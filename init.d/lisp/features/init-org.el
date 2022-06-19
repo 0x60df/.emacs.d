@@ -82,6 +82,7 @@
                      (kbd "C-c l f")
                      (kbd "C-c l c")
                      (kbd "C-c l l")
+                     (kbd "C-l C-c")
                      (kbd "C-x C-f")
                      (kbd "C-x C-c")
                      (kbd "C-x d")

@@ -18,6 +18,7 @@
 
               (balance-mode-implement-keys
                (list (kbd "C-v")
+                     (kbd "C-l C-c")
                      (kbd "C-c s g")
                      (kbd "C-c s l")
                      (kbd "C-c s r")
