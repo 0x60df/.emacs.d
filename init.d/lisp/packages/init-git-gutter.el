@@ -50,9 +50,7 @@
   (add-to-list 'balance-mode-key-list (kbd "C-c v s"))
   (add-to-list 'balance-mode-key-list (kbd "C-c v SPC"))
 
-  (when balance-mode
-    (balance-mode 0)
-    (balance-mode)))
+  (if (or balance-mode balance-weight-mode) (balance-mode-update-keys)))
 
 (add-hook 'find-file-hook (lambda ()
                             (if (vc-backend (buffer-file-name))

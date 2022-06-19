@@ -55,10 +55,9 @@
 (with-eval-after-load 'org-agenda
   (setup-special-bindings-for-frame-and-window org-agenda-mode-map))
 
-(advice-add 'balance-mode-on :around
-            (lambda (function &rest args)
-              (unless (eq major-mode 'org-agenda-mode)
-                (apply function args))))
+(advice-add 'balance-mode-context :filter-return
+            (lambda (ret)
+              (if (eq major-mode #'org-agenda-mode) #'balance-weight-mode ret)))
 
 (overriding-set-key (kbd "C-c o a") #'org-agenda)
 (overriding-set-key (kbd "C-c o c") #'org-capture)

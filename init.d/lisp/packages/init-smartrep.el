@@ -170,6 +170,16 @@
                           ("d" . git-gutter:popup-hunk)
                           ("r" . git-gutter:revert-hunk)
                           ("s" . git-gutter:stage-hunk)
+                          ("q" . git-gutter:close-popup))))
+                    (let ((key "c v"))
+                      (smartrep-define-key overriding-balance-mode-map key
+                        '(("<" . git-gutter:previous-hunk)
+                          (">" . git-gutter:next-hunk)
+                          ("p" . git-gutter:previous-hunk)
+                          ("n" . git-gutter:next-hunk)
+                          ("d" . git-gutter:popup-hunk)
+                          ("r" . git-gutter:revert-hunk)
+                          ("s" . git-gutter:stage-hunk)
                           ("q" . git-gutter:close-popup))))))
 
               ;; dired-backs

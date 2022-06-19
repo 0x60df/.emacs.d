@@ -125,6 +125,9 @@ Conditions are specified by `evil-refresh-cursor-interrupt-conditions'."
   (if (boundp 'balance-mode-active-cursor-color)
       (add-to-list 'evil-refresh-cursor-interrupt-conditions
                    'balance-mode))
+  (if (boundp 'balance-mode-semi-active-cursor-color)
+      (add-to-list 'evil-refresh-cursor-interrupt-conditions
+                   'balance-weight-mode))
   (if (boundp 'undo-standard-cursor-color)
       (add-to-list 'evil-refresh-cursor-interrupt-conditions
                    'undo-standard-cursor-color))

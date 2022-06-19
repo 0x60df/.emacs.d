@@ -134,7 +134,8 @@
 
 (add-hook 'sp-show-enclosing-pair-mode-hook
           (lambda ()
-            (if (and sp-show-enclosing-pair-mode balance-mode)
+            (if (and sp-show-enclosing-pair-mode
+                     (or balance-mode balance-weight-mode))
                 (setq balance-mode-sp-show-enclosing-pair t)
               (setq balance-mode-sp-show-enclosing-pair nil))))
 

@@ -169,9 +169,9 @@
           (advice-add symbol :around #'ediff-modify-mode-line-format))
         '(ediff-strip-mode-line-format ediff-refresh-mode-lines)))
 
-(advice-add 'balance-mode-on :around (lambda (function &rest args)
-                                       (unless (eq major-mode #'ediff-mode)
-                                         (apply function args))))
+(advice-add 'balance-mode-context :filter-return
+            (lambda (ret)
+              (if (eq major-mode #'ediff-mode) #'balance-weight-mode ret)))
 
 (overriding-set-key (kbd "C-c d f") #'ediff-files)
 (overriding-set-key (kbd "C-c d b") #'ediff-buffers)
