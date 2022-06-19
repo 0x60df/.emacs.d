@@ -6,6 +6,8 @@
 (premise bindings)
 (premise mode-line)
 
+(eval-when-compile (require 'flymake))
+
 (declare-function flymake-goto-next-error "flymake")
 (declare-function flymake-goto-prev-error "flymake")
 (declare-function flymake--overlays "flymake")
@@ -20,6 +22,9 @@
 
 (add-to-list 'balance-mode-key-list (kbd "C-l 3"))
 (add-to-list 'balance-mode-key-alias-alist `(,(kbd "l SPC 3") . ,(kbd "l 3")))
+
+(defvar-local balance-mode-flymake nil
+  "`flymake-mode' but t if `balance-mode' is active.")
 
 (with-eval-after-load 'flymake
   (defun flymake-show-help ()
@@ -76,9 +81,6 @@
 
   (push `(flymake-mode . ,overriding-flymake-mode-map)
         overriding-reserved-key-map-alist)
-
-  (defvar-local balance-mode-flymake nil
-    "`flymake-mode' but t if `balance-mode' is active.")
 
   (defvar balance-mode-overriding-flymake-mode-map
     (let ((map (make-sparse-keymap)))

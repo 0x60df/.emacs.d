@@ -7,6 +7,8 @@
 (premise bindings)
 (premise inst-flycheck)
 
+(eval-when-compile (require 'flycheck))
+
 (push '(flycheck-mode . 44) mode-line-minor-mode-priority-alist)
 
 (custom-set-variables
@@ -17,6 +19,9 @@
 
 (add-to-list 'balance-mode-key-list (kbd "C-l 2"))
 (add-to-list 'balance-mode-key-alias-alist `(,(kbd "l SPC 2") . ,(kbd "l 2")))
+
+(defvar-local balance-mode-flycheck nil
+  "`flycheck-mode' but t if `balance-mode' is active.")
 
 (with-eval-after-load 'flycheck
   (defvar overriding-flycheck-mode-map
@@ -31,9 +36,6 @@
 
   (push `(flycheck-mode . ,overriding-flycheck-mode-map)
         overriding-reserved-key-map-alist)
-
-  (defvar-local balance-mode-flycheck nil
-    "`flycheck-mode' but t if `balance-mode' is active.")
 
   (defvar balance-mode-overriding-flycheck-mode-map
     (let ((map (make-sparse-keymap)))

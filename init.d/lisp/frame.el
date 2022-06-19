@@ -229,7 +229,7 @@ Otherwise, set 100."
   "Defaul value of frame width and height.")
 
 (add-hook 'after-make-terminal-functions
-          (lambda (terminal)
+          (lambda (_)
             (setq default-frame-size `(,(frame-width) . ,(frame-height)))))
 
 (defcustom monitor-margin-alist nil

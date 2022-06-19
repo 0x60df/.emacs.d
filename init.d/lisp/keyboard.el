@@ -6,7 +6,7 @@
 (premise subr)
 (premise bindings)
 
-(let ((form (lambda (&optional terminal)
+(let ((form (lambda (&optional _)
               (define-key local-function-key-map (kbd "<zenkaku-hankaku>")
                 #'event-apply-alt-modifier)
               (define-key local-function-key-map (kbd "<hiragana-katakana>")

@@ -8,13 +8,16 @@
 (premise bindings)
 (premise mode-line)
 (premise init-flyspell)
+(premise init-flymake)
 (premise inst-smartrep)
 
 (eval-when-compile
   (require 'org)
   (require 'dired)
   (require 'smerge-mode)
-  (require 'flyspell))
+  (require 'flyspell)
+  (require 'flymake)
+  (require 'evil-states))
 
 (declare-function smartrep-define-key "smartrep")
 

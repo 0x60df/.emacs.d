@@ -23,6 +23,9 @@
 (add-to-list 'balance-mode-key-list (kbd "C-l 4"))
 (add-to-list 'balance-mode-key-alias-alist `(,(kbd "l SPC 4") . ,(kbd "l 4")))
 
+(defvar-local balance-mode-flyspell nil
+  "`flyspell-mode' but t if `balance-mode' is active.")
+
 (with-eval-after-load 'flyspell
   (defvar overriding-flyspell-mode-map
     (let ((map (make-sparse-keymap)))
@@ -46,9 +49,6 @@
 
   (push `(flyspell-mode . ,overriding-flyspell-mode-map)
         overriding-reserved-key-map-alist)
-
-  (defvar-local balance-mode-flyspell nil
-    "`flyspell-mode' but t if `balance-mode' is active.")
 
   (defvar balance-mode-overriding-flyspell-mode-map
     (let ((map (make-sparse-keymap)))

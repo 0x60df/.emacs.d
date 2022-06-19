@@ -21,8 +21,10 @@
 (declare-function evil-write "evil-commands" t t)
 (declare-function evil-set-command-properties "evil-common")
 (declare-function evil-ex-define-cmd "evil-ex")
+(declare-function evil-execute-in-emacs-state "evil-commands")
 
 (declare-function evil-save-and-emacs-state load-file-name t t)
+(declare-function manipulate-scroll-command load-file-name t t)
 
 
 ;;; settings
