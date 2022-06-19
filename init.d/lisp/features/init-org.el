@@ -52,12 +52,9 @@
 (with-eval-after-load 'org
   (add-hook 'org-mode-hook #'quick-input-method-mode))
 
-(with-eval-after-load 'org-agenda
-  (setup-special-bindings-for-frame-and-window org-agenda-mode-map))
-
 (advice-add 'balance-mode-context :filter-return
             (lambda (ret)
-              (if (eq major-mode #'org-agenda-mode) #'balance-weight-mode ret)))
+              (if (eq major-mode 'org-agenda-mode) #'balance-weight-mode ret)))
 
 (overriding-set-key (kbd "C-c o a") #'org-agenda)
 (overriding-set-key (kbd "C-c o c") #'org-capture)
@@ -66,6 +63,22 @@
 (add-to-list 'balance-mode-key-list (kbd "C-c o c"))
 (add-to-list 'balance-mode-key-list (kbd "C-c C-x C-a"))
 (add-to-list 'balance-mode-key-alias-alist `(,(kbd "c SPC o") . ,(kbd "c o")))
+
+(add-hook 'balance-mode-update-keys-hook
+          (lambda ()
+            (when (eq major-mode 'org-agenda-mode)
+              (balance-mode-implement-keys
+               (list (kbd "C-c ;")
+                     (kbd "C-c :")
+                     (kbd "C-c .")
+                     (kbd "C-c ,"))
+               overriding-balance-weight-mode-map)
+              (balance-mode-alias-keys
+               (list `(,(kbd "c SPC ;") . ,(kbd "c ;"))
+                     `(,(kbd "c SPC :") . ,(kbd "c :"))
+                     `(,(kbd "c SPC .") . ,(kbd "c ."))
+                     `(,(kbd "c SPC ,") . ,(kbd "c ,")))
+               overriding-balance-weight-mode-map))))
 
 (with-eval-after-load 'org
   (define-key org-mode-map (kbd "C-c C-.") #'org-time-stamp)
