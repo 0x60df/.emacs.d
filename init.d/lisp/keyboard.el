@@ -3,8 +3,8 @@
 
 
 (premise init)
-(premise bindings)
 (premise subr)
+(premise bindings)
 
 (let ((form (lambda (&optional terminal)
               (define-key local-function-key-map (kbd "<zenkaku-hankaku>")
@@ -32,7 +32,9 @@
        (add-hook-for-once
         'post-command-hook
         (lambda () (setq balance-mode-transient-hyper nil)))))
-    (balance-mode)))
+    (if (eq (balance-mode-context) 'balance-weight-mode)
+        (balance-weight-mode)
+      (balance-mode))))
 (define-key global-balance-mode-map (kbd "<muhenkan>")
   (lambda ()
     (interactive)
@@ -43,7 +45,9 @@
        (add-hook-for-once
         'post-command-hook
         (lambda () (setq balance-mode-transient-super nil)))))
-    (balance-mode)))
+    (if (eq (balance-mode-context) 'balance-weight-mode)
+        (balance-weight-mode)
+      (balance-mode))))
 
 (dolist (key '("1" "2" "3" "4" "5" "6" "7" "8" "9"))
   (define-key overriding-balance-mode-map key
@@ -59,6 +63,16 @@
 
 (define-key overriding-balance-mode-map (kbd "<henkan>") #'undefined)
 (define-key overriding-balance-mode-map (kbd "<muhenkan>") #'undefined)
+(define-key overriding-balance-weight-mode-map (kbd "<henkan>")
+  (lambda ()
+    (interactive)
+    (balance-weight-mode 0)
+    (balance-mode)))
+(define-key overriding-balance-weight-mode-map (kbd "<muhenkan>")
+  (lambda ()
+    (interactive)
+    (balance-weight-mode 0)
+    (balance-mode)))
 (define-key global-balance-mode-map (kbd "<zenkaku-hankaku>")
   #'balance-mode)
 (define-key global-balance-mode-map (kbd "<hiragana-katakana>")

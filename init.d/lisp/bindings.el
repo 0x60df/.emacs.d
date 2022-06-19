@@ -372,8 +372,18 @@ Keymap is determined by `overriding-map-for'"
 (defvar-local overriding-balance-mode-map
   (let ((map (make-sparse-keymap)))
     (define-key map (kbd "h") (kbd "DEL"))
-    (define-key map (kbd "i") (lambda () (interactive) (balance-mode 0)))
-    (define-key map (kbd "[") (lambda () (interactive) (balance-mode 0)))
+    (define-key map (kbd "i") (lambda ()
+                                (interactive)
+                                (balance-mode 0)
+                                (if (eq (balance-mode-context)
+                                        'balance-weight-mode)
+                                    (balance-weight-mode))))
+    (define-key map (kbd "[") (lambda ()
+                                (interactive)
+                                (balance-mode 0)
+                                (if (eq (balance-mode-context)
+                                        'balance-weight-mode)
+                                    (balance-weight-mode))))
     (define-key map (kbd "R") #'replace-char)
     (define-key map (kbd "A") (kbd "ei"))
     (define-key map (kbd "Dd") #'kill-whole-line)
@@ -389,22 +399,60 @@ Keymap is determined by `overriding-map-for'"
       (interactive)
       (setq unread-command-events (append (kbd (concat "C-" key)) nil)))))
 
+(defvar balance-weight-mode-key-list
+  (list (kbd "C-;")
+        (kbd "C-:")
+        (kbd "C-+")
+        (kbd "C-*")
+        (kbd "C-,")
+        (kbd "C-.")
+        (kbd "C-<")
+        (kbd "C->"))
+  "Key list for `complementray-balance-mode'.")
+
+(defvar balance-weight-mode-key-alias-alist nil
+  "Key alias list for `balance-weight-mode'.")
+
+(defvar-local overriding-balance-weight-mode-map
+  (let ((map (make-sparse-keymap)))
+    (define-key map (kbd "i") (lambda () (interactive) (balance-weight-mode 0)))
+    (define-key map (kbd "[") (lambda () (interactive) (balance-weight-mode 0)))
+    (define-key map (kbd "ESC M-SPC") (lambda ()
+                                        (interactive)
+                                        (balance-weight-mode 0)
+                                        (balance-mode)))
+    map)
+  "Overriding keymap for `balance-weight-mode'.")
+
 (defvar overriding-global-balance-mode-map (let ((map (make-sparse-keymap)))
                                              (define-key map (kbd "ESC M-SPC")
                                                (lambda ()
                                                  (interactive)
-                                                 (balance-mode)))
+                                                 (if (eq (balance-mode-context)
+                                                         'balance-weight-mode)
+                                                     (balance-weight-mode)
+                                                   (balance-mode))))
                                              map)
   "Overriding keymap for `global-balance-mode'.")
 
 (defvar-local balance-mode-map-alist
   `((balance-mode . ,(default-value 'overriding-balance-mode-map))
+    (balance-weight-mode . ,(default-value 'overriding-balance-weight-mode-map))
     (global-balance-mode . ,overriding-global-balance-mode-map))
   "Map alist for `balance-mode' added to `emulation-mode-map-alists'.")
 (add-to-list 'emulation-mode-map-alists 'balance-mode-map-alist)
 
-(defun balance-mode-implement-keys ()
-  "Implement `balance-mode-key-list' to `overriding-balance-mode-map'."
+(defun balance-mode-context ()
+  "Return mode function symbol suit with current context.
+If there are no suitable `balance-mode' function, return nil."
+  (cond ((minibufferp nil))
+        ((or (derived-mode-p 'special-mode)
+             (eq (get major-mode 'mode-class) 'special))
+         'balance-weight-mode)
+        (t 'balance-mode)))
+
+(defun balance-mode-implement-keys (key-list keymap)
+  "Implement KEY-LIST to KEYMAP according to `balance-mode' rule."
   (let ((balance-key-command-list
            (mapcar
             (lambda (key-sequence)
@@ -438,32 +486,40 @@ Keymap is determined by `overriding-map-for'"
                              key-sequence-vector)))
                       (vconcat key-list))
                     (key-binding key-sequence t)))
-            balance-mode-key-list)))
-      (dolist (key-command balance-key-command-list )
-        (define-key overriding-balance-mode-map
-          (car key-command) (cdr key-command)))))
+            key-list)))
+      (dolist (key-command balance-key-command-list)
+        (define-key keymap (car key-command) (cdr key-command)))))
 
-(defun balance-mode-alias-keys ()
-  "Define `balance-mode-key-alias-alist'."
-  (dolist (assoc balance-mode-key-alias-alist)
-    (let ((entry (lookup-key overriding-balance-mode-map (car assoc))))
+(defun balance-mode-alias-keys (key-alias-alist keymap)
+  "Define KEY-ALIAS-ALIST in KEYMAP.."
+  (dolist (assoc key-alias-alist)
+    (let ((entry (lookup-key keymap (car assoc))))
       (if (and entry (not (numberp entry)))
-          (define-key overriding-balance-mode-map (cdr assoc) entry)))))
+          (define-key keymap (cdr assoc) entry)))))
 
 (defun balance-mode-clean-up-keys ()
   "Clean up keys of `balance-mode' on current buffer."
   (setq overriding-balance-mode-map
         (copy-keymap (default-value 'overriding-balance-mode-map)))
+  (setq overriding-balance-weight-mode-map
+        (copy-keymap (default-value 'overriding-balance-weight-mode-map)))
   (setq balance-mode-map-alist
         `((balance-mode . ,overriding-balance-mode-map)
+          (balance-weight-mode . ,overriding-balance-weight-mode-map)
           (global-balance-mode . ,overriding-global-balance-mode-map))))
 
 (defun balance-mode-update-keys ()
   "Update keys of `balance-mode'."
   (interactive)
   (balance-mode-clean-up-keys)
-  (balance-mode-implement-keys)
-  (balance-mode-alias-keys)
+  (balance-mode-implement-keys balance-mode-key-list
+                               overriding-balance-mode-map)
+  (balance-mode-alias-keys balance-mode-key-alias-alist
+                           overriding-balance-mode-map)
+  (balance-mode-implement-keys balance-weight-mode-key-list
+                               overriding-balance-weight-mode-map)
+  (balance-mode-alias-keys balance-weight-mode-key-alias-alist
+                           overriding-balance-weight-mode-map)
   (run-hooks 'balance-mode-update-keys-hook))
 
 (defconst balance-mode-lighter-string " B" "Lighter string for `balance-mode'.")
@@ -475,30 +531,34 @@ Keymap is determined by `overriding-map-for'"
   (if (and balance-mode (not (local-variable-p 'overriding-balance-mode-map)))
       (balance-mode-update-keys)))
 
+(define-minor-mode balance-weight-mode
+  "Complementary minor mode for `balance-mode'."
+  :group 'user
+  :lighter (:propertize balance-mode-lighter-string face mode-line-emphasis)
+  (if (and balance-weight-mode
+           (not (local-variable-p 'overriding-balance-weight-mode-map)))
+      (balance-mode-update-keys)))
+
 (defvar global-balance-mode-map (make-sparse-keymap)
   "Keymap for `global-balance-mode'.")
 
-(defun balance-mode-on (&optional force)
-  "Turn on `balance-mode'.
-This function checks the context and filters some cases to
-enable `balance-mode'.
-If optional argument FORCE is non-nil, `balance-mode' is
-enabled regardless of the context."
-  (if (or force
-          (not (or (minibufferp)
-                   (derived-mode-p 'special-mode)
-                   (eq (get major-mode 'mode-class) 'special))))
-      (balance-mode)))
+(defun balance-mode-on ()
+  "Turn on `balance-mode' according to `balance-mode-context'."
+  (let ((context (balance-mode-context)))
+    (cond ((eq context 'balance-mode) (balance-mode))
+          ((eq context 'balance-weight-mode) (balance-weight-mode)))))
 
 (define-globalized-minor-mode global-balance-mode balance-mode balance-mode-on
   :group 'user)
 
-(push '(global-balance-mode . ((:eval (unless balance-mode
-                                       balance-mode-lighter-string))))
+(push '(global-balance-mode . ((:eval (unless (or balance-mode
+                                                  balance-weight-mode)
+                                        balance-mode-lighter-string))))
       minor-mode-alist)
 (push `(global-balance-mode . ,global-balance-mode-map) minor-mode-map-alist)
 
 (push '(balance-mode . 15) mode-line-minor-mode-priority-alist)
+(push '(balance-weight-mode . 15) mode-line-minor-mode-priority-alist)
 (push '(global-balance-mode . 15) mode-line-minor-mode-priority-alist)
 
 (defun balance-mode-add-to-map-alist (assoc)
@@ -569,6 +629,12 @@ and set up advice to add ASSOC when initialization."
   :group 'user
   :type 'color)
 
+(defcustom balance-mode-semi-active-cursor-color
+  (face-attribute 'cursor :background)
+  "Cursor color used while `balance-weight-mode' is activated."
+  :group 'user
+  :type 'color)
+
 (defcustom balance-mode-inactive-cursor-color
   (face-attribute 'cursor :background)
   "Cursor color used while `balance-mode' is not activated."
@@ -579,13 +645,19 @@ and set up advice to add ASSOC when initialization."
   "Update cursor color according to the state of `balance-mode'."
   (interactive)
   (let ((current (frame-parameter nil 'cursor-color))
-        (trigger (if balance-mode
-                    balance-mode-inactive-cursor-color
-                  balance-mode-active-cursor-color))
-        (intent (if balance-mode
-                    balance-mode-active-cursor-color
-                  balance-mode-inactive-cursor-color)))
-    (if (string-equal current trigger)
+        (trigger (cond (balance-mode
+                        `(,balance-mode-inactive-cursor-color
+                          ,balance-mode-semi-active-cursor-color))
+                       (balance-weight-mode
+                        `(,balance-mode-inactive-cursor-color
+                          ,balance-mode-active-cursor-color))
+                       (t `(,balance-mode-semi-active-cursor-color
+                            ,balance-mode-active-cursor-color))))
+        (intent (cond (balance-mode balance-mode-active-cursor-color)
+                      (balance-weight-mode
+                       balance-mode-semi-active-cursor-color)
+                      (t balance-mode-inactive-cursor-color))))
+    (if (member current trigger)
         (set-frame-parameter nil 'cursor-color intent))))
 
 (add-hook 'global-balance-mode-hook
@@ -596,19 +668,24 @@ and set up advice to add ASSOC when initialization."
                            #'balance-mode-update-cursor-color))
             (balance-mode-update-cursor-color)))
 
-(add-hook 'balance-mode-hook
-          (lambda ()
-            (if (string-equal (buffer-name) "*scratch*")
-                (if balance-mode
-                    (progn
-                      (setq default-frame-alist
-                            (assq-delete-all 'cursor-color default-frame-alist))
-                      (push `(cursor-color . ,balance-mode-active-cursor-color)
-                            default-frame-alist))
-                  (setq default-frame-alist
-                        (assq-delete-all 'cursor-color default-frame-alist))
-                  (push `(cursor-color . ,balance-mode-inactive-cursor-color)
-                        default-frame-alist)))))
+(add-hook
+ 'balance-mode-hook
+ (lambda ()
+   (if (string-equal (buffer-name) "*scratch*")
+       (cond (balance-mode
+              (setq default-frame-alist
+                    (assq-delete-all 'cursor-color default-frame-alist))
+              (push `(cursor-color . ,balance-mode-active-cursor-color)
+                    default-frame-alist))
+             (balance-weight-mode
+              (setq default-frame-alist
+                    (assq-delete-all 'cursor-color default-frame-alist))
+              (push `(cursor-color . ,balance-mode-semi-active-cursor-color)
+                    default-frame-alist))
+             (t (setq default-frame-alist
+                      (assq-delete-all 'cursor-color default-frame-alist))
+                (push `(cursor-color . ,balance-mode-inactive-cursor-color)
+                      default-frame-alist))))))
 
 (add-hook 'global-balance-mode-hook
           (lambda ()

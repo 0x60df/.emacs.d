@@ -105,6 +105,7 @@
 
  ;; Balance
  `(balance-mode-active-cursor-color (yester-symbol-exp purple))
+ `(balance-mode-semi-active-cursor-color (yester-symbol-exp aqua))
  `(balance-mode-inactive-cursor-color (yester-symbol-exp red))
 
  ;; Calfw
