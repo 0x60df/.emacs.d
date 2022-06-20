@@ -1,4 +1,4 @@
-
+;;; -*- lexical-binding: t -*-
 ;;;; init-multiple-cursors.el
 
 
@@ -43,18 +43,36 @@
     :type 'color)
   (defvar mc-mode-cursor-color)
 
-  (advice-add-for-once 'multiple-cursors-mode
-                       :before (lambda (&rest _)
-                                 (setq mc-standard-cursor-color
-                                       (frame-parameter nil 'cursor-color))))
+  (defcustom mc-mode-with-balance-mode-cursor-color
+    (face-attribute 'cursor :background)
+    "Cursor color for `multiple-cursors-mode' with `balance-mode'."
+    :group 'user
+    :type 'color)
+  (defvar mc-mode-with-balance-mode-cursor-color)
 
-  (add-hook 'multiple-cursors-mode-hook
+  (let ((set-cursor-color
+         (lambda ()
+           (set-frame-parameter
+            nil 'cursor-color
+            (if (or balance-mode balance-weight-mode)
+                mc-mode-with-balance-mode-cursor-color
+              mc-mode-cursor-color)))))
+    (add-hook 'multiple-cursors-mode-hook
             (lambda ()
               (if multiple-cursors-mode
-                  (set-frame-parameter nil 'cursor-color mc-mode-cursor-color)
-                (if mc-standard-cursor-color
-                    (set-frame-parameter
-                     nil 'cursor-color mc-standard-cursor-color)))))
+                  (progn
+                    (unless mc-standard-cursor-color
+                      (setq mc-standard-cursor-color
+                            (frame-parameter nil 'cursor-color)))
+                    (funcall set-cursor-color)
+                    (add-hook 'balance-mode-hook set-cursor-color)
+                    (add-hook 'balance-weight-mode-hook set-cursor-color))
+                (when mc-standard-cursor-color
+                  (remove-hook 'balance-mode-hook set-cursor-color)
+                  (remove-hook 'balance-weight-mode-hook set-cursor-color)
+                  (set-frame-parameter
+                   nil 'cursor-color mc-standard-cursor-color)
+                  (setq mc-standard-cursor-color nil))))))
 
   (add-to-list 'mc/unsupported-minor-modes 'show-paren-mode)
   (with-eval-after-load 'company

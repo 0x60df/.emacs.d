@@ -120,6 +120,7 @@
  `(company-search-fail-cursor-color (yester-symbol-exp orange))
 
  ;; Multiple-cursors
- `(mc-mode-cursor-color (yester-symbol-exp orange)))
+ `(mc-mode-cursor-color (yester-symbol-exp orange))
+ `(mc-mode-with-balance-mode-cursor-color (yester-symbol-exp blue)))
 
 (provide-theme 'yester-accessory)
