@@ -131,7 +131,8 @@
   (dolist (buffer (buffer-list))
     (if (buffer-live-p buffer)
         (with-current-buffer buffer
-          (if (lookup-key overriding-balance-mode-map (kbd "<henkan>"))
+          (if (and (local-variable-p 'overriding-balance-mode-map)
+                   (lookup-key overriding-balance-mode-map (kbd "<henkan>")))
               (define-key overriding-balance-mode-map (kbd "<henkan>") nil)
             (define-key overriding-balance-mode-map (kbd "<henkan>")
               #'undefined))))))
@@ -148,7 +149,8 @@
   (dolist (buffer (buffer-list))
     (if (buffer-live-p buffer)
         (with-current-buffer buffer
-          (if (lookup-key overriding-balance-mode-map (kbd "<muhenkan>"))
+          (if (and (local-variable-p 'overriding-balance-mode-map)
+                   (lookup-key overriding-balance-mode-map (kbd "<muhenkan>")))
               (define-key overriding-balance-mode-map (kbd "<muhenkan>") nil)
             (define-key overriding-balance-mode-map (kbd "<muhenkan>")
               #'undefined))))))
@@ -165,7 +167,9 @@
   (dolist (buffer (buffer-list))
     (if (buffer-live-p buffer)
         (with-current-buffer buffer
-          (if (lookup-key overriding-balance-mode-map (kbd "<zenkaku-hankaku>"))
+          (if (and (local-variable-p 'overriding-balance-mode-map)
+                   (lookup-key overriding-balance-mode-map
+                               (kbd "<zenkaku-hankaku>")))
               (define-key overriding-balance-mode-map
                 (kbd "<zenkaku-hankaku>") nil)
             (define-key overriding-balance-mode-map (kbd "<zenkaku-hankaku>")
@@ -179,8 +183,9 @@
   (dolist (buffer (buffer-list))
     (if (buffer-live-p buffer)
         (with-current-buffer buffer
-          (if (lookup-key overriding-balance-mode-map
-                          (kbd "<hiragana-katakana>"))
+          (if (and (local-variable-p 'overriding-balance-mode-map)
+                   (lookup-key overriding-balance-mode-map
+                               (kbd "<hiragana-katakana>")))
               (define-key overriding-balance-mode-map
                 (kbd "<hiragana-katakana>") nil)
             (define-key overriding-balance-mode-map
