@@ -27,6 +27,7 @@
                     (lookup-key isearch-mode-map (car key-command))))
             `((,(kbd "s") . isearch-repeat-forward)
               (,(kbd "r") . isearch-repeat-backward)
+              (,(kbd "y") . isearch-yank-kill)
               (,(kbd "g") . isearch-abort)))
     "List of key, binding and its original for demi-`view-isearch-mode'.")
 
