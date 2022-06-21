@@ -7,6 +7,7 @@
 (premise simple)
 (premise bindings)
 (premise mode-line)
+(premise advice)
 (premise init-flyspell)
 (premise init-flymake)
 (premise inst-smartrep)
@@ -36,7 +37,22 @@
                                        face mode-line-warning)
                                      (cdr l))))
                     (t (funcall insert-before-recursive-edit-close (cdr l)))))))
-    (funcall insert-before-recursive-edit-close mode-line-modes)))
+    (funcall insert-before-recursive-edit-close mode-line-modes))
+
+  (advice-add 'smartrep-do-fun
+              :around (lambda (func-do &rest args-do)
+                        (let (err-do)
+                          (advice-add-for-once
+                           'smartrep-extract-fun
+                           :around (lambda (func-ext &rest args-ext)
+                                     (condition-case err-ext
+                                         (apply func-ext args-ext)
+                                       (error
+                                        (if (null (cdr err-ext))
+                                            (setq err-do err-ext)
+                                          (apply #'signal err-ext))))))
+                          (apply func-do args-do)
+                          (if err-do (message "%s" (car err-do)))))))
 
 (add-hook 'emacs-startup-hook (lambda () (require 'smartrep)))
 
