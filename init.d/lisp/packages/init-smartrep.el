@@ -52,10 +52,13 @@
       '(("u" . undo))))
 
   ;; navigation
-  (let ((key "ESC ESC"))
+  (let ((key "C-l"))
     (smartrep-define-key (overriding-map-for (kbd key)) key
-      '(("n" . next-line-scroll-up)
-        ("p" . previous-line-scroll-down))))
+      '(("f" . emulate-forward-word)
+        ("b" . emulate-backward-word))))
+  (let ((key "C-l"))
+    (smartrep-define-key (overriding-map-for (kbd key)) key
+      '(("v" . emulate-scroll-down-command))))
 
   ;; page
   (let ((key "C-x"))

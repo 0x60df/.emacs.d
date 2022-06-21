@@ -134,5 +134,26 @@ same character. "
           (setq success t))
       (setq search-char-in-line-matched (if success char nil)))))
 
+(defun emulate-forward-word ()
+  "Emulate `forward-word' by `call-interactively' keys."
+  (interactive)
+  (let ((func (key-binding (kbd "M-f"))))
+    (if (commandp func)
+        (call-interactively func))))
+
+(defun emulate-backward-word ()
+  "Emulate `backward-word' by `call-interactively' keys."
+  (interactive)
+  (let ((func (key-binding (kbd "M-b"))))
+    (if (commandp func)
+        (call-interactively func))))
+
+(defun emulate-scroll-down-command ()
+  "Emulate `scroll-down-command' by `call-interactively' keys."
+  (interactive)
+  (let ((func (key-binding (kbd "M-v"))))
+    (if (commandp func)
+        (call-interactively func))))
+
 
 (resolve simple)
