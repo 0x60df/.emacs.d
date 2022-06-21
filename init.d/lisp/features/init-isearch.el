@@ -266,15 +266,19 @@
                                (demi-view-isearch-mode
                                 demi-view-isearch-mode-lighter)
                                (lazy-regexp-isearch-mode
-                                lazy-regexp-isearch-mode-lighter)))
+                                lazy-regexp-isearch-mode-lighter))))
 
-  ;; Balance mode
-  (define-key isearch-mode-map (kbd "<henkan>") #'demi-view-isearch-mode)
-  (define-key isearch-mode-map (kbd "<muhenkan>") #'demi-view-isearch-mode)
-  (define-key isearch-mode-map (kbd "<zenkaku-hankaku>")
-    #'lazy-regexp-isearch-mode)
-  (define-key isearch-mode-map (kbd "<hiragana-katakana>")
-    #'lazy-regexp-isearch-mode))
+;; Balance mode
+(add-hook
+ 'jis-keys-initialize-functions
+ (lambda ()
+   (with-eval-after-load 'isearch
+     (define-key isearch-mode-map (jis-key 'henkan) #'demi-view-isearch-mode)
+     (define-key isearch-mode-map (jis-key 'muhenkan) #'demi-view-isearch-mode)
+     (define-key isearch-mode-map (jis-key 'hankaku/zenkaku)
+       #'lazy-regexp-isearch-mode)
+     (define-key isearch-mode-map (jis-key 'katakana/hiragana)
+       #'lazy-regexp-isearch-mode))))
 
 
 (resolve init-isearch)

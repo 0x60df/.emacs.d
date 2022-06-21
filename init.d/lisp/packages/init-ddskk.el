@@ -40,8 +40,6 @@
  '(skk-study-backup-file (expand-file-name "study.bak" skk-user-directory))
  '(skk-previous-completion-use-backtab t)
  '(skk-egg-like-newline t)
- '(skk-sticky-key (kbd "<henkan>"))
- '(skk-kakutei-key (kbd "<muhenkan>"))
  '(skk-status-indicator 'minor-mode)
  '(skk-compare-jisyo-size-when-saving nil)
  '(skk-latin-mode-string (propertize "SKK" 'face 'mode-line-emphasis))
@@ -56,6 +54,12 @@
  '(skk-inline-show-face nil)
  '(skk-show-candidates-always-pop-to-buffer t))
 
+(add-hook 'jis-keys-initialize-functions
+          (lambda ()
+            (custom-set-variables
+             '(skk-sticky-key (jis-key 'henkan))
+             '(skk-kakutei-key (jis-key 'muhenkan)))))
+
 
 
 ;;; mode-line
@@ -67,8 +71,16 @@
 ;;; bindings
 
 (overriding-set-key (kbd "s-\\") #'skk-mode)
-(overriding-set-key (kbd "C-<zenkaku-hankaku>") #'skk-mode)
-(overriding-set-key (kbd "C-<hiragana-katakana>") #'skk-mode)
+(add-hook 'jis-keys-initialize-functions
+          (lambda ()
+            (overriding-set-key
+             (vector (event-convert-list
+                      (append '(control) (jis-key 'hankaku/zenkaku) nil)))
+             #'skk-mode)
+            (overriding-set-key
+             (vector (event-convert-list
+                      (append '(control) (jis-key 'katakana/hiragana) nil)))
+             #'skk-mode)))
 
 
 
