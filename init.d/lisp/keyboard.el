@@ -184,72 +184,85 @@ At the end of this function,
   (interactive)
   (if (lookup-key (default-value 'overriding-balance-mode-map)
                   (jis-key 'henkan))
-      (define-key (default-value 'overriding-balance-mode-map)
-        (jis-key 'henkan) nil)
+      (progn
+        (define-key (default-value 'overriding-balance-mode-map)
+          (jis-key 'henkan) nil)
+        (dolist (buffer (buffer-list))
+          (if (buffer-live-p buffer)
+              (with-current-buffer buffer
+                (if (local-variable-p 'overriding-balance-mode-map)
+                    (define-key overriding-balance-mode-map
+                      (jis-key 'henkan) nil)))))
+        (message "Extended hyper is disabled on balance-mode"))
     (define-key (default-value 'overriding-balance-mode-map)
-      (jis-key 'henkan) #'undefined))
-  (dolist (buffer (buffer-list))
-    (if (buffer-live-p buffer)
-        (with-current-buffer buffer
-          (if (and (local-variable-p 'overriding-balance-mode-map)
-                   (lookup-key overriding-balance-mode-map (jis-key 'henkan)))
-              (define-key overriding-balance-mode-map (jis-key 'henkan) nil)
-            (define-key overriding-balance-mode-map (jis-key 'henkan)
-              #'undefined))))))
+      (jis-key 'henkan) #'undefined)
+    (dolist (buffer (buffer-list))
+      (if (buffer-live-p buffer)
+          (with-current-buffer buffer
+            (if (local-variable-p 'overriding-balance-mode-map)
+                (define-key overriding-balance-mode-map
+                  (jis-key 'henkan) #'undefined)))))
+    (message "Extended hyper is enabled on balance-mode")))
 
 (defun balance-mode-toggle-extended-super ()
   "Toggle if extended super prefix is enabled."
   (interactive)
   (if (lookup-key (default-value 'overriding-balance-mode-map)
                   (jis-key 'muhenkan))
-      (define-key (default-value 'overriding-balance-mode-map)
-        (jis-key 'muhenkan) nil)
+      (progn
+        (define-key (default-value 'overriding-balance-mode-map)
+          (jis-key 'muhenkan) nil)
+        (dolist (buffer (buffer-list))
+          (if (buffer-live-p buffer)
+              (with-current-buffer buffer
+                (if (local-variable-p 'overriding-balance-mode-map)
+                    (define-key overriding-balance-mode-map
+                      (jis-key 'muhenkan) nil)))))
+        (message "Extended super is disabled on balance-mode"))
     (define-key (default-value 'overriding-balance-mode-map)
-      (jis-key 'muhenkan) #'undefined))
-  (dolist (buffer (buffer-list))
-    (if (buffer-live-p buffer)
-        (with-current-buffer buffer
-          (if (and (local-variable-p 'overriding-balance-mode-map)
-                   (lookup-key overriding-balance-mode-map (jis-key 'muhenkan)))
-              (define-key overriding-balance-mode-map (jis-key 'muhenkan) nil)
-            (define-key overriding-balance-mode-map (jis-key 'muhenkan)
-              #'undefined))))))
+      (jis-key 'muhenkan) #'undefined)
+    (dolist (buffer (buffer-list))
+      (if (buffer-live-p buffer)
+          (with-current-buffer buffer
+            (if (local-variable-p 'overriding-balance-mode-map)
+                (define-key overriding-balance-mode-map (jis-key 'muhenkan)
+                  #'undefined)))))
+    (message "Extended super is enabled on balance-mode")))
 
 (defun balance-mode-toggle-extended-alt ()
   "Toggle if extended alt prefix is enabled."
   (interactive)
-  (if (lookup-key (default-value 'overriding-balance-mode-map)
-                  (jis-key 'hankaku/zenkaku))
-      (define-key (default-value 'overriding-balance-mode-map)
-        (jis-key 'hankaku/zenkaku) nil)
+  (if (or (lookup-key (default-value 'overriding-balance-mode-map)
+                      (jis-key 'hankaku/zenkaku))
+          (lookup-key (default-value 'overriding-balance-mode-map)
+                      (jis-key 'katakana/hiragana)))
+      (progn
+        (define-key (default-value 'overriding-balance-mode-map)
+          (jis-key 'hankaku/zenkaku) nil)
+        (define-key (default-value 'overriding-balance-mode-map)
+          (jis-key 'katakana/hiragana) nil)
+        (dolist (buffer (buffer-list))
+          (if (buffer-live-p buffer)
+              (with-current-buffer buffer
+                (when (local-variable-p 'overriding-balance-mode-map)
+                  (define-key overriding-balance-mode-map
+                    (jis-key 'hankaku/zenkaku) nil)
+                  (define-key overriding-balance-mode-map
+                    (jis-key 'katakana/hiragana) nil)))))
+        (message "Extended alt is disabled on balance-mode"))
     (define-key (default-value 'overriding-balance-mode-map)
-      (jis-key 'hankaku/zenkaku) #'undefined))
-  (dolist (buffer (buffer-list))
-    (if (buffer-live-p buffer)
-        (with-current-buffer buffer
-          (if (and (local-variable-p 'overriding-balance-mode-map)
-                   (lookup-key overriding-balance-mode-map
-                               (jis-key 'hankaku/zenkaku)))
-              (define-key overriding-balance-mode-map
-                (jis-key 'hankaku/zenkaku) nil)
-            (define-key overriding-balance-mode-map (jis-key 'hankaku/zenkaku)
-              #'undefined)))))
-  (if (lookup-key (default-value 'overriding-balance-mode-map)
-                  (jis-key 'katakana/hiragana))
-      (define-key (default-value 'overriding-balance-mode-map)
-        (jis-key 'katakana/hiragana) nil)
+      (jis-key 'hankaku/zenkaku) #'undefined)
     (define-key (default-value 'overriding-balance-mode-map)
-      (jis-key 'katakana/hiragana) #'undefined))
-  (dolist (buffer (buffer-list))
-    (if (buffer-live-p buffer)
-        (with-current-buffer buffer
-          (if (and (local-variable-p 'overriding-balance-mode-map)
-                   (lookup-key overriding-balance-mode-map
-                               (jis-key 'katakana/hiragana)))
+      (jis-key 'katakana/hiragana) #'undefined)
+    (dolist (buffer (buffer-list))
+      (if (buffer-live-p buffer)
+          (with-current-buffer buffer
+            (when (local-variable-p 'overriding-balance-mode-map)
               (define-key overriding-balance-mode-map
-                (jis-key 'katakana/hiragana) nil)
-            (define-key overriding-balance-mode-map
-              (jis-key 'katakana/hiragana) #'undefined))))))
+                (jis-key 'hankaku/zenkaku) #'undefined)
+              (define-key overriding-balance-mode-map
+                (jis-key 'katakana/hiragana) #'undefined)))))
+    (message "Extended alt is enabled on balance-mode")))
 
 (add-hook
  'jis-keys-initialize-functions
