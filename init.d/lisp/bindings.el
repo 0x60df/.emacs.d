@@ -632,6 +632,9 @@ and set up advice to add ASSOC when initialization."
                      (kbd "C-l C-c")
                      (kbd "C-l a")
                      (kbd "C-l e")
+                     (kbd "C-l f")
+                     (kbd "C-l b")
+                     (kbd "C-l v")
                      (kbd "C-x C-f")
                      (kbd "C-x C-c")
                      (kbd "C-x C-x")
@@ -660,6 +663,9 @@ and set up advice to add ASSOC when initialization."
               (balance-mode-alias-keys
                `((,(kbd "l SPC a") . ,(kbd "l a"))
                  (,(kbd "l SPC e") . ,(kbd "l e"))
+                 (,(kbd "l SPC f") . ,(kbd "l f"))
+                 (,(kbd "l SPC b") . ,(kbd "l b"))
+                 (,(kbd "l SPC v") . ,(kbd "l v"))
                  (,(kbd "x SPC d") . ,(kbd "x d"))
                  (,(kbd "x SPC b") . ,(kbd "x b"))
                  (,(kbd "x SPC k") . ,(kbd "x k"))
@@ -737,6 +743,9 @@ and set up advice to add ASSOC when initialization."
                      (kbd "C-r")
                      (kbd "C-l a")
                      (kbd "C-l e")
+                     (kbd "C-l f")
+                     (kbd "C-l b")
+                     (kbd "C-l v")
                      (kbd "C-l C-c")
                      (kbd "C-c ;")
                      (kbd "C-c :")
@@ -766,6 +775,9 @@ and set up advice to add ASSOC when initialization."
               (balance-mode-alias-keys
                `((,(kbd "l SPC a") . ,(kbd "l a"))
                  (,(kbd "l SPC e") . ,(kbd "l e"))
+                 (,(kbd "l SPC f") . ,(kbd "l f"))
+                 (,(kbd "l SPC b") . ,(kbd "l b"))
+                 (,(kbd "l SPC v") . ,(kbd "l v"))
                  (,(kbd "x SPC d") . ,(kbd "x d"))
                  (,(kbd "x SPC b") . ,(kbd "x b"))
                  (,(kbd "x SPC k") . ,(kbd "x k"))
@@ -859,6 +871,8 @@ and set up advice to add ASSOC when initialization."
       (insert-char new))))
 
 (overriding-set-key (kbd "ESC M-SPC") #'global-balance-mode)
+
+(add-hook 'emacs-startup-hook #'global-balance-mode)
 
 
 (resolve bindings)
