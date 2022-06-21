@@ -121,6 +121,6 @@
 
  ;; Multiple-cursors
  `(mc-mode-cursor-color (yester-symbol-exp orange))
- `(mc-mode-with-balance-mode-cursor-color (yester-symbol-exp blue)))
+ `(mc-mode-with-balance-mode-cursor-color (yester-symbol-exp yellow)))
 
 (provide-theme 'yester-accessory)
