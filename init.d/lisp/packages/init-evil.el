@@ -166,6 +166,19 @@ Conditions are specified by `evil-refresh-cursor-interrupt-conditions'."
 
 
 
+;;; Balance mode
+
+(advice-add 'evil-mode-and-exit-emacs-state
+             :around (lambda (func &rest args)
+                       (unless global-balance-mode (apply func args))))
+(advice-add 'evil-exit-emacs-state
+             :around (lambda (func &rest args)
+                       (unless global-balance-mode (apply func args))))
+(with-eval-after-load 'evil
+  (add-hook 'global-balance-mode-hook (lambda () (evil-emacs-state))))
+
+
+
 ;;; entry and exit
 
 (defun evil-mode-and-exit-emacs-state ()
