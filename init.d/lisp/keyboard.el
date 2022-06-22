@@ -6,18 +6,21 @@
 (premise subr)
 (premise bindings)
 
-(defvar jis-keys (list (kbd "<zenkaku-hankaku>")
+(defcustom jis-keys (list (kbd "<zenkaku-hankaku>")
                        (kbd "<muhenkan>")
                        (kbd "<henkan>")
                        (kbd "<hiragana-katakana>")
-                       nil)
+                       [])
   "The list of keys for JIS keyboard.
 Each entry represents hankaku/zenkaku, muhenkan, henkan,
 hiragana/katakana and eisu keys.
 `jis-keys--initialize' initializes JIS keys by using the
 value of this variable.  Because `jis-keys--initialize' is
 called by `after-init-hook', modification of this variable
-during loading init files take effect.")
+during loading init files take effect."
+  :group 'user
+  :type '(list
+          key-sequence key-sequence key-sequence key-sequence key-sequence))
 
 (defcustom jis-keys-initialize-functions nil
   "List of function who is called with `jis-keys--initialize'.
