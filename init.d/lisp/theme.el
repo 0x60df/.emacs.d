@@ -4,6 +4,8 @@
 
 (premise init)
 (premise custom)
+(premise subr)
+(premise frame)
 
 (custom-set-variables
  '(custom-theme-directory (concat user-emacs-directory "themes/")))
@@ -80,6 +82,28 @@ the symbol property saved-symbol-value."
                  (not val)
                  (plist-member (symbol-plist symbol) 'saved-symbol-value))
             (set symbol (car (get symbol 'saved-symbol-value))))))))
+
+
+
+(defcustom startup-theme-list '(dark-charm
+                                yester
+                                yester-accessory
+                                yester-risky-patch)
+  "List of themes that are `put-on' at the startup.
+If listed some of themes are not defined, they are skipped.
+Themes are `put-on' according to the order of the list.
+Because themes are `put-on' after initialization,
+modification on this variable during loaded init files takes
+effect."
+  :group 'user
+  :type '(repeat symbol))
+
+(let ((dress (lambda (&optional _)
+               (dolist (theme startup-theme-list)
+                 (if (memq theme (custom-available-themes)) (put-on theme))))))
+  (if (daemonp)
+      (add-hook-for-once 'after-make-terminal-functions dress -100)
+    (add-hook 'emacs-startup-hook dress -100)))
 
 
 (resolve theme)
