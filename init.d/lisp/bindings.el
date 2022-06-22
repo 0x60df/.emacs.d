@@ -875,9 +875,5 @@ and set up advice to add ASSOC when initialization."
 
 (overriding-set-key (kbd "ESC M-SPC") #'global-balance-mode)
 
-(if (daemonp)
-    (add-hook-for-once 'after-make-terminal-functions #'global-balance-mode)
-  (add-hook 'emacs-startup-hook #'global-balance-mode))
-
 
 (resolve bindings)
