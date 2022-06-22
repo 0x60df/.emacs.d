@@ -27,7 +27,7 @@
 (push '(multiple-cursors-mode . 21) mode-line-minor-mode-priority-alist)
 
 (with-eval-after-load 'multiple-cursors-core
-  (defun disable-mc-before-make-frame (&rest args)
+  (defun disable-mc-before-make-frame (&rest _args)
   "Advising `make-frame' to disable mc."
   (if multiple-cursors-mode
       (multiple-cursors-mode 0)))
