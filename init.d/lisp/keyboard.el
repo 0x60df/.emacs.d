@@ -6,17 +6,17 @@
 (premise subr)
 (premise bindings)
 
-(defconst jis-keys (list (kbd "<zenkaku-hankaku>")
-                         (kbd "<muhenkan>")
-                         (kbd "<henkan>")
-                         (kbd "<hiragana-katakana>")
-                         nil)
+(defvar jis-keys (list (kbd "<zenkaku-hankaku>")
+                       (kbd "<muhenkan>")
+                       (kbd "<henkan>")
+                       (kbd "<hiragana-katakana>")
+                       nil)
   "The list of keys for JIS keyboard.
 Each entry represents hankaku/zenkaku, muhenkan, henkan,
 hiragana/katakana and eisu keys.
 `jis-keys--initialize' initializes JIS keys by using the
-value of this constant.  Because `jis-keys--initialize' is
-called by `after-init-hook', modification of this constant
+value of this variable.  Because `jis-keys--initialize' is
+called by `after-init-hook', modification of this variable
 during loading init files take effect.")
 
 (defcustom jis-keys-initialize-functions nil
