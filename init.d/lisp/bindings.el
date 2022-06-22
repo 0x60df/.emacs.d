@@ -681,6 +681,8 @@ and set up advice to add ASSOC when initialization."
 (add-hook 'balance-mode-update-keys-hook
           (lambda ()
             (when (eq major-mode #'help-mode)
+              (define-key overriding-balance-weight-mode-map
+                (kbd "S") (key-binding (kbd "s")))
               (balance-mode-implement-keys
                (list (kbd "C-n")
                      (kbd "C-p")
@@ -689,6 +691,7 @@ and set up advice to add ASSOC when initialization."
                      (kbd "C-a")
                      (kbd "C-e")
                      (kbd "C-v")
+                     (kbd "C-s")
                      (kbd "C-l C-c")
                      (kbd "C-x C-f")
                      (kbd "C-x C-c")
