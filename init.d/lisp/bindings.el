@@ -683,6 +683,8 @@ and set up advice to add ASSOC when initialization."
             (when (eq major-mode #'help-mode)
               (define-key overriding-balance-weight-mode-map
                 (kbd "S") (key-binding (kbd "s")))
+              (define-key overriding-balance-weight-mode-map
+                (kbd "m") (kbd "RET"))
               (balance-mode-implement-keys
                (list (kbd "C-n")
                      (kbd "C-p")
