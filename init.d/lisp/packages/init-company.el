@@ -813,7 +813,13 @@ After abort, call `hippie-expand'."
   (define-key company-search-map (kbd "C-n") #'company-select-next)
   (define-key company-search-map (kbd "C-p") #'company-select-previous)
   (define-key company-search-map (kbd "<return>") #'company-complete-selection)
-  (define-key company-search-map (kbd "RET") #'company-complete-selection))
+  (define-key company-search-map (kbd "RET") #'company-complete-selection)
+
+  (add-hook 'balance-mode-hook
+            (lambda ()
+              (if balance-mode
+                  (define-key company-active-map (kbd "g") #'company-abort)
+                (define-key company-active-map (kbd "g") nil)))))
 
 
 
