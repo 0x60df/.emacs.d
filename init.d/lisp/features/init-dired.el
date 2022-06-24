@@ -17,14 +17,11 @@
                 (kbd "xx") (key-binding (kbd "x")))
 
               (define-key overriding-balance-weight-mode-map
-                (kbd "sj") (key-binding (kbd "s")))
-              (define-key overriding-balance-weight-mode-map
-                (kbd "ss") 'isearch-forward)
-              (define-key overriding-balance-weight-mode-map
-                (kbd "sr") 'isearch-forward)
+                (kbd "S") (key-binding (kbd "s")))
 
               (balance-mode-implement-keys
                (list (kbd "C-v")
+                     (kbd "C-s")
                      (kbd "C-l C-c")
                      (kbd "C-c s g")
                      (kbd "C-c s l")
