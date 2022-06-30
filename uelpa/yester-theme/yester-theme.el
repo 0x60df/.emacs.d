@@ -1073,6 +1073,28 @@
 
 
 
+   ;; Vertico
+   `(vertico-current
+     (yester-face-spec ',class :background selection))
+
+
+
+   ;; Orderless
+   `(orderless-match-face-0 (yester-face-spec ',class
+                              (night :foreground emboss)
+                              (day :weight 'bold :foreground emboss)))
+   `(orderless-match-face-1 (yester-face-spec ',class
+                              (night :foreground emboss)
+                              (day :weight 'bold :foreground emboss)))
+   `(orderless-match-face-2 (yester-face-spec ',class
+                              (night :foreground emboss)
+                              (day :weight 'bold :foreground emboss)))
+   `(orderless-match-face-3 (yester-face-spec ',class
+                              (night :foreground emboss)
+                              (day :weight 'bold :foreground emboss)))
+
+
+
    ;; Flycheck
    `(flycheck-info
      (yester-face-spec ',class :underline `(:style wave :color ,green)))

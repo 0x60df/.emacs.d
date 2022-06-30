@@ -281,12 +281,13 @@ UNIT is a literal symbol."
 (init-package expand-region)
 (init-package anzu)
 (init-package loophole)
-(init-package helm)
-(init-package helm-ls-git)
-(init-package helm-ag)
-(init-package helm-swoop)
-(init-package helm-descbinds)
-(init-package helm-projectile)
+(init-package vertico)
+(init-package savehist)
+(init-package orderless)
+(init-package consult)
+(init-package marginalia)
+(init-package embark)
+(init-package embark-consult)
 (init-package which-key)
 (init-package volatile-highlights)
 (init-package flycheck)
@@ -316,7 +317,7 @@ UNIT is a literal symbol."
 (init-package robe)
 (init-package yaml-mode)
 (init-package auctex)
-(init-package helm-bibtex)
+(init-package citar)
 (init-package ox-gfm)
 (init-package ox-qmd)
 (init-package calfw)
@@ -333,7 +334,6 @@ UNIT is a literal symbol."
 
 (init user-package)
 
-(init-package helm-frames)
 (init-package yester-theme)
 
 
