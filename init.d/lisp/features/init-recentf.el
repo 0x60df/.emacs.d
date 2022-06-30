@@ -17,5 +17,7 @@
   (setq recentf-auto-save-timer
         (run-with-idle-timer (* 60 61) t #'recentf-save-list)))
 
+(add-hook 'emacs-startup-hook #'recentf-mode)
+
 
 (resolve init-recentf)
