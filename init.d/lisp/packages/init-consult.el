@@ -1,4 +1,4 @@
-
+;;; -*- lexical-binding: t -*-
 ;;;; init-consult.el
 
 
