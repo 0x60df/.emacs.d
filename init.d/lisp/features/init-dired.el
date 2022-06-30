@@ -10,6 +10,9 @@
  '(dired-dwim-target t)
  '(dired-recursive-copies 'always))
 
+(put 'dired-do-rename 'ido 'find-file)
+(put 'dired-do-copy 'ido 'find-file)
+
 (add-hook 'balance-mode-update-keys-hook
           (lambda ()
             (when (eq major-mode #'dired-mode)
