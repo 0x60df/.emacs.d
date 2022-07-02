@@ -1095,6 +1095,36 @@
 
 
 
+   ;; Consult
+   `(consult-bookmark (yester-face-spec ',class))
+   `(consult-file (yester-face-spec ',class))
+   `(consult-key (yester-face-spec ',class :foreground aqua))
+
+
+
+   ;; Marginalia
+   `(marginalia-mode (yester-face-spec ',class
+                       (night (nil :foreground yellow)
+                              (moonlight :foreground aqua))
+                       (day (nil :foreground blue)
+                            (sunlight :foreground red))))
+   `(marginalia-size (yester-face-spec ',class :foreground comment))
+   `(marginalia-modified (yester-face-spec ',class))
+   `(marginalia-key (yester-face-spec ',class :foreground aqua))
+   `(marginalia-file-owner (yester-face-spec ',class :foreground foreground))
+   `(marginalia-file-priv-dir (yester-face-spec ',class :foreground blue))
+   `(marginalia-file-priv-exec (yester-face-spec ',class :foreground green))
+   `(marginalia-file-priv-link (yester-face-spec ',class :foreground aqua))
+   `(marginalia-file-priv-no (yester-face-spec ',class :foreground foreground))
+   `(marginalia-file-priv-other (yester-face-spec ',class :foreground purple))
+   `(marginalia-file-priv-rare (yester-face-spec ',class :foreground orange))
+   `(marginalia-file-priv-read (yester-face-spec ',class
+                                 :foreground foreground))
+   `(marginalia-file-priv-write (yester-face-spec ',class
+                                  :foreground foreground))
+
+
+
    ;; Flycheck
    `(flycheck-info
      (yester-face-spec ',class :underline `(:style wave :color ,green)))
