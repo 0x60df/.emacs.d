@@ -1125,6 +1125,11 @@
 
 
 
+   ;; Embark
+   `(embark-keybinding (yester-face-spec ',class))
+
+
+
    ;; Flycheck
    `(flycheck-info
      (yester-face-spec ',class :underline `(:style wave :color ,green)))
