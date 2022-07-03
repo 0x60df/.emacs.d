@@ -338,7 +338,8 @@ Keymap is determined by `overriding-map-for'"
     (,(kbd "l SPC v") . ,(kbd "l v"))
     (,(kbd "c SPC i") . ,(kbd "c i"))
     (,(kbd "c SPC l") . ,(kbd "c l"))
-    (,(kbd "c SPC s") . ,(kbd "c s")))
+    (,(kbd "c SPC s") . ,(kbd "c s"))
+    (,(kbd "x c") . ,(kbd "C")))
   "Key alias list which are defined when `balance-mode' is enabled.")
 
 (defvar-local overriding-balance-mode-map
@@ -361,6 +362,7 @@ Keymap is determined by `overriding-map-for'"
     (define-key map (kbd "Dd") #'kill-whole-line)
     (define-key map (kbd "Dw") #'kill-word)
     (define-key map (kbd "W") #'kill-ring-save)
+    (define-key map (kbd "H") #'help-command)
     (define-key map (kbd "lF") #'find-file-at-point)
     (define-key map (kbd "lV") #'revert-buffer)
     (define-key map (kbd "S-SPC") (lambda (arg)
