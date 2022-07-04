@@ -155,5 +155,28 @@ same character. "
     (if (commandp func)
         (call-interactively func))))
 
+(defcustom auto-overwrite-time 1.0
+  "Time for performing auto overwrite."
+  :group 'user
+  :type 'float)
+
+(defvar-local auto-overwrite-timer nil "Idle timer for auto overwrite.")
+
+(define-minor-mode auto-overwrite-mode
+  "Minor mode for overwrite buffer automatically."
+  :lighter (:propertize " AOvw" face mode-line-warning)
+  :group 'user
+  (if (timerp auto-overwrite-timer) (cancel-timer auto-overwrite-timer))
+  (if auto-overwrite-mode
+      (setq auto-overwrite-timer (run-with-idle-timer
+                                  auto-overwrite-time
+                                  t
+                                  (lambda (buffer)
+                                    (with-current-buffer buffer
+                                      (if (and buffer-file-name
+                                               (not buffer-read-only))
+                                          (save-buffer))))
+                                  (current-buffer)))))
+
 
 (resolve simple)
