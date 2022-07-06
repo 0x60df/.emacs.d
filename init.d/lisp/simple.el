@@ -155,7 +155,7 @@ same character. "
     (if (commandp func)
         (call-interactively func))))
 
-(defcustom auto-overwrite-time 1.0
+(defcustom auto-overwrite-time 0.5
   "Time for performing auto overwrite."
   :group 'user
   :type 'float)
