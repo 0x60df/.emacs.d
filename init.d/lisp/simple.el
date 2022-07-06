@@ -155,28 +155,57 @@ same character. "
     (if (commandp func)
         (call-interactively func))))
 
-(defcustom auto-overwrite-time 0.5
-  "Time for performing auto overwrite."
-  :group 'user
-  :type 'float)
+(defvar-local auto-overwrite-time 0.5 "Time for performing auto overwrite.")
 
 (defvar-local auto-overwrite-timer nil "Idle timer for auto overwrite.")
+
+(defun auto-overwrite-set-time (seconds)
+  "Set `auto-overwrite-time'."
+  (interactive
+   `(,(read-number (format "%.1f seconds to: " auto-overwrite-time))))
+  (setq auto-overwrite-time seconds))
+
+(defun auto-overwrite--start-timer (&rest _)
+  "Start timer for auto overwrite."
+  (if (timerp auto-overwrite-timer) (cancel-timer auto-overwrite-timer))
+  (setq auto-overwrite-timer
+        (run-with-timer
+         auto-overwrite-time
+         nil
+         (lambda (buffer)
+           (with-current-buffer buffer
+             (if (and buffer-file-name (not buffer-read-only))
+                 (let ((message (current-message))
+                       (postscript (format "Overwrote %s" buffer-file-name)))
+                   (let ((inhibit-message t)) (save-buffer))
+                   (let ((message-truncate-lines
+                          (<= (length message) (frame-width (selected-frame)))))
+                     (message
+                      (if message
+                          (concat message
+                                  (propertize (concat " --- " postscript)
+                                              'face 'warning))
+                        postscript)))))))
+         (current-buffer))))
+
+(defun auto-overwrite--postpone-timer ()
+  "Postpone timer for auto overwrite."
+  (if (timerp auto-overwrite-timer)
+      (timer-set-time
+       auto-overwrite-timer
+       (timer-relative-time (current-time) auto-overwrite-time))))
 
 (define-minor-mode auto-overwrite-mode
   "Minor mode for overwrite buffer automatically."
   :lighter (:propertize " AOvw" face mode-line-warning)
   :group 'user
-  (if (timerp auto-overwrite-timer) (cancel-timer auto-overwrite-timer))
   (if auto-overwrite-mode
-      (setq auto-overwrite-timer (run-with-idle-timer
-                                  auto-overwrite-time
-                                  t
-                                  (lambda (buffer)
-                                    (with-current-buffer buffer
-                                      (if (and buffer-file-name
-                                               (not buffer-read-only))
-                                          (save-buffer))))
-                                  (current-buffer)))))
+      (progn
+        (add-hook 'after-change-functions #'auto-overwrite--start-timer nil t)
+        (add-hook 'pre-command-hook #'auto-overwrite--postpone-timer nil t))
+    (if (timerp auto-overwrite-timer) (cancel-timer auto-overwrite-timer))
+    (remove-hook 'after-change-functions #'auto-overwrite--start-timer t)
+    (remove-hook 'pre-command-hook #'auto-overwrite--postpone-timer t)))
 
 
 (resolve simple)
