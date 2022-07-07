@@ -4,6 +4,7 @@
 
 (premise init)
 (premise custom)
+(premise simple)
 (premise client)
 (premise feature)
 
@@ -252,6 +253,7 @@ Each element looks like (mode-variable . priority)
   :type '(repeat sexp)
   :group 'user)
 
+(push '(auto-overwrite-mode . 40) mode-line-minor-mode-priority-alist)
 (push '(auto-fill-function . 49) mode-line-minor-mode-priority-alist)
 
 (defun mode-line-sort-alist (alist-by-symbol priority-alist)
