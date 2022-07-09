@@ -182,11 +182,15 @@ At the end of this function,
 
 
 
-(defun balance-mode-toggle-extended-hyper ()
-  "Toggle if extended hyper prefix is enabled."
+(defun balance-mode-toggle-extended-hyper (&optional force)
+  "Toggle if extended hyper prefix is enabled.
+If optional argument FORCE is t, enabling is forced.
+If FORCE is other non-nil value, disabling is forced."
   (interactive)
-  (if (lookup-key (default-value 'overriding-balance-mode-map)
-                  (jis-key 'henkan))
+  (if (and (null (eq force t))
+           (or force
+               (lookup-key (default-value 'overriding-balance-mode-map)
+                           (jis-key 'henkan))))
       (progn
         (define-key (default-value 'overriding-balance-mode-map)
           (jis-key 'henkan) nil)
@@ -207,11 +211,15 @@ At the end of this function,
                   (jis-key 'henkan) #'undefined)))))
     (message "Extended hyper is enabled on balance-mode")))
 
-(defun balance-mode-toggle-extended-super ()
-  "Toggle if extended super prefix is enabled."
+(defun balance-mode-toggle-extended-super (&optional force)
+  "Toggle if extended super prefix is enabled.
+If optional argument FORCE is t, enabling is forced.
+If FORCE is other non-nil value, disabling is forced."
   (interactive)
-  (if (lookup-key (default-value 'overriding-balance-mode-map)
-                  (jis-key 'muhenkan))
+  (if (and (null (eq force t))
+           (or force
+               (lookup-key (default-value 'overriding-balance-mode-map)
+                           (jis-key 'muhenkan))))
       (progn
         (define-key (default-value 'overriding-balance-mode-map)
           (jis-key 'muhenkan) nil)
@@ -232,13 +240,17 @@ At the end of this function,
                   #'undefined)))))
     (message "Extended super is enabled on balance-mode")))
 
-(defun balance-mode-toggle-extended-alt ()
-  "Toggle if extended alt prefix is enabled."
+(defun balance-mode-toggle-extended-alt (&optional force)
+  "Toggle if extended alt prefix is enabled.
+If optional argument FORCE is t, enabling is forced.
+If FORCE is other non-nil value, disabling is forced."
   (interactive)
-  (if (or (lookup-key (default-value 'overriding-balance-mode-map)
-                      (jis-key 'hankaku/zenkaku))
-          (lookup-key (default-value 'overriding-balance-mode-map)
-                      (jis-key 'katakana/hiragana)))
+  (if (and (null (eq force t))
+           (or force
+               (or (lookup-key (default-value 'overriding-balance-mode-map)
+                               (jis-key 'hankaku/zenkaku))
+                   (lookup-key (default-value 'overriding-balance-mode-map)
+                               (jis-key 'katakana/hiragana)))))
       (progn
         (define-key (default-value 'overriding-balance-mode-map)
           (jis-key 'hankaku/zenkaku) nil)
