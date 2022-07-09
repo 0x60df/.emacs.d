@@ -10,6 +10,11 @@
 (overriding-set-key (kbd "C-~") #'embark-dwim)
 (overriding-set-key (kbd "C-q h b") #'embark-bindings)
 
+(let ((binding (lookup-key help-map (kbd "b"))))
+  (if (commandp binding)
+      (define-key help-map (kbd "B") binding)))
+(define-key help-map (kbd "b") #'embark-bindings)
+
 (dolist (key (list (kbd "C-q h b"))) (add-to-list 'balance-mode-key-list key))
 
 (add-to-list 'balance-mode-key-alias-alist `(,(kbd "q SPC h") . ,(kbd "q h")))
