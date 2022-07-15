@@ -841,9 +841,9 @@ and set up advice to add ASSOC when initialization."
   :group 'user
   :type 'color)
 
-(defun balance-mode-update-cursor-color ()
+(defun balance-mode-update-cursor-color (&optional rejoin)
   "Update cursor color according to the state of `balance-mode'."
-  (interactive)
+  (interactive "P")
   (let ((current (frame-parameter nil 'cursor-color))
         (trigger (cond (balance-mode
                         `(,balance-mode-inactive-cursor-color
@@ -857,8 +857,11 @@ and set up advice to add ASSOC when initialization."
                       (balance-weight-mode
                        balance-mode-semi-active-cursor-color)
                       (t balance-mode-inactive-cursor-color))))
-    (if (member current trigger)
-        (set-frame-parameter nil 'cursor-color intent))))
+    (cond (rejoin
+           (set-frame-parameter nil 'cursor-color
+                                balance-mode-active-cursor-color))
+          ((member current trigger)
+           (set-frame-parameter nil 'cursor-color intent)))))
 
 (add-hook 'global-balance-mode-hook
           (lambda ()
