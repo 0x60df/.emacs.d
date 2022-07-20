@@ -387,15 +387,19 @@ based variable expression."
 When called interactively, use current-phase as PHASE."
   (interactive (let ((phase (yester-current-phase)))
                  (list
-                  (intern
-                   (completing-read
-                    "Scene: "
-                    (remq
-                     (cdr (assq phase yester--scene))
-                     (cons nil (mapcar
-                                #'car
-                                (cdr (assq phase yester-scene-colors)))))
-                    nil t))
+                  (let* ((scene-list
+                          (cons nil (mapcar
+                                     #'car
+                                     (cdr (assq phase yester-scene-colors)))))
+                         (read-scene
+                          (intern
+                           (completing-read
+                            "Scene: "
+                            (remq (cdr (assq phase yester--scene))
+                                  scene-list)))))
+                    (if (member read-scene scene-list)
+                        read-scene
+                      nil))
                   phase)))
   (unless (eq (cdr (assq phase yester--scene)) scene)
     (setcdr (assq phase yester--scene) scene)
