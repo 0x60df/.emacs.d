@@ -62,6 +62,9 @@
       (call-interactively #'eglot)))
 
 (overriding-set-key (kbd "C-c c l") #'eglot-toggle)
+(overriding-set-key (kbd "C-l 0") #'eglot-toggle)
+(add-to-list 'balance-mode-key-list (kbd "C-l 0"))
+(add-to-list 'balance-mode-key-alias-alist `(,(kbd "l SPC 0") . ,(kbd "l 0")))
 
 
 (resolve init-eglot)
