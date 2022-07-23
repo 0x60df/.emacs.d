@@ -197,7 +197,10 @@ same character. "
 
 (define-minor-mode auto-overwrite-mode
   "Minor mode for overwrite buffer automatically."
-  :lighter (:propertize " AOvw" face mode-line-warning)
+  :lighter (:eval (let ((lighter " AOvw"))
+                    (if (and buffer-file-name (not buffer-read-only))
+                        (propertize lighter 'face 'mode-line-warning)
+                      lighter)))
   :group 'user
   (if auto-overwrite-mode
       (progn
