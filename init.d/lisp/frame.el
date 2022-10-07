@@ -935,5 +935,31 @@ and raise frame with prefix arguments."
     (interactive "p")
     (switch-frame-alist (- n)))
 
+(defun cycle-frame (&optional n)
+  "Cycle frame of same size by N."
+  (interactive "p")
+  (let* ((frame-list (seq-filter
+                      (lambda (frame)
+                        (and (= (frame-width) (frame-width frame))
+                             (= (frame-height) (frame-height frame))))
+                      (frame-list)))
+         (cycled-frame-list (if (< n 0)
+                                (reverse
+                                 (append
+                                  (last (reverse frame-list) (- n))
+                                  (butlast (reverse frame-list) (- n))))
+                              (append
+                               (last frame-list n)
+                               (butlast frame-list n))))
+         (position-list (mapcar #'frame-position frame-list)))
+    (letrec ((zip (lambda (l1 l2)
+                    (cond ((and (null l1) (null l2)) nil)
+                          (t (cons (cons (car l1) (car l2))
+                                   (funcall zip (cdr l1) (cdr l2))))))))
+      (dolist (frame-position (funcall zip cycled-frame-list position-list))
+        (set-frame-position (car frame-position)
+                            (cadr frame-position)
+                            (cddr frame-position))))))
+
 
 (resolve frame)

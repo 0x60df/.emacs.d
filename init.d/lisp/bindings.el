@@ -200,9 +200,8 @@ Keymap is determined by `overriding-map-for'"
 (overriding-set-key (kbd "C-M-.") #'other-frame-reverse)
 (overriding-set-key (kbd "C-c ;") #'manipulate-frame)
 (overriding-set-key (kbd "C-c .") #'pick-frame)
-(overriding-set-key (kbd "C-l ;") #'toggle-frame-opacity)
+(overriding-set-key (kbd "C-l ;") #'cycle-frame)
 (overriding-set-key (kbd "s-;") #'toggle-frame-opacity)
-(overriding-set-key (kbd "C-l +") #'toggle-all-frames-opacity)
 (overriding-set-key (kbd "s-+") #'toggle-all-frames-opacity)
 
 (with-eval-after-load 'server
@@ -288,6 +287,7 @@ Keymap is determined by `overriding-map-for'"
         (kbd "C-l f")
         (kbd "C-l b")
         (kbd "C-l v")
+        (kbd "C-l ;")
         (kbd "C-c C-c")
         (kbd "C-c C-k")
         (kbd "C-x C-s")
@@ -353,6 +353,7 @@ Keymap is determined by `overriding-map-for'"
     (,(kbd "l SPC f") . ,(kbd "l f"))
     (,(kbd "l SPC b") . ,(kbd "l b"))
     (,(kbd "l SPC v") . ,(kbd "l v"))
+    (,(kbd "l SPC ;") . ,(kbd "l ;"))
     (,(kbd "l k SPC d") . ,(kbd "l k d"))
     (,(kbd "l k SPC r SPC") . ,(kbd "l k r SPC"))
     (,(kbd "l k SPC r N") . ,(kbd "l k r N"))
