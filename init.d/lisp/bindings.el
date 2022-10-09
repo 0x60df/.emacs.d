@@ -139,7 +139,7 @@ Keymap is determined by `overriding-map-for'"
 (overriding-set-key (kbd "C-l C-f") #'find-file-at-point)
 (overriding-set-key (kbd "C-l C-v") #'revert-buffer)
 (overriding-set-key (kbd "C-l C-c") #'save-buffers-kill-emacs)
-(overriding-set-key (kbd "C-l C-k") #'Control-X-prefix)
+(overriding-set-key (kbd "C-l C-k") ctl-x-map)
 (overriding-set-key (kbd "C-l -") #'auto-overwrite-mode)
 (overriding-set-key (kbd "C-l a") (kbd "M-<"))
 (overriding-set-key (kbd "C-l e") (kbd "M->"))

@@ -7,6 +7,7 @@
 
 (eval-when-compile (require 'ido))
 
+(declare-function ido-everywhere "ido")
 (declare-function ido-next-match "ido")
 (declare-function ido-prev-match "ido")
 (declare-function ido-initiate-auto-merge "ido")

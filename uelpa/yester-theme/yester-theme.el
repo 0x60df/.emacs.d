@@ -384,6 +384,7 @@
    `(org-latex-and-related (yester-face-spec ',class :foreground orange))
    `(org-macro (yester-face-spec ',class :foreground yellow))
    `(org-sexp-date (yester-face-spec ',class :foreground purple))
+   `(org-dispatcher-highlight (yester-face-spec ',class :foreground yellow))
 
 
 
@@ -931,9 +932,10 @@
 
 
    ;; Transient
-   `(transient-amaranth (yester-face-spec ',class :foreground purple))
+   `(transient-amaranth (yester-face-spec ',class :foreground yellow))
    `(transient-blue (yester-face-spec ',class :foreground blue))
    `(transient-pink (yester-face-spec ',class :foreground orange))
+   `(transient-purple (yester-face-spec ',class :foreground purple))
    `(transient-red (yester-face-spec ',class :foreground red))
    `(transient-teal (yester-face-spec ',class :foreground aqua))
    `(transient-argument (yester-face-spec ',class :foreground orange))
