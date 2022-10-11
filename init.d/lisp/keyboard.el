@@ -200,7 +200,8 @@ If FORCE is other non-nil value, disabling is forced."
                 (if (local-variable-p 'overriding-balance-mode-map)
                     (define-key overriding-balance-mode-map
                       (jis-key 'henkan) nil)))))
-        (message "Extended hyper is disabled on balance-mode"))
+        (if (called-interactively-p)
+            (message "Extended hyper is disabled on balance-mode")))
     (define-key (default-value 'overriding-balance-mode-map)
       (jis-key 'henkan) #'undefined)
     (dolist (buffer (buffer-list))
@@ -209,7 +210,8 @@ If FORCE is other non-nil value, disabling is forced."
             (if (local-variable-p 'overriding-balance-mode-map)
                 (define-key overriding-balance-mode-map
                   (jis-key 'henkan) #'undefined)))))
-    (message "Extended hyper is enabled on balance-mode")))
+    (if (called-interactively-p)
+        (message "Extended hyper is enabled on balance-mode"))))
 
 (defun balance-mode-toggle-extended-super (&optional force)
   "Toggle if extended super prefix is enabled.
@@ -229,7 +231,8 @@ If FORCE is other non-nil value, disabling is forced."
                 (if (local-variable-p 'overriding-balance-mode-map)
                     (define-key overriding-balance-mode-map
                       (jis-key 'muhenkan) nil)))))
-        (message "Extended super is disabled on balance-mode"))
+        (if (called-interactively-p)
+            (message "Extended super is disabled on balance-mode")))
     (define-key (default-value 'overriding-balance-mode-map)
       (jis-key 'muhenkan) #'undefined)
     (dolist (buffer (buffer-list))
@@ -238,7 +241,8 @@ If FORCE is other non-nil value, disabling is forced."
             (if (local-variable-p 'overriding-balance-mode-map)
                 (define-key overriding-balance-mode-map (jis-key 'muhenkan)
                   #'undefined)))))
-    (message "Extended super is enabled on balance-mode")))
+    (if (called-interactively-p)
+        (message "Extended super is enabled on balance-mode"))))
 
 (defun balance-mode-toggle-extended-alt (&optional force)
   "Toggle if extended alt prefix is enabled.
@@ -264,7 +268,8 @@ If FORCE is other non-nil value, disabling is forced."
                     (jis-key 'hankaku/zenkaku) nil)
                   (define-key overriding-balance-mode-map
                     (jis-key 'katakana/hiragana) nil)))))
-        (message "Extended alt is disabled on balance-mode"))
+        (if (called-interactively-p)
+            (message "Extended alt is disabled on balance-mode")))
     (define-key (default-value 'overriding-balance-mode-map)
       (jis-key 'hankaku/zenkaku) #'undefined)
     (define-key (default-value 'overriding-balance-mode-map)
@@ -277,7 +282,8 @@ If FORCE is other non-nil value, disabling is forced."
                 (jis-key 'hankaku/zenkaku) #'undefined)
               (define-key overriding-balance-mode-map
                 (jis-key 'katakana/hiragana) #'undefined)))))
-    (message "Extended alt is enabled on balance-mode")))
+    (if (called-interactively-p)
+        (message "Extended alt is enabled on balance-mode"))))
 
 (add-hook
  'jis-keys-initialize-functions
