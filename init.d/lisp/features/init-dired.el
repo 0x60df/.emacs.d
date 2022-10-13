@@ -68,5 +68,18 @@
                  (,(kbd "l k SPC 1") . ,(kbd "l k 1")))
                overriding-balance-weight-mode-map))))
 
+(advice-add 'dired-do-flagged-delete :after
+            (lambda (&optional _)
+              (if (and balance-weight-mode
+                       (string-equal (current-message)
+                                     "(No deletions requested)"))
+                  (message (concat "(No deletions requested) "
+                                   "--- transiently waiting for killing emacs"))
+                  (let ((key (read-key)))
+                    (if (eql key ?c)
+                        (save-buffers-kill-terminal)
+                      (setq unread-command-events
+                            (cons key unread-command-events)))))))
+
 
 (resolve init-dired)
