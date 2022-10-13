@@ -17,9 +17,6 @@
           (lambda ()
             (when (eq major-mode #'dired-mode)
               (define-key overriding-balance-weight-mode-map
-                (kbd "xx") (key-binding (kbd "x")))
-
-              (define-key overriding-balance-weight-mode-map
                 (kbd "S") (key-binding (kbd "s")))
 
               (balance-mode-implement-keys
@@ -51,13 +48,7 @@
                      (kbd "C-c l i")
                      (kbd "C-c l f")
                      (kbd "C-c l c")
-                     (kbd "C-c l l")
-                     (kbd "C-x C-f")
-                     (kbd "C-x C-c")
-                     (kbd "C-x d")
-                     (kbd "C-x b")
-                     (kbd "C-x k")
-                     (kbd "C-x 1"))
+                     (kbd "C-c l l"))
                overriding-balance-weight-mode-map)
               (balance-mode-alias-keys
                `((,(kbd "c SPC s g") . ,(kbd "c s g"))
@@ -74,11 +65,7 @@
                  (,(kbd "c SPC i") . ,(kbd "c i"))
                  (,(kbd "c SPC l") . ,(kbd "c l"))
                  (,(kbd "l k SPC d") . ,(kbd "l k d"))
-                 (,(kbd "l k SPC 1") . ,(kbd "l k 1"))
-                 (,(kbd "x SPC d") . ,(kbd "x d"))
-                 (,(kbd "x SPC b") . ,(kbd "x b"))
-                 (,(kbd "x SPC k") . ,(kbd "x k"))
-                 (,(kbd "x SPC 1") . ,(kbd "x 1")))
+                 (,(kbd "l k SPC 1") . ,(kbd "l k 1")))
                overriding-balance-weight-mode-map))))
 
 
