@@ -107,6 +107,24 @@
                  (,(kbd "c SPC h") . ,(kbd "c h"))
                  (,(kbd "c SPC i") . ,(kbd "c i"))
                  (,(kbd "c SPC l") . ,(kbd "c l")))
+               overriding-balance-weight-mode-map))
+            (when (eq major-mode 'magit-diff-mode)
+              (balance-mode-implement-keys
+               (list (kbd "C-v")
+                     (kbd "C-S-n")
+                     (kbd "C-S-p")
+                     (kbd "C-l v")
+                     (kbd "C-l f")
+                     (kbd "C-l b")
+                     (kbd "C-l a")
+                     (kbd "C-l e"))
+               overriding-balance-weight-mode-map)
+              (balance-mode-alias-keys
+               `((,(kbd "l SPC v") . ,(kbd "l v"))
+                 (,(kbd "l SPC f") . ,(kbd "l f"))
+                 (,(kbd "l SPC b") . ,(kbd "l b"))
+                 (,(kbd "l SPC a") . ,(kbd "l a"))
+                 (,(kbd "l SPC e") . ,(kbd "l e")))
                overriding-balance-weight-mode-map))))
 
 (with-eval-after-load 'magit-mode
