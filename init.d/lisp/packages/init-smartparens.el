@@ -120,14 +120,12 @@
 (overriding-set-key (kbd "C-)") #'sp-rewrap-sexp)
 (overriding-set-key (kbd "ESC M-9") #'sp-rewrap-sexp)
 (overriding-set-key (kbd "C-l h p") #'sp-show-enclosing-pair-dwim)
-(overriding-set-key (kbd "C-l p") #'sp-show-enclosing-pair-dwim)
+(overriding-set-key (kbd "H-p") #'sp-show-enclosing-pair-dwim)
 
 (add-to-list 'balance-mode-key-list (kbd "C-l h p"))
-(add-to-list 'balance-mode-key-list (kbd "C-l p"))
 
 (add-to-list 'balance-mode-key-alias-alist
              `(,(kbd "l SPC h p") . ,(kbd "l h p")))
-(add-to-list 'balance-mode-key-alias-alist `(,(kbd "l SPC p") . ,(kbd "l p")))
 
 (defvar-local balance-mode-sp-show-enclosing-pair nil
   "`sp-show-enclosing-pair-mode' but t if `balance-mode' is active.")
