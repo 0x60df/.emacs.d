@@ -402,11 +402,25 @@ Keymap is determined by `overriding-map-for'"
     map)
   "Overriding keymap for `balance-mode'.")
 
+(defalias 'balance-mode-digit-1 'self-insert-command "Tentative alias.")
+(defalias 'balance-mode-digit-2 'self-insert-command "Tentative alias.")
+(defalias 'balance-mode-digit-3 'self-insert-command "Tentative alias.")
+(defalias 'balance-mode-digit-4 'self-insert-command "Tentative alias.")
+(defalias 'balance-mode-digit-5 'self-insert-command "Tentative alias.")
+(defalias 'balance-mode-digit-6 'self-insert-command "Tentative alias.")
+(defalias 'balance-mode-digit-7 'self-insert-command "Tentative alias.")
+(defun balance-mode-digit-8 ()
+  "Emulate backtab input."
+  (interactive)
+  (setq unread-command-events (append (kbd "<backtab>") nil)))
+(defun balance-mode-digit-9 ()
+  "Emulate tab input."
+  (interactive)
+  (setq unread-command-events (append (kbd "TAB") nil)))
+
 (dolist (key '("1" "2" "3" "4" "5" "6" "7" "8" "9"))
-  (define-key overriding-balance-mode-map key
-    (lambda ()
-      (interactive)
-      (setq unread-command-events (append (kbd (concat "C-" key)) nil)))))
+  (define-key (default-value 'overriding-balance-mode-map) key
+    (intern (format "balance-mode-digit-%s" key))))
 
 (defvar balance-weight-mode-key-list
   (list (kbd "C-;")

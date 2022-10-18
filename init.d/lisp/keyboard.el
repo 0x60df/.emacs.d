@@ -140,8 +140,8 @@ At the end of this function,
                (balance-mode-transient-hyper
                 (setq unread-command-events
                       (append (kbd (concat "H-" key)) nil)))
-               (t (setq unread-command-events
-                        (append (kbd (concat "C-" key)) nil)))))))
+               (t (call-interactively
+                   (intern (format "balance-mode-digit-%s" key))))))))
 
    (define-key (default-value 'overriding-balance-weight-mode-map)
      (jis-key 'henkan)
