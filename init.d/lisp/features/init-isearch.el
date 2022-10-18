@@ -58,6 +58,15 @@
                   (add-hook-for-once 'isearch-mode-hook
                                      #'demi-view-isearch-mode))
               (demi-view-isearch-mode 0)))
+  (dolist (command '(kill-region kill-ring-save kill-line))
+    (advice-add command :after
+                (lambda (&rest _)
+                  (add-hook-for-once 'pre-command-hook
+                                     (lambda ()
+                                       (if (memq this-command
+                                                 '(isearch-forward
+                                                   isearch-backward))
+                                           (demi-view-isearch-mode 1)))))))
 
   ;; Lazy regexp isearch mode
   (defvar lazy-regexp-isearch-mode-lighter ":R"
@@ -132,7 +141,7 @@
     (isearch-search-and-update))
 
   (advice-add 'isearch-process-search-string
-               :override #'lazy-regexp-isearch-process-search-string)
+              :override #'lazy-regexp-isearch-process-search-string)
 
   (defun lazy-regexp-isearch-edit-string-advice (function &rest args)
     "Around advice for `isearch-edit-string' with lazy regexp."
@@ -167,7 +176,7 @@
       (apply function args)))
 
   (advice-add 'isearch-edit-string
-               :around #'lazy-regexp-isearch-edit-string-advice)
+              :around #'lazy-regexp-isearch-edit-string-advice)
 
   (define-minor-mode lazy-regexp-isearch-mode
     "Regexp isearch but lazy syntax."
@@ -197,11 +206,11 @@
   (add-hook 'isearch-mode-end-hook
             (lambda ()
               (when (and lazy-regexp-isearch-mode
-                       (eq this-command 'isearch-edit-string))
+                         (eq this-command 'isearch-edit-string))
                 (add-hook-for-once 'isearch-mode-hook
                                    #'lazy-regexp-isearch-mode))
               (lazy-regexp-isearch-mode 0)))
-
+  
   ;; Shrinke mode line
   (let* ((buffer nil)
          (minor-mode-width nil)
