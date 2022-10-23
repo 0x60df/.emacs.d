@@ -143,6 +143,8 @@ Keymap is determined by `overriding-map-for'"
 (overriding-set-key (kbd "C-l -") #'auto-overwrite-mode)
 (overriding-set-key (kbd "C-l a") (kbd "M-<"))
 (overriding-set-key (kbd "C-l e") (kbd "M->"))
+(overriding-set-key (kbd "C-l C-a") (kbd "M-<"))
+(overriding-set-key (kbd "C-l C-e") (kbd "M->"))
 (overriding-set-key (kbd "C-l n") #'next-line-scroll-up)
 (overriding-set-key (kbd "C-l p") #'previous-line-scroll-down)
 (overriding-set-key (kbd "C-l f") #'emulate-forward-word)
