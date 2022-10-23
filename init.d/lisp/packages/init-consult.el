@@ -11,26 +11,34 @@
 (declare-function consult--customize-put "consult")
 
 (overriding-set-key (kbd "C-q C-q") #'quoted-insert)
-(overriding-set-key (kbd "C-q C-j") #'consult-buffer)
 (overriding-set-key (kbd "C-q C-y") #'consult-yank-from-kill-ring)
-(overriding-set-key (kbd "C-q C-r") #'consult-register)
-(overriding-set-key (kbd "C-q C-o") #'consult-outline)
-(overriding-set-key (kbd "C-q C-i") #'consult-imenu)
-(overriding-set-key (kbd "C-q C-g") #'consult-goto-line)
-(overriding-set-key (kbd "C-q C-m") #'consult-mark)
 (overriding-set-key (kbd "C-q C-s") #'consult-line)
+(overriding-set-key (kbd "C-q j") #'consult-buffer)
+(overriding-set-key (kbd "C-q r") #'consult-register)
+(overriding-set-key (kbd "C-q o") #'consult-outline)
+(overriding-set-key (kbd "C-q i") #'consult-imenu)
+(overriding-set-key (kbd "C-q g") #'consult-goto-line)
+(overriding-set-key (kbd "C-q m") #'consult-mark)
 (overriding-set-key (kbd "M-y") #'consult-yank-pop)
 
 (dolist (key (list (kbd "C-q C-q")
-                   (kbd "C-q C-j")
                    (kbd "C-q C-y")
-                   (kbd "C-q C-r")
-                   (kbd "C-q C-o")
-                   (kbd "C-q C-i")
-                   (kbd "C-q C-g")
-                   (kbd "C-q C-m")
-                   (kbd "C-q C-s")))
+                   (kbd "C-q C-s")
+                   (kbd "C-q j")
+                   (kbd "C-q r")
+                   (kbd "C-q o")
+                   (kbd "C-q i")
+                   (kbd "C-q g")
+                   (kbd "C-q m")))
   (add-to-list 'balance-mode-key-list key))
+
+(dolist (key-alias (list `(,(kbd "q SPC j") . ,(kbd "q j"))
+                         `(,(kbd "q SPC r") . ,(kbd "q r"))
+                         `(,(kbd "q SPC o") . ,(kbd "q o"))
+                         `(,(kbd "q SPC i") . ,(kbd "q i"))
+                         `(,(kbd "q SPC g") . ,(kbd "q g"))
+                         `(,(kbd "q SPC m") . ,(kbd "q m"))))
+  (add-to-list 'balance-mode-key-alias-alist key-alias))
 
 (add-hook 'balance-mode-update-keys-hook
             (lambda ()
@@ -46,7 +54,10 @@
                         (kbd "qq") entry)))
 
                 (balance-mode-implement-keys
-                 (list (kbd "C-q C-j"))
+                 (list (kbd "C-q j"))
+                 overriding-balance-weight-mode-map)
+                (balance-mode-alias-keys
+                 `((,(kbd "q SPC j") . ,(kbd "q j")))
                  overriding-balance-weight-mode-map))))
 
 (custom-set-variables
@@ -75,7 +86,7 @@
 
   (defvar overriding-org-mode-map
     (let ((map (make-sparse-keymap)))
-      (define-key map (kbd "C-q C-o") #'consult-org-heading)
+      (define-key map (kbd "C-q o") #'consult-org-heading)
       map)
     "Keymap for org-mode which overrides overriding bindings.")
 
