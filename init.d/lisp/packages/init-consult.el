@@ -13,7 +13,7 @@
 (overriding-set-key (kbd "C-q C-q") #'quoted-insert)
 (overriding-set-key (kbd "C-q C-y") #'consult-yank-from-kill-ring)
 (overriding-set-key (kbd "C-q C-s") #'consult-line)
-(overriding-set-key (kbd "C-q j") #'consult-buffer)
+(overriding-set-key (kbd "C-q C-j") #'consult-buffer)
 (overriding-set-key (kbd "C-q r") #'consult-register)
 (overriding-set-key (kbd "C-q o") #'consult-outline)
 (overriding-set-key (kbd "C-q i") #'consult-imenu)
@@ -24,7 +24,7 @@
 (dolist (key (list (kbd "C-q C-q")
                    (kbd "C-q C-y")
                    (kbd "C-q C-s")
-                   (kbd "C-q j")
+                   (kbd "C-q C-j")
                    (kbd "C-q r")
                    (kbd "C-q o")
                    (kbd "C-q i")
@@ -32,8 +32,7 @@
                    (kbd "C-q m")))
   (add-to-list 'balance-mode-key-list key))
 
-(dolist (key-alias (list `(,(kbd "q SPC j") . ,(kbd "q j"))
-                         `(,(kbd "q SPC r") . ,(kbd "q r"))
+(dolist (key-alias (list `(,(kbd "q SPC r") . ,(kbd "q r"))
                          `(,(kbd "q SPC o") . ,(kbd "q o"))
                          `(,(kbd "q SPC i") . ,(kbd "q i"))
                          `(,(kbd "q SPC g") . ,(kbd "q g"))
@@ -54,10 +53,7 @@
                         (kbd "qq") entry)))
 
                 (balance-mode-implement-keys
-                 (list (kbd "C-q j"))
-                 overriding-balance-weight-mode-map)
-                (balance-mode-alias-keys
-                 `((,(kbd "q SPC j") . ,(kbd "q j")))
+                 (list (kbd "C-q C-j"))
                  overriding-balance-weight-mode-map))))
 
 (custom-set-variables
