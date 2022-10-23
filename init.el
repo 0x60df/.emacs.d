@@ -293,6 +293,8 @@ UNIT is a literal symbol."
 (init-package flycheck)
 (init-package dired-hacks)
 (init-package multi-term)
+(init-package vterm)
+(init-package multi-vterm)
 (init-package yasnippet)
 (init-package yasnippet-snippets)
 (init-package magit)
