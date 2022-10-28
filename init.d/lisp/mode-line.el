@@ -77,26 +77,20 @@
                 "%Z"))
 
 (setq mode-line-client
-      '(:eval
-        (let ((client (frame-parameter nil 'client)))
-          (if client
-              (let ((p (1+ (seq-position (reverse server-clients)
-                                         client #'eq))))
-                (if (< p 10) (number-to-string p) "#"))
-            ""))))
+      '(:eval (if (frame-parameter nil 'client)
+                  (let ((n (length (terminal-client-list))))
+                    (if (< n 10) (number-to-string n) "#"))
+                "")))
 
 (setq-default mode-line-modified '("%1*%1+"))
 
 (setq-default mode-line-remote '("%1@"))
 
 (setq mode-line-frame-identification
-      '((:eval
-         (let ((p (1+ (seq-position (reverse
-                                     (if (frame-parameter nil 'client)
-                                         (client-frame-list)
-                                       (frame-list)))
-                                    (selected-frame) #'eq))))
-           (if (< p 10) (number-to-string p) "#")))
+      '((:eval (let ((n (length (if (frame-parameter nil 'client)
+                                    (client-frame-list)
+                                  (frame-list)))))
+                 (if (< n 10) (number-to-string n) "#")))
         (:propertize " " face mode-line-separator)))
 
 (define-minor-mode mode-line-buffer-identification-shrink-mode
