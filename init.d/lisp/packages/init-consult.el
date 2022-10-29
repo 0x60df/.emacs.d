@@ -109,5 +109,36 @@
   (balance-mode-add-to-map-alist
    `(balance-mode-inferior-org . ,balance-mode-overriding-inferior-mode-map)))
 
+(defvar consult-pick-narrow-sources nil
+  "Temporary sources holder for `consult-pick-narrow'.")
+
+(defun consult-pick-narrow ()
+  "Prompt user narrow keys and apply it."
+  (interactive)
+  (if (and (minibufferp)
+           consult-pick-narrow-sources)
+      (let* ((sources (consult--multi-enabled-sources
+                       consult-pick-narrow-sources))
+             (narrow (consult--multi-narrow sources))
+             (key (read-key
+                   (format " %s "
+                           (mapconcat (lambda (a)
+                                        (key-description (vector (car a))))
+                                      narrow " ")))))
+        (setq unread-command-events
+              (append (listify-key-sequence (kbd "C-a C-k DEL"))
+                      (if (assoc key narrow)
+                          (listify-key-sequence (vector key ?\s)))
+                      (listify-key-sequence (kbd "C-y")))))))
+
+(with-eval-after-load 'consult
+  (advice-add 'consult--multi :around
+              (lambda (fun sources &rest args)
+                (setq consult-pick-narrow-sources sources)
+                (unwind-protect
+                    (apply fun sources args)
+                  (setq consult-pick-narrow-sources nil))))
+  (define-key consult-narrow-map (kbd "C-o") #'consult-pick-narrow))
+
 
 (resolve init-consult)
