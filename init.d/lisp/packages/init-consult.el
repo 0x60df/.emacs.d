@@ -124,12 +124,16 @@
                    (format " %s "
                            (mapconcat (lambda (a)
                                         (key-description (vector (car a))))
-                                      narrow " ")))))
+                                      narrow " "))))
+             (empty (= 0 (length (minibuffer-contents)))))
         (setq unread-command-events
-              (append (listify-key-sequence (kbd "C-a C-k DEL"))
+              (append (unless empty
+                        (listify-key-sequence (kbd "C-a C-k")))
+                      (listify-key-sequence (kbd "DEL"))
                       (if (assoc key narrow)
                           (listify-key-sequence (vector key ?\s)))
-                      (listify-key-sequence (kbd "C-y")))))))
+                      (unless empty
+                        (listify-key-sequence (kbd "C-y"))))))))
 
 (with-eval-after-load 'consult
   (advice-add 'consult--multi :around
