@@ -47,7 +47,8 @@
               (if header-line-format
                   (setq header-line-format
                         (mode-line-format-auto-truncate
-                         (list mode-line-front-space header-line-format)))))))
+                         (list mode-line-front-space header-line-format))))))
+  (add-to-list 'org-src-lang-modes '("toml" . conf-toml)))
 
 (with-eval-after-load 'org
   (add-hook 'org-mode-hook #'quick-input-method-mode))
