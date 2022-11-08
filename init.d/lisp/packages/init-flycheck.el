@@ -51,6 +51,11 @@
                                   (if (and flycheck-mode balance-mode)
                                       (setq balance-mode-flycheck t)
                                     (setq balance-mode-flycheck nil))))
+  (add-hook 'balance-mode-hook (lambda ()
+                                 (if balance-mode
+                                     (if flycheck-mode
+                                         (setq balance-mode-flycheck t))
+                                   (setq balance-mode-flycheck nil))))
 
   (balance-mode-add-to-map-alist
    `(balance-mode-flycheck . ,balance-mode-overriding-flycheck-mode-map)))
