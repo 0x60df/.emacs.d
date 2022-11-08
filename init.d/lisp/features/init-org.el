@@ -30,6 +30,36 @@
 (advice-add 'org-switch-to-buffer-other-window
             :before #'org-hide-trailing-whitespace-for-export-dispatcher)
 
+(defcustom org-template `((standard . ,(concat "# -*- coding:utf-8 -*-\n"
+                                               "#+STARTUP: indent\n")))
+  "Alist of template for org-mode file.
+Template must be a string or function that returns a string."
+  :type '(alist :key-type symbol)
+  :group 'user)
+
+(defun org-insert-template (tag)
+  "Insert template defined in `org-template' and tagged by TAG.
+When called interactively, `org-template' is used for
+`completing-read'."
+  (interactive (list (if (eq major-mode 'org-mode)
+                         (intern
+                          (completing-read "Template: " org-template nil t))
+                       (message "Here is not org-mode"))))
+  (if (eq major-mode 'org-mode)
+      (let* ((template-source (cdr (assq tag org-template)))
+             (template (cond ((stringp template-source) template-source)
+                             ((functionp template-source)
+                              (funcall template-source))
+                             (t ""))))
+        (unless (save-excursion
+                  (goto-char 1)
+                  (looking-at (regexp-quote template)))
+          (if (= (point) 1)
+              (insert template)
+            (save-excursion
+              (goto-char 1)
+              (insert template)))))))
+
 (with-eval-after-load 'org-indent
   (modify-minor-mode-lighter 'org-indent-mode " ind"))
 
@@ -59,9 +89,12 @@
 
 (overriding-set-key (kbd "C-c o a") #'org-agenda)
 (overriding-set-key (kbd "C-c o c") #'org-capture)
+(with-eval-after-load 'org
+  (define-key org-mode-map (kbd "C-c o t") #'org-insert-template))
 
 (add-to-list 'balance-mode-key-list (kbd "C-c o a"))
 (add-to-list 'balance-mode-key-list (kbd "C-c o c"))
+(add-to-list 'balance-mode-key-list (kbd "C-c o t"))
 (add-to-list 'balance-mode-key-list (kbd "C-c C-x C-a"))
 (add-to-list 'balance-mode-key-alias-alist `(,(kbd "c SPC o") . ,(kbd "c o")))
 
