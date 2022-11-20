@@ -138,6 +138,7 @@ At the end of this function,
                 (setq unread-command-events
                       (append (kbd (concat "s-" key)) nil)))
                (balance-mode-transient-hyper
+                (balance-mode 0)
                 (setq unread-command-events
                       (append (kbd (concat "H-" key)) nil)))
                (t (call-interactively
