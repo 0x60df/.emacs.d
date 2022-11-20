@@ -147,8 +147,8 @@ Keymap is determined by `overriding-map-for'"
 (overriding-set-key (kbd "C-l C-e") (kbd "M->"))
 (overriding-set-key (kbd "C-l n") #'next-line-scroll-up)
 (overriding-set-key (kbd "C-l p") #'previous-line-scroll-down)
-(overriding-set-key (kbd "C-l f") #'emulate-forward-word)
-(overriding-set-key (kbd "C-l b") #'emulate-backward-word)
+(overriding-set-key (kbd "C-l f") #'emulate-forward-word-consecutively)
+(overriding-set-key (kbd "C-l b") #'emulate-backward-word-consecutively)
 (overriding-set-key (kbd "C-l v") #'emulate-scroll-down-command)
 
 
@@ -649,6 +649,10 @@ and set up advice to add ASSOC when initialization."
 
 (balance-mode-add-to-map-alist
  `(balance-mode-universal-argument . ,balance-mode-universal-argument-map))
+
+(balance-mode-add-to-map-alist
+ `(consecutive-emulate-forward-backward-word-mode
+   . ,consecutive-emulate-forward-backward-word-mode-map))
 
 (advice-add 'manipulate-frame :around
             (lambda (function &rest args)

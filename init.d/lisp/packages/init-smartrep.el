@@ -74,10 +74,6 @@
         ("p" . previous-line-scroll-down))))
   (let ((key "C-l"))
     (smartrep-define-key (overriding-map-for (kbd key)) key
-      '(("f" . emulate-forward-word)
-        ("b" . emulate-backward-word))))
-  (let ((key "C-l"))
-    (smartrep-define-key (overriding-map-for (kbd key)) key
       '(("v" . emulate-scroll-down-command))))
 
   ;; page

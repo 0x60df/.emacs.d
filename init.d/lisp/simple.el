@@ -3,6 +3,7 @@
 
 
 (premise init)
+(premise subr)
 
 (defun duplicate-and-comment ()
   "Duplicate region and comment out them."
@@ -154,6 +155,37 @@ same character. "
   (let ((func (key-binding (kbd "M-v"))))
     (if (commandp func)
         (call-interactively func))))
+
+(defun emulate-forward-word-consecutively ()
+  "`emulate-forward-word' consecutively."
+  (interactive)
+  (call-interactively #'emulate-forward-word)
+  (unless consecutive-emulate-forward-backward-word-mode
+    (consecutive-emulate-forward-backward-word-mode 1))
+  (add-hook-for-once
+   'pre-command-hook
+   (lambda () (consecutive-emulate-forward-backward-word-mode 0))))
+
+(defun emulate-backward-word-consecutively ()
+  "`emulate-backward-word' consecutively."
+  (interactive)
+  (call-interactively #'emulate-backward-word)
+  (unless consecutive-emulate-forward-backward-word-mode
+    (consecutive-emulate-forward-backward-word-mode 1))
+  (add-hook-for-once
+   'pre-command-hook
+   (lambda () (consecutive-emulate-forward-backward-word-mode 0))))
+
+(defvar consecutive-emulate-forward-backward-word-mode-map
+  (let ((map (make-sparse-keymap)))
+    (define-key map (kbd "f") #'emulate-forward-word-consecutively)
+    (define-key map (kbd "b") #'emulate-backward-word-consecutively)
+    map))
+
+(define-minor-mode consecutive-emulate-forward-backward-word-mode
+  "Minor mode for consecutive cursor movement by word."
+  :global t
+  :keymap consecutive-emulate-forward-backward-word-mode-map)
 
 (defvar-local auto-overwrite-time 0.5 "Time for performing auto overwrite.")
 
