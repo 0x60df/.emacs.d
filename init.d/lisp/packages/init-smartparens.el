@@ -120,7 +120,7 @@
 (overriding-set-key (kbd "C-)") #'sp-rewrap-sexp)
 (overriding-set-key (kbd "ESC M-9") #'sp-rewrap-sexp)
 (overriding-set-key (kbd "C-l h p") #'sp-show-enclosing-pair-dwim)
-(overriding-set-key (kbd "H-p") #'sp-show-enclosing-pair-dwim)
+(overriding-set-key (kbd "s-p") #'sp-show-enclosing-pair-dwim)
 
 (add-to-list 'balance-mode-key-list (kbd "C-l h p"))
 
