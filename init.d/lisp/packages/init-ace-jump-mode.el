@@ -5,6 +5,7 @@
 (premise init)
 (premise mode-line)
 (premise bindings)
+(premise keyboard)
 (premise inst-ace-jump-mode)
 
 (eval-when-compile (require 'ace-jump-mode))
@@ -25,9 +26,11 @@
 (add-hook
  'jis-keys-initialize-functions
  (lambda ()
-   (overriding-set-key
-    (vector (event-convert-list (append '(hyper) (jis-key 'henkan) nil)))
-    #'ace-jump-char-mode)
+   (let ((hyper-henkan-key (vector (event-convert-list
+                                (append '(hyper) (jis-key 'henkan) nil)))))
+     (overriding-set-key hyper-henkan-key #'ace-jump-char-mode)
+     (define-key overriding-balance-mode-map hyper-henkan-key #'keyboard-quit))
+   (define-key overriding-balance-mode-map (kbd "H-g") #'keyboard-quit)
    (overriding-set-key
     (vector (event-convert-list (append '(super) (jis-key 'muhenkan) nil)))
     #'ace-jump-char-mode)))
