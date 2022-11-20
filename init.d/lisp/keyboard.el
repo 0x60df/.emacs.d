@@ -148,12 +148,26 @@ At the end of this function,
      (jis-key 'henkan)
      (lambda ()
        (interactive)
+       (setq balance-mode-transient-hyper t)
+       (add-hook-for-once
+        'post-command-hook
+        (lambda ()
+          (add-hook-for-once
+           'post-command-hook
+           (lambda () (setq balance-mode-transient-hyper nil)))))
        (balance-weight-mode 0)
        (balance-mode)))
    (define-key (default-value 'overriding-balance-weight-mode-map)
      (jis-key 'muhenkan)
      (lambda ()
        (interactive)
+       (setq balance-mode-transient-super t)
+       (add-hook-for-once
+        'post-command-hook
+        (lambda ()
+          (add-hook-for-once
+           'post-command-hook
+           (lambda () (setq balance-mode-transient-super nil)))))
        (balance-weight-mode 0)
        (balance-mode)))
    (define-key global-balance-mode-map (jis-key 'hankaku/zenkaku)
