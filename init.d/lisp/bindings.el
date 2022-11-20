@@ -431,6 +431,7 @@ Keymap is determined by `overriding-map-for'"
         (kbd "C-:")
         (kbd "C-+")
         (kbd "C-*")
+        (kbd "C-M-*")
         (kbd "C-,")
         (kbd "C-.")
         (kbd "C-<")
