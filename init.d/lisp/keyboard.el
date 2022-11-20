@@ -193,7 +193,14 @@ At the end of this function,
      (lambda ()
        (interactive)
        (balance-weight-mode 0)
-       (balance-mode)))))
+       (balance-mode)))
+
+   (define-key overriding-balance-mode-map (kbd "H-i")
+     (lambda ()
+       (interactive)
+       (balance-mode 0)
+       (if (eq (balance-mode-context) 'balance-weight-mode)
+           (balance-weight-mode 1))))))
 
 
 
