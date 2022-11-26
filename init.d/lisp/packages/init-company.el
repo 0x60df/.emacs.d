@@ -1,4 +1,4 @@
-
+;;; -*- lexical-binding: t -*-
 ;;;; init-company.el
 
 
@@ -783,6 +783,37 @@ After abort, call `hippie-expand'."
                 (append (listify-key-sequence (kbd "RET"))
                         unread-command-events)))))
 
+  (define-minor-mode company-balance-mode
+    "Minor mode to toggling balanced key in company-mode."
+    :global t
+    (if company-balance-mode
+        (progn
+          (define-key company-active-map (kbd "n") #'company-select-next)
+          (define-key company-active-map (kbd "p") #'company-select-previous)
+          (define-key company-active-map (kbd "s")
+            (lambda ()
+              (interactive)
+              (company-balance-mode 0)
+              (company-filter-candidates-or-abort-and-hippie-expand)))
+          (define-key company-active-map (kbd "r")
+            (lambda ()
+              (interactive)
+              (company-balance-mode 0)
+              (company-filter-candidates-or-abort-and-hippie-expand)))
+          (define-key company-search-map (kbd "n") #'company-select-next)
+          (define-key company-search-map (kbd "p") #'company-select-previous)
+          (setq company-lighter-base "C:B"))
+      (define-key company-active-map (kbd "n") nil)
+      (define-key company-active-map (kbd "p") nil)
+      (define-key company-active-map (kbd "s") nil)
+      (define-key company-active-map (kbd "r") nil)
+      (define-key company-search-map (kbd "n") #'company-search-printing-char)
+      (define-key company-search-map (kbd "p") #'company-search-printing-char)
+      (setq company-lighter-base "C")))
+
+  (add-hook 'company-after-completion-hook
+            (lambda (&rest _) (company-balance-mode 0)))
+
 
 
   ;;; bindings
@@ -820,7 +851,31 @@ After abort, call `hippie-expand'."
       (interactive)
       (if balance-mode
           (call-interactively #'company-abort)
-        (call-interactively #'self-insert-command)))))
+        (call-interactively #'self-insert-command))))
+
+  (add-hook
+   'jis-keys-initialize-functions
+   (lambda ()
+     (let* ((henkan (jis-key 'henkan))
+            (command
+             (lambda ()
+               (interactive)
+               (if (eq company-status 'selecting)
+                   (company-balance-mode 'toggle)
+                 (funcall
+                  (lookup-key global-balance-mode-map henkan))))))
+       (define-key company-active-map henkan command)
+       (define-key company-search-map henkan command))
+     (let* ((muhenkan (jis-key 'muhenkan))
+            (command
+             (lambda ()
+               (interactive)
+               (if (eq company-status 'selecting)
+                   (company-balance-mode 'toggle)
+                 (funcall
+                  (lookup-key global-balance-mode-map muhenkan))))))
+       (define-key company-active-map muhenkan command)
+       (define-key company-search-map muhenkan command)))))
 
 
 
