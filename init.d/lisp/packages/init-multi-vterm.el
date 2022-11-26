@@ -59,9 +59,11 @@
                                 (= 1 (length (window-list dedicated-frame))))
                            (delete-frame dedicated-frame)))))))))
 
-(overriding-set-key (kbd "H-t")
-                    #'multi-vterm-with-dedicated-frame-configuration)
+
 (overriding-set-key (kbd "C-l t") #'multi-vterm)
+(overriding-set-key (kbd "H-t") #'multi-vterm)
+(overriding-set-key (kbd "C-H-t")
+                    #'multi-vterm-with-dedicated-frame-configuration)
 
 (with-eval-after-load 'vterm
   (define-key vterm-mode-map (kbd "C-c C-@") #'multi-vterm-toggle-mode-line))
@@ -72,7 +74,8 @@
           (lambda ()
             (if (or (memq major-mode '(help-mode
                                        dired-mode
-                                       emacs-lisp-compilation-mode))
+                                       emacs-lisp-compilation-mode
+                                       org-agenda-mode))
                     (string-equal (buffer-name) "*Messages*"))
                 (let* ((key (kbd "t"))
                        (binding (lookup-key overriding-balance-mode-map key)))
