@@ -142,7 +142,37 @@
                 (unwind-protect
                     (apply fun sources args)
                   (setq consult-pick-narrow-sources nil))))
-  (define-key consult-narrow-map (kbd "C-o") #'consult-pick-narrow))
+  (define-key consult-narrow-map (kbd "C-o") #'consult-pick-narrow)
+
+  (advice-add
+   'consult-imenu
+   :around
+   (lambda (old-function &rest args)
+     (let ((advice
+            (lambda (args)
+              (append args
+                      (list
+                       :initial
+                       (let (begin end)
+                         (save-excursion
+                           (skip-syntax-backward "w_")
+                           (setq begin (point))
+                           (skip-syntax-forward "w_")
+                           (setq end (point)))
+                         (let ((token
+                                (buffer-substring-no-properties begin end)))
+                           (if (seq-find (lambda (imenu-entry)
+                                           (equal
+                                            (replace-regexp-in-string
+                                             "^.* " "" (car imenu-entry))
+                                            token))
+                                         (car args))
+                               token))))))))
+       (unwind-protect
+           (progn
+             (advice-add 'consult--read :filter-args advice)
+             (apply old-function args))
+         (advice-remove 'consult--read advice))))))
 
 
 (resolve init-consult)
