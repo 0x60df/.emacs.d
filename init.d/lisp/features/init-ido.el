@@ -4,6 +4,8 @@
 
 (premise init)
 (premise custom)
+(premise subr)
+(premise bindings)
 
 (eval-when-compile (require 'ido))
 
@@ -24,7 +26,25 @@
               (define-key ido-common-completion-map
                 (kbd "SPC") #'ido-next-match)
               (define-key ido-common-completion-map
-                (kbd "S-SPC") #'ido-prev-match))))
+                (kbd "S-SPC") #'ido-prev-match)))
+
+  (advice-add 'ido-up-directory
+              :before (lambda (&rest args)
+                        (if balance-mode
+                            (add-hook-for-once 'ido-minibuffer-setup-hook
+                                               #'balance-mode))))
+  (advice-add 'ido-exit-minibuffer
+              :before (lambda (&rest args)
+                        (if balance-mode
+                            (add-hook-for-once 'ido-minibuffer-setup-hook
+                                               #'balance-mode))))
+  (add-hook 'balance-mode-update-keys-hook
+            (lambda ()
+              (when (ido-active)
+                (define-key overriding-balance-mode-map
+                  (kbd "SPC") #'ido-next-match)
+                (define-key overriding-balance-mode-map
+                  (kbd "S-SPC") #'ido-prev-match)))))
 
 (add-hook 'emacs-startup-hook #'ido-everywhere)
 (add-hook 'emacs-startup-hook #'ido-mode)
