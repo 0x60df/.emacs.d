@@ -28,7 +28,8 @@
             `((,(kbd "s") . isearch-repeat-forward)
               (,(kbd "r") . isearch-repeat-backward)
               (,(kbd "y") . isearch-yank-kill)
-              (,(kbd "g") . isearch-abort)))
+              (,(kbd "g") . isearch-abort)
+              (,(kbd "m") . isearch-exit)))
     "List of key, binding and its original for demi-`view-isearch-mode'.")
 
   (defvar demi-view-isearch-mode-lighter ":V"
