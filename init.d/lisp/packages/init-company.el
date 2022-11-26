@@ -7,6 +7,7 @@
 (premise subr)
 (premise advice)
 (premise bindings)
+(premise keyboard)
 (premise mode-line)
 (premise inst-company)
 
