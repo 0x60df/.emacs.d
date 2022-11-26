@@ -96,7 +96,7 @@
   "Minor mode to split symbol if input is occurred on inside."
   :group 'user)
 
-(advice-add-for-once 'company-split-global-mode :before (lambda (&rest args)
+(advice-add-for-once 'company-split-global-mode :before (lambda (&rest _)
 							  (require 'company)))
 
 (defun company-split-mode-on ()
@@ -149,7 +149,7 @@
 
   (defvar company-status nil "Compliting status of company.")
 
-  (add-hook 'company-after-completion-hook (lambda (&rest args)
+  (add-hook 'company-after-completion-hook (lambda (&rest _)
                                              (setq company-status nil)))
 
   (defun company-expand-selection-or-cycle (&optional arg)
@@ -218,7 +218,7 @@
       (company-tng-frontend command)))
 
   (add-hook 'company-after-completion-hook
-            (lambda (&rest args)
+            (lambda (&rest _)
               (define-key company-active-map (kbd "C-n") nil)
               (define-key company-active-map (kbd "C-p") nil)))
 
@@ -402,12 +402,12 @@ complete-inside is started.")
                  'post-command-hook
                  #'company-complete-inside-post-command)))))))))
 
-  (defun company-complete-inside-finish (&rest args)
+  (defun company-complete-inside-finish (&rest _)
     "Function for hook `company-completion-finished-hook'."
     (with-current-buffer (or company-complete-inside-buffer (current-buffer))
         (company-complete-inside-delete-suffix)))
 
-  (defun company-complete-inside-after-completion (&rest args)
+  (defun company-complete-inside-after-completion (&rest _)
     "Function for hook `company-after-completion-hook'."
     (with-current-buffer (or company-complete-inside-buffer (current-buffer))
       (let ((point (point))
@@ -588,7 +588,7 @@ annotation section is truncated as this ratio.
 Candidates are never truncated, thus final width of tooltip
 can be more than this value.")
 
-  (defun company-pseudo-tooltip-set-width (&rest args)
+  (defun company-pseudo-tooltip-set-width (&rest _)
     "Advising `company-pseudo-tooltip-frontend' to fix width."
     (if company-candidates
         (let ((maximum (round (* company-pseudo-tooltip-maximum-width-ratio
@@ -638,11 +638,11 @@ can be more than this value.")
         args)))
 
   (add-hook 'company-completion-started-hook
-             (lambda (&rest args)
+             (lambda (&rest _)
                (advice-add 'overlay-put
                             :filter-args #'company-tng-remove-text-properties)))
   (add-hook 'company-after-completion-hook
-            (lambda (&rest args)
+            (lambda (&rest _)
               (advice-remove 'overlay-put
                              #'company-tng-remove-text-properties)))
 
@@ -720,7 +720,7 @@ can be more than this value.")
       (when company-standard-cursor-color
         (set-frame-parameter nil 'cursor-color company-standard-cursor-color))))
 
-  (add-hook 'company-after-completion-hook (lambda (&rest args)
+  (add-hook 'company-after-completion-hook (lambda (&rest _)
                                              (company-search-recover-fail)))
 
   (add-hook 'company-search-mode-hook
@@ -786,6 +786,7 @@ After abort, call `hippie-expand'."
   (define-minor-mode company-balance-mode
     "Minor mode to toggling balanced key in company-mode."
     :global t
+    :group 'user
     (if company-balance-mode
         (progn
           (define-key company-active-map (kbd "n") #'company-select-next)
