@@ -35,9 +35,14 @@
                                                #'balance-mode))))
   (advice-add 'ido-exit-minibuffer
               :before (lambda (&rest args)
-                        (if balance-mode
-                            (add-hook-for-once 'ido-minibuffer-setup-hook
-                                               #'balance-mode))))
+                        (when balance-mode
+                          (add-hook-for-once 'ido-minibuffer-setup-hook
+                                             #'balance-mode)
+                          (add-hook-for-once 'post-command-hook
+                                             (lambda ()
+                                               (remove-hook-for-once
+                                                'ido-minibuffer-setup-hook
+                                                #'balance-mode))))))
   (add-hook 'balance-mode-update-keys-hook
             (lambda ()
               (when (ido-active)
