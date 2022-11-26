@@ -31,8 +31,8 @@
   (define-key dired-mode-map (kbd "%@") #'dired-narrow-regexp)
   (define-key dired-mode-map (kbd "@~") #'dired-narrow-fuzzy)
 
-  (define-key dired-mode-map (kbd "f") #'dired-subtree-insert)
-  (define-key dired-mode-map (kbd "b") #'dired-subtree-remove)
+  (define-key dired-mode-map (kbd "; F") #'dired-subtree-insert)
+  (define-key dired-mode-map (kbd "; B") #'dired-subtree-remove)
   (define-key dired-mode-map (kbd "; b") #'dired-subtree-up)
   (define-key dired-mode-map (kbd "; f") #'dired-subtree-down)
   (define-key dired-mode-map (kbd "; n") #'dired-subtree-next-sibling)
