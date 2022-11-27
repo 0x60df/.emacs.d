@@ -4,6 +4,7 @@
 
 (premise init)
 (premise bindings)
+(premise subr)
 (premise inst-consult)
 
 (eval-when-compile (require 'consult))
@@ -161,13 +162,20 @@
                            (setq end (point)))
                          (let ((token
                                 (buffer-substring-no-properties begin end)))
-                           (if (seq-find (lambda (imenu-entry)
+                           (when (seq-find (lambda (imenu-entry)
                                            (equal
                                             (replace-regexp-in-string
                                              "^.* " "" (car imenu-entry))
                                             token))
-                                         (car args))
-                               token))))))))
+                                           (car args))
+                             (add-hook-for-once
+                              'post-command-hook
+                              (lambda ()
+                                (if (minibufferp)
+                                    (let ((exit (key-binding (kbd "RET"))))
+                                      (if (functionp exit)
+                                          (funcall exit))))))
+                             token))))))))
        (unwind-protect
            (progn
              (advice-add 'consult--read :filter-args advice)
