@@ -88,8 +88,8 @@
     #'loophole-end-kmacro)
   (define-key loophole-defining-kmacro-map (kbd "C-}")
     #'loophole-abort-kmacro)
-  (define-key loophole-defining-kmacro-map (kbd "C-c ] k a")
-    'undefined)
+  (put 'loophole-end-kmacro :advertised-binding (kbd "C-]"))
+  (put 'loophole-abort-kmacro :advertised-binding (kbd "C-}"))
 
   (add-to-list 'balance-mode-key-list (kbd "C-c ] ["))
   (add-to-list 'balance-mode-key-list (kbd "C-c ] ]"))
