@@ -74,6 +74,12 @@
                    nil 'cursor-color mc-standard-cursor-color)
                   (setq mc-standard-cursor-color nil))))))
 
+  (add-hook 'multiple-cursors-mode-hook
+            (lambda ()
+              (unless multiple-cursors-mode
+                (unless transient-mark-mode
+                  (transient-mark-mode 1)))))
+
   (add-to-list 'mc/unsupported-minor-modes 'show-paren-mode)
   (with-eval-after-load 'company
     (add-to-list 'mc/unsupported-minor-modes 'company-split-mode))
