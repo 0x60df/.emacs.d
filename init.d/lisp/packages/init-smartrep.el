@@ -71,7 +71,8 @@
   (let ((key "C-l"))
     (smartrep-define-key (overriding-map-for (kbd key)) key
       '(("n" . next-line-scroll-up)
-        ("p" . previous-line-scroll-down))))
+        ("p" . previous-line-scroll-down)
+        ("g" . keyboard-quit))))
   (let ((key "C-l"))
     (smartrep-define-key (overriding-map-for (kbd key)) key
       '(("v" . emulate-scroll-down-command))))
