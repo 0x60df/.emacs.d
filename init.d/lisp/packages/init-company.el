@@ -790,6 +790,7 @@ After abort, call `hippie-expand'."
     :group 'user
     (if company-balance-mode
         (progn
+          (define-key company-active-map (kbd "g") #'company-abort)
           (define-key company-active-map (kbd "n") #'company-select-next)
           (define-key company-active-map (kbd "p") #'company-select-previous)
           (define-key company-active-map (kbd "s")
@@ -802,13 +803,16 @@ After abort, call `hippie-expand'."
               (interactive)
               (company-balance-mode 0)
               (company-filter-candidates-or-abort-and-hippie-expand)))
+          (define-key company-search-map (kbd "g") #'company-abort)
           (define-key company-search-map (kbd "n") #'company-select-next)
           (define-key company-search-map (kbd "p") #'company-select-previous)
           (setq company-lighter-base "C:B"))
+      (define-key company-active-map (kbd "g") nil)
       (define-key company-active-map (kbd "n") nil)
       (define-key company-active-map (kbd "p") nil)
       (define-key company-active-map (kbd "s") nil)
       (define-key company-active-map (kbd "r") nil)
+      (define-key company-search-map (kbd "g") #'company-search-printing-char)
       (define-key company-search-map (kbd "n") #'company-search-printing-char)
       (define-key company-search-map (kbd "p") #'company-search-printing-char)
       (setq company-lighter-base "C")))
