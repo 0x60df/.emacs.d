@@ -8,7 +8,7 @@
 
 (custom-set-variables
  '(wgrep-auto-save-buffer t)
- '(wgrep-enable-key "r"))
+ '(wgrep-enable-key "w"))
 
 
 (resolve init-wgrep)
