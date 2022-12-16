@@ -868,6 +868,9 @@ After abort, call `hippie-expand'."
                (interactive)
                (if (eq company-status 'selecting)
                    (company-balance-mode 'toggle)
+                 (set-transient-map (let ((map (make-sparse-keymap)))
+                                      (define-key map (kbd "g") #'company-abort)
+                                      map))
                  (funcall
                   (lookup-key global-balance-mode-map henkan))))))
        (define-key company-active-map henkan command)
@@ -878,6 +881,9 @@ After abort, call `hippie-expand'."
                (interactive)
                (if (eq company-status 'selecting)
                    (company-balance-mode 'toggle)
+                 (set-transient-map (let ((map (make-sparse-keymap)))
+                                      (define-key map (kbd "g") #'company-abort)
+                                      map))
                  (funcall
                   (lookup-key global-balance-mode-map muhenkan))))))
        (define-key company-active-map muhenkan command)
