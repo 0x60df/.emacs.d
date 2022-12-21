@@ -95,8 +95,15 @@ When called interactively, `org-template' is used for
 (add-to-list 'balance-mode-key-list (kbd "C-c o a"))
 (add-to-list 'balance-mode-key-list (kbd "C-c o c"))
 (add-to-list 'balance-mode-key-list (kbd "C-c o t"))
-(add-to-list 'balance-mode-key-list (kbd "C-c C-x C-a"))
 (add-to-list 'balance-mode-key-alias-alist `(,(kbd "c SPC o") . ,(kbd "c o")))
+(add-hook 'balance-mode-update-keys-hook
+          (lambda ()
+            (when (eq major-mode 'org-mode)
+              (balance-mode-implement-keys
+               (list (kbd "C-c C-x C-a")
+                     (kbd "C-c C-x C-w")
+                     (kbd "C-c C-x C-y"))
+               overriding-balance-mode-map))))
 
 (add-hook 'balance-mode-update-keys-hook
           (lambda ()
