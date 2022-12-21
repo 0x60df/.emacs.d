@@ -240,6 +240,7 @@ UNIT is a literal symbol."
 (init-feature doc-view)
 (init-feature info)
 (init-feature compile)
+(init-feature icons)
 (init-feature hi-lock)
 (init-feature epa)
 (init-feature speedbar)
