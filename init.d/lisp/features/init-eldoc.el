@@ -65,6 +65,13 @@
   (advice-add 'eldoc-minibuffer-message
               :around #'eldoc-modify-mode-line-message)
 
+  (advice-add 'mode-line-initial-show-truncated-for-auto-mode
+              :around (lambda (func &rest args)
+                        (unless (and (buffer-live-p eldoc--doc-buffer)
+                                     (eq (current-buffer)
+                                         (eldoc-doc-buffer)))
+                          (apply func args))))
+
   (defvar eldoc-keep-buffer-functions '(other-window
                                         other-window-reverse
                                         view-other-window)

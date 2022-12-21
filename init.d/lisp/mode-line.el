@@ -483,10 +483,13 @@ mode-line string by window-width."
   mode-line-auto-show-truncated-mode mode-line-auto-show-truncated-mode
   :group 'user)
 
+(defun mode-line-initial-show-truncated-for-auto-mode ()
+  "Initially `mode-line-show-truncated' for auto showing mode."
+  (if mode-line-auto-show-truncated-mode
+      (mode-line-show-truncated)))
+
 (add-hook 'mode-line-auto-show-truncated-mode-hook
-          (lambda ()
-            (if mode-line-auto-show-truncated-mode
-                (mode-line-show-truncated))))
+          #'mode-line-initial-show-truncated-for-auto-mode)
 
 (setq-default mode-line-format
               (mode-line-format-auto-truncate mode-line-format-raw))
