@@ -65,6 +65,11 @@
                      :before (lambda (&rest args) (require 'smartparens)))
 
 (with-eval-after-load 'smartparens
+  (advice-add 'sp-show--pair-function
+              :around (lambda (func &rest args)
+                        (let ((inhibit-redisplay t))
+                          (apply func args))))
+
   (defun sp-show-enclosing-pair-dwim-reverse (&optional arg)
   "`sp-show-enclosing-pair-dwim' by reverse direction."
   (interactive "p")
