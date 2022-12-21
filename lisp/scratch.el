@@ -298,7 +298,7 @@ Any functions which should be called on major mode change
 can be added to `scratch-sticking-mode-hook'.
 Typically, the following forms keep
 `scratch-auto-snapshot-mode' active after major mode change.
-(add-hook 'scratch-sticking-mode-hook
+(add-hook \\='scratch-sticking-mode-hook
           (lambda ()
             (if scratch-sticking-mode
                 (scratch-auto-snapshot-mode))))"
