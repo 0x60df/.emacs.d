@@ -12,23 +12,21 @@
 
 (with-eval-after-load 'wdired
   (add-hook 'wdired-mode-hook (lambda ()
-                                (if wdired-mode-hook
-                                    (progn
-                                      (balance-weight-mode 0)
-                                      (balance-mode 0)
-                                      (balance-mode-implement-keys
-                                       (list (kbd "C-c C-c")
-                                             (kbd "C-c C-k")
-                                             (kbd "C-f")
-                                             (kbd "C-b")
-                                             (kbd "C-n")
-                                             (kbd "C-p")
-                                             (kbd "C-e"))
-                                       overriding-balance-weight-mode-map)
-                                      (balance-mode-implement-keys
-                                       (list (kbd "C-c C-c")
-                                             (kbd "C-c C-k"))
-                                       overriding-balance-mode-map)))))
+                                (balance-weight-mode 0)
+                                (balance-mode 0)
+                                (balance-mode-implement-keys
+                                 (list (kbd "C-c C-c")
+                                       (kbd "C-c C-k")
+                                       (kbd "C-f")
+                                       (kbd "C-b")
+                                       (kbd "C-n")
+                                       (kbd "C-p")
+                                       (kbd "C-e"))
+                                 overriding-balance-weight-mode-map)
+                                (balance-mode-implement-keys
+                                 (list (kbd "C-c C-c")
+                                       (kbd "C-c C-k"))
+                                 overriding-balance-mode-map)))
   (advice-add 'wdired-finish-edit :after (lambda (&rest _)
                                            (balance-mode-update-keys)
                                            (balance-mode 0)
