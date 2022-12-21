@@ -40,7 +40,7 @@
       (setcdr (assq 'margin-format margin-style)
               '(" %s%f" " %C %a" " %H" "")))))
 
-(defun magit-blame-set-highlight-overlay-priority (ov &rest args)
+(defun magit-blame-set-highlight-overlay-priority (ov &rest _args)
   "Advising `magit-blame--update-highlight-overlay' to set priority."
   (overlay-put ov 'priority -51))
 

@@ -234,7 +234,7 @@ Otherwise, set 100."
 
 (defcustom monitor-margin-alist nil
   "Monitor margin list.
-This looks like '(pattern . (left top righ bottom)).
+This looks like \\='(pattern . (left top righ bottom)).
 pattern is a list whose elements are compared with elements
 of monitor attributes. If all elements of pattern are
 matched, left top right bottom are used as margin for each

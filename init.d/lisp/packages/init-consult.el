@@ -10,6 +10,8 @@
 (eval-when-compile (require 'consult))
 
 (declare-function consult--customize-put "consult")
+(declare-function consult--multi-narrow "consult")
+(declare-function consult--multi-enabled-sources "consult")
 
 (overriding-set-key (kbd "C-q C-q") #'quoted-insert)
 (overriding-set-key (kbd "C-q C-y") #'consult-yank-from-kill-ring)

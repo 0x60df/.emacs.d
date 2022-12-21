@@ -156,6 +156,18 @@ same character. "
     (if (commandp func)
         (call-interactively func))))
 
+(defvar consecutive-emulate-forward-backward-word-mode-map
+  (let ((map (make-sparse-keymap)))
+    (define-key map (kbd "f") #'emulate-forward-word-consecutively)
+    (define-key map (kbd "b") #'emulate-backward-word-consecutively)
+    map))
+
+(define-minor-mode consecutive-emulate-forward-backward-word-mode
+  "Minor mode for consecutive cursor movement by word."
+  :group 'user
+  :global t
+  :keymap consecutive-emulate-forward-backward-word-mode-map)
+
 (defun emulate-forward-word-consecutively ()
   "`emulate-forward-word' consecutively."
   (interactive)
@@ -175,17 +187,6 @@ same character. "
   (add-hook-for-once
    'pre-command-hook
    (lambda () (consecutive-emulate-forward-backward-word-mode 0))))
-
-(defvar consecutive-emulate-forward-backward-word-mode-map
-  (let ((map (make-sparse-keymap)))
-    (define-key map (kbd "f") #'emulate-forward-word-consecutively)
-    (define-key map (kbd "b") #'emulate-backward-word-consecutively)
-    map))
-
-(define-minor-mode consecutive-emulate-forward-backward-word-mode
-  "Minor mode for consecutive cursor movement by word."
-  :global t
-  :keymap consecutive-emulate-forward-backward-word-mode-map)
 
 (defvar-local auto-overwrite-time 0.5 "Time for performing auto overwrite.")
 

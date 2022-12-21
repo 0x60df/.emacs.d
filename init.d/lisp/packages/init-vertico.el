@@ -5,6 +5,8 @@
 (premise init)
 (premise inst-vertico)
 
+(defvar vertico-multiform-commands)
+
 (add-hook 'emacs-startup-hook #'vertico-mode)
 (setq enable-recursive-minibuffers t)
 

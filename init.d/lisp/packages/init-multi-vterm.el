@@ -7,6 +7,8 @@
 (premise bindings)
 (premise keyboard)
 
+(defvar vterm-mode-map)
+
 (defvar-local multi-vterm-dedicated-frame nil
   "Dedicated frame for `vterm' buffer.")
 

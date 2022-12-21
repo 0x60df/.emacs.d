@@ -16,6 +16,8 @@
   (require 'company-keywords)
   (require 'company-tng))
 
+(defvar company-balance-mode)
+
 (declare-function company-finish "company")
 (declare-function company-abort "company")
 (declare-function company-pseudo-tooltip-frontend "company")
@@ -43,6 +45,8 @@
 (declare-function company-expand-selection-or-cycle-reverse load-file-name t t)
 (declare-function company-pseudo-tooltip-set-width load-file-name t t)
 (declare-function company-pseudo-tooltip-decorate-candidate load-file-name t t)
+(declare-function company-search-printing-char load-file-name t t)
+(declare-function company-balance-mode t t)
 (declare-function company-complete-inside-finish load-file-name t t)
 (declare-function company-complete-inside-after-completion load-file-name t t)
 (declare-function company-complete-inside-post-command load-file-name t t)

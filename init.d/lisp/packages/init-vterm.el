@@ -5,6 +5,10 @@
 (premise init)
 (premise inst-vterm)
 
+(defvar vterm-mode-map)
+
+(declare-function vterm-send "vterm")
+
 (with-eval-after-load 'vterm
   (add-hook 'vterm-mode-hook (lambda () (setq show-trailing-whitespace nil)))
   (add-hook 'vterm-mode-hook (lambda () (setq-local global-hl-line-mode nil)))
