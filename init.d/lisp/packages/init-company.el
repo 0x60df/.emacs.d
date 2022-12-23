@@ -81,8 +81,8 @@
                        company-pseudo-tooltip-unless-initial-inline-frontend
                        company-preview-if-just-beginning-frontend
                        company-echo-metadata-unless-initial-inline-frontend))
- '(company-transformers '(company-sort-by-length
-                          company-force-prefix
+ '(company-transformers '(company-force-prefix
+                          company-sort-by-length
                           company-sort-by-occurrence
                           company-replace-yasnippet-candidate-on-first))
  '(company-search-regexp-function #'company-search-words-in-any-order-regexp)

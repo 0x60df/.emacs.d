@@ -9,8 +9,8 @@
 (eval-when-compile (require 'company))
 
 (custom-set-variables
- '(company-transformers '(company-sort-by-length
-                          company-force-prefix
+ '(company-transformers '(company-force-prefix
+                          company-sort-by-length
                           company-sort-by-occurrence
                           company-sort-by-statistics
                           company-replace-yasnippet-candidate-on-first)))
