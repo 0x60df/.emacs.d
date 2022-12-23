@@ -245,7 +245,7 @@ Keymap is determined by `overriding-map-for'"
         (kbd "C-t")
         (kbd "C-y")
         (kbd "C-u")
-        (kbd "C-o")
+        (kbd "C-q")
         (kbd "C-p")
         (kbd "C-a")
         (kbd "C-s")

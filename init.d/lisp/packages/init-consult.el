@@ -13,33 +13,33 @@
 (declare-function consult--multi-narrow "consult")
 (declare-function consult--multi-enabled-sources "consult")
 
-(overriding-set-key (kbd "C-q C-q") #'quoted-insert)
-(overriding-set-key (kbd "C-q C-y") #'consult-yank-from-kill-ring)
-(overriding-set-key (kbd "C-q C-s") #'consult-line)
-(overriding-set-key (kbd "C-q C-j") #'consult-buffer)
-(overriding-set-key (kbd "C-q r") #'consult-register)
-(overriding-set-key (kbd "C-q o") #'consult-outline)
-(overriding-set-key (kbd "C-q i") #'consult-imenu)
-(overriding-set-key (kbd "C-q g") #'consult-goto-line)
-(overriding-set-key (kbd "C-q m") #'consult-mark)
+(overriding-set-key (kbd "C-o C-o") #'open-line)
+(overriding-set-key (kbd "C-o C-y") #'consult-yank-from-kill-ring)
+(overriding-set-key (kbd "C-o C-s") #'consult-line)
+(overriding-set-key (kbd "C-o C-j") #'consult-buffer)
+(overriding-set-key (kbd "C-o r") #'consult-register)
+(overriding-set-key (kbd "C-o 0") #'consult-outline)
+(overriding-set-key (kbd "C-o i") #'consult-imenu)
+(overriding-set-key (kbd "C-o g") #'consult-goto-line)
+(overriding-set-key (kbd "C-o m") #'consult-mark)
 (overriding-set-key (kbd "M-y") #'consult-yank-pop)
 
-(dolist (key (list (kbd "C-q C-q")
-                   (kbd "C-q C-y")
-                   (kbd "C-q C-s")
-                   (kbd "C-q C-j")
-                   (kbd "C-q r")
-                   (kbd "C-q o")
-                   (kbd "C-q i")
-                   (kbd "C-q g")
-                   (kbd "C-q m")))
+(dolist (key (list (kbd "C-o C-o")
+                   (kbd "C-o C-y")
+                   (kbd "C-o C-s")
+                   (kbd "C-o C-j")
+                   (kbd "C-o r")
+                   (kbd "C-o 0")
+                   (kbd "C-o i")
+                   (kbd "C-o g")
+                   (kbd "C-o m")))
   (add-to-list 'balance-mode-key-list key))
 
-(dolist (key-alias (list `(,(kbd "q SPC r") . ,(kbd "q r"))
-                         `(,(kbd "q SPC o") . ,(kbd "q o"))
-                         `(,(kbd "q SPC i") . ,(kbd "q i"))
-                         `(,(kbd "q SPC g") . ,(kbd "q g"))
-                         `(,(kbd "q SPC m") . ,(kbd "q m"))))
+(dolist (key-alias (list `(,(kbd "o SPC r") . ,(kbd "o r"))
+                         `(,(kbd "o SPC 0") . ,(kbd "o 0"))
+                         `(,(kbd "o SPC i") . ,(kbd "o i"))
+                         `(,(kbd "o SPC g") . ,(kbd "o g"))
+                         `(,(kbd "o SPC m") . ,(kbd "o m"))))
   (add-to-list 'balance-mode-key-alias-alist key-alias))
 
 (add-hook 'balance-mode-update-keys-hook
@@ -50,13 +50,13 @@
                         (eq major-mode #'dired-mode)
                         (eq major-mode 'org-agenda-mode)
                         (eq major-mode 'magit-status-mode))
-                (let ((entry (lookup-key (current-local-map) (kbd "q"))))
+                (let ((entry (lookup-key (current-local-map) (kbd "o"))))
                   (if (and entry (not (numberp entry)))
                       (define-key overriding-balance-weight-mode-map
-                        (kbd "qq") entry)))
+                        (kbd "oo") entry)))
 
                 (balance-mode-implement-keys
-                 (list (kbd "C-q C-j"))
+                 (list (kbd "C-o C-j"))
                  overriding-balance-weight-mode-map))))
 
 (custom-set-variables
@@ -85,7 +85,7 @@
 
   (defvar overriding-org-mode-map
     (let ((map (make-sparse-keymap)))
-      (define-key map (kbd "C-q o") #'consult-org-heading)
+      (define-key map (kbd "C-o 0") #'consult-org-heading)
       map)
     "Keymap for org-mode which overrides overriding bindings.")
 
@@ -94,7 +94,7 @@
 
   (defvar balance-mode-overriding-inferior-mode-map
     (let ((map (make-sparse-keymap)))
-      (define-key map (kbd "q o") #'consult-org-heading)
+      (define-key map (kbd "o 0") #'consult-org-heading)
       map)
     "Overriding keymap for org-mode with balance mode.")
 

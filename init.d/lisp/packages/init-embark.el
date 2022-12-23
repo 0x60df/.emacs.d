@@ -8,16 +8,16 @@
 
 (overriding-set-key (kbd "C-^") #'embark-act)
 (overriding-set-key (kbd "C-~") #'embark-dwim)
-(overriding-set-key (kbd "C-q h b") #'embark-bindings)
+(overriding-set-key (kbd "C-o b") #'embark-bindings)
 
 (let ((binding (lookup-key help-map (kbd "b"))))
   (if (commandp binding)
       (define-key help-map (kbd "B") binding)))
 (define-key help-map (kbd "b") #'embark-bindings)
 
-(dolist (key (list (kbd "C-q h b"))) (add-to-list 'balance-mode-key-list key))
+(dolist (key (list (kbd "C-o b"))) (add-to-list 'balance-mode-key-list key))
 
-(add-to-list 'balance-mode-key-alias-alist `(,(kbd "q SPC h") . ,(kbd "q h")))
+(add-to-list 'balance-mode-key-alias-alist `(,(kbd "o SPC b") . ,(kbd "o b")))
 
 (add-hook 'balance-mode-update-keys-hook
             (lambda ()
@@ -27,16 +27,16 @@
                         (eq major-mode #'dired-mode)
                         (eq major-mode 'org-agenda-mode)
                         (eq major-mode 'magit-status-mode))
-                (let ((entry (lookup-key (current-local-map) (kbd "q"))))
+                (let ((entry (lookup-key (current-local-map) (kbd "o"))))
                   (if (and entry (not (numberp entry)))
                       (define-key overriding-balance-weight-mode-map
-                        (kbd "qq") entry)))
+                        (kbd "oo") entry)))
 
                 (balance-mode-implement-keys
-                 (list (kbd "C-q h b"))
+                 (list (kbd "C-o b"))
                  overriding-balance-weight-mode-map)
                 (balance-mode-alias-keys
-                 `((,(kbd "q SPC h b") . ,(kbd "q h b")))
+                 `((,(kbd "o SPC b") . ,(kbd "o b")))
                overriding-balance-weight-mode-map))))
 
 (setq prefix-help-command #'embark-prefix-help-command)
