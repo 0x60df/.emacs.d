@@ -17,7 +17,8 @@
 
 (custom-set-variables
  '(ido-enable-flex-matching t)
- '(ido-auto-merge-work-directories-length -1))
+ '(ido-auto-merge-work-directories-length -1)
+ '(ido-default-file-method 'select-window))
 
 (with-eval-after-load 'ido
   (add-hook 'ido-minibuffer-setup-hook
