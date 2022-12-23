@@ -82,6 +82,7 @@
                        company-preview-if-just-beginning-frontend
                        company-echo-metadata-unless-initial-inline-frontend))
  '(company-transformers '(company-sort-by-length
+                          company-force-prefix
                           company-sort-by-occurrence
                           company-replace-yasnippet-candidate-on-first))
  '(company-search-regexp-function #'company-search-words-in-any-order-regexp)
@@ -287,6 +288,13 @@ keyword :with."
     "Sort candidates by length of candidates."
     (sort candidates (lambda (c1 c2)
                        (< (length c1) (length c2)))))
+
+  (defun company-force-prefix (candidates)
+    "Filter candidates by test if having `company-prefix'."
+    (seq-filter (lambda (candidate)
+                  (and (stringp company-prefix)
+                       (string-prefix-p company-prefix candidate)))
+                candidates))
 
   (defun company-replace-yasnippet-candidate-on-first (candidates)
     "Replace yasnippet candidate if it is located at first."
