@@ -118,7 +118,24 @@
 
   (modify-minor-mode-lighter 'smartparens-mode
                              '(" P"
-                               (:eval (if smartparens-strict-mode "/s" "")))))
+                               (:eval (if smartparens-strict-mode "/s" ""))))
+
+  (dolist (command '(read-minibuffer read--expression))
+    (advice-add command
+                :around
+                (lambda (func &rest args)
+                  (let ((ignore-modes-list sp-ignore-modes-list))
+                    (unwind-protect
+                        (progn
+                          (setq sp-ignore-modes-list
+                                (delq 'minibuffer-mode sp-ignore-modes-list))
+                          (sp-local-pair 'minibuffer-mode "'" nil
+                                         :actions nil)
+                          (sp-update-local-pairs 'minibuffer-mode)
+                          (apply func args))
+                      (sp-local-pair 'minibuffer-mode "'" "'")
+                      (sp-update-local-pairs 'minibuffer-mode)
+                      (setq sp-ignore-modes-list ignore-modes-list)))))))
 
 (overriding-set-key (kbd "C-(") #'sp-splice-sexp)
 (overriding-set-key (kbd "ESC M-8") #'sp-splice-sexp)

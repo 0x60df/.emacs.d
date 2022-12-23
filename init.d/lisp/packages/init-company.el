@@ -547,6 +547,29 @@ text property for aux space."
 
 
 
+  ;;; minibuffer
+  (dolist (command '(read-minibuffer read--expression))
+    (advice-add command
+                :around
+                (lambda (func &rest args)
+                  (add-hook-for-once
+                   'minibuffer-setup-hook
+                   (lambda ()
+                     (let ((buffer (current-buffer))
+                           (original completion-at-point-functions))
+                       (add-hook-for-once
+                        'minibuffer-exit-hook
+                        (lambda ()
+                          (with-current-buffer buffer
+                            (setq-local completion-at-point-functions
+                                        original)))))
+                     (setq-local completion-at-point-functions
+                                 '(elisp-completion-at-point t))
+                     (company-mode 1)))
+                  (apply func args))))
+
+
+
   ;;; mode-line lighter
   (defconst company-lighter-transform-alist
     '(("yasnippet" . "yas")
