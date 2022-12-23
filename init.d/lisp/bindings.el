@@ -477,9 +477,11 @@ Keymap is determined by `overriding-map-for'"
                 (define-key overriding-balance-mode-map
                   (kbd "_") indent-command)))
             (let ((save-command (key-binding (kbd "C-x C-s") t)))
-              (if (and save-command (not (numberp save-command)))
-                  (define-key overriding-balance-mode-map
-                    (kbd "S") save-command)))
+              (when (and save-command (not (numberp save-command)))
+                (define-key overriding-balance-mode-map
+                            (kbd "S") save-command)
+                (define-key overriding-balance-mode-map
+                            (kbd "-") save-command)))
             (let ((forward-command (key-binding (kbd "C-M-f") t)))
               (if (and forward-command (not (numberp forward-command)))
                   (define-key overriding-balance-mode-map
