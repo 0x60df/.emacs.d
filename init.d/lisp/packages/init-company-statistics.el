@@ -11,8 +11,15 @@
 (custom-set-variables
  '(company-transformers '(company-force-prefix
                           company-sort-by-length
-                          company-sort-by-occurrence
-                          company-sort-by-statistics
+                          (lambda (candidates)
+                            (let ((first (car candidates))
+                                  (by-occurrence (company-sort-by-occurrence
+                                           candidates)))
+                              (if (equal first (car by-occurrence))
+                                  (company-sort-by-statistics by-occurrence)
+                                (cons (car by-occurrence)
+                                      (company-sort-by-statistics
+                                       (cdr by-occurrence))))))
                           company-replace-yasnippet-candidate-on-first)))
 
 (with-eval-after-load 'company-statistics
