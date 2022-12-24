@@ -671,29 +671,29 @@ and set up advice to add ASSOC when initialization."
  `(consecutive-emulate-forward-backward-word-mode
    . ,consecutive-emulate-forward-backward-word-mode-map))
 
-(advice-add 'manipulate-frame :around
-            (lambda (function &rest args)
-              (let ((binding (lookup-key overriding-balance-mode-map
-                                         (kbd "q"))))
-                (unless (numberp binding)
-                  (define-key overriding-balance-mode-map (kbd "q") nil))
-                (unwind-protect
-                    (apply function args)
-                  (unless (numberp binding)
-                    (define-key overriding-balance-mode-map
-                      (kbd "q") binding))))))
+;; (advice-add 'manipulate-frame :around
+;;             (lambda (function &rest args)
+;;               (let ((binding (lookup-key overriding-balance-mode-map
+;;                                          (kbd "q"))))
+;;                 (unless (numberp binding)
+;;                   (define-key overriding-balance-mode-map (kbd "q") nil))
+;;                 (unwind-protect
+;;                     (apply function args)
+;;                   (unless (numberp binding)
+;;                     (define-key overriding-balance-mode-map
+;;                       (kbd "q") binding))))))
 
-(advice-add 'manipulate-window :around
-            (lambda (function &rest args)
-              (let ((binding
-                     (lookup-key overriding-balance-mode-map (kbd "q"))))
-                (unless (numberp binding)
-                  (define-key overriding-balance-mode-map (kbd "q") nil))
-                (unwind-protect
-                    (apply function args)
-                  (unless (numberp binding)
-                    (define-key overriding-balance-mode-map
-                      (kbd "q") binding))))))
+;; (advice-add 'manipulate-window :around
+;;             (lambda (function &rest args)
+;;               (let ((binding
+;;                      (lookup-key overriding-balance-mode-map (kbd "q"))))
+;;                 (unless (numberp binding)
+;;                   (define-key overriding-balance-mode-map (kbd "q") nil))
+;;                 (unwind-protect
+;;                     (apply function args)
+;;                   (unless (numberp binding)
+;;                     (define-key overriding-balance-mode-map
+;;                       (kbd "q") binding))))))
 
 (add-hook 'balance-mode-update-keys-hook
           (lambda ()
