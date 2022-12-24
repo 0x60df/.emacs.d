@@ -18,7 +18,7 @@
 (overriding-set-key (kbd "C-o C-s") #'consult-line)
 (overriding-set-key (kbd "C-o C-j") #'consult-buffer)
 (overriding-set-key (kbd "C-o r") #'consult-register)
-(overriding-set-key (kbd "C-o 0") #'consult-outline)
+(overriding-set-key (kbd "C-o h") #'consult-outline)
 (overriding-set-key (kbd "C-o i") #'consult-imenu)
 (overriding-set-key (kbd "C-o g") #'consult-goto-line)
 (overriding-set-key (kbd "C-o m") #'consult-mark)
@@ -29,14 +29,14 @@
                    (kbd "C-o C-s")
                    (kbd "C-o C-j")
                    (kbd "C-o r")
-                   (kbd "C-o 0")
+                   (kbd "C-o h")
                    (kbd "C-o i")
                    (kbd "C-o g")
                    (kbd "C-o m")))
   (add-to-list 'balance-mode-key-list key))
 
 (dolist (key-alias (list `(,(kbd "o SPC r") . ,(kbd "o r"))
-                         `(,(kbd "o SPC 0") . ,(kbd "o 0"))
+                         `(,(kbd "o SPC h") . ,(kbd "o h"))
                          `(,(kbd "o SPC i") . ,(kbd "o i"))
                          `(,(kbd "o SPC g") . ,(kbd "o g"))
                          `(,(kbd "o SPC m") . ,(kbd "o m"))))
@@ -85,7 +85,7 @@
 
   (defvar overriding-org-mode-map
     (let ((map (make-sparse-keymap)))
-      (define-key map (kbd "C-o 0") #'consult-org-heading)
+      (define-key map (kbd "C-o h") #'consult-org-heading)
       map)
     "Keymap for org-mode which overrides overriding bindings.")
 
@@ -94,7 +94,7 @@
 
   (defvar balance-mode-overriding-inferior-mode-map
     (let ((map (make-sparse-keymap)))
-      (define-key map (kbd "o 0") #'consult-org-heading)
+      (define-key map (kbd "o h") #'consult-org-heading)
       map)
     "Overriding keymap for org-mode with balance mode.")
 
