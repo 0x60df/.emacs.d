@@ -63,9 +63,8 @@
             (when (eq major-mode 'magit-status-mode)
               (let ((entry (lookup-key (current-local-map) (kbd "x"))))
                 (when (and entry (not (numberp entry)))
-                  (echo entry)
-                    (define-key overriding-balance-weight-mode-map
-                      (kbd "xx") entry)))
+                  (define-key overriding-balance-weight-mode-map
+                    (kbd "xx") entry)))
               (let ((entry (lookup-key (current-local-map) (kbd "c"))))
                 (if (and entry (not (numberp entry)))
                     (define-key overriding-balance-weight-mode-map
