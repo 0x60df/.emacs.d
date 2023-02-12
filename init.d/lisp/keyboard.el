@@ -135,10 +135,14 @@ At the end of this function,
          (interactive)
          (cond (balance-mode-transient-super
                 (balance-mode 0)
+                (if (eq (balance-mode-context) 'balance-weight-mode)
+                    (balance-weight-mode))
                 (setq unread-command-events
                       (append (kbd (concat "s-" key)) nil)))
                (balance-mode-transient-hyper
                 (balance-mode 0)
+                (if (eq (balance-mode-context) 'balance-weight-mode)
+                    (balance-weight-mode))
                 (setq unread-command-events
                       (append (kbd (concat "H-" key)) nil)))
                (t (call-interactively
@@ -170,6 +174,22 @@ At the end of this function,
            (lambda () (setq balance-mode-transient-super nil)))))
        (balance-weight-mode 0)
        (balance-mode)))
+
+   (dolist (key '("1" "2" "3" "4" "5" "6" "7" "8" "9"))
+     (define-key (default-value 'overriding-balance-weight-mode-map) key
+                 (lambda ()
+                   (interactive)
+                   (cond (balance-mode-transient-super
+                          (balance-weight-mode 0)
+                          (setq unread-command-events
+                                (append (kbd (concat "s-" key)) nil)))
+                         (balance-mode-transient-hyper
+                          (balance-weight-mode 0)
+                          (setq unread-command-events
+                                (append (kbd (concat "H-" key)) nil)))
+                         (t (call-interactively
+                             (intern (format "balance-mode-digit-%s" key))))))))
+
    (define-key global-balance-mode-map (jis-key 'hankaku/zenkaku)
      (lambda ()
        (interactive)

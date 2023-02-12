@@ -133,20 +133,35 @@
                                        dired-mode
                                        emacs-lisp-compilation-mode))
                     (string-equal (buffer-name) "*Messages*"))
-                (let* ((key (kbd "v"))
-                       (binding (lookup-key overriding-balance-mode-map key)))
-                  (unless (numberp binding)
-                    (define-key overriding-balance-mode-map key
-                      (lambda ()
-                        (interactive)
-                        (if balance-mode-transient-hyper
-                            (progn
-                              (balance-mode 0)
-                              (balance-weight-mode 1)
-                              (setq unread-command-events
-                                    (append (kbd (concat "H-" key)) nil)))
-                          (if (commandp binding)
-                              (call-interactively binding)))))))))
+                (let ((key (kbd "v")))
+                  (let ((binding (lookup-key overriding-balance-mode-map key)))
+                    (unless (numberp binding)
+                      (define-key
+                       overriding-balance-mode-map key
+                       (lambda ()
+                         (interactive)
+                         (if balance-mode-transient-hyper
+                             (progn
+                               (balance-mode 0)
+                               (balance-weight-mode 1)
+                               (setq unread-command-events
+                                     (append (kbd (concat "H-" key)) nil)))
+                           (if (commandp binding)
+                               (call-interactively binding)))))))
+                  (let ((binding (lookup-key overriding-balance-weight-mode-map
+                                             key)))
+                    (unless (numberp binding)
+                      (define-key
+                       overriding-balance-weight-mode-map key
+                       (lambda ()
+                         (interactive)
+                         (if balance-mode-transient-hyper
+                             (progn
+                               (balance-weight-mode 0)
+                               (setq unread-command-events
+                                     (append (kbd (concat "H-" key)) nil)))
+                           (if (commandp binding)
+                               (call-interactively binding))))))))))
           100)
 
 (with-eval-after-load 'magit-mode
