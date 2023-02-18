@@ -95,8 +95,8 @@
                   (message (concat "(No deletions requested) "
                                    "--- transiently waiting for killing emacs"))
                   (let ((key (read-key)))
-                    (if (eql key ?c)
-                        (save-buffers-kill-terminal)
+                    (when (eql key ?c)
+                      (save-buffers-kill-terminal)
                       (setq unread-command-events
                             (cons key unread-command-events)))))))
 
