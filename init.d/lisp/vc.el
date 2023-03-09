@@ -18,6 +18,12 @@
                                     (apply #'propertize "m/"
                                            (text-properties-at
                                             (- (length string) 1) string))))
+                                  ((string-suffix-p "develop" string)
+                                   (concat
+                                    (substring string 0 (- (length string) 7))
+                                    (apply #'propertize "d/"
+                                           (text-properties-at
+                                            (- (length string) 1) string))))
                                   (t string))
                             3)))
         (t string)))
