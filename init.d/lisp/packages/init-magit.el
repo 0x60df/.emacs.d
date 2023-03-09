@@ -149,7 +149,8 @@
                            (if (commandp binding)
                                (call-interactively binding)))))))
                   (let ((binding (lookup-key overriding-balance-weight-mode-map
-                                             key)))
+                                             key))
+                        (base-binding (key-binding key)))
                     (unless (numberp binding)
                       (define-key
                        overriding-balance-weight-mode-map key
@@ -161,7 +162,8 @@
                                (setq unread-command-events
                                      (append (kbd (concat "H-" key)) nil)))
                            (if (commandp binding)
-                               (call-interactively binding))))))))))
+                               (call-interactively binding)
+                             (call-interactively base-binding))))))))))
           100)
 
 (with-eval-after-load 'magit-mode
