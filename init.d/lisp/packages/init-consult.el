@@ -70,7 +70,7 @@
  '(xref-show-definitions-function #'consult-xref))
 
 (with-eval-after-load 'consult
-  (consult-customize consult-buffer :preview-key (kbd "M-.")))
+  (consult-customize consult-buffer :preview-key "M-."))
 
 
 (define-minor-mode inferior-org-mode
