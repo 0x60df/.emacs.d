@@ -420,26 +420,6 @@ Keymap is determined by `overriding-map-for'"
     map)
   "Overriding keymap for `balance-mode'.")
 
-(defalias 'balance-mode-digit-1 'self-insert-command "Tentative alias.")
-(defalias 'balance-mode-digit-2 'self-insert-command "Tentative alias.")
-(defalias 'balance-mode-digit-3 'self-insert-command "Tentative alias.")
-(defalias 'balance-mode-digit-4 'self-insert-command "Tentative alias.")
-(defalias 'balance-mode-digit-5 'self-insert-command "Tentative alias.")
-(defalias 'balance-mode-digit-6 'self-insert-command "Tentative alias.")
-(defalias 'balance-mode-digit-7 'self-insert-command "Tentative alias.")
-(defun balance-mode-digit-8 ()
-  "Emulate backtab input."
-  (interactive)
-  (setq unread-command-events (append (kbd "<backtab>") nil)))
-(defun balance-mode-digit-9 ()
-  "Emulate tab input."
-  (interactive)
-  (setq unread-command-events (append (kbd "TAB") nil)))
-
-(dolist (key '("1" "2" "3" "4" "5" "6" "7" "8" "9"))
-  (define-key (default-value 'overriding-balance-mode-map) key
-    (intern (format "balance-mode-digit-%s" key))))
-
 (defvar balance-weight-mode-key-list
   (list (kbd "C-;")
         (kbd "C-:")
@@ -465,6 +445,53 @@ Keymap is determined by `overriding-map-for'"
                                         (balance-mode)))
     map)
   "Overriding keymap for `balance-weight-mode'.")
+
+(defun balance-mode-digit-1 ()
+  "Emulate digit-argument."
+  (interactive)
+  (setq unread-command-events (append (kbd "C-1") nil)))
+(defun balance-mode-digit-2 ()
+  "Emulate digit-argument."
+  (interactive)
+  (setq unread-command-events (append (kbd "C-2") nil)))
+(defun balance-mode-digit-3 ()
+  "Emulate digit-argument."
+  (interactive)
+  (setq unread-command-events (append (kbd "C-3") nil)))
+(defun balance-mode-digit-4 ()
+  "Emulate digit-argument."
+  (interactive)
+  (setq unread-command-events (append (kbd "C-4") nil)))
+(defun balance-mode-digit-5 ()
+  "Emulate digit-argument."
+  (interactive)
+  (setq unread-command-events (append (kbd "C-5") nil)))
+(defun balance-mode-digit-6 ()
+  "Emulate digit-argument."
+  (interactive)
+  (setq unread-command-events (append (kbd "C-6") nil)))
+(defun balance-mode-digit-7 ()
+  "Emulate digit-argument."
+  (interactive)
+  (setq unread-command-events (append (kbd "C-7") nil)))
+(defun balance-mode-digit-8 ()
+  "Emulate digit-argument."
+  (interactive)
+  (setq unread-command-events (append (kbd "C-8") nil)))
+(defun balance-mode-digit-9 ()
+  "Emulate digit-argument."
+  (interactive)
+  (setq unread-command-events (append (kbd "C-9") nil)))
+(defun balance-mode-digit-0 ()
+  "Emulate digit-argument."
+  (interactive)
+  (setq unread-command-events (append (kbd "C-0") nil)))
+
+(dolist (key '("1" "2" "3" "4" "5" "6" "7" "8" "9" "0"))
+  (dolist (map-variable '(overriding-balance-mode-map
+                          overriding-balance-weight-mode-map))
+    (define-key (default-value map-variable) key
+                (intern (format "balance-mode-digit-%s" key)))))
 
 (defvar balance-mode-update-keys-hook nil
   "Hook run at the last of `balance-mode-update-keys'")
