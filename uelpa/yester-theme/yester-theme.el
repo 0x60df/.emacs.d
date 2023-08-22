@@ -1582,6 +1582,11 @@
 
 
 
+ ;; Basic cursor color
+ `(basic-cursor-color (yester-symbol-exp red))
+ 
+
+
  ;; Popup
  `(popup-isearch-cursor-color (yester-symbol-exp yellow))
 
