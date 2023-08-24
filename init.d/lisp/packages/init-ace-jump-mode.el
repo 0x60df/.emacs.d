@@ -18,7 +18,17 @@
   (setq ace-jump-mode-move-keys
         (append (cl-loop for i from ?a to ?z collect i)
                 '(?\; ?: ?@ ?, ?. ?/ ?\[ ?\] ?\\)))
-  (ace-jump-mode-enable-mark-sync))
+  (ace-jump-mode-enable-mark-sync)
+  (advice-add 'ace-jump-push-mark
+              :around
+              (lambda (ace-jump-push-mark &rest args)
+                (if (region-active-p)
+                    (let ((mark (mark)))
+                      (unwind-protect
+                          (apply ace-jump-push-mark args )
+                        (unless (and (region-active-p) (eql mark (mark)))
+                          (push-mark mark t t))))
+                  (apply ace-jump-push-mark args )))))
 
 (overriding-set-key (kbd "ESC M-g") #'ace-jump-char-mode)
 (overriding-set-key (kbd "M-g M-j") #'ace-jump-mode)
