@@ -995,14 +995,6 @@ and set up advice to add ASSOC when initialization."
 
 (run-with-idle-timer 0.2 t #'balance-mode-update-cursor-color)
 
-(defun replace-char ()
-  "Read char and replace the caracter under cursor."
-  (interactive)
-  (let ((new (read-char "New char: ")))
-    (save-excursion
-      (delete-char 1)
-      (insert-char new))))
-
 (overriding-set-key (kbd "ESC M-SPC") #'global-balance-mode)
 
 

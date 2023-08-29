@@ -243,5 +243,13 @@ same character. "
     (remove-hook 'after-change-functions #'auto-overwrite--start-timer t)
     (remove-hook 'pre-command-hook #'auto-overwrite--postpone-timer t)))
 
+(defun replace-char ()
+  "Read char and replace the caracter under cursor."
+  (interactive)
+  (let ((new (read-char "New char: ")))
+    (save-excursion
+      (delete-char 1)
+      (insert-char new))))
+
 
 (resolve simple)
