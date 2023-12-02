@@ -33,8 +33,8 @@
 (overriding-set-key (kbd "ESC M-g") #'ace-jump-char-mode)
 (overriding-set-key (kbd "M-g M-j") #'ace-jump-mode)
 (overriding-set-key (kbd "H-g") #'ace-jump-mode)
-(overriding-set-key (kbd "H-SPC") #'ace-jump-mode)
-(overriding-set-key (kbd "s-SPC") #'ace-jump-mode)
+(overriding-set-key (kbd "H-SPC") #'ace-jump-char-mode)
+(overriding-set-key (kbd "s-SPC") #'ace-jump-char-mode)
 (add-hook
  'jis-keys-initialize-functions
  (lambda ()
