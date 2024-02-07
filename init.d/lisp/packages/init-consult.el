@@ -14,7 +14,7 @@
 (declare-function consult--multi-enabled-sources "consult")
 
 (overriding-set-key (kbd "C-o C-o") #'open-line)
-(overriding-set-key (kbd "C-o C-y") #'consult-yank-from-kill-ring)
+(overriding-set-key (kbd "C-o C-k") #'consult-yank-from-kill-ring)
 (overriding-set-key (kbd "C-o C-s") #'consult-line)
 (overriding-set-key (kbd "C-o C-j") #'consult-buffer)
 (overriding-set-key (kbd "C-o r") #'consult-register)
@@ -25,7 +25,7 @@
 (overriding-set-key (kbd "M-y") #'consult-yank-pop)
 
 (dolist (key (list (kbd "C-o C-o")
-                   (kbd "C-o C-y")
+                   (kbd "C-o C-k")
                    (kbd "C-o C-s")
                    (kbd "C-o C-j")
                    (kbd "C-o r")
