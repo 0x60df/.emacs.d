@@ -49,9 +49,11 @@
             (lambda ()
               (when (ido-active)
                 (define-key overriding-balance-mode-map
-                  (kbd "SPC") #'ido-next-match)
+                            (kbd "SPC") #'ido-next-match)
                 (define-key overriding-balance-mode-map
-                  (kbd "S-SPC") #'ido-prev-match)))))
+                            (kbd "S-SPC") #'ido-prev-match)
+                (define-key overriding-balance-mode-map
+                            (kbd "h") #'ido-delete-backward-updir)))))
 
 (add-hook 'emacs-startup-hook #'ido-everywhere)
 (add-hook 'emacs-startup-hook #'ido-mode)
