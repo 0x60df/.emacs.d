@@ -40,8 +40,9 @@
     (funcall-interactively 'dired-do-rename arg)))
 
 (with-eval-after-load 'dired
-  (define-key dired-mode-map (kbd ", c") #'dired-dwim-copy)
-  (define-key dired-mode-map (kbd ", r") #'dired-dwim-rename))
+  (define-key dired-mode-map (kbd "a") nil)
+  (define-key dired-mode-map (kbd "a c") #'dired-dwim-copy)
+  (define-key dired-mode-map (kbd "a r") #'dired-dwim-rename))
 
 
 (resolve init-dired-aux)
