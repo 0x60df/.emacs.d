@@ -37,7 +37,7 @@
   (interactive "P")
   (dired-select-window-silently)
   (let ((dired-dwim-target 'dired-dwim-target-recent))
-    (funcall-interactively 'dired-do-copy arg)))
+    (funcall-interactively 'dired-do-rename arg)))
 
 (with-eval-after-load 'dired
   (define-key dired-mode-map (kbd ", c") #'dired-dwim-copy)
