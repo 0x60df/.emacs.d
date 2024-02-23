@@ -36,6 +36,7 @@
                      (kbd "C-l p")
                      (kbd "C-l f")
                      (kbd "C-l b")
+                     (kbd "C-l t")
                      (kbd "C-l v")
                      (kbd "C-c s g")
                      (kbd "C-c s l")
@@ -84,6 +85,7 @@
                  (,(kbd "l SPC p") . ,(kbd "l p"))
                  (,(kbd "l SPC f") . ,(kbd "l f"))
                  (,(kbd "l SPC b") . ,(kbd "l b"))
+                 (,(kbd "l SPC t") . ,(kbd "l t"))
                  (,(kbd "l SPC v") . ,(kbd "l v")))
                overriding-balance-weight-mode-map))))
 
