@@ -13,6 +13,15 @@
 (put 'dired-do-rename 'ido 'find-file)
 (put 'dired-do-copy 'ido 'find-file)
 
+(defvar dired-mode-alternative-map
+  (let ((map (make-sparse-keymap)))
+    (define-key map (kbd "d") #'dired-create-directory)
+    map)
+  "Alternative keymap for a of dired-mode.")
+
+(with-eval-after-load 'dired
+  (define-key dired-mode-map (kbd "a") dired-mode-alternative-map))
+
 (add-hook 'balance-mode-update-keys-hook
           (lambda ()
             (when (eq major-mode #'dired-mode)
