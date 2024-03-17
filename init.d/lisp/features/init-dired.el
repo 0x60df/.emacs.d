@@ -95,12 +95,14 @@
                          (string-equal (current-message)
                                        "(No deletions requested)"))
                 (message (concat "(No deletions requested) "
-                                 "--- transiently waiting for killing emacs"))
+                                 "--- transiently waiting for ctl-x commands: "
+                                 "c, f, d"))
                 (let ((key (read-key)))
-                  (if (eql key ?c)
-                      (save-buffers-kill-terminal)
-                    (setq unread-command-events
-                          (cons key unread-command-events)))))))
+                  (cond ((eql key ?c) (save-buffers-kill-terminal))
+                        ((eql key ?f) (call-interactively #'find-file))
+                        ((eql key ?d) (call-interactively #'dired))
+                        (t (setq unread-command-events
+                          (cons key unread-command-events))))))))
 
 
 (resolve init-dired)
