@@ -189,7 +189,6 @@ Keymap is determined by `overriding-map-for'"
 
 (overriding-set-key (kbd "C-:") #'split-window-above)
 (overriding-set-key (kbd "C-M-:") #'split-window-right)
-(overriding-set-key (kbd "H-:") #'split-window-right)
 (overriding-set-key (kbd "C-M-*") #'delete-window)
 (overriding-set-key (kbd "C-M-^") #'delete-window)
 (overriding-set-key (kbd "C-*") #'delete-other-windows)
@@ -256,6 +255,7 @@ Keymap is determined by `overriding-map-for'"
         (kbd "C-k")
         (kbd "C-;")
         (kbd "C-:")
+        (kbd "C-M-:")
         (kbd "C-+")
         (kbd "C-*")
         (kbd "C-M-*")
@@ -423,6 +423,7 @@ Keymap is determined by `overriding-map-for'"
 (defvar balance-weight-mode-key-list
   (list (kbd "C-;")
         (kbd "C-:")
+        (kbd "C-M-:")
         (kbd "C-+")
         (kbd "C-*")
         (kbd "C-M-*")
