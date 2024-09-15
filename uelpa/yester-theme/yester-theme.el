@@ -1196,8 +1196,8 @@
    `(markdown-header-face-4 '((,class :weight bold :inherit outline-4)))
    `(markdown-header-face-5 '((,class :weight bold :inherit outline-5)))
    `(markdown-header-face-6 '((,class :weight bold :inherit outline-6)))
-   `(markdown-inline-code-face
-     (yester-face-spec ',class :foreground yellow :inherit 'markdown-code-face))
+   `(markdown-code-face (yester-face-spec ',class :background block :extend t))
+   `(markdown-inline-code-face (yester-face-spec ',class :foreground yellow))
    `(markdown-language-info-face '((,class :inherit markdown-markup-face)))
    `(markdown-language-keyword-face
      '((,class :weight bold :inherit markdown-markup-face)))
@@ -1205,8 +1205,7 @@
    `(markdown-reference-face '((,class :weight bold :inherit shadow)))
    `(markdown-list-face '((,class :weight bold)))
    `(markdown-math-face (yester-face-spec ',class :foreground orange))
-   `(markdown-pre-face
-     (yester-face-spec ',class :foreground yellow :inherit 'markdown-code-face))
+   `(markdown-pre-face (yester-face-spec ',class :foreground yellow))
    `(markdown-table-face (yester-face-spec ',class :background block))
    `(markdown-html-attr-name-face
      (yester-face-spec ',class :foreground comment))
@@ -1612,6 +1611,11 @@
 
  ;; Smartrep
  `(smartrep-mode-line-active-bg (yester-symbol-exp selection))
+
+
+
+ ;; Markdown-mode
+ '(markdown-fontify-code-blocks-natively t)
 
 
 
