@@ -1596,7 +1596,7 @@
 
  ;; Basic cursor color
  `(basic-cursor-color (yester-symbol-exp red))
- 
+
 
 
  ;; Popup
@@ -1630,6 +1630,7 @@
 
 
 
+ ;; Auctex
  '(font-latex-script-display ''((raise -0.0) . (raise 0.0)))
 
 
