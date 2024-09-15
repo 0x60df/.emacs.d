@@ -272,8 +272,8 @@ Keymap is determined by `overriding-map-for'"
         (kbd "C->")
         (kbd "C-@")
         (kbd "C-SPC")
-        (kbd "C-S-n")
-        (kbd "C-S-p")
+        ;; (kbd "C-S-n")
+        ;; (kbd "C-S-p")
         (kbd "C-l C-c")
         (kbd "C-l C-l")
         (kbd "C-l C-k C-s")
@@ -513,11 +513,19 @@ Keymap is determined by `overriding-map-for'"
             (let ((forward-command (key-binding (kbd "C-M-f") t)))
               (if (and forward-command (not (numberp forward-command)))
                   (define-key overriding-balance-mode-map
-                    (kbd "F") forward-command)))
+                              (kbd "F") forward-command)))
             (let ((backward-command (key-binding (kbd "C-M-b") t)))
               (if (and backward-command (not (numberp backward-command)))
                   (define-key overriding-balance-mode-map
-                    (kbd "B") backward-command)))))
+                              (kbd "B") backward-command)))
+            (let ((forward-command (key-binding (kbd "C-M-n") t)))
+              (if (and forward-command (not (numberp forward-command)))
+                  (define-key overriding-balance-mode-map
+                              (kbd "N") forward-command)))
+            (let ((backward-command (key-binding (kbd "C-M-p") t)))
+              (if (and backward-command (not (numberp backward-command)))
+                  (define-key overriding-balance-mode-map
+                              (kbd "P") backward-command)))))
 
 (defvar overriding-global-balance-mode-map (let ((map (make-sparse-keymap)))
                                              (define-key map (kbd "ESC M-SPC")
