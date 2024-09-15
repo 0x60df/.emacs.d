@@ -149,6 +149,20 @@ same character. "
     (if (commandp func)
         (call-interactively func))))
 
+(defun emulate-forward-sexp ()
+  "Emulate `forward-sexp' by `call-interactively' keys."
+  (interactive)
+  (let ((func (key-binding (kbd "C-M-f"))))
+    (if (commandp func)
+        (call-interactively func))))
+
+(defun emulate-backward-sexp ()
+  "Emulate `backward-sexp' by `call-interactively' keys."
+  (interactive)
+  (let ((func (key-binding (kbd "C-M-b"))))
+    (if (commandp func)
+        (call-interactively func))))
+
 (defun emulate-scroll-up-command ()
   "Emulate `scroll-up-command' by `call-interactively' keys."
   (interactive)
@@ -194,6 +208,40 @@ same character. "
   (add-hook-for-once
    'pre-command-hook
    (lambda () (consecutive-emulate-forward-backward-word-mode 0))))
+
+(defvar consecutive-emulate-forward-backward-sexp-mode-map
+  (let ((map (make-sparse-keymap)))
+    (define-key map (kbd "f") #'emulate-forward-sexp-consecutively)
+    (define-key map (kbd "b") #'emulate-backward-sexp-consecutively)
+    map))
+
+(define-minor-mode consecutive-emulate-forward-backward-sexp-mode
+  "Minor mode for consecutive cursor movement by sexp."
+  :group 'user
+  :global t
+  :keymap consecutive-emulate-forward-backward-sexp-mode-map
+  (echo :consecutive consecutive-emulate-forward-backward-sexp-mode))
+
+(defun emulate-forward-sexp-consecutively ()
+  "`emulate-forward-sexp' consecutively."
+  (interactive)
+  (echo :forward)
+  (call-interactively #'emulate-forward-sexp)
+  (unless consecutive-emulate-forward-backward-sexp-mode
+    (consecutive-emulate-forward-backward-sexp-mode 1))
+  (add-hook-for-once
+   'pre-command-hook
+   (lambda () (consecutive-emulate-forward-backward-sexp-mode 0))))
+
+(defun emulate-backward-sexp-consecutively ()
+  "`emulate-backward-sexp' consecutively."
+  (interactive)
+  (call-interactively #'emulate-backward-sexp)
+  (unless consecutive-emulate-forward-backward-sexp-mode
+    (consecutive-emulate-forward-backward-sexp-mode 1))
+  (add-hook-for-once
+   'pre-command-hook
+   (lambda () (consecutive-emulate-forward-backward-sexp-mode 0))))
 
 (defvar-local auto-overwrite-time 0.5 "Time for performing auto overwrite.")
 

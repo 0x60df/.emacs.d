@@ -49,6 +49,8 @@
                      (kbd "C-l v")
                      (kbd "C-l C-l n")
                      (kbd "C-l C-l p")
+                     (kbd "C-l C-l f")
+                     (kbd "C-l C-l b")
                      (kbd "C-c s g")
                      (kbd "C-c s l")
                      (kbd "C-c s r")
@@ -99,7 +101,9 @@
                  (,(kbd "l SPC t") . ,(kbd "l t"))
                  (,(kbd "l SPC v") . ,(kbd "l v"))
                  (,(kbd "l l SPC n") . ,(kbd "l l n"))
-                 (,(kbd "l l SPC p") . ,(kbd "l l p")))
+                 (,(kbd "l l SPC p") . ,(kbd "l l p"))
+                 (,(kbd "l l SPC f") . ,(kbd "l l f"))
+                 (,(kbd "l l SPC b") . ,(kbd "l l b")))
                overriding-balance-weight-mode-map))))
 
 (advice-add 'dired-do-flagged-delete :after

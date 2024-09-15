@@ -75,7 +75,9 @@
                      (kbd "C-l p")
                      (kbd "C-l v")
                      (kbd "C-l C-l n")
-                     (kbd "C-l C-l p"))
+                     (kbd "C-l C-l p")
+                     (kbd "C-l C-l f")
+                     (kbd "C-l C-l b"))
                overriding-balance-weight-mode-map)
               (balance-mode-alias-keys
                `((,(kbd "l SPC a") . ,(kbd "l a"))
@@ -86,7 +88,9 @@
                  (,(kbd "l SPC p") . ,(kbd "l p"))
                  (,(kbd "l SPC v") . ,(kbd "l v"))
                  (,(kbd "l l SPC n") . ,(kbd "l l n"))
-                 (,(kbd "l l SPC p") . ,(kbd "l l p")))
+                 (,(kbd "l l SPC p") . ,(kbd "l l p"))
+                 (,(kbd "l l SPC f") . ,(kbd "l l f"))
+                 (,(kbd "l l SPC b") . ,(kbd "l l b")))
                overriding-balance-weight-mode-map))))
 
   (if (or balance-mode balance-weight-mode) (balance-mode-update-keys)))

@@ -152,6 +152,8 @@ Keymap is determined by `overriding-map-for'"
 (overriding-set-key (kbd "C-l v") #'emulate-scroll-down-command)
 (overriding-set-key (kbd "C-l C-l n") #'emulate-scroll-up-command)
 (overriding-set-key (kbd "C-l C-l p") #'emulate-scroll-down-command)
+(overriding-set-key (kbd "C-l C-l f") #'emulate-forward-sexp-consecutively)
+(overriding-set-key (kbd "C-l C-l b") #'emulate-backward-sexp-consecutively)
 
 
 
@@ -299,6 +301,8 @@ Keymap is determined by `overriding-map-for'"
         (kbd "C-l v")
         (kbd "C-l C-l n")
         (kbd "C-l C-l p")
+        (kbd "C-l C-l f")
+        (kbd "C-l C-l b")
         (kbd "C-l ;")
         (kbd "C-c C-c")
         (kbd "C-c C-k")
@@ -369,6 +373,8 @@ Keymap is determined by `overriding-map-for'"
     (,(kbd "l SPC v") . ,(kbd "l v"))
     (,(kbd "l l SPC n") . ,(kbd "l l n"))
     (,(kbd "l l SPC p") . ,(kbd "l l p"))
+    (,(kbd "l l SPC f") . ,(kbd "l l f"))
+    (,(kbd "l l SPC b") . ,(kbd "l l b"))
     (,(kbd "l SPC ;") . ,(kbd "l ;"))
     (,(kbd "l k SPC d") . ,(kbd "l k d"))
     (,(kbd "l k SPC r SPC") . ,(kbd "l k r SPC"))
@@ -713,6 +719,10 @@ and set up advice to add ASSOC when initialization."
  `(consecutive-emulate-forward-backward-word-mode
    . ,consecutive-emulate-forward-backward-word-mode-map))
 
+(balance-mode-add-to-map-alist
+ `(consecutive-emulate-forward-backward-sexp-mode
+   . ,consecutive-emulate-forward-backward-sexp-mode-map))
+
 ;; (advice-add 'manipulate-frame :around
 ;;             (lambda (function &rest args)
 ;;               (let ((binding (lookup-key overriding-balance-mode-map
@@ -760,6 +770,8 @@ and set up advice to add ASSOC when initialization."
                      (kbd "C-l v")
                      (kbd "C-l C-l n")
                      (kbd "C-l C-l p")
+                     (kbd "C-l C-l f")
+                     (kbd "C-l C-l b")
                      (kbd "C-x C-f")
                      (kbd "C-x C-c")
                      (kbd "C-x C-x")
@@ -795,6 +807,8 @@ and set up advice to add ASSOC when initialization."
                  (,(kbd "l SPC v") . ,(kbd "l v"))
                  (,(kbd "l l SPC n") . ,(kbd "l l n"))
                  (,(kbd "l l SPC p") . ,(kbd "l l p"))
+                 (,(kbd "l l SPC f") . ,(kbd "l l f"))
+                 (,(kbd "l l SPC b") . ,(kbd "l l b"))
                  (,(kbd "x SPC d") . ,(kbd "x d"))
                  (,(kbd "x SPC b") . ,(kbd "x b"))
                  (,(kbd "x SPC k") . ,(kbd "x k"))
@@ -833,6 +847,8 @@ and set up advice to add ASSOC when initialization."
                      (kbd "C-l v")
                      (kbd "C-l C-l n")
                      (kbd "C-l C-l p")
+                     (kbd "C-l C-l f")
+                     (kbd "C-l C-l b")
                      (kbd "C-x C-f")
                      (kbd "C-x C-c")
                      (kbd "C-x C-x")
@@ -872,6 +888,8 @@ and set up advice to add ASSOC when initialization."
                  (,(kbd "l SPC v") . ,(kbd "l v"))
                  (,(kbd "l l SPC n") . ,(kbd "l l n"))
                  (,(kbd "l l SPC p") . ,(kbd "l l p"))
+                 (,(kbd "l l SPC f") . ,(kbd "l l f"))
+                 (,(kbd "l l SPC b") . ,(kbd "l l b"))
                  (,(kbd "c SPC ;") . ,(kbd "c ;"))
                  (,(kbd "c SPC :") . ,(kbd "c :"))
                  (,(kbd "c SPC ,") . ,(kbd "c ,"))
@@ -902,6 +920,8 @@ and set up advice to add ASSOC when initialization."
                      (kbd "C-l v")
                      (kbd "C-l C-l n")
                      (kbd "C-l C-l p")
+                     (kbd "C-l C-l f")
+                     (kbd "C-l C-l b")
                      (kbd "C-l C-c")
                      (kbd "C-c ;")
                      (kbd "C-c :")
@@ -938,6 +958,8 @@ and set up advice to add ASSOC when initialization."
                  (,(kbd "l SPC v") . ,(kbd "l v"))
                  (,(kbd "l l SPC n") . ,(kbd "l l n"))
                  (,(kbd "l l SPC p") . ,(kbd "l l p"))
+                 (,(kbd "l l SPC f") . ,(kbd "l l f"))
+                 (,(kbd "l l SPC b") . ,(kbd "l l b"))
                  (,(kbd "x SPC d") . ,(kbd "x d"))
                  (,(kbd "x SPC b") . ,(kbd "x b"))
                  (,(kbd "x SPC k") . ,(kbd "x k"))
