@@ -149,6 +149,13 @@ same character. "
     (if (commandp func)
         (call-interactively func))))
 
+(defun emulate-scroll-up-command ()
+  "Emulate `scroll-up-command' by `call-interactively' keys."
+  (interactive)
+  (let ((func (key-binding (kbd "C-v"))))
+    (if (commandp func)
+        (call-interactively func))))
+
 (defun emulate-scroll-down-command ()
   "Emulate `scroll-down-command' by `call-interactively' keys."
   (interactive)

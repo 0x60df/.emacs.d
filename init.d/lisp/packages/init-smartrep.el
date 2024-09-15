@@ -76,6 +76,10 @@
   (let ((key "C-l"))
     (smartrep-define-key (overriding-map-for (kbd key)) key
       '(("v" . emulate-scroll-down-command))))
+  (let ((key "C-l C-l"))
+    (smartrep-define-key (overriding-map-for (kbd key)) key
+      '(("n" . emulate-scroll-up-command)
+        ("p" . emulate-scroll-down-command))))
 
   ;; page
   (let ((key "C-x"))
