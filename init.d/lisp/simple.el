@@ -219,13 +219,11 @@ same character. "
   "Minor mode for consecutive cursor movement by sexp."
   :group 'user
   :global t
-  :keymap consecutive-emulate-forward-backward-sexp-mode-map
-  (echo :consecutive consecutive-emulate-forward-backward-sexp-mode))
+  :keymap consecutive-emulate-forward-backward-sexp-mode-map)
 
 (defun emulate-forward-sexp-consecutively ()
   "`emulate-forward-sexp' consecutively."
   (interactive)
-  (echo :forward)
   (call-interactively #'emulate-forward-sexp)
   (unless consecutive-emulate-forward-backward-sexp-mode
     (consecutive-emulate-forward-backward-sexp-mode 1))

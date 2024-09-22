@@ -87,8 +87,7 @@ the symbol property saved-symbol-value."
 
 (defcustom startup-theme-list '(dark-charm
                                 yester
-                                yester-accessory
-                                yester-risky-patch)
+                                yester-accessory)
   "List of themes that are `put-on' at the startup.
 If listed some of themes are not defined, they are skipped.
 Themes are `put-on' according to the order of the list.
