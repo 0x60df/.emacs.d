@@ -81,7 +81,7 @@
                        company-pseudo-tooltip-unless-initial-inline-frontend
                        company-preview-if-just-beginning-frontend
                        company-echo-metadata-unless-initial-inline-frontend))
- '(company-transformers '(company-force-prefix
+ '(company-transformers '(company-force-prefix-when-capf
                           company-sort-by-length
                           company-sort-by-occurrence
                           company-replace-yasnippet-candidate-on-first))
@@ -289,12 +289,16 @@ keyword :with."
     (sort candidates (lambda (c1 c2)
                        (< (length c1) (length c2)))))
 
-  (defun company-force-prefix (candidates)
-    "Filter candidates by test if having `company-prefix'."
-    (seq-filter (lambda (candidate)
-                  (and (stringp company-prefix)
-                       (string-prefix-p company-prefix candidate)))
-                candidates))
+  (defun company-force-prefix-when-capf (candidates)
+    "Filter candidates by test having `company-prefix' when using capf."
+    (if (or (eq 'company-capf company-backend)
+            (and (listp company-backend)
+                 (memq 'company-capf company-backend)))
+        (seq-filter (lambda (candidate)
+                      (and (stringp company-prefix)
+                           (string-prefix-p company-prefix candidate)))
+                    candidates)
+      candidates))
 
   (defun company-replace-yasnippet-candidate-on-first (candidates)
     "Replace yasnippet candidate if it is located at first."

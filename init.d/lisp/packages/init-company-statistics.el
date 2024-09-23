@@ -9,7 +9,7 @@
 (eval-when-compile (require 'company))
 
 (custom-set-variables
- '(company-transformers '(company-force-prefix
+ '(company-transformers '(company-force-prefix-when-capf
                           company-sort-by-length
                           (lambda (candidates)
                             (let ((first (car candidates))
