@@ -153,7 +153,7 @@
 
   ;;; frontend
 
-  (defvar company-status nil "Compliting status of company.")
+  (defvar company-status nil "Completing status of company.")
 
   (add-hook 'company-after-completion-hook (lambda (&rest _)
                                              (setq company-status nil)))
