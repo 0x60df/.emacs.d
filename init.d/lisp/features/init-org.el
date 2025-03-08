@@ -100,9 +100,14 @@ When called interactively, `org-template' is used for
           (lambda ()
             (when (eq major-mode 'org-mode)
               (balance-mode-implement-keys
-               (list (kbd "C-c C-x C-a")
+               (list (kbd "C-c C-t")
+                     (kbd "C-c C-x C-a")
                      (kbd "C-c C-x C-w")
+                     (kbd "C-c C-x M-w")
                      (kbd "C-c C-x C-y"))
+               overriding-balance-mode-map)
+              (balance-mode-alias-keys
+               `((,(kbd "c x SPC M-w") . ,(kbd "c x M-w")))
                overriding-balance-mode-map))))
 
 (add-hook 'balance-mode-update-keys-hook

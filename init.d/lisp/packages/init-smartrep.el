@@ -115,7 +115,8 @@
         ("C-f" . org-down-element)
         ("C-b" . org-up-element)
         ("C-v" . (org-forward-heading-same-level 1))
-        ("M-v" . (org-backward-heading-same-level 1)))))
+        ("M-v" . (org-backward-heading-same-level 1))
+        ("t" . org-todo))))
 
   ;; flymake
   (with-eval-after-load 'flymake
