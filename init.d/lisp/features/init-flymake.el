@@ -10,7 +10,8 @@
 
 (declare-function flymake-goto-next-error "flymake")
 (declare-function flymake-goto-prev-error "flymake")
-(declare-function flymake--overlays "flymake")
+(if (version< emacs-version "30")
+    (declare-function flymake--overlays "flymake"))
 
 (declare-function flymake-show-help load-file-name t t)
 (declare-function flymake--modify-mode-line-format load-file-name t t)
@@ -27,12 +28,22 @@
   "`flymake-mode' but t if `balance-mode' is active.")
 
 (with-eval-after-load 'flymake
+  (defun flymake--overlays-at (pos)
+    "Get flymake-related overlays at POS."
+    (cl-loop
+     for o in (overlays-at pos)
+     when (overlay-get o 'flymake-diagnostic)
+     collect o))
+
   (defun flymake-show-help ()
     "Show help stirng in echo area."
     (interactive)
-    (let* ((ovs (flymake--overlays :beg (point)
-                                   :compare #'>
-                                   :key #'overlay-start))
+    (let* ((ovs (if (version< emacs-version "30")
+                    (flymake--overlays :beg (point)
+                                       :compare #'>
+                                       :key #'overlay-start)
+                  (cl-sort (flymake--overlays-at (point)) #'>
+                           :key #'overlay-start)))
            (target (car ovs)))
       (if target
           (message
@@ -52,7 +63,9 @@
               (run-with-idle-timer
                0.5 nil (lambda ()
                          (if (null eldoc-last-message)
-                             (if (flymake--overlays :beg (point))
+                             (if (if (version< emacs-version "30")
+                                     (flymake--overlays :beg (point))
+                                   (flymake--overlays-at (point)))
                                  (setq flymake-last-help (flymake-show-help))
                                (if (eldoc--message-command-p last-command)
                                    (message nil))
