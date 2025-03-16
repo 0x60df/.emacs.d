@@ -342,7 +342,7 @@ They also compared by `symbol-name'."
 Search `next-single-property-change' for the face from
 POSITION in OBJECT. If difference contains
 `mode-line-boundary-faces', return that position.
-If no boundary is detected until LIMIT, retun nil."
+If no boundary is detected until LIMIT, return nil."
   (let ((candidate (next-single-property-change position 'face object limit)))
     (cond ((eql candidate limit) candidate)
           ((let* ((face-1 (mode-line--face-list candidate object))
@@ -359,7 +359,7 @@ If no boundary is detected until LIMIT, retun nil."
 Search `previous-single-property-change' for the face from
 POSITION in OBJECT. If difference contains
 `mode-line-boundary-faces', return that position.
-If no boundary is detected until LIMIT, retun nil."
+If no boundary is detected until LIMIT, return nil."
   (let ((candidate (previous-single-property-change position 'face
                                                     object limit)))
     (cond ((eql candidate limit) candidate)
