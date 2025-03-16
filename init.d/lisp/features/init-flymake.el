@@ -27,6 +27,10 @@
 (defvar-local balance-mode-flymake nil
   "`flymake-mode' but t if `balance-mode' is active.")
 
+(if (daemonp)
+    (custom-set-variables
+     '(flymake-indicator-type 'fringes)))
+
 (with-eval-after-load 'flymake
   (defun flymake--overlays-at (pos)
     "Get flymake-related overlays at POS."
