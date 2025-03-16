@@ -25,8 +25,6 @@
 
 (defun eldoc-modify-mode-line-message (eldoc-minibuffer-message &rest args)
   "Advising `eldoc-minibuffer-message' to modify `mode-line-format'."
-  (unless (version< emacs-version "30")
-    (setq mode-line-format (list mode-line-format)))
   (apply eldoc-minibuffer-message args)
   (when (minibufferp)
     (with-current-buffer

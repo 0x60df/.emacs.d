@@ -405,43 +405,44 @@ If no boundary is detected until LIMIT, retun nil."
   "Construct form for `mode-line-format' from FORM.
 Constructed form wrap FORM by :eval form which truncate
 mode-line string by window-width."
-  `(:eval
-    (let* ((text (format-mode-line ',form))
-           (text-width (string-width text))
-           (max-width (+ (window-body-width) 1))
-           (shrunk
-            (if (< max-width text-width)
-                (let* ((subtext (truncate-string-to-width text max-width))
-                       (length (length subtext))
-                       (r-subtext (string-reverse subtext))
-                       (last-non-space
-                        (- length 1 (string-match "[^ ]" r-subtext)))
-                       (last-element-end
-                        (mode-line--next-boundary
-                         last-non-space subtext length))
-                       (original-last-element-end
-                        (mode-line--next-boundary
-                         last-non-space text (length text))))
-                  (if (and (< last-element-end original-last-element-end)
-                           (string-match
-                            "[^ ]"
-                            (substring text
-                                       last-element-end
-                                       original-last-element-end)))
-                      (let ((last-element-start
-                             (mode-line--previous-boundary
-                              (+ last-non-space 1) subtext 0)))
-                        (if mode-line-format-auto-truncate-on-boundary-mode
-                            (setq subtext (substring subtext 0
-                                                     last-element-start))
-                          (let ((property (get-text-property
-                                           last-non-space 'face subtext)))
-                            (add-face-text-property
-                             last-element-start length 'mode-line-transform
-                             nil subtext)))))
-                  subtext)
-              text)))
-      (mode-line--duplicate-percent-with-text-properties shrunk))))
+  `(""
+    (:eval
+     (let* ((text (format-mode-line ',form))
+            (text-width (string-width text))
+            (max-width (+ (window-body-width) 1))
+            (shrunk
+             (if (< max-width text-width)
+                 (let* ((subtext (truncate-string-to-width text max-width))
+                        (length (length subtext))
+                        (r-subtext (string-reverse subtext))
+                        (last-non-space
+                         (- length 1 (string-match "[^ ]" r-subtext)))
+                        (last-element-end
+                         (mode-line--next-boundary
+                          last-non-space subtext length))
+                        (original-last-element-end
+                         (mode-line--next-boundary
+                          last-non-space text (length text))))
+                   (if (and (< last-element-end original-last-element-end)
+                            (string-match
+                             "[^ ]"
+                             (substring text
+                                        last-element-end
+                                        original-last-element-end)))
+                       (let ((last-element-start
+                              (mode-line--previous-boundary
+                               (+ last-non-space 1) subtext 0)))
+                         (if mode-line-format-auto-truncate-on-boundary-mode
+                             (setq subtext (substring subtext 0
+                                                      last-element-start))
+                           (let ((property (get-text-property
+                                            last-non-space 'face subtext)))
+                             (add-face-text-property
+                              last-element-start length 'mode-line-transform
+                              nil subtext)))))
+                   subtext)
+               text)))
+       (mode-line--duplicate-percent-with-text-properties shrunk)))))
 
 (defun mode-line-show-truncated ()
   "Show truncated section of mode-line in echo area."
