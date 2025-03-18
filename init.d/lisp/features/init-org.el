@@ -190,6 +190,17 @@ When called interactively, `org-template' is used for
                  (,(kbd "x SPC 1") . ,(kbd "x 1")))
                overriding-balance-weight-mode-map))))
 
+(add-hook 'balance-mode-update-keys-hook
+          (lambda ()
+            (when (eq major-mode #'dired-mode)
+              (balance-mode-implement-keys
+               (list (kbd "C-c o a")
+                     (kbd "C-c o c"))
+               overriding-balance-weight-mode-map)
+              (balance-mode-alias-keys
+               `((,(kbd "c SPC o") . ,(kbd "c o")))
+               overriding-balance-weight-mode-map))))
+
 (with-eval-after-load 'org
   (define-key org-mode-map (kbd "C-c C-.") #'org-time-stamp)
   (define-key org-mode-map (kbd "C-c C-!") #'org-time-stamp-inactive))
