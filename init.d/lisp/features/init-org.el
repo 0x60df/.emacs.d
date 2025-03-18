@@ -89,11 +89,13 @@ When called interactively, `org-template' is used for
 
 (overriding-set-key (kbd "C-c o a") #'org-agenda)
 (overriding-set-key (kbd "C-c o c") #'org-capture)
+(overriding-set-key (kbd "C-c o l") #'org-store-link)
 (with-eval-after-load 'org
   (define-key org-mode-map (kbd "C-c o t") #'org-insert-template))
 
 (add-to-list 'balance-mode-key-list (kbd "C-c o a"))
 (add-to-list 'balance-mode-key-list (kbd "C-c o c"))
+(add-to-list 'balance-mode-key-list (kbd "C-c o l"))
 (add-to-list 'balance-mode-key-list (kbd "C-c o t"))
 (add-to-list 'balance-mode-key-alias-alist `(,(kbd "c SPC o") . ,(kbd "c o")))
 (add-hook 'balance-mode-update-keys-hook
@@ -195,7 +197,8 @@ When called interactively, `org-template' is used for
             (when (eq major-mode #'dired-mode)
               (balance-mode-implement-keys
                (list (kbd "C-c o a")
-                     (kbd "C-c o c"))
+                     (kbd "C-c o c")
+                     (kbd "C-c o l"))
                overriding-balance-weight-mode-map)
               (balance-mode-alias-keys
                `((,(kbd "c SPC o") . ,(kbd "c o")))
