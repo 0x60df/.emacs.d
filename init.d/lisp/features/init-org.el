@@ -203,7 +203,8 @@ When called interactively, `org-template' is used for
 
 (with-eval-after-load 'org
   (define-key org-mode-map (kbd "C-c C-.") #'org-time-stamp)
-  (define-key org-mode-map (kbd "C-c C-!") #'org-time-stamp-inactive))
+  (define-key org-mode-map (kbd "C-c C-!") #'org-time-stamp-inactive)
+  (define-key org-mode-map (kbd "C-c C-/") #'org-time-stamp-inactive))
 
 
 (resolve init-org)
