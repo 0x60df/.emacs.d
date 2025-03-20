@@ -96,11 +96,12 @@ Increment is N. If N is ommited, use 1."
 `search-backward-char-in-line' use this.")
 
 (defun search-forward-char-in-line (char)
-  "Search forward character on current line from cursor position.
-CHAR is searching character.
+  "Search forward character on a current line from cursor position.
+CHAR is a character in search.
 If called interactively, this function `read-char' for CHAR.
-If CHAR is searched successfully, consecutive call searches
-same character."
+If CHAR is found successfully, consecutive call of this
+commandor wrapper command who calls this command searches
+the same character."
   (interactive
    (list (cond ((and (eq this-command last-command)
                      search-char-in-line-matched)
@@ -117,11 +118,12 @@ same character."
       (setq search-char-in-line-matched (if success char nil)))))
 
 (defun search-backward-char-in-line (char)
-  "Search backward character on this line from cursor position.
-CHAR is searching character.
+  "Search backward character on a current line from cursor position.
+CHAR is a character in search.
 If called interactively, this function `read-char' for CHAR.
-If CHAR is searched successfully, consecutive call searches
-same character. "
+If CHAR is found successfully, consecutive call of this
+commandor wrapper command who calls this command searches
+the same character."
   (interactive
    (list (cond ((and (eq this-command last-command)
                      search-char-in-line-matched)
@@ -134,6 +136,38 @@ same character. "
                     (char-to-string char) (line-beginning-position) t))
           (setq success t))
       (setq search-char-in-line-matched (if success char nil)))))
+
+(defun search-forward-char-in-line-consecutively ()
+  "`search-forward-char-in-line' consecutively."
+  (interactive)
+  (call-interactively #'search-forward-char-in-line)
+  (unless consecutive-search-forward-char-in-line-mode
+    (consecutive-search-forward-char-in-line-mode 1))
+  (add-hook-for-once
+   'pre-command-hook
+   (lambda () (consecutive-search-forward-char-in-line-mode 0))))
+
+(define-minor-mode consecutive-search-forward-char-in-line-mode
+  "Minor mode for consecutive character forward search."
+  :group 'user
+  :global t
+  :keymap '(("f" . search-forward-char-in-line-consecutively)))
+
+(defun search-backward-char-in-line-consecutively ()
+  "`search-backward-char-in-line' consecutively."
+  (interactive)
+  (call-interactively #'search-backward-char-in-line)
+  (unless consecutive-search-backward-char-in-line-mode
+    (consecutive-search-backward-char-in-line-mode 1))
+  (add-hook-for-once
+   'pre-command-hook
+   (lambda () (consecutive-search-backward-char-in-line-mode 0))))
+
+(define-minor-mode consecutive-search-backward-char-in-line-mode
+  "Minor mode for consecutive character backward search."
+  :group 'user
+  :global t
+  :keymap '(("b" . search-backward-char-in-line-consecutively)))
 
 (defun emulate-forward-word ()
   "Emulate `forward-word' by `call-interactively' keys."

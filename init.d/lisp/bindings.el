@@ -185,10 +185,11 @@ Keymap is determined by `overriding-map-for'"
 (overriding-set-key (kbd "H-y") #'yank-pop-reverse)
 (overriding-set-key (kbd "C-S-n") #'next-line-scroll-up)
 (overriding-set-key (kbd "C-S-p") #'previous-line-scroll-down)
-(overriding-set-key (kbd "M-g M-f") #'search-forward-char-in-line)
-(overriding-set-key (kbd "H-f") #'search-forward-char-in-line)
-(overriding-set-key (kbd "M-g M-b") #'search-backward-char-in-line)
-(overriding-set-key (kbd "H-b") #'search-backward-char-in-line)
+(overriding-set-key (kbd "M-g M-f") #'search-forward-char-in-line-consecutively)
+(overriding-set-key (kbd "H-f") #'search-forward-char-in-line-consecutively)
+(overriding-set-key (kbd "M-g M-b")
+                    #'search-backward-char-in-line-consecutively)
+(overriding-set-key (kbd "H-b") #'search-backward-char-in-line-consecutively)
 (overriding-set-key (kbd "C-c r y") #'risky-yes-or-no-p-mode)
 
 (overriding-set-key (kbd "C-:") #'split-window-above)
@@ -721,6 +722,14 @@ and set up advice to add ASSOC when initialization."
 (balance-mode-add-to-map-alist
  `(consecutive-emulate-forward-backward-sexp-mode
    . ,consecutive-emulate-forward-backward-sexp-mode-map))
+
+(balance-mode-add-to-map-alist
+ `(consecutive-search-forward-char-in-line-mode
+   . ,consecutive-search-forward-char-in-line-mode-map))
+
+(balance-mode-add-to-map-alist
+ `(consecutive-search-backward-char-in-line-mode
+   . ,consecutive-search-backward-char-in-line-mode-map))
 
 ;; (advice-add 'manipulate-frame :around
 ;;             (lambda (function &rest args)
