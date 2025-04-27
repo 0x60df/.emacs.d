@@ -247,7 +247,7 @@ side of the monitor. Otherwise, margin is regarded as 0."
   :type 'number
   :group 'user)
 
-(defcustom switch-monitor-delay 0
+(defcustom switch-monitor-delay 10
   "Delay time in milliseconds for switching monitor."
   :type 'number
   :group 'user)
