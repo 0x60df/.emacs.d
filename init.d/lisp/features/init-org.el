@@ -109,7 +109,8 @@ When called interactively, `org-template' is used for
                      (kbd "C-c C-x C-y"))
                overriding-balance-mode-map)
               (balance-mode-alias-keys
-               `((,(kbd "c x SPC M-w") . ,(kbd "c x M-w")))
+               `((,(kbd "c x SPC M-w") . ,(kbd "c x M-w"))
+                 (,(kbd "c x SPC M-w") . ,(kbd "c x W")))
                overriding-balance-mode-map))))
 
 (add-hook 'balance-mode-update-keys-hook
