@@ -938,7 +938,7 @@
    `(transient-purple (yester-face-spec ',class :foreground purple))
    `(transient-red (yester-face-spec ',class :foreground red))
    `(transient-teal (yester-face-spec ',class :foreground aqua))
-   `(transient-argument (yester-face-spec ',class :foreground orange))
+   `(transient-argument (yester-face-spec ',class :foreground green))
    `(transient-separator '((,class :inherit mode-line)))
    `(transient-key (yester-face-spec ',class :foreground blue))
    `(transient-key-exit (yester-face-spec ',class
@@ -946,9 +946,15 @@
                           :inherit 'transient-key))
    `(transient-key-noop (yester-face-spec ',class
                           :inherit '(shadow transient-key)))
+   `(transient-key-recurse (yester-face-spec ',class
+                             :foreground green
+                             :inherit 'transient-key))
    `(transient-key-return (yester-face-spec ',class
                             :foreground green
                             :inherit 'transient-key))
+   `(transient-key-stack (yester-face-spec ',class
+                             :foreground aqua
+                             :inherit 'transient-key))
    `(transient-key-stay (yester-face-spec ',class
                           :foreground aqua
                           :inherit 'transient-key))
@@ -962,6 +968,9 @@
                                  :weight 'bold
                                  :foreground background
                                  :background red))
+   `(transient-value (yester-face-spec ',class
+                                 :weight 'bold
+                                 :foreground green))
 
 
 
