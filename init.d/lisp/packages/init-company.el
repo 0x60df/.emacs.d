@@ -88,6 +88,7 @@
  '(company-search-regexp-function #'company-search-words-in-any-order-regexp)
  '(company-format-margin-function nil)
  '(completion-styles '(basic emacs22))
+ '(company-inhibit-inside-symbols t)
  '(company-dabbrev-downcase nil)
  '(company-dabbrev-ignore-case nil))
 
@@ -345,6 +346,10 @@ complete-inside is started.")
   (defvar company-complete-inside-change-group nil
     "Change groul handler for company-complete-inside.")
 
+  (defun company-complete-inside-inside-symbol-p ()
+    "Predicate to check if the cursor is inside of symbol"
+    (and (char-after) (memq (char-syntax (char-after)) '(?w ?_))))
+
   (defun company-complete-inside-setup ()
     "Setup company complete inside."
     (if (and company-split-mode (not (company--active-p)))
@@ -353,7 +358,7 @@ complete-inside is started.")
                (null company-complete-inside-context)
                (memq this-command company-begin-commands)
                (not (equal (this-command-keys) " "))
-               (not (company-grab-symbol)))
+               (company-complete-inside-inside-symbol-p))
       (setq company-complete-inside-context
             `((line . ,(line-number-at-pos))
               (prefix . ,(buffer-substring
@@ -490,12 +495,12 @@ complete-inside is started.")
                       (company-call-backend 'prefix)))
                 (company--multi-backend-adapter backend 'prefix)))
         (when prefix
-          (when (company--good-prefix-p prefix)
+          (when (company--good-prefix-p prefix company-minimum-prefix-length)
             (let ((ignore-case (company-call-backend 'ignore-case)))
               (setq company-prefix (company--prefix-str prefix)
                     company-backend backend
                     c (company-calculate-candidates
-                       company-prefix ignore-case))))
+                       company-prefix ignore-case ""))))
           (cl-return c)))))
 
   (defun company-complete-inside-test-context ()
