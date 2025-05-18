@@ -105,6 +105,12 @@
 (advice-add-for-once 'company-split-global-mode :before (lambda (&rest _)
 							  (require 'company)))
 
+(defcustom company-split-mode-condition-function
+  (lambda () (not (memq major-mode '(org-mode))))
+  "Function which returns condition to turn on company-split-mode."
+  :group 'user
+  :type 'function)
+
 (defun company-split-mode-on ()
   "Turn on `company-split-mode'."
   (if (or (eq company-global-modes t)
@@ -112,8 +118,8 @@
                (or (and (eq (car company-global-modes) 'not)
                         (not (memq major-mode (cdr company-global-modes))))
                    (memq major-mode company-global-modes))))
-      (unless (memq major-mode '(org-mode))
-        (company-split-mode))))
+      (if (funcall company-split-mode-condition-function)
+          (company-split-mode))))
 
 (define-globalized-minor-mode company-split-global-mode company-split-mode
   company-split-mode-on
