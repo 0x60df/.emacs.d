@@ -87,7 +87,6 @@
                           company-replace-yasnippet-candidate-on-first))
  '(company-search-regexp-function #'company-search-words-in-any-order-regexp)
  '(company-format-margin-function nil)
- '(completion-styles '(basic emacs22))
  '(company-inhibit-inside-symbols t)
  '(company-dabbrev-downcase nil)
  '(company-dabbrev-ignore-case nil))
@@ -149,6 +148,18 @@
                       (unless (memq k (cdr a)) (setcdr a (cons k (cdr a)))))
                     '("&optional" "&rest"))))
           '(emacs-lisp-mode lisp-interaction-mode)))
+
+  (defcustom company-capf-completion-styles '(basic emacs22)
+    "Completion styles for `company-capf'."
+    :group 'user
+    :type '(repeat symbol))
+
+  (defun company-capf-override-completion-styles (function &rest args)
+    "Advice to override `completion-styles' during `company-capf'."
+    (let ((completion-styles company-capf-completion-styles))
+      (apply function args)))
+
+  (advice-add 'company-capf :around #'company-capf-override-completion-styles)
 
 
 
