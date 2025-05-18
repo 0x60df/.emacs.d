@@ -21,13 +21,13 @@
 
 (push '(org-indent-mode . 1) mode-line-minor-mode-priority-alist)
 
-(defun org-hide-trailing-whitespace-for-export-dispatcher (buffer &rest args)
+(defun org-hide-trailing-whitespace-for-export-dispatcher (&rest args)
   "Advising `org-switch-to-buffer-other-window' to hide whitespace."
-  (if (eq buffer (get-buffer "*Org Export Dispatcher*"))
+  (if (get-buffer "*Org Export Dispatcher*")
       (with-current-buffer "*Org Export Dispatcher*"
         (setq show-trailing-whitespace nil))))
 
-(advice-add 'org-switch-to-buffer-other-window
+(advice-add 'org-fit-window-to-buffer
             :before #'org-hide-trailing-whitespace-for-export-dispatcher)
 
 (defcustom org-template `((standard . ,(concat "# -*- coding:utf-8 -*-\n"
